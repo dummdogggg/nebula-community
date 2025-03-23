@@ -87,6 +87,7 @@ local function checkKey(input_key)
             Time = 3
         })
         task.wait(1)
+        getgenv().NebulaLoaderActive = false
         Library:Unload()
         API.load_script()
     elseif status.code:find("KEY_") then
