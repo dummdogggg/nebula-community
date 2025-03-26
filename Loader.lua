@@ -158,9 +158,21 @@ do
         })
 
         KeyGroupbox:AddButton({
-            Text = "Get Key",
+            Text = "Get Key ~> Linkvertise",
             Func = function()
                 setclipboard("https://ads.luarmor.net/get_key?for=Nebula_Hub_Free_Access-LMgKfCJvLDMH")
+                Library:Notify({
+                    Title = "Copied to Clipboard",
+                    Description = "Link to get your key has been copied to your clipboard",
+                    Time = 16
+                })
+            end
+        })
+
+        KeyGroupbox:AddButton({
+            Text = "Get Key ~> Lootlabs / Workink",
+            Func = function()
+                setclipboard("https://ads.luarmor.net/get_key?for=Nebula_Hub__Lootlabs-cgoAGWoLWaWS")
                 Library:Notify({
                     Title = "Copied to Clipboard",
                     Description = "Link to get your key has been copied to your clipboard",
