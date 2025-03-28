@@ -12,11 +12,6 @@
 -- ~> https://discord.gg/nebulascripts
 -- [ ----------------------------------------------------------------- ]
 
-if getgenv().NebulaLoaderActive then
-    return
-end
-getgenv().NebulaLoaderActive = true
-
 repeat
     task.wait()
 until game:IsLoaded()
@@ -76,7 +71,6 @@ local function checkKey(input_key)
             Time = 3
         })
         task.wait(1)
-        getgenv().NebulaLoaderActive = false
         Library:Unload()
         API.load_script()
     elseif status.code:find("KEY_") then
@@ -225,14 +219,6 @@ do
         end
     })
 end
-
-task.spawn(function()
-    while task.wait(1) do
-        if not getgenv().NebulaLoaderActive then
-            break
-        end
-    end
-end)
 
 Library:Notify({
     Title = "Nebula Hub",
