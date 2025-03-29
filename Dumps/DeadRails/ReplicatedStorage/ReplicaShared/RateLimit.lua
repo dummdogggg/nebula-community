@@ -1,104 +1,80 @@
 --[[
     Script: ReplicatedStorage.ReplicaShared.RateLimit
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:37:05
--- Luau version 6, Types version 3
--- Time taken: 0.002147 seconds
-
-local Players = game:GetService("Players")
-local tbl_upvr = {}
-local tbl_upvr_2 = {}
-local module_upvr = {}
-module_upvr.__index = module_upvr
-function module_upvr.New(arg1, arg2) -- Line 41
-	--[[ Upvalues[2]:
-		[1]: module_upvr (readonly)
-		[2]: tbl_upvr_2 (readonly)
-	]]
-	if arg1 <= 0 then
-		error("[RateLimit]: Invalid rate")
-	end
-	local module = {
-		sources = {};
-	}
-	local var10 = 1 / arg1
-	module.rate_period = var10
-	if arg2 ~= true then
-		var10 = false
-	else
-		var10 = true
-	end
-	module.is_full_wait = var10
-	setmetatable(module, module_upvr)
-	tbl_upvr_2[module] = true
-	return module
-end
-function module_upvr.CheckRate(arg1, arg2) -- Line 58
-	--[[ Upvalues[1]:
-		[1]: tbl_upvr (readonly)
-	]]
-	local sources = arg1.sources
-	local os_clock_result1 = os.clock()
-	local var13
-	if var13 == nil then
-		var13 = "nil"
-	end
-	local var14 = sources[var13]
-	if var14 ~= nil then
-		if arg1.is_full_wait ~= true then
-			var14 = math.max(os_clock_result1, var14 + arg1.rate_period)
-			if var14 - os_clock_result1 < 1 then
-				sources[var13] = var14
-				return true
-			end
-			return false
-		end
-		if var14 <= os_clock_result1 then
-			sources[var13] = os_clock_result1 + arg1.rate_period
-			return true
-		end
-		return false
-	end
-	if typeof(var13) == "Instance" and var13:IsA("Player") and tbl_upvr[var13] == nil then
-		return false
-	end
-	sources[var13] = os_clock_result1 + arg1.rate_period
-	return true
-end
-function module_upvr.CleanSource(arg1, arg2) -- Line 98
-	arg1.sources[arg2] = nil
-end
-function module_upvr.Cleanup(arg1) -- Line 102
-	arg1.sources = {}
-end
-function module_upvr.Destroy(arg1) -- Line 106
-	--[[ Upvalues[1]:
-		[1]: tbl_upvr_2 (readonly)
-	]]
-	tbl_upvr_2[arg1] = nil
-end
-for _, v in ipairs(Players:GetPlayers()) do
-	tbl_upvr[v] = true
-end
-Players.PlayerAdded:Connect(function(arg1) -- Line 116
-	--[[ Upvalues[1]:
-		[1]: tbl_upvr (readonly)
-	]]
-	tbl_upvr[arg1] = true
-end)
-Players.PlayerRemoving:Connect(function(arg1) -- Line 120
-	--[[ Upvalues[2]:
-		[1]: tbl_upvr (readonly)
-		[2]: tbl_upvr_2 (readonly)
-	]]
-	tbl_upvr[arg1] = nil
-	for i_2 in pairs(tbl_upvr_2) do
-		i_2.sources[arg1] = nil
-	end
-end)
-return module_upvr
+local l_Players_0 = game:GetService("Players");
+local v1 = {};
+local v2 = {};
+local v3 = {};
+v3.__index = v3;
+v3.New = function(v4, v5) --[[ Line: 41 ]] --[[ Name: New ]]
+    -- upvalues: v3 (copy), v2 (copy)
+    if v4 <= 0 then
+        error("[RateLimit]: Invalid rate");
+    end;
+    local v6 = {
+        sources = {}, 
+        rate_period = 1 / v4, 
+        is_full_wait = v5 == true
+    };
+    setmetatable(v6, v3);
+    v2[v6] = true;
+    return v6;
+end;
+v3.CheckRate = function(v7, v8) --[[ Line: 58 ]] --[[ Name: CheckRate ]]
+    -- upvalues: v1 (copy)
+    local l_sources_0 = v7.sources;
+    local v10 = os.clock();
+    if v8 == nil then
+        v8 = "nil";
+    end;
+    local v11 = l_sources_0[v8];
+    if v11 ~= nil then
+        if v7.is_full_wait ~= true then
+            v11 = math.max(v10, v11 + v7.rate_period);
+            if v11 - v10 < 1 then
+                l_sources_0[v8] = v11;
+                return true;
+            else
+                return false;
+            end;
+        elseif v11 <= v10 then
+            l_sources_0[v8] = v10 + v7.rate_period;
+            return true;
+        else
+            return false;
+        end;
+    elseif typeof(v8) == "Instance" and v8:IsA("Player") and v1[v8] == nil then
+        return false;
+    else
+        l_sources_0[v8] = v10 + v7.rate_period;
+        return true;
+    end;
+end;
+v3.CleanSource = function(v12, v13) --[[ Line: 98 ]] --[[ Name: CleanSource ]]
+    v12.sources[v13] = nil;
+end;
+v3.Cleanup = function(v14) --[[ Line: 102 ]] --[[ Name: Cleanup ]]
+    v14.sources = {};
+end;
+v3.Destroy = function(v15) --[[ Line: 106 ]] --[[ Name: Destroy ]]
+    -- upvalues: v2 (copy)
+    v2[v15] = nil;
+end;
+for _, v17 in ipairs(l_Players_0:GetPlayers()) do
+    v1[v17] = true;
+end;
+l_Players_0.PlayerAdded:Connect(function(v18) --[[ Line: 116 ]]
+    -- upvalues: v1 (copy)
+    v1[v18] = true;
+end);
+l_Players_0.PlayerRemoving:Connect(function(v19) --[[ Line: 120 ]]
+    -- upvalues: v1 (copy), v2 (copy)
+    v1[v19] = nil;
+    for v20 in pairs(v2) do
+        v20.sources[v19] = nil;
+    end;
+end);
+return v3;

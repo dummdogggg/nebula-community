@@ -1,234 +1,242 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.RbxCharacterSounds.AtomicBinding
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:36:26
--- Luau version 6, Types version 3
--- Time taken: 0.005295 seconds
-
-local function parsePath_upvr(arg1) -- Line 4, Named "parsePath"
-	local string_split_result1 = string.split(arg1, '/')
-	for i = #string_split_result1, 1, -1 do
-		if string_split_result1[i] == "" then
-			table.remove(string_split_result1, i)
-		end
-	end
-	return string_split_result1
-end
-local function _(arg1, arg2) -- Line 14, Named "isManifestResolved"
-	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
-	-- KONSTANTERROR: [0] 1. Error Block 15 start (CF ANALYSIS FAILED)
-	local var7 = 0
-	for _ in pairs(arg1) do
-		var7 += 1
-	end
-	if var7 > arg2 then
-		-- KONSTANTWARNING: GOTO [13] #11
-	end
-	-- KONSTANTERROR: [0] 1. Error Block 15 end (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [12] 10. Error Block 18 start (CF ANALYSIS FAILED)
-	assert(true, var7)
-	if var7 ~= arg2 then
-	else
-	end
-	do
-		return true
-	end
-	-- KONSTANTERROR: [12] 10. Error Block 18 end (CF ANALYSIS FAILED)
-end
-local function unbindNodeDescend_upvr(arg1, arg2) -- Line 24, Named "unbindNodeDescend"
-	--[[ Upvalues[1]:
-		[1]: unbindNodeDescend_upvr (readonly)
-	]]
-	if arg1.instance == nil then
-	else
-		arg1.instance = nil
-		local connections = arg1.connections
-		if connections then
-			for _, v_7 in ipairs(connections) do
-				v_7:Disconnect()
-			end
-			table.clear(connections)
-		end
-		if arg2 and arg1.alias then
-			arg2[arg1.alias] = nil
-		end
-		local children = arg1.children
-		if children then
-			for _, v_8 in pairs(children) do
-				unbindNodeDescend_upvr(v_8, arg2)
-			end
-		end
-	end
-end
-local module_upvr = {}
-module_upvr.__index = module_upvr
-function module_upvr.new(arg1, arg2) -- Line 54
-	--[[ Upvalues[2]:
-		[1]: parsePath_upvr (readonly)
-		[2]: module_upvr (readonly)
-	]]
-	local tbl = {}
-	local var29 = 1
-	for i_3, v in pairs(arg1) do
-		tbl[i_3] = parsePath_upvr(v)
-		var29 += 1
-	end
-	local module = {}
-	module._boundFn = arg2
-	module._parsedManifest = tbl
-	module._manifestSizeTarget = var29
-	module._dtorMap = {}
-	module._connections = {}
-	module._rootInstToRootNode = {}
-	module._rootInstToManifest = {}
-	return setmetatable(module, module_upvr)
-end
-function module_upvr._startBoundFn(arg1, arg2, arg3) -- Line 80
-	local _dtorMap = arg1._dtorMap
-	local var35 = _dtorMap[arg2]
-	if var35 then
-		var35()
-		_dtorMap[arg2] = nil
-	end
-	local any__boundFn_result1 = arg1._boundFn(arg3)
-	if any__boundFn_result1 then
-		_dtorMap[arg2] = any__boundFn_result1
-	end
-end
-function module_upvr._stopBoundFn(arg1, arg2) -- Line 96
-	local _dtorMap_2 = arg1._dtorMap
-	local var38 = _dtorMap_2[arg2]
-	if var38 then
-		var38()
-		_dtorMap_2[arg2] = nil
-	end
-end
-function module_upvr.bindRoot(arg1, arg2) -- Line 106
-	--[[ Upvalues[1]:
-		[1]: unbindNodeDescend_upvr (readonly)
-	]]
-	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
-	debug.profilebegin("AtomicBinding:BindRoot")
-	local _parsedManifest = arg1._parsedManifest
-	local _rootInstToManifest_2 = arg1._rootInstToManifest
-	local var57
-	if _rootInstToManifest_2[arg2] ~= nil then
-		var57 = false
-	else
-		var57 = true
-	end
-	assert(var57)
-	local tbl_upvr = {}
-	_rootInstToManifest_2[arg2] = tbl_upvr
-	var57 = debug.profilebegin
-	var57("BuildTree")
-	var57 = {}
-	var57.alias = "root"
-	var57.instance = arg2
-	if next(_parsedManifest) then
-		var57.children = {}
-		var57.connections = {}
-	end
-	arg1._rootInstToRootNode[arg2] = var57
-	for i_4, v_2 in pairs(_parsedManifest) do
-		local var62 = var57
-		for i_5, v_3 in ipairs(v_2) do
-			local var66
-			if i_5 ~= #v_2 then
-				var66 = false
-			else
-				var66 = true
-			end
-			if not var62.children[v_3] then
-				local tbl_2 = {}
-				local var68
-			end
-			if var66 then
-				var68 = tbl_2.alias
-				if var68 ~= nil then
-					var68 = error
-					var68("Multiple aliases assigned to one instance")
-				end
-				tbl_2.alias = i_4
-			else
-				var68 = tbl_2.children
-				if not var68 then
-					var68 = {}
-				end
-				tbl_2.children = var68
-				var68 = tbl_2.connections
-				if not var68 then
-					var68 = {}
-				end
-				tbl_2.connections = var68
-			end
-			var62.children[v_3] = tbl_2
-		end
-	end
-	debug.profileend()
-	local _manifestSizeTarget_upvr = arg1._manifestSizeTarget
-	local function processNode_upvr(arg1_2) -- Line 160, Named "processNode"
-		--[[ Upvalues[6]:
-			[1]: tbl_upvr (readonly)
-			[2]: processNode_upvr (readonly)
-			[3]: arg1 (readonly)
-			[4]: arg2 (readonly)
-			[5]: unbindNodeDescend_upvr (copied, readonly)
-			[6]: _manifestSizeTarget_upvr (readonly)
-		]]
-		-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
-		local alias = arg1_2.alias
-		-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
-		-- KONSTANTERROR: [12] 9. Error Block 2 start (CF ANALYSIS FAILED)
-		tbl_upvr[alias] = assert(arg1_2.instance)
-		-- KONSTANTERROR: [12] 9. Error Block 2 end (CF ANALYSIS FAILED)
-		-- KONSTANTERROR: [14] 11. Error Block 3 start (CF ANALYSIS FAILED)
-		-- KONSTANTERROR: [14] 11. Error Block 3 end (CF ANALYSIS FAILED)
-	end
-	debug.profilebegin("ResolveTree")
-	processNode_upvr(var57)
-	debug.profileend()
-	debug.profileend()
-end
-function module_upvr.unbindRoot(arg1, arg2) -- Line 236
-	--[[ Upvalues[1]:
-		[1]: unbindNodeDescend_upvr (readonly)
-	]]
-	local _rootInstToRootNode = arg1._rootInstToRootNode
-	local _rootInstToManifest = arg1._rootInstToManifest
-	arg1:_stopBoundFn(arg2)
-	local var73 = _rootInstToRootNode[arg2]
-	if var73 then
-		unbindNodeDescend_upvr(var73, assert(_rootInstToManifest[arg2]))
-		_rootInstToRootNode[arg2] = nil
-	end
-	_rootInstToManifest[arg2] = nil
-end
-function module_upvr.destroy(arg1) -- Line 252
-	--[[ Upvalues[1]:
-		[1]: unbindNodeDescend_upvr (readonly)
-	]]
-	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
-	debug.profilebegin("AtomicBinding:destroy")
-	for _, v_4 in pairs(arg1._dtorMap) do
-		v_4:destroy()
-	end
-	table.clear(arg1._dtorMap)
-	for _, v_5 in ipairs(arg1._connections) do
-		v_5:Disconnect()
-	end
-	table.clear(arg1._connections)
-	for i_8, v_6 in pairs(arg1._rootInstToRootNode) do
-		unbindNodeDescend_upvr(v_6, assert(arg1._rootInstToManifest[i_8]))
-		local _
-	end
-	table.clear(arg1._rootInstToManifest)
-	table.clear(arg1._rootInstToRootNode)
-	debug.profileend()
-end
-return module_upvr
+local function v3(v0) --[[ Line: 4 ]] --[[ Name: parsePath ]]
+    local v1 = string.split(v0, "/");
+    for v2 = #v1, 1, -1 do
+        if v1[v2] == "" then
+            table.remove(v1, v2);
+        end;
+    end;
+    return v1;
+end;
+local _ = function(v4, v5) --[[ Line: 14 ]] --[[ Name: isManifestResolved ]]
+    local v6 = 0;
+    for _ in pairs(v4) do
+        v6 = v6 + 1;
+    end;
+    assert(v6 <= v5, v6);
+    return v6 == v5;
+end;
+local function v9(v10, v11) --[[ Line: 24 ]] --[[ Name: unbindNodeDescend ]]
+    -- upvalues: v9 (copy)
+    if v10.instance == nil then
+        return;
+    else
+        v10.instance = nil;
+        local l_connections_0 = v10.connections;
+        if l_connections_0 then
+            for _, v14 in ipairs(l_connections_0) do
+                v14:Disconnect();
+            end;
+            table.clear(l_connections_0);
+        end;
+        if v11 and v10.alias then
+            v11[v10.alias] = nil;
+        end;
+        local l_children_0 = v10.children;
+        if l_children_0 then
+            for _, v17 in pairs(l_children_0) do
+                v9(v17, v11);
+            end;
+        end;
+        return;
+    end;
+end;
+local v18 = {};
+v18.__index = v18;
+v18.new = function(v19, v20) --[[ Line: 54 ]] --[[ Name: new ]]
+    -- upvalues: v3 (copy), v18 (copy)
+    local v21 = {};
+    local v22 = {};
+    local v23 = {};
+    local v24 = {};
+    local v25 = {};
+    local v26 = 1;
+    for v27, v28 in pairs(v19) do
+        v25[v27] = v3(v28);
+        v26 = v26 + 1;
+    end;
+    return (setmetatable({
+        _boundFn = v20, 
+        _parsedManifest = v25, 
+        _manifestSizeTarget = v26, 
+        _dtorMap = v21, 
+        _connections = v22, 
+        _rootInstToRootNode = v23, 
+        _rootInstToManifest = v24
+    }, v18));
+end;
+v18._startBoundFn = function(v29, v30, v31) --[[ Line: 80 ]] --[[ Name: _startBoundFn ]]
+    local l__boundFn_0 = v29._boundFn;
+    local l__dtorMap_0 = v29._dtorMap;
+    local v34 = l__dtorMap_0[v30];
+    if v34 then
+        v34();
+        l__dtorMap_0[v30] = nil;
+    end;
+    local v35 = l__boundFn_0(v31);
+    if v35 then
+        l__dtorMap_0[v30] = v35;
+    end;
+end;
+v18._stopBoundFn = function(v36, v37) --[[ Line: 96 ]] --[[ Name: _stopBoundFn ]]
+    local l__dtorMap_1 = v36._dtorMap;
+    local v39 = l__dtorMap_1[v37];
+    if v39 then
+        v39();
+        l__dtorMap_1[v37] = nil;
+    end;
+end;
+v18.bindRoot = function(v40, v41) --[[ Line: 106 ]] --[[ Name: bindRoot ]]
+    -- upvalues: v9 (copy)
+    debug.profilebegin("AtomicBinding:BindRoot");
+    local l__parsedManifest_0 = v40._parsedManifest;
+    local l__rootInstToRootNode_0 = v40._rootInstToRootNode;
+    local l__rootInstToManifest_0 = v40._rootInstToManifest;
+    local l__manifestSizeTarget_0 = v40._manifestSizeTarget;
+    assert(l__rootInstToManifest_0[v41] == nil);
+    local v46 = {};
+    l__rootInstToManifest_0[v41] = v46;
+    debug.profilebegin("BuildTree");
+    local v47 = {
+        alias = "root", 
+        instance = v41
+    };
+    if next(l__parsedManifest_0) then
+        v47.children = {};
+        v47.connections = {};
+    end;
+    l__rootInstToRootNode_0[v41] = v47;
+    for v48, v49 in pairs(l__parsedManifest_0) do
+        local l_v47_0 = v47;
+        for v51, v52 in ipairs(v49) do
+            local v53 = v51 == #v49;
+            local v54 = l_v47_0.children[v52] or {};
+            if v53 then
+                if v54.alias ~= nil then
+                    error("Multiple aliases assigned to one instance");
+                end;
+                v54.alias = v48;
+            else
+                v54.children = v54.children or {};
+                v54.connections = v54.connections or {};
+            end;
+            l_v47_0.children[v52] = v54;
+            l_v47_0 = v54;
+        end;
+    end;
+    debug.profileend();
+    local function v55(v56) --[[ Line: 160 ]] --[[ Name: processNode ]]
+        -- upvalues: v46 (copy), v55 (copy), v40 (copy), v41 (copy), v9 (ref), l__manifestSizeTarget_0 (copy)
+        local v57 = assert(v56.instance);
+        local l_children_1 = v56.children;
+        local l_alias_0 = v56.alias;
+        local v60 = not l_children_1;
+        if l_alias_0 then
+            v46[l_alias_0] = v57;
+        end;
+        if not v60 then
+            local function v63(v61) --[[ Line: 172 ]] --[[ Name: processAddChild ]]
+                -- upvalues: l_children_1 (copy), v55 (ref)
+                local v62 = l_children_1[v61.Name];
+                if not v62 or v62.instance ~= nil then
+                    return;
+                else
+                    v62.instance = v61;
+                    v55(v62);
+                    return;
+                end;
+            end;
+            local function v69(v64) --[[ Line: 183 ]] --[[ Name: processDeleteChild ]]
+                -- upvalues: l_children_1 (copy), v40 (ref), v41 (ref), v9 (ref), v46 (ref), v57 (copy), v55 (ref)
+                local l_Name_0 = v64.Name;
+                local v66 = l_children_1[l_Name_0];
+                if not v66 then
+                    return;
+                elseif v66.instance ~= v64 then
+                    return;
+                else
+                    v40:_stopBoundFn(v41);
+                    v9(v66, v46);
+                    assert(v66.instance == nil);
+                    local l_v57_FirstChild_0 = v57:FindFirstChild(l_Name_0);
+                    if l_v57_FirstChild_0 then
+                        local v68 = l_children_1[l_v57_FirstChild_0.Name];
+                        if v68 then
+                            if v68.instance ~= nil then
+                                return;
+                            else
+                                v68.instance = l_v57_FirstChild_0;
+                                v55(v68);
+                            end;
+                        end;
+                    end;
+                    return;
+                end;
+            end;
+            for _, v71 in ipairs(v57:GetChildren()) do
+                local v72 = l_children_1[v71.Name];
+                if v72 and v72.instance == nil then
+                    v72.instance = v71;
+                    v55(v72);
+                end;
+            end;
+            table.insert(v56.connections, v57.ChildAdded:Connect(v63));
+            table.insert(v56.connections, v57.ChildRemoved:Connect(v69));
+        end;
+        if v60 then
+            local l_v46_0 = v46;
+            local l_l__manifestSizeTarget_0_0 = l__manifestSizeTarget_0;
+            local v75 = 0;
+            for _ in pairs(l_v46_0) do
+                v75 = v75 + 1;
+            end;
+            assert(v75 <= l_l__manifestSizeTarget_0_0, v75);
+            if v75 == l_l__manifestSizeTarget_0_0 then
+                v40:_startBoundFn(v41, v46);
+            end;
+        end;
+    end;
+    debug.profilebegin("ResolveTree");
+    v55(v47);
+    debug.profileend();
+    debug.profileend();
+end;
+v18.unbindRoot = function(v77, v78) --[[ Line: 236 ]] --[[ Name: unbindRoot ]]
+    -- upvalues: v9 (copy)
+    local l__rootInstToRootNode_1 = v77._rootInstToRootNode;
+    local l__rootInstToManifest_1 = v77._rootInstToManifest;
+    v77:_stopBoundFn(v78);
+    local v81 = l__rootInstToRootNode_1[v78];
+    if v81 then
+        local v82 = assert(l__rootInstToManifest_1[v78]);
+        v9(v81, v82);
+        l__rootInstToRootNode_1[v78] = nil;
+    end;
+    l__rootInstToManifest_1[v78] = nil;
+end;
+v18.destroy = function(v83) --[[ Line: 252 ]] --[[ Name: destroy ]]
+    -- upvalues: v9 (copy)
+    debug.profilebegin("AtomicBinding:destroy");
+    for _, v85 in pairs(v83._dtorMap) do
+        v85:destroy();
+    end;
+    table.clear(v83._dtorMap);
+    for _, v87 in ipairs(v83._connections) do
+        v87:Disconnect();
+    end;
+    table.clear(v83._connections);
+    local l__rootInstToManifest_2 = v83._rootInstToManifest;
+    for v89, v90 in pairs(v83._rootInstToRootNode) do
+        local v91 = assert(l__rootInstToManifest_2[v89]);
+        v9(v90, v91);
+    end;
+    table.clear(v83._rootInstToManifest);
+    table.clear(v83._rootInstToRootNode);
+    debug.profileend();
+end;
+return v18;

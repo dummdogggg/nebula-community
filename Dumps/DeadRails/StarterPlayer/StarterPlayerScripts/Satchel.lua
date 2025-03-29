@@ -1,9 +1,8 @@
 --[[
-    STUB SCRIPT (Original could not be decompiled)
     Script: StarterPlayer.StarterPlayerScripts.Satchel
     Type: LocalScript
-    Error: API Error - Falha na decompilação
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Script content not available
--- This script could not be decompiled due to API error
+local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
+require(l_ReplicatedStorage_0.Packages.Satchel);

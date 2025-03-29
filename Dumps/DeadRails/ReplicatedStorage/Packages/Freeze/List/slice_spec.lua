@@ -1,47 +1,43 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.List.slice.spec
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:34:46
--- Luau version 6, Types version 3
--- Time taken: 0.001330 seconds
-
-local slice_upvr = require(script.Parent.slice)
-return function() -- Line 4
-	--[[ Upvalues[1]:
-		[1]: slice_upvr (readonly)
-	]]
-	local tbl_upvr = {'a', 'b', 'c'}
-	it("no arguments", function() -- Line 6
-		--[[ Upvalues[2]:
-			[1]: slice_upvr (copied, readonly)
-			[2]: tbl_upvr (readonly)
-		]]
-		expect(slice_upvr(tbl_upvr)).toBe(tbl_upvr)
-	end)
-	it("positive from", function() -- Line 11
-		--[[ Upvalues[2]:
-			[1]: slice_upvr (copied, readonly)
-			[2]: tbl_upvr (readonly)
-		]]
-		expect(slice_upvr(tbl_upvr, 2)).toEqual({'b', 'c'})
-	end)
-	it("negative from", function() -- Line 16
-		--[[ Upvalues[2]:
-			[1]: slice_upvr (copied, readonly)
-			[2]: tbl_upvr (readonly)
-		]]
-		expect(slice_upvr(tbl_upvr, -1)).toEqual({'c'})
-	end)
-	it("negative to", function() -- Line 21
-		--[[ Upvalues[2]:
-			[1]: slice_upvr (copied, readonly)
-			[2]: tbl_upvr (readonly)
-		]]
-		expect(slice_upvr(tbl_upvr, 1, -1)).toEqual({'a', 'b'})
-	end)
-end
+local v0 = require(script.Parent.slice);
+return function() --[[ Line: 4 ]]
+    -- upvalues: v0 (copy)
+    local v1 = {
+        "a", 
+        "b", 
+        "c"
+    };
+    it("no arguments", function() --[[ Line: 6 ]]
+        -- upvalues: v0 (ref), v1 (copy)
+        local v2 = v0(v1);
+        expect(v2).toBe(v1);
+    end);
+    it("positive from", function() --[[ Line: 11 ]]
+        -- upvalues: v0 (ref), v1 (copy)
+        local v3 = v0(v1, 2);
+        expect(v3).toEqual({
+            "b", 
+            "c"
+        });
+    end);
+    it("negative from", function() --[[ Line: 16 ]]
+        -- upvalues: v0 (ref), v1 (copy)
+        local v4 = v0(v1, -1);
+        expect(v4).toEqual({
+            "c"
+        });
+    end);
+    it("negative to", function() --[[ Line: 21 ]]
+        -- upvalues: v0 (ref), v1 (copy)
+        local v5 = v0(v1, 1, -1);
+        expect(v5).toEqual({
+            "a", 
+            "b"
+        });
+    end);
+end;

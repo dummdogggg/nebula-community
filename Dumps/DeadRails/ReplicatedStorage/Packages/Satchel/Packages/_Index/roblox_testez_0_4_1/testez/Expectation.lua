@@ -1,364 +1,256 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.roblox_testez@0.4.1.testez.Expectation
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:36:11
--- Luau version 6, Types version 3
--- Time taken: 0.009263 seconds
-
-local module_upvr = {}
-local tbl_upvr_2 = {
-	to = true;
-	be = true;
-	been = true;
-	have = true;
-	was = true;
-	at = true;
-}
-local tbl_upvr = {
-	never = true;
-}
-local function _(arg1, arg2, arg3) -- Line 42, Named "assertLevel"
-	if not arg1 then
-		error(arg2 or "Assertion failed!", (arg3 or 1) + 1)
-	end
-end
-local function _(arg1, arg2) -- Line 54, Named "bindSelf"
-	return function(arg1_2, ...) -- Line 55
-		--[[ Upvalues[2]:
-			[1]: arg1 (readonly)
-			[2]: arg2 (readonly)
-		]]
-		if arg1_2 == arg1 then
-			return arg2(arg1, ...)
-		end
-		return arg2(arg1, arg1_2, ...)
-	end
-end
-local function _(arg1, arg2, arg3) -- Line 64, Named "formatMessage"
-	if arg1 then
-		return arg2
-	end
-	return arg3
-end
-function module_upvr.new(arg1) -- Line 75
-	--[[ Upvalues[1]:
-		[1]: module_upvr (readonly)
-	]]
-	local module_upvr_2 = {}
-	module_upvr_2.value = arg1
-	module_upvr_2.successCondition = true
-	module_upvr_2.condition = false
-	module_upvr_2.matchers = {}
-	module_upvr_2._boundMatchers = {}
-	setmetatable(module_upvr_2, module_upvr)
-	local a_2_upvr = module_upvr_2.a
-	function module_upvr_2.a(arg1_3, ...) -- Line 55
-		--[[ Upvalues[2]:
-			[1]: module_upvr_2 (readonly)
-			[2]: a_2_upvr (readonly)
-		]]
-		if arg1_3 == module_upvr_2 then
-			return a_2_upvr(module_upvr_2, ...)
-		end
-		return a_2_upvr(module_upvr_2, arg1_3, ...)
-	end
-	module_upvr_2.an = module_upvr_2.a
-	a_2_upvr = module_upvr_2.ok
-	function module_upvr_2.ok(arg1_4, ...) -- Line 55
-		--[[ Upvalues[2]:
-			[1]: module_upvr_2 (readonly)
-			[2]: a_2_upvr (readonly)
-		]]
-		if arg1_4 == module_upvr_2 then
-			return a_2_upvr(module_upvr_2, ...)
-		end
-		return a_2_upvr(module_upvr_2, arg1_4, ...)
-	end
-	a_2_upvr = module_upvr_2.equal
-	function module_upvr_2.equal(arg1_5, ...) -- Line 55
-		--[[ Upvalues[2]:
-			[1]: module_upvr_2 (readonly)
-			[2]: a_2_upvr (readonly)
-		]]
-		if arg1_5 == module_upvr_2 then
-			return a_2_upvr(module_upvr_2, ...)
-		end
-		return a_2_upvr(module_upvr_2, arg1_5, ...)
-	end
-	a_2_upvr = module_upvr_2.throw
-	function module_upvr_2.throw(arg1_6, ...) -- Line 55
-		--[[ Upvalues[2]:
-			[1]: module_upvr_2 (readonly)
-			[2]: a_2_upvr (readonly)
-		]]
-		if arg1_6 == module_upvr_2 then
-			return a_2_upvr(module_upvr_2, ...)
-		end
-		return a_2_upvr(module_upvr_2, arg1_6, ...)
-	end
-	a_2_upvr = module_upvr_2.near
-	function module_upvr_2.near(arg1_7, ...) -- Line 55
-		--[[ Upvalues[2]:
-			[1]: module_upvr_2 (readonly)
-			[2]: a_2_upvr (readonly)
-		]]
-		if arg1_7 == module_upvr_2 then
-			return a_2_upvr(module_upvr_2, ...)
-		end
-		return a_2_upvr(module_upvr_2, arg1_7, ...)
-	end
-	return module_upvr_2
-end
-function module_upvr.checkMatcherNameCollisions(arg1) -- Line 96
-	--[[ Upvalues[3]:
-		[1]: tbl_upvr_2 (readonly)
-		[2]: tbl_upvr (readonly)
-		[3]: module_upvr (readonly)
-	]]
-	if tbl_upvr_2[arg1] or tbl_upvr[arg1] or module_upvr[arg1] then
-		return false
-	end
-	return true
-end
-function module_upvr.extend(arg1, arg2) -- Line 104
-	local var16 = arg2
-	if not var16 then
-		var16 = {}
-	end
-	arg1.matchers = var16
-	local pairs_result1, pairs_result2, pairs_result3 = pairs(arg1.matchers)
-	for i, v_upvr in pairs_result1, pairs_result2, pairs_result3 do
-		local function var20_upvr(arg1_8, ...) -- Line 108
-			--[[ Upvalues[2]:
-				[1]: v_upvr (readonly)
-				[2]: arg1 (readonly)
-			]]
-			local value = arg1.value
-			local v_result1 = v_upvr(value, ...)
-			if v_result1.pass ~= arg1.successCondition then
-				value = false
-			else
-				value = true
-			end
-			if not value then
-				error(v_result1.message or "Assertion failed!", (3 or 1) + 1)
-			end
-			arg1:_resetModifiers()
-			return arg1
-		end
-		arg1._boundMatchers[i] = function(arg1_9, ...) -- Line 55
-			--[[ Upvalues[2]:
-				[1]: arg1 (readonly)
-				[2]: var20_upvr (readonly)
-			]]
-			if arg1_9 == arg1 then
-				return var20_upvr(arg1, ...)
-			end
-			return var20_upvr(arg1, arg1_9, ...)
-		end
-	end
-	return arg1
-end
-function module_upvr.__index(arg1, arg2) -- Line 121
-	--[[ Upvalues[3]:
-		[1]: tbl_upvr_2 (readonly)
-		[2]: tbl_upvr (readonly)
-		[3]: module_upvr (readonly)
-	]]
-	if tbl_upvr_2[arg2] then
-		return arg1
-	end
-	if tbl_upvr[arg2] then
-		local any_extend_result1 = module_upvr.new(arg1.value):extend(arg1.matchers)
-		any_extend_result1.successCondition = not arg1.successCondition
-		return any_extend_result1
-	end
-	if arg1._boundMatchers[arg2] then
-		return arg1._boundMatchers[arg2]
-	end
-	return module_upvr[arg2]
-end
-function module_upvr._resetModifiers(arg1) -- Line 154
-	arg1.successCondition = true
-end
-function module_upvr.a(arg1, arg2) -- Line 163
-	-- KONSTANTERROR: [0] 1. Error Block 26 start (CF ANALYSIS FAILED)
-	local var25
-	if type(arg1.value) ~= arg2 then
-		var25 = false
-	else
-		var25 = true
-	end
-	if var25 ~= arg1.successCondition then
-		-- KONSTANTWARNING: GOTO [16] #12
-	end
-	-- KONSTANTERROR: [0] 1. Error Block 26 end (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [15] 11. Error Block 28 start (CF ANALYSIS FAILED)
-	if arg1.successCondition then
-		var25 = "Expected value of type %q, got value %q of type %s":format(arg2, tostring(arg1.value), type(arg1.value))
-	else
-		var25 = "Expected value not of type %q, got value %q of type %s":format(arg2, tostring(arg1.value), type(arg1.value))
-	end
-	if not true then
-		error(var25 or "Assertion failed!", (3 or 1) + 1)
-	end
-	arg1:_resetModifiers()
-	do
-		return arg1
-	end
-	-- KONSTANTERROR: [15] 11. Error Block 28 end (CF ANALYSIS FAILED)
-end
-module_upvr.an = module_upvr.a
-function module_upvr.ok(arg1) -- Line 191
-	-- KONSTANTERROR: [0] 1. Error Block 26 start (CF ANALYSIS FAILED)
-	local var26
-	if arg1.value == nil then
-		var26 = false
-	else
-		var26 = true
-	end
-	if var26 ~= arg1.successCondition then
-		-- KONSTANTWARNING: GOTO [12] #9
-	end
-	-- KONSTANTERROR: [0] 1. Error Block 26 end (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [11] 8. Error Block 28 start (CF ANALYSIS FAILED)
-	if arg1.successCondition then
-		var26 = "Expected value %q to be non-nil":format(tostring(arg1.value))
-	else
-		var26 = "Expected value %q to be nil":format(tostring(arg1.value))
-	end
-	if not true then
-		error(var26 or "Assertion failed!", (3 or 1) + 1)
-	end
-	arg1:_resetModifiers()
-	do
-		return arg1
-	end
-	-- KONSTANTERROR: [11] 8. Error Block 28 end (CF ANALYSIS FAILED)
-end
-function module_upvr.equal(arg1, arg2) -- Line 212
-	-- KONSTANTERROR: [0] 1. Error Block 26 start (CF ANALYSIS FAILED)
-	local var27
-	if arg1.value ~= arg2 then
-		var27 = false
-	else
-		var27 = true
-	end
-	if var27 ~= arg1.successCondition then
-		-- KONSTANTWARNING: GOTO [12] #9
-	end
-	-- KONSTANTERROR: [0] 1. Error Block 26 end (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [11] 8. Error Block 28 start (CF ANALYSIS FAILED)
-	if arg1.successCondition then
-		var27 = "Expected value %q (%s), got %q (%s) instead":format(tostring(arg2), type(arg2), tostring(arg1.value), type(arg1.value))
-	else
-		var27 = "Expected anything but value %q (%s)":format(tostring(arg2), type(arg2))
-	end
-	if not true then
-		error(var27 or "Assertion failed!", (3 or 1) + 1)
-	end
-	arg1:_resetModifiers()
-	do
-		return arg1
-	end
-	-- KONSTANTERROR: [11] 8. Error Block 28 end (CF ANALYSIS FAILED)
-end
-function module_upvr.near(arg1, arg2, arg3) -- Line 238
-	-- KONSTANTERROR: [0] 1. Error Block 50 start (CF ANALYSIS FAILED)
-	local var28
-	if type(arg1.value) ~= "number" then
-		var28 = false
-	else
-		var28 = true
-	end
-	assert(var28, "Expectation value must be a number to use 'near'")
-	if type(arg2) ~= "number" then
-		var28 = false
-	else
-		var28 = true
-	end
-	assert(var28, "otherValue must be a number")
-	var28 = true
-	if type(arg3) ~= "number" then
-		if arg3 ~= nil then
-			var28 = false
-		else
-			var28 = true
-		end
-	end
-	assert(var28, "limit must be a number or nil")
-	if math.abs(arg1.value - arg2) > (arg3 or 1e-07) then
-		var28 = false
-		-- KONSTANTWARNING: GOTO [61] #45
-	end
-	-- KONSTANTERROR: [0] 1. Error Block 50 end (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [60] 44. Error Block 48 start (CF ANALYSIS FAILED)
-	var28 = true
-	if var28 ~= arg1.successCondition then
-		-- KONSTANTWARNING: GOTO [67] #49
-	end
-	-- KONSTANTERROR: [60] 44. Error Block 48 end (CF ANALYSIS FAILED)
-end
-function module_upvr.throw(arg1, arg2) -- Line 271
-	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
-	-- KONSTANTERROR: [69] 56. Error Block 25 start (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [69] 56. Error Block 25 end (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [0] 1. Error Block 56 start (CF ANALYSIS FAILED)
-	-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [69.2]
-	-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [69.4110419533]
-	-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [69.5]
-	if nil == nil then
-	else
-	end
-	if arg2 then
-		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-		if not nil then
-			if nil then
-				-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-				if nil == nil then
-				else
-				end
-			else
-				-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-				if nil ~= nil then
-				else
-				end
-			end
-		end
-	end
-	if arg2 then
-		-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [69.3]
-		local function INLINED_2() -- Internal function, doesn't exist in bytecode
-			-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [69.10]
-			return nil
-		end
-		if not nil or not INLINED_2() then
-		end
-		-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [69.6]
-		if nil then
-		else
-		end
-	else
-		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-		if arg1.successCondition then
-		else
-		end
-	end
-	-- KONSTANTERROR: [0] 1. Error Block 56 end (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [86] 70. Error Block 39 start (CF ANALYSIS FAILED)
-	-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [86.4]
-	if not nil then
-		error("Expected function to succeed, but it threw an error: %s":format(tostring(nil)) or "Assertion failed!", (3 or 1) + 1)
-	end
-	arg1:_resetModifiers()
-	do
-		return arg1
-	end
-	-- KONSTANTERROR: [86] 70. Error Block 39 end (CF ANALYSIS FAILED)
-end
-return module_upvr
+local v0 = {};
+local v1 = {
+    to = true, 
+    be = true, 
+    been = true, 
+    have = true, 
+    was = true, 
+    at = true
+};
+local v2 = {
+    never = true
+};
+local function _(v3, v4, v5) --[[ Line: 42 ]] --[[ Name: assertLevel ]]
+    v4 = v4 or "Assertion failed!";
+    v5 = v5 or 1;
+    if not v3 then
+        error(v4, v5 + 1);
+    end;
+end;
+local function _(v7, v8) --[[ Line: 54 ]] --[[ Name: bindSelf ]]
+    return function(v9, ...) --[[ Line: 55 ]]
+        -- upvalues: v7 (copy), v8 (copy)
+        if v9 == v7 then
+            return v8(v7, ...);
+        else
+            return v8(v7, v9, ...);
+        end;
+    end;
+end;
+local function _(v11, v12, v13) --[[ Line: 64 ]] --[[ Name: formatMessage ]]
+    if v11 then
+        return v12;
+    else
+        return v13;
+    end;
+end;
+v0.new = function(v15) --[[ Line: 75 ]] --[[ Name: new ]]
+    -- upvalues: v0 (copy)
+    local v16 = {
+        value = v15, 
+        successCondition = true, 
+        condition = false, 
+        matchers = {}, 
+        _boundMatchers = {}
+    };
+    setmetatable(v16, v0);
+    local l_a_0 = v16.a;
+    local l_l_a_0_0 = l_a_0 --[[ copy: 3 -> 4 ]];
+    v16.a = function(v19, ...) --[[ Line: 55 ]]
+        -- upvalues: v16 (copy), l_l_a_0_0 (copy)
+        if v19 == v16 then
+            return l_l_a_0_0(v16, ...);
+        else
+            return l_l_a_0_0(v16, v19, ...);
+        end;
+    end;
+    v16.an = v16.a;
+    l_a_0 = v16.ok;
+    local l_l_a_0_1 = l_a_0 --[[ copy: 3 -> 5 ]];
+    v16.ok = function(v21, ...) --[[ Line: 55 ]]
+        -- upvalues: v16 (copy), l_l_a_0_1 (copy)
+        if v21 == v16 then
+            return l_l_a_0_1(v16, ...);
+        else
+            return l_l_a_0_1(v16, v21, ...);
+        end;
+    end;
+    l_a_0 = v16.equal;
+    local l_l_a_0_2 = l_a_0 --[[ copy: 3 -> 6 ]];
+    v16.equal = function(v23, ...) --[[ Line: 55 ]]
+        -- upvalues: v16 (copy), l_l_a_0_2 (copy)
+        if v23 == v16 then
+            return l_l_a_0_2(v16, ...);
+        else
+            return l_l_a_0_2(v16, v23, ...);
+        end;
+    end;
+    l_a_0 = v16.throw;
+    local l_l_a_0_3 = l_a_0 --[[ copy: 3 -> 7 ]];
+    v16.throw = function(v25, ...) --[[ Line: 55 ]]
+        -- upvalues: v16 (copy), l_l_a_0_3 (copy)
+        if v25 == v16 then
+            return l_l_a_0_3(v16, ...);
+        else
+            return l_l_a_0_3(v16, v25, ...);
+        end;
+    end;
+    l_a_0 = v16.near;
+    v16.near = function(v26, ...) --[[ Line: 55 ]]
+        -- upvalues: v16 (copy), l_a_0 (copy)
+        if v26 == v16 then
+            return l_a_0(v16, ...);
+        else
+            return l_a_0(v16, v26, ...);
+        end;
+    end;
+    return v16;
+end;
+v0.checkMatcherNameCollisions = function(v27) --[[ Line: 96 ]] --[[ Name: checkMatcherNameCollisions ]]
+    -- upvalues: v1 (copy), v2 (copy), v0 (copy)
+    if v1[v27] or v2[v27] or v0[v27] then
+        return false;
+    else
+        return true;
+    end;
+end;
+v0.extend = function(v28, v29) --[[ Line: 104 ]] --[[ Name: extend ]]
+    v28.matchers = v29 or {};
+    for v30, v31 in pairs(v28.matchers) do
+        local l__boundMatchers_0 = v28._boundMatchers;
+        local function v38(_, ...) --[[ Line: 108 ]]
+            -- upvalues: v31 (copy), v28 (copy)
+            local v34 = v31(v28.value, ...);
+            local v35 = v34.pass == v28.successCondition;
+            local l_message_0 = v34.message;
+            local v37 = 3;
+            l_message_0 = l_message_0 or "Assertion failed!";
+            v37 = v37 or 1;
+            if not v35 then
+                error(l_message_0, v37 + 1);
+            end;
+            v28:_resetModifiers();
+            return v28;
+        end;
+        l__boundMatchers_0[v30] = function(v39, ...) --[[ Line: 55 ]]
+            -- upvalues: v28 (copy), v38 (copy)
+            if v39 == v28 then
+                return v38(v28, ...);
+            else
+                return v38(v28, v39, ...);
+            end;
+        end;
+    end;
+    return v28;
+end;
+v0.__index = function(v40, v41) --[[ Line: 121 ]] --[[ Name: __index ]]
+    -- upvalues: v1 (copy), v2 (copy), v0 (copy)
+    if v1[v41] then
+        return v40;
+    elseif v2[v41] then
+        local v42 = v0.new(v40.value):extend(v40.matchers);
+        v42.successCondition = not v40.successCondition;
+        return v42;
+    elseif v40._boundMatchers[v41] then
+        return v40._boundMatchers[v41];
+    else
+        return v0[v41];
+    end;
+end;
+v0._resetModifiers = function(v43) --[[ Line: 154 ]] --[[ Name: _resetModifiers ]]
+    v43.successCondition = true;
+end;
+v0.a = function(v44, v45) --[[ Line: 163 ]] --[[ Name: a ]]
+    local v46 = type(v44.value) == v45 == v44.successCondition;
+    local l_successCondition_0 = v44.successCondition;
+    local v48 = ("Expected value of type %q, got value %q of type %s"):format(v45, tostring(v44.value), (type(v44.value)));
+    local v49 = ("Expected value not of type %q, got value %q of type %s"):format(v45, tostring(v44.value), (type(v44.value)));
+    l_successCondition_0 = if l_successCondition_0 then v48 else v49;
+    v48 = 3;
+    l_successCondition_0 = l_successCondition_0 or "Assertion failed!";
+    v48 = v48 or 1;
+    if not v46 then
+        error(l_successCondition_0, v48 + 1);
+    end;
+    v44:_resetModifiers();
+    return v44;
+end;
+v0.an = v0.a;
+v0.ok = function(v50) --[[ Line: 191 ]] --[[ Name: ok ]]
+    local v51 = v50.value ~= nil == v50.successCondition;
+    local l_successCondition_1 = v50.successCondition;
+    local v53 = ("Expected value %q to be non-nil"):format((tostring(v50.value)));
+    local v54 = ("Expected value %q to be nil"):format((tostring(v50.value)));
+    l_successCondition_1 = if l_successCondition_1 then v53 else v54;
+    v53 = 3;
+    l_successCondition_1 = l_successCondition_1 or "Assertion failed!";
+    v53 = v53 or 1;
+    if not v51 then
+        error(l_successCondition_1, v53 + 1);
+    end;
+    v50:_resetModifiers();
+    return v50;
+end;
+v0.equal = function(v55, v56) --[[ Line: 212 ]] --[[ Name: equal ]]
+    local v57 = v55.value == v56 == v55.successCondition;
+    local l_successCondition_2 = v55.successCondition;
+    local v59 = ("Expected value %q (%s), got %q (%s) instead"):format(tostring(v56), type(v56), tostring(v55.value), (type(v55.value)));
+    local v60 = ("Expected anything but value %q (%s)"):format(tostring(v56), (type(v56)));
+    l_successCondition_2 = if l_successCondition_2 then v59 else v60;
+    v59 = 3;
+    l_successCondition_2 = l_successCondition_2 or "Assertion failed!";
+    v59 = v59 or 1;
+    if not v57 then
+        error(l_successCondition_2, v59 + 1);
+    end;
+    v55:_resetModifiers();
+    return v55;
+end;
+v0.near = function(v61, v62, v63) --[[ Line: 238 ]] --[[ Name: near ]]
+    assert(type(v61.value) == "number", "Expectation value must be a number to use 'near'");
+    assert(type(v62) == "number", "otherValue must be a number");
+    local v64 = true;
+    if type(v63) ~= "number" then
+        v64 = v63 == nil;
+    end;
+    assert(v64, "limit must be a number or nil");
+    v63 = v63 or 1.0E-7;
+    local v65 = math.abs(v61.value - v62) <= v63 == v61.successCondition;
+    local l_successCondition_3 = v61.successCondition;
+    local v67 = ("Expected value to be near %f (within %f) but got %f instead"):format(v62, v63, v61.value);
+    local v68 = ("Expected value to not be near %f (within %f) but got %f instead"):format(v62, v63, v61.value);
+    l_successCondition_3 = if l_successCondition_3 then v67 else v68;
+    v67 = 3;
+    l_successCondition_3 = l_successCondition_3 or "Assertion failed!";
+    v67 = v67 or 1;
+    if not v65 then
+        error(l_successCondition_3, v67 + 1);
+    end;
+    v61:_resetModifiers();
+    return v61;
+end;
+v0.throw = function(v69, v70) --[[ Line: 271 ]] --[[ Name: throw ]]
+    local l_status_0, l_result_0 = pcall(v69.value);
+    local v73 = l_status_0 ~= v69.successCondition;
+    if v70 and not l_status_0 then
+        v73 = if v69.successCondition then l_result_0:find(v70, 1, true) ~= nil else l_result_0:find(v70, 1, true) == nil;
+    end;
+    local v74 = nil;
+    if v70 then
+        local l_successCondition_4 = v69.successCondition;
+        local v76 = ("Expected function to throw an error containing %q, but it %s"):format(v70, l_result_0 and ("threw: %s"):format(l_result_0) or "did not throw.");
+        local v77 = ("Expected function to never throw an error containing %q, but it threw: %s"):format(v70, (tostring(l_result_0)));
+        v74 = if l_successCondition_4 then v76 else v77;
+    else
+        local l_successCondition_5 = v69.successCondition;
+        local v79 = ("Expected function to succeed, but it threw an error: %s"):format((tostring(l_result_0)));
+        v74 = l_successCondition_5 and "Expected function to throw an error, but it did not throw." or v79;
+    end;
+    local l_v73_0 = v73;
+    local l_v74_0 = v74;
+    local v82 = 3;
+    l_v74_0 = l_v74_0 or "Assertion failed!";
+    v82 = v82 or 1;
+    if not l_v73_0 then
+        error(l_v74_0, v82 + 1);
+    end;
+    v69:_resetModifiers();
+    return v69;
+end;
+return v0;

@@ -1,308 +1,328 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.1foreverhd_topbarplus@3.0.2.topbarplus.Elements.Caption
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:35:04
--- Luau version 6, Types version 3
--- Time taken: 0.006187 seconds
-
-return function(arg1) -- Line 1
-	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
-	local any_getInstance_result1_upvr = arg1:getInstance("ClickRegion")
-	local CanvasGroup_upvr = Instance.new("CanvasGroup")
-	CanvasGroup_upvr.Name = "Caption"
-	CanvasGroup_upvr.AnchorPoint = Vector2.new(0.5, 0)
-	CanvasGroup_upvr.BackgroundTransparency = 1
-	CanvasGroup_upvr.BorderSizePixel = 0
-	CanvasGroup_upvr.GroupTransparency = 1
-	CanvasGroup_upvr.Position = UDim2.fromOffset(0, 0)
-	CanvasGroup_upvr.Visible = true
-	CanvasGroup_upvr.ZIndex = 30
-	CanvasGroup_upvr.Parent = any_getInstance_result1_upvr
-	local Frame_upvr = Instance.new("Frame")
-	Frame_upvr.Name = "Box"
-	Frame_upvr.AutomaticSize = Enum.AutomaticSize.XY
-	Frame_upvr.BackgroundColor3 = Color3.fromRGB(101, 102, 104)
-	Frame_upvr.Position = UDim2.fromOffset(4, 7)
-	Frame_upvr.ZIndex = 12
-	Frame_upvr.Parent = CanvasGroup_upvr
-	local TextLabel = Instance.new("TextLabel")
-	TextLabel.Name = "Header"
-	TextLabel.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-	TextLabel.Text = "Caption"
-	TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-	TextLabel.TextSize = 14
-	TextLabel.TextTruncate = Enum.TextTruncate.None
-	TextLabel.TextWrapped = false
-	TextLabel.TextXAlignment = Enum.TextXAlignment.Left
-	TextLabel.AutomaticSize = Enum.AutomaticSize.X
-	TextLabel.BackgroundTransparency = 1
-	TextLabel.LayoutOrder = 1
-	TextLabel.Size = UDim2.fromOffset(0, 16)
-	TextLabel.ZIndex = 18
-	TextLabel.Parent = Frame_upvr
-	local UIListLayout = Instance.new("UIListLayout")
-	UIListLayout.Name = "Layout"
-	UIListLayout.Padding = UDim.new(0, 8)
-	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-	UIListLayout.Parent = Frame_upvr
-	local UICorner = Instance.new("UICorner")
-	UICorner.Name = "CaptionCorner"
-	UICorner.Parent = Frame_upvr
-	local UIPadding_2 = Instance.new("UIPadding")
-	UIPadding_2.Name = "Padding"
-	UIPadding_2.PaddingBottom = UDim.new(0, 12)
-	UIPadding_2.PaddingLeft = UDim.new(0, 12)
-	UIPadding_2.PaddingRight = UDim.new(0, 12)
-	UIPadding_2.PaddingTop = UDim.new(0, 12)
-	UIPadding_2.Parent = Frame_upvr
-	local Frame_upvr_2 = Instance.new("Frame")
-	Frame_upvr_2.Name = "Hotkeys"
-	Frame_upvr_2.AutomaticSize = Enum.AutomaticSize.Y
-	Frame_upvr_2.BackgroundTransparency = 1
-	Frame_upvr_2.LayoutOrder = 3
-	Frame_upvr_2.Size = UDim2.fromScale(1, 0)
-	Frame_upvr_2.Visible = false
-	Frame_upvr_2.Parent = Frame_upvr
-	local UIListLayout_2 = Instance.new("UIListLayout")
-	UIListLayout_2.Name = "Layout1"
-	UIListLayout_2.Padding = UDim.new(0, 6)
-	UIListLayout_2.FillDirection = Enum.FillDirection.Vertical
-	UIListLayout_2.HorizontalAlignment = Enum.HorizontalAlignment.Center
-	UIListLayout_2.HorizontalFlex = Enum.UIFlexAlignment.None
-	UIListLayout_2.ItemLineAlignment = Enum.ItemLineAlignment.Automatic
-	UIListLayout_2.VerticalFlex = Enum.UIFlexAlignment.None
-	UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
-	UIListLayout_2.Parent = Frame_upvr_2
-	local ImageLabel = Instance.new("ImageLabel")
-	ImageLabel.Name = "Key1"
-	ImageLabel.Image = "rbxasset://textures/ui/Controls/key_single.png"
-	ImageLabel.ImageTransparency = 0.7
-	ImageLabel.ScaleType = Enum.ScaleType.Slice
-	ImageLabel.SliceCenter = Rect.new(5, 5, 23, 24)
-	ImageLabel.AutomaticSize = Enum.AutomaticSize.X
-	ImageLabel.BackgroundTransparency = 1
-	ImageLabel.LayoutOrder = 1
-	ImageLabel.Size = UDim2.fromOffset(0, 30)
-	ImageLabel.ZIndex = 15
-	ImageLabel.Parent = Frame_upvr_2
-	local UIPadding = Instance.new("UIPadding")
-	UIPadding.Name = "Inset"
-	UIPadding.PaddingLeft = UDim.new(0, 8)
-	UIPadding.PaddingRight = UDim.new(0, 8)
-	UIPadding.Parent = ImageLabel
-	local TextLabel_upvr = Instance.new("TextLabel")
-	TextLabel_upvr.AutoLocalize = false
-	TextLabel_upvr.Name = "LabelContent"
-	TextLabel_upvr.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-	TextLabel_upvr.Text = ""
-	TextLabel_upvr.TextColor3 = Color3.fromRGB(189, 190, 190)
-	TextLabel_upvr.TextSize = 14
-	TextLabel_upvr.AutomaticSize = Enum.AutomaticSize.X
-	TextLabel_upvr.BackgroundTransparency = 1
-	TextLabel_upvr.Position = UDim2.fromOffset(0, -1)
-	TextLabel_upvr.Size = UDim2.fromScale(1, 1)
-	TextLabel_upvr.ZIndex = 16
-	TextLabel_upvr.Parent = ImageLabel
-	local ImageLabel_2_upvr = Instance.new("ImageLabel")
-	ImageLabel_2_upvr.Name = "Caret"
-	ImageLabel_2_upvr.Image = "rbxasset://LuaPackages/Packages/_Index/UIBlox/UIBlox/AppImageAtlas/img_set_1x_1.png"
-	ImageLabel_2_upvr.ImageColor3 = Color3.fromRGB(101, 102, 104)
-	ImageLabel_2_upvr.ImageRectOffset = Vector2.new(260, 440)
-	ImageLabel_2_upvr.ImageRectSize = Vector2.new(16, 8)
-	ImageLabel_2_upvr.AnchorPoint = Vector2.new(0, 0.5)
-	ImageLabel_2_upvr.BackgroundTransparency = 1
-	ImageLabel_2_upvr.Position = UDim2.new(0, 0, 0, 4)
-	ImageLabel_2_upvr.Rotation = 180
-	ImageLabel_2_upvr.Size = UDim2.fromOffset(16, 8)
-	ImageLabel_2_upvr.ZIndex = 12
-	ImageLabel_2_upvr.Parent = CanvasGroup_upvr
-	local ImageLabel_3_upvr = Instance.new("ImageLabel")
-	ImageLabel_3_upvr.Name = "DropShadow"
-	ImageLabel_3_upvr.Image = "rbxasset://LuaPackages/Packages/_Index/UIBlox/UIBlox/AppImageAtlas/img_set_1x_1.png"
-	ImageLabel_3_upvr.ImageColor3 = Color3.fromRGB(0, 0, 0)
-	ImageLabel_3_upvr.ImageRectOffset = Vector2.new(217, 486)
-	ImageLabel_3_upvr.ImageRectSize = Vector2.new(25, 25)
-	ImageLabel_3_upvr.ImageTransparency = 0.45
-	ImageLabel_3_upvr.ScaleType = Enum.ScaleType.Slice
-	ImageLabel_3_upvr.SliceCenter = Rect.new(12, 12, 13, 13)
-	ImageLabel_3_upvr.BackgroundTransparency = 1
-	ImageLabel_3_upvr.Position = UDim2.fromOffset(0, 5)
-	ImageLabel_3_upvr.Size = UDim2.new(1, 0, 0, 48)
-	ImageLabel_3_upvr.Parent = CanvasGroup_upvr
-	Frame_upvr:GetPropertyChangedSignal("AbsoluteSize"):Connect(function() -- Line 147
-		--[[ Upvalues[2]:
-			[1]: ImageLabel_3_upvr (readonly)
-			[2]: Frame_upvr (readonly)
-		]]
-		ImageLabel_3_upvr.Size = UDim2.new(1, 0, 0, Frame_upvr.AbsoluteSize.Y + 8)
-	end)
-	local captionJanitor = arg1.captionJanitor
-	local _, any_clipOutside_result2_upvr = arg1:clipOutside(CanvasGroup_upvr)
-	any_clipOutside_result2_upvr.AutomaticSize = Enum.AutomaticSize.None
-	captionJanitor:add(CanvasGroup_upvr:GetPropertyChangedSignal("AbsoluteSize"):Connect(function() -- Line 157, Named "matchSize"
-		--[[ Upvalues[2]:
-			[1]: CanvasGroup_upvr (readonly)
-			[2]: any_clipOutside_result2_upvr (readonly)
-		]]
-		local AbsoluteSize_3 = CanvasGroup_upvr.AbsoluteSize
-		any_clipOutside_result2_upvr.Size = UDim2.fromOffset(AbsoluteSize_3.X, AbsoluteSize_3.Y)
-	end))
-	local AbsoluteSize_2 = CanvasGroup_upvr.AbsoluteSize
-	any_clipOutside_result2_upvr.Size = UDim2.fromOffset(AbsoluteSize_2.X, AbsoluteSize_2.Y)
-	local var22_upvw = false
-	local UserInputService_upvr = game:GetService("UserInputService")
-	local Header_upvr = CanvasGroup_upvr.Box.Header
-	local function updateHotkey(arg1_2) -- Line 170
-		--[[ Upvalues[6]:
-			[1]: UserInputService_upvr (readonly)
-			[2]: CanvasGroup_upvr (readonly)
-			[3]: arg1 (readonly)
-			[4]: Header_upvr (readonly)
-			[5]: TextLabel_upvr (readonly)
-			[6]: Frame_upvr_2 (readonly)
-		]]
-		local KeyboardEnabled = UserInputService_upvr.KeyboardEnabled
-		local var26 = CanvasGroup_upvr:GetAttribute("CaptionText") or ""
-		local var27
-		if var26 ~= "_hotkey_" then
-			var27 = false
-		else
-			var27 = true
-		end
-		if not KeyboardEnabled and var27 then
-			arg1:setCaption()
-		else
-			Header_upvr.Text = var26
-			Header_upvr.Visible = not var27
-			if arg1_2 then
-				TextLabel_upvr.Text = arg1_2.Name
-				Frame_upvr_2.Visible = true
-			end
-			if not KeyboardEnabled then
-				Frame_upvr_2.Visible = false
-			end
-		end
-	end
-	CanvasGroup_upvr:GetAttributeChangedSignal("CaptionText"):Connect(updateHotkey)
-	local Quad = Enum.EasingStyle.Quad
-	local function _(arg1_3) -- Line 196, Named "getCaptionPosition"
-		--[[ Upvalues[1]:
-			[1]: var22_upvw (read and write)
-		]]
-		if arg1_3 ~= nil then
-		else
-		end
-		if var22_upvw then
-		else
-		end
-		return UDim2.new(0.5, 0, 1, 2)
-	end
-	local TweenInfo_new_result1_upvr = TweenInfo.new(0.2, Quad, Enum.EasingDirection.In)
-	local TweenInfo_new_result1_upvr_2 = TweenInfo.new(0.2, Quad, Enum.EasingDirection.Out)
-	local TweenService_upvr = game:GetService("TweenService")
-	local RunService_upvr = game:GetService("RunService")
-	local function updatePosition_upvr(arg1_4) -- Line 203, Named "updatePosition"
-		--[[ Upvalues[9]:
-			[1]: var22_upvw (read and write)
-			[2]: ImageLabel_2_upvr (readonly)
-			[3]: CanvasGroup_upvr (readonly)
-			[4]: any_getInstance_result1_upvr (readonly)
-			[5]: any_clipOutside_result2_upvr (readonly)
-			[6]: TweenInfo_new_result1_upvr (readonly)
-			[7]: TweenInfo_new_result1_upvr_2 (readonly)
-			[8]: TweenService_upvr (readonly)
-			[9]: RunService_upvr (readonly)
-		]]
-		-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
-		-- KONSTANTERROR: [0] 1. Error Block 43 start (CF ANALYSIS FAILED)
-		local var33
-		if not var33 then
-		else
-			if arg1_4 ~= nil then
-				var33 = arg1_4
-			else
-				var33 = var22_upvw
-			end
-			if not var33 ~= nil then
-				-- KONSTANTWARNING: GOTO [14] #13
-			end
-			-- KONSTANTERROR: [0] 1. Error Block 43 end (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [13] 12. Error Block 47 start (CF ANALYSIS FAILED)
-			if var22_upvw then
-			else
-			end
-			if var33 ~= nil then
-				-- KONSTANTWARNING: GOTO [31] #28
-			end
-			if var22_upvw then
-			else
-			end
-			if var33 then
-				ImageLabel_2_upvr.Position = UDim2.fromOffset(0, ImageLabel_2_upvr.Position.Y.Offset)
-				CanvasGroup_upvr.AutomaticSize = Enum.AutomaticSize.XY
-				CanvasGroup_upvr.Size = UDim2.fromOffset(32, 53)
-			else
-				local AbsoluteSize = CanvasGroup_upvr.AbsoluteSize
-				CanvasGroup_upvr.AutomaticSize = Enum.AutomaticSize.Y
-				CanvasGroup_upvr.Size = UDim2.fromOffset(AbsoluteSize.X, AbsoluteSize.Y)
-			end
-			local var36_upvw
-			local function updateCaret() -- Line 232
-				--[[ Upvalues[4]:
-					[1]: any_getInstance_result1_upvr (copied, readonly)
-					[2]: CanvasGroup_upvr (copied, readonly)
-					[3]: ImageLabel_2_upvr (copied, readonly)
-					[4]: var36_upvw (read and write)
-				]]
-				local var37 = any_getInstance_result1_upvr.AbsolutePosition.X - CanvasGroup_upvr.AbsolutePosition.X + any_getInstance_result1_upvr.AbsoluteSize.X / 2 - ImageLabel_2_upvr.AbsoluteSize.X / 2
-				local Offset = ImageLabel_2_upvr.Position.Y.Offset
-				if var36_upvw ~= var37 then
-					var36_upvw = var37
-					ImageLabel_2_upvr.Position = UDim2.fromOffset(0, Offset)
-					task.wait()
-				end
-				ImageLabel_2_upvr.Position = UDim2.fromOffset(var37, Offset)
-			end
-			any_clipOutside_result2_upvr.Position = UDim2.new(0.5, 0, 1, 2)
-			updateCaret()
-			if not var33 or not TweenInfo_new_result1_upvr then
-			end
-			local any_Create_result1 = TweenService_upvr:Create(any_clipOutside_result2_upvr, TweenInfo_new_result1_upvr_2, {
-				Position = UDim2.new(0.5, 0, 1, 2);
-			})
-			any_Create_result1:Play()
-			local any_Connect_result1_upvr = RunService_upvr.Heartbeat:Connect(updateCaret)
-			any_Create_result1.Completed:Once(function() -- Line 255
-				--[[ Upvalues[1]:
-					[1]: any_Connect_result1_upvr (readonly)
-				]]
-				any_Connect_result1_upvr:Disconnect()
-			end)
-			-- KONSTANTERROR: [13] 12. Error Block 47 end (CF ANALYSIS FAILED)
-		end
-	end
-	captionJanitor:add(any_getInstance_result1_upvr:GetPropertyChangedSignal("AbsoluteSize"):Connect(function() -- Line 260
-		--[[ Upvalues[1]:
-			[1]: updatePosition_upvr (readonly)
-		]]
-		updatePosition_upvr()
-	end))
-	updatePosition_upvr(false)
-	captionJanitor:add(arg1.toggleKeyAdded:Connect(updateHotkey))
-	local pairs_result1, pairs_result2, pairs_result3 = pairs(arg1.bindedToggleKeys)
-	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [714] 492. Error Block 13 start (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [714] 492. Error Block 13 end (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [679] 467. Error Block 37 start (CF ANALYSIS FAILED)
-	-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [714.36]
-	if nil ~= "_hotkey_" then
-	else
-	end
-	-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [714.35]
-	-- KONSTANTERROR: [679] 467. Error Block 37 end (CF ANALYSIS FAILED)
-end
+return function(v0) --[[ Line: 1 ]]
+    local v1 = v0:getInstance("ClickRegion");
+    local l_CanvasGroup_0 = Instance.new("CanvasGroup");
+    l_CanvasGroup_0.Name = "Caption";
+    l_CanvasGroup_0.AnchorPoint = Vector2.new(0.5, 0);
+    l_CanvasGroup_0.BackgroundTransparency = 1;
+    l_CanvasGroup_0.BorderSizePixel = 0;
+    l_CanvasGroup_0.GroupTransparency = 1;
+    l_CanvasGroup_0.Position = UDim2.fromOffset(0, 0);
+    l_CanvasGroup_0.Visible = true;
+    l_CanvasGroup_0.ZIndex = 30;
+    l_CanvasGroup_0.Parent = v1;
+    local l_Frame_0 = Instance.new("Frame");
+    l_Frame_0.Name = "Box";
+    l_Frame_0.AutomaticSize = Enum.AutomaticSize.XY;
+    l_Frame_0.BackgroundColor3 = Color3.fromRGB(101, 102, 104);
+    l_Frame_0.Position = UDim2.fromOffset(4, 7);
+    l_Frame_0.ZIndex = 12;
+    l_Frame_0.Parent = l_CanvasGroup_0;
+    local l_TextLabel_0 = Instance.new("TextLabel");
+    l_TextLabel_0.Name = "Header";
+    l_TextLabel_0.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+    l_TextLabel_0.Text = "Caption";
+    l_TextLabel_0.TextColor3 = Color3.fromRGB(255, 255, 255);
+    l_TextLabel_0.TextSize = 14;
+    l_TextLabel_0.TextTruncate = Enum.TextTruncate.None;
+    l_TextLabel_0.TextWrapped = false;
+    l_TextLabel_0.TextXAlignment = Enum.TextXAlignment.Left;
+    l_TextLabel_0.AutomaticSize = Enum.AutomaticSize.X;
+    l_TextLabel_0.BackgroundTransparency = 1;
+    l_TextLabel_0.LayoutOrder = 1;
+    l_TextLabel_0.Size = UDim2.fromOffset(0, 16);
+    l_TextLabel_0.ZIndex = 18;
+    l_TextLabel_0.Parent = l_Frame_0;
+    local l_UIListLayout_0 = Instance.new("UIListLayout");
+    l_UIListLayout_0.Name = "Layout";
+    l_UIListLayout_0.Padding = UDim.new(0, 8);
+    l_UIListLayout_0.SortOrder = Enum.SortOrder.LayoutOrder;
+    l_UIListLayout_0.Parent = l_Frame_0;
+    local l_UICorner_0 = Instance.new("UICorner");
+    l_UICorner_0.Name = "CaptionCorner";
+    l_UICorner_0.Parent = l_Frame_0;
+    local l_UIPadding_0 = Instance.new("UIPadding");
+    l_UIPadding_0.Name = "Padding";
+    l_UIPadding_0.PaddingBottom = UDim.new(0, 12);
+    l_UIPadding_0.PaddingLeft = UDim.new(0, 12);
+    l_UIPadding_0.PaddingRight = UDim.new(0, 12);
+    l_UIPadding_0.PaddingTop = UDim.new(0, 12);
+    l_UIPadding_0.Parent = l_Frame_0;
+    local l_Frame_1 = Instance.new("Frame");
+    l_Frame_1.Name = "Hotkeys";
+    l_Frame_1.AutomaticSize = Enum.AutomaticSize.Y;
+    l_Frame_1.BackgroundTransparency = 1;
+    l_Frame_1.LayoutOrder = 3;
+    l_Frame_1.Size = UDim2.fromScale(1, 0);
+    l_Frame_1.Visible = false;
+    l_Frame_1.Parent = l_Frame_0;
+    local l_UIListLayout_1 = Instance.new("UIListLayout");
+    l_UIListLayout_1.Name = "Layout1";
+    l_UIListLayout_1.Padding = UDim.new(0, 6);
+    l_UIListLayout_1.FillDirection = Enum.FillDirection.Vertical;
+    l_UIListLayout_1.HorizontalAlignment = Enum.HorizontalAlignment.Center;
+    l_UIListLayout_1.HorizontalFlex = Enum.UIFlexAlignment.None;
+    l_UIListLayout_1.ItemLineAlignment = Enum.ItemLineAlignment.Automatic;
+    l_UIListLayout_1.VerticalFlex = Enum.UIFlexAlignment.None;
+    l_UIListLayout_1.SortOrder = Enum.SortOrder.LayoutOrder;
+    l_UIListLayout_1.Parent = l_Frame_1;
+    local l_ImageLabel_0 = Instance.new("ImageLabel");
+    l_ImageLabel_0.Name = "Key1";
+    l_ImageLabel_0.Image = "rbxasset://textures/ui/Controls/key_single.png";
+    l_ImageLabel_0.ImageTransparency = 0.7;
+    l_ImageLabel_0.ScaleType = Enum.ScaleType.Slice;
+    l_ImageLabel_0.SliceCenter = Rect.new(5, 5, 23, 24);
+    l_ImageLabel_0.AutomaticSize = Enum.AutomaticSize.X;
+    l_ImageLabel_0.BackgroundTransparency = 1;
+    l_ImageLabel_0.LayoutOrder = 1;
+    l_ImageLabel_0.Size = UDim2.fromOffset(0, 30);
+    l_ImageLabel_0.ZIndex = 15;
+    l_ImageLabel_0.Parent = l_Frame_1;
+    local l_UIPadding_1 = Instance.new("UIPadding");
+    l_UIPadding_1.Name = "Inset";
+    l_UIPadding_1.PaddingLeft = UDim.new(0, 8);
+    l_UIPadding_1.PaddingRight = UDim.new(0, 8);
+    l_UIPadding_1.Parent = l_ImageLabel_0;
+    local l_TextLabel_1 = Instance.new("TextLabel");
+    l_TextLabel_1.AutoLocalize = false;
+    l_TextLabel_1.Name = "LabelContent";
+    l_TextLabel_1.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+    l_TextLabel_1.Text = "";
+    l_TextLabel_1.TextColor3 = Color3.fromRGB(189, 190, 190);
+    l_TextLabel_1.TextSize = 14;
+    l_TextLabel_1.AutomaticSize = Enum.AutomaticSize.X;
+    l_TextLabel_1.BackgroundTransparency = 1;
+    l_TextLabel_1.Position = UDim2.fromOffset(0, -1);
+    l_TextLabel_1.Size = UDim2.fromScale(1, 1);
+    l_TextLabel_1.ZIndex = 16;
+    l_TextLabel_1.Parent = l_ImageLabel_0;
+    local l_ImageLabel_1 = Instance.new("ImageLabel");
+    l_ImageLabel_1.Name = "Caret";
+    l_ImageLabel_1.Image = "rbxasset://LuaPackages/Packages/_Index/UIBlox/UIBlox/AppImageAtlas/img_set_1x_1.png";
+    l_ImageLabel_1.ImageColor3 = Color3.fromRGB(101, 102, 104);
+    l_ImageLabel_1.ImageRectOffset = Vector2.new(260, 440);
+    l_ImageLabel_1.ImageRectSize = Vector2.new(16, 8);
+    l_ImageLabel_1.AnchorPoint = Vector2.new(0, 0.5);
+    l_ImageLabel_1.BackgroundTransparency = 1;
+    l_ImageLabel_1.Position = UDim2.new(0, 0, 0, 4);
+    l_ImageLabel_1.Rotation = 180;
+    l_ImageLabel_1.Size = UDim2.fromOffset(16, 8);
+    l_ImageLabel_1.ZIndex = 12;
+    l_ImageLabel_1.Parent = l_CanvasGroup_0;
+    local l_ImageLabel_2 = Instance.new("ImageLabel");
+    l_ImageLabel_2.Name = "DropShadow";
+    l_ImageLabel_2.Image = "rbxasset://LuaPackages/Packages/_Index/UIBlox/UIBlox/AppImageAtlas/img_set_1x_1.png";
+    l_ImageLabel_2.ImageColor3 = Color3.fromRGB(0, 0, 0);
+    l_ImageLabel_2.ImageRectOffset = Vector2.new(217, 486);
+    l_ImageLabel_2.ImageRectSize = Vector2.new(25, 25);
+    l_ImageLabel_2.ImageTransparency = 0.45;
+    l_ImageLabel_2.ScaleType = Enum.ScaleType.Slice;
+    l_ImageLabel_2.SliceCenter = Rect.new(12, 12, 13, 13);
+    l_ImageLabel_2.BackgroundTransparency = 1;
+    l_ImageLabel_2.Position = UDim2.fromOffset(0, 5);
+    l_ImageLabel_2.Size = UDim2.new(1, 0, 0, 48);
+    l_ImageLabel_2.Parent = l_CanvasGroup_0;
+    l_Frame_0:GetPropertyChangedSignal("AbsoluteSize"):Connect(function() --[[ Line: 147 ]]
+        -- upvalues: l_ImageLabel_2 (copy), l_Frame_0 (copy)
+        l_ImageLabel_2.Size = UDim2.new(1, 0, 0, l_Frame_0.AbsoluteSize.Y + 8);
+    end);
+    local l_captionJanitor_0 = v0.captionJanitor;
+    local _, v17 = v0:clipOutside(l_CanvasGroup_0);
+    v17.AutomaticSize = Enum.AutomaticSize.None;
+    l_captionJanitor_0:add(l_CanvasGroup_0:GetPropertyChangedSignal("AbsoluteSize"):Connect(function() --[[ Line: 157 ]] --[[ Name: matchSize ]]
+        -- upvalues: l_CanvasGroup_0 (copy), v17 (copy)
+        local l_AbsoluteSize_0 = l_CanvasGroup_0.AbsoluteSize;
+        v17.Size = UDim2.fromOffset(l_AbsoluteSize_0.X, l_AbsoluteSize_0.Y);
+    end));
+    local l_AbsoluteSize_1 = l_CanvasGroup_0.AbsoluteSize;
+    v17.Size = UDim2.fromOffset(l_AbsoluteSize_1.X, l_AbsoluteSize_1.Y);
+    l_AbsoluteSize_1 = false;
+    local l_Header_0 = l_CanvasGroup_0.Box.Header;
+    local l_UserInputService_0 = game:GetService("UserInputService");
+    local function v26(v22) --[[ Line: 170 ]] --[[ Name: updateHotkey ]]
+        -- upvalues: l_UserInputService_0 (copy), l_CanvasGroup_0 (copy), v0 (copy), l_Header_0 (copy), l_TextLabel_1 (copy), l_Frame_1 (copy)
+        local l_KeyboardEnabled_0 = l_UserInputService_0.KeyboardEnabled;
+        local v24 = l_CanvasGroup_0:GetAttribute("CaptionText") or "";
+        local v25 = v24 == "_hotkey_";
+        if not l_KeyboardEnabled_0 and v25 then
+            v0:setCaption();
+            return;
+        else
+            l_Header_0.Text = v24;
+            l_Header_0.Visible = not v25;
+            if v22 then
+                l_TextLabel_1.Text = v22.Name;
+                l_Frame_1.Visible = true;
+            end;
+            if not l_KeyboardEnabled_0 then
+                l_Frame_1.Visible = false;
+            end;
+            return;
+        end;
+    end;
+    l_CanvasGroup_0:GetAttributeChangedSignal("CaptionText"):Connect(v26);
+    local l_Quad_0 = Enum.EasingStyle.Quad;
+    local v28 = TweenInfo.new(0.2, l_Quad_0, Enum.EasingDirection.In);
+    local v29 = TweenInfo.new(0.2, l_Quad_0, Enum.EasingDirection.Out);
+    local l_TweenService_0 = game:GetService("TweenService");
+    local l_RunService_0 = game:GetService("RunService");
+    local function _(v32) --[[ Line: 196 ]] --[[ Name: getCaptionPosition ]]
+        -- upvalues: l_AbsoluteSize_1 (ref)
+        local v33 = (if v32 ~= nil then v32 else l_AbsoluteSize_1) and 10 or 2;
+        return UDim2.new(0.5, 0, 1, v33);
+    end;
+    local function v49(v35) --[[ Line: 203 ]] --[[ Name: updatePosition ]]
+        -- upvalues: l_AbsoluteSize_1 (ref), l_ImageLabel_1 (copy), l_CanvasGroup_0 (copy), v1 (copy), v17 (copy), v28 (copy), v29 (copy), l_TweenService_0 (copy), l_RunService_0 (copy)
+        if not l_AbsoluteSize_1 then
+            return;
+        else
+            local v36 = if v35 ~= nil then v35 else l_AbsoluteSize_1;
+            local v37 = not v36;
+            local v38 = (if v37 ~= nil then v37 else l_AbsoluteSize_1) and 10 or 2;
+            local v39 = UDim2.new(0.5, 0, 1, v38);
+            v38 = (if v36 ~= nil then v36 else l_AbsoluteSize_1) and 10 or 2;
+            v37 = UDim2.new(0.5, 0, 1, v38);
+            if v36 then
+                local l_Offset_0 = l_ImageLabel_1.Position.Y.Offset;
+                l_ImageLabel_1.Position = UDim2.fromOffset(0, l_Offset_0);
+                l_CanvasGroup_0.AutomaticSize = Enum.AutomaticSize.XY;
+                l_CanvasGroup_0.Size = UDim2.fromOffset(32, 53);
+            else
+                local l_AbsoluteSize_2 = l_CanvasGroup_0.AbsoluteSize;
+                l_CanvasGroup_0.AutomaticSize = Enum.AutomaticSize.Y;
+                l_CanvasGroup_0.Size = UDim2.fromOffset(l_AbsoluteSize_2.X, l_AbsoluteSize_2.Y);
+            end;
+            local v42 = nil;
+            v38 = function() --[[ Line: 232 ]] --[[ Name: updateCaret ]]
+                -- upvalues: v1 (ref), l_CanvasGroup_0 (ref), l_ImageLabel_1 (ref), v42 (ref)
+                local v43 = v1.AbsolutePosition.X - l_CanvasGroup_0.AbsolutePosition.X + v1.AbsoluteSize.X / 2 - l_ImageLabel_1.AbsoluteSize.X / 2;
+                local l_Offset_1 = l_ImageLabel_1.Position.Y.Offset;
+                local v45 = UDim2.fromOffset(v43, l_Offset_1);
+                if v42 ~= v43 then
+                    v42 = v43;
+                    l_ImageLabel_1.Position = UDim2.fromOffset(0, l_Offset_1);
+                    task.wait();
+                end;
+                l_ImageLabel_1.Position = v45;
+            end;
+            v17.Position = v39;
+            v38();
+            local v46 = v36 and v28 or v29;
+            local v47 = l_TweenService_0:Create(v17, v46, {
+                Position = v37
+            });
+            local v48 = l_RunService_0.Heartbeat:Connect(v38);
+            v47:Play();
+            v47.Completed:Once(function() --[[ Line: 255 ]]
+                -- upvalues: v48 (copy)
+                v48:Disconnect();
+            end);
+            return;
+        end;
+    end;
+    l_captionJanitor_0:add(v1:GetPropertyChangedSignal("AbsoluteSize"):Connect(function() --[[ Line: 260 ]]
+        -- upvalues: v49 (copy)
+        v49();
+    end));
+    v49(false);
+    l_captionJanitor_0:add(v0.toggleKeyAdded:Connect(v26));
+    for v50, _ in pairs(v0.bindedToggleKeys) do
+        local l_KeyboardEnabled_1 = l_UserInputService_0.KeyboardEnabled;
+        local v53 = l_CanvasGroup_0:GetAttribute("CaptionText") or "";
+        local v54 = v53 == "_hotkey_";
+        if not l_KeyboardEnabled_1 and v54 then
+            v0:setCaption();
+            break;
+        else
+            l_Header_0.Text = v53;
+            l_Header_0.Visible = not v54;
+            if v50 then
+                l_TextLabel_1.Text = v50.Name;
+                l_Frame_1.Visible = true;
+            end;
+            if not l_KeyboardEnabled_1 then
+                l_Frame_1.Visible = false;
+                break;
+            else
+                break;
+            end;
+        end;
+    end;
+    l_captionJanitor_0:add(v0.fakeToggleKeyChanged:Connect(v26));
+    local l_fakeToggleKey_0 = v0.fakeToggleKey;
+    if l_fakeToggleKey_0 then
+        local l_KeyboardEnabled_2 = l_UserInputService_0.KeyboardEnabled;
+        local v57 = l_CanvasGroup_0:GetAttribute("CaptionText") or "";
+        local v58 = v57 == "_hotkey_";
+        if not l_KeyboardEnabled_2 and v58 then
+            v0:setCaption();
+        else
+            l_Header_0.Text = v57;
+            l_Header_0.Visible = not v58;
+            if l_fakeToggleKey_0 then
+                l_TextLabel_1.Text = l_fakeToggleKey_0.Name;
+                l_Frame_1.Visible = true;
+            end;
+            if not l_KeyboardEnabled_2 then
+                l_Frame_1.Visible = false;
+            end;
+        end;
+    end;
+    local function v66(v59) --[[ Line: 276 ]] --[[ Name: setCaptionEnabled ]]
+        -- upvalues: l_AbsoluteSize_1 (ref), v0 (copy), v28 (copy), v29 (copy), l_TweenService_0 (copy), l_CanvasGroup_0 (copy), v49 (copy), l_UserInputService_0 (copy), l_Header_0 (copy), l_Frame_1 (copy)
+        if l_AbsoluteSize_1 == v59 then
+            return;
+        else
+            local l_joinedFrame_0 = v0.joinedFrame;
+            if l_joinedFrame_0 and string.match(l_joinedFrame_0.Name, "Dropdown") then
+                v59 = false;
+            end;
+            l_AbsoluteSize_1 = v59;
+            local v61 = v59 and 0 or 1;
+            local v62 = v59 and v28 or v29;
+            l_TweenService_0:Create(l_CanvasGroup_0, v62, {
+                GroupTransparency = v61
+            }):Play();
+            v49();
+            local l_KeyboardEnabled_3 = l_UserInputService_0.KeyboardEnabled;
+            local v64 = l_CanvasGroup_0:GetAttribute("CaptionText") or "";
+            local v65 = v64 == "_hotkey_";
+            if not l_KeyboardEnabled_3 and v65 then
+                v0:setCaption();
+                return;
+            else
+                l_Header_0.Text = v64;
+                l_Header_0.Visible = not v65;
+                if not l_KeyboardEnabled_3 then
+                    l_Frame_1.Visible = false;
+                end;
+                return;
+            end;
+        end;
+    end;
+    local v67 = require(v0.iconModule);
+    l_captionJanitor_0:add(v0.stateChanged:Connect(function(v68) --[[ Line: 298 ]]
+        -- upvalues: v67 (copy), v0 (copy), v66 (copy)
+        if v68 == "Viewing" then
+            local l_captionLastClosedClock_0 = v67.captionLastClosedClock;
+            local v70 = (l_captionLastClosedClock_0 and os.clock() - l_captionLastClosedClock_0 or 999) < 0.3 and 0 or 0.5;
+            task.delay(v70, function() --[[ Line: 303 ]]
+                -- upvalues: v0 (ref), v66 (ref)
+                if v0.activeState == "Viewing" then
+                    v66(true);
+                end;
+            end);
+            return;
+        else
+            v67.captionLastClosedClock = os.clock();
+            v66(false);
+            return;
+        end;
+    end));
+    return l_CanvasGroup_0;
+end;

@@ -1,21 +1,13 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.List.update
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:34:17
--- Luau version 6, Types version 3
--- Time taken: 0.000393 seconds
-
-local updateIn_upvr = require(script.Parent.updateIn)
-return function(arg1, arg2, arg3, arg4) -- Line 24, Named "update"
-	--[[ Upvalues[1]:
-		[1]: updateIn_upvr (readonly)
-	]]
-	local module = {}
-	module[1] = arg2
-	return updateIn_upvr(arg1, module, arg3, arg4)
-end
+local v0 = require(script.Parent.updateIn);
+return function(v1, v2, v3, v4) --[[ Line: 24 ]] --[[ Name: update ]]
+    -- upvalues: v0 (copy)
+    return v0(v1, {
+        v2
+    }, v3, v4);
+end;

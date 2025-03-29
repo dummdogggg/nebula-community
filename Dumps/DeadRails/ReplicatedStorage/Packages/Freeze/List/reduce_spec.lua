@@ -1,10 +1,29 @@
 --[[
-    STUB SCRIPT (Original could not be decompiled)
     Script: ReplicatedStorage.Packages.Freeze.List.reduce.spec
     Type: ModuleScript
-    Error: API Error - Falha na decompilação
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
-return {
-    -- Module content not available
-}
+local v0 = require(script.Parent.reduce);
+return function() --[[ Line: 4 ]]
+    -- upvalues: v0 (copy)
+    local v1 = {
+        10, 
+        20, 
+        30
+    };
+    it("reduce", function() --[[ Line: 6 ]]
+        -- upvalues: v0 (ref), v1 (copy)
+        local v4 = v0(v1, function(v2, v3) --[[ Line: 7 ]]
+            return v2 + v3;
+        end, 0);
+        expect(v4).toEqual(60);
+    end);
+    it("order left to right", function() --[[ Line: 14 ]]
+        -- upvalues: v0 (ref), v1 (copy)
+        local v7 = v0(v1, function(v5, v6) --[[ Line: 15 ]]
+            return v5 .. tostring(v6);
+        end, "");
+        expect(v7).toEqual("102030");
+    end);
+end;

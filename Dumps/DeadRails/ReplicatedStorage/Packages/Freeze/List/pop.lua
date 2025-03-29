@@ -1,24 +1,17 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.List.pop
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:34:07
--- Luau version 6, Types version 3
--- Time taken: 0.000598 seconds
-
-local maybeFreeze_upvr = require(script.Parent.Parent.utils.maybeFreeze)
-return function(arg1, arg2) -- Line 20, Named "pop"
-	--[[ Upvalues[1]:
-		[1]: maybeFreeze_upvr (readonly)
-	]]
-	local len = #arg1
-	local table_create_result1 = table.create(len)
-	for i = 1, len - math.max(1, arg2 or 1) do
-		table_create_result1[i] = arg1[i]
-	end
-	return maybeFreeze_upvr(table_create_result1)
-end
+local v0 = require(script.Parent.Parent.utils.maybeFreeze);
+return function(v1, v2) --[[ Line: 20 ]] --[[ Name: pop ]]
+    -- upvalues: v0 (copy)
+    local v3 = math.max(1, v2 or 1);
+    local v4 = #v1;
+    local v5 = table.create(v4);
+    for v6 = 1, v4 - v3 do
+        v5[v6] = v1[v6];
+    end;
+    return v0(v5);
+end;

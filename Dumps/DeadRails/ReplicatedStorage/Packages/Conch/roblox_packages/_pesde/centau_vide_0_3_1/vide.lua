@@ -1,118 +1,110 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.centau_vide@0.3.1.vide
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:37:34
--- Luau version 6, Types version 3
--- Time taken: 0.002392 seconds
-
+local v0 = {
+    major = 0, 
+    minor = 3, 
+    patch = 1
+};
 if not game then
-	script = require("test/relative-string") -- Setting global
-end
-local var2, var3 = require(script.maps)()
-local var4, var5_upvr = require(script.spring)()
-local throw_upvr = require(script.throw)
-local flags_upvr = require(script.flags)
-local function step(arg1) -- Line 35
-	--[[ Upvalues[1]:
-		[1]: var5_upvr (readonly)
-	]]
-	if game then
-		debug.profilebegin("VIDE STEP")
-		debug.profilebegin("VIDE SPRING")
-	end
-	var5_upvr(arg1)
-	if game then
-		debug.profileend()
-		debug.profileend()
-	end
-end
-local game_upvw = game
-if game_upvw then
-	game_upvw = game:GetService("RunService").Heartbeat
-	game_upvw = game_upvw:Connect(function(arg1) -- Line 49
-		--[[ Upvalues[1]:
-			[1]: step (readonly)
-		]]
-		task.defer(step, arg1)
-	end)
-end
-local module = {
-	version = {
-		major = 0;
-		minor = 3;
-		patch = 1;
-	};
-	root = require(script.root);
-	mount = require(script.mount);
-	create = require(script.create);
-	source = require(script.source);
-	effect = require(script.effect);
-	derive = require(script.derive);
-	switch = require(script.switch);
-	show = require(script.show);
-	indexes = var2;
-	values = var3;
-	cleanup = require(script.cleanup);
-	untrack = require(script.untrack);
-	read = require(script.read);
-	batch = require(script.batch);
-	context = require(script.context);
-	spring = var4;
-	action = require(script.action)();
-	changed = require(script.changed);
-	strict = nil;
-}
-local apply_2_upvr = require(script.apply)
-function module.apply(arg1) -- Line 86
-	--[[ Upvalues[1]:
-		[1]: apply_2_upvr (readonly)
-	]]
-	return function(arg1_2) -- Line 87
-		--[[ Upvalues[2]:
-			[1]: apply_2_upvr (copied, readonly)
-			[2]: arg1 (readonly)
-		]]
-		apply_2_upvr(arg1, arg1_2)
-		return arg1
-	end
-end
-function module.step(arg1) -- Line 94
-	--[[ Upvalues[2]:
-		[1]: game_upvw (read and write)
-		[2]: step (readonly)
-	]]
-	if game_upvw then
-		game_upvw:Disconnect()
-		game_upvw = nil
-	end
-	step(arg1)
-end
-setmetatable(module, {
-	__index = function(arg1, arg2) -- Line 104, Named "__index"
-		--[[ Upvalues[2]:
-			[1]: flags_upvr (readonly)
-			[2]: throw_upvr (readonly)
-		]]
-		if arg2 == "strict" then
-			return flags_upvr.strict
-		end
-		throw_upvr(`{tostring(arg2)} is not a valid member of vide`)
-	end;
-	__newindex = function(arg1, arg2, arg3) -- Line 112, Named "__newindex"
-		--[[ Upvalues[2]:
-			[1]: flags_upvr (readonly)
-			[2]: throw_upvr (readonly)
-		]]
-		if arg2 == "strict" then
-			flags_upvr.strict = arg3
-		else
-			throw_upvr(`{tostring(arg2)} is not a valid member of vide`)
-		end
-	end;
-})
-return module
+    script = require("test/relative-string");
+end;
+local v1 = require(script.root);
+local v2 = require(script.mount);
+local v3 = require(script.create);
+local v4 = require(script.apply);
+local v5 = require(script.source);
+local v6 = require(script.effect);
+local v7 = require(script.derive);
+local v8 = require(script.cleanup);
+local v9 = require(script.untrack);
+local v10 = require(script.read);
+local v11 = require(script.batch);
+local v12 = require(script.context);
+local v13 = require(script.switch);
+local v14 = require(script.show);
+local v15, v16 = require(script.maps)();
+local v17, v18 = require(script.spring)();
+local v19 = require(script.action)();
+local v20 = require(script.changed);
+local v21 = require(script.throw);
+local v22 = require(script.flags);
+local function v24(v23) --[[ Line: 35 ]] --[[ Name: step ]]
+    -- upvalues: v18 (copy)
+    if game then
+        debug.profilebegin("VIDE STEP");
+        debug.profilebegin("VIDE SPRING");
+    end;
+    v18(v23);
+    if game then
+        debug.profileend();
+        debug.profileend();
+    end;
+end;
+local v26 = game and game:GetService("RunService").Heartbeat:Connect(function(v25) --[[ Line: 49 ]]
+    -- upvalues: v24 (copy)
+    task.defer(v24, v25);
+end);
+local v30 = {
+    version = v0, 
+    root = v1, 
+    mount = v2, 
+    create = v3, 
+    source = v5, 
+    effect = v6, 
+    derive = v7, 
+    switch = v13, 
+    show = v14, 
+    indexes = v15, 
+    values = v16, 
+    cleanup = v8, 
+    untrack = v9, 
+    read = v10, 
+    batch = v11, 
+    context = v12, 
+    spring = v17, 
+    action = v19, 
+    changed = v20, 
+    strict = nil, 
+    apply = function(v27) --[[ Line: 86 ]] --[[ Name: apply ]]
+        -- upvalues: v4 (copy)
+        return function(v28) --[[ Line: 87 ]]
+            -- upvalues: v4 (ref), v27 (copy)
+            v4(v27, v28);
+            return v27;
+        end;
+    end, 
+    step = function(v29) --[[ Line: 94 ]] --[[ Name: step ]]
+        -- upvalues: v26 (ref), v24 (copy)
+        if v26 then
+            v26:Disconnect();
+            v26 = nil;
+        end;
+        v24(v29);
+    end
+};
+setmetatable(v30, {
+    __index = function(_, v32) --[[ Line: 104 ]] --[[ Name: __index ]]
+        -- upvalues: v22 (copy), v21 (copy)
+        if v32 == "strict" then
+            return v22.strict;
+        else
+            v21((("%* is not a valid member of vide"):format((tostring(v32)))));
+            return;
+        end;
+    end, 
+    __newindex = function(_, v34, v35) --[[ Line: 112 ]] --[[ Name: __newindex ]]
+        -- upvalues: v22 (copy), v21 (copy)
+        if v34 == "strict" then
+            v22.strict = v35;
+            return;
+        else
+            v21((("%* is not a valid member of vide"):format((tostring(v34)))));
+            return;
+        end;
+    end
+});
+return v30;

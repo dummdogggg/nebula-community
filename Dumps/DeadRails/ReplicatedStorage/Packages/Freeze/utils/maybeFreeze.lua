@@ -1,10 +1,13 @@
 --[[
-    STUB SCRIPT (Original could not be decompiled)
     Script: ReplicatedStorage.Packages.Freeze.utils.maybeFreeze
     Type: ModuleScript
-    Error: API Error - Falha na decompilação
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
-return {
-    -- Module content not available
-}
+return function(v0) --[[ Line: 5 ]]
+    if table.isfrozen(v0) then
+        return v0;
+    else
+        return table.freeze(v0);
+    end;
+end;

@@ -1,705 +1,519 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.alicesaidhi+conch_analysis.0.2.0.conch_analysis.src.lib
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:35:46
--- Luau version 6, Types version 3
--- Time taken: 0.018633 seconds
-
-local ._optional_ast_upvr = require("./optional_ast")
+local v0 = require("./optional_ast");
+local _ = require("../roblox_packages/types");
 return {
-	generate_analysis_info = function(arg1) -- Line 33, Named "generate_analysis_info"
-		--[[ Upvalues[1]:
-			[1]: ._optional_ast_upvr (readonly)
-		]]
-		local tbl_7_upvr = {}
-		local where_upvr = arg1.where
-		local function _(arg1_2, arg2) -- Line 56, Named "LOG"
-			--[[ Upvalues[1]:
-				[1]: tbl_7_upvr (readonly)
-			]]
-			local tbl_9 = {}
-			tbl_9.kind = arg1_2
-			tbl_9.text = arg2
-			table.insert(tbl_7_upvr, tbl_9)
-		end
-		local function get_span_upvr(arg1_3) -- Line 60, Named "get_span"
-			-- KONSTANTERROR: [0] 1. Error Block 23 start (CF ANALYSIS FAILED)
-			if arg1_3.left then
-				-- KONSTANTWARNING: GOTO [28] #18
-			end
-			-- KONSTANTERROR: [0] 1. Error Block 23 end (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [12] 9. Error Block 20 start (CF ANALYSIS FAILED)
-			if arg1_3.value then
-				-- KONSTANTWARNING: GOTO [28] #18
-			end
-			-- KONSTANTERROR: [12] 9. Error Block 20 end (CF ANALYSIS FAILED)
-		end
-		local function _(arg1_4) -- Line 85, Named "get_text_token"
-			--[[ Upvalues[1]:
-				[1]: where_upvr (readonly)
-			]]
-			return string.sub(arg1_4.text, 1, where_upvr - arg1_4.span.x)
-		end
-		local function _(arg1_5) -- Line 91, Named "position_relative"
-			--[[ Upvalues[1]:
-				[1]: where_upvr (readonly)
-			]]
-			if arg1_5.x <= where_upvr and where_upvr <= arg1_5.y then
-				return "within"
-			end
-			if where_upvr < arg1_5.x then
-				return "before"
-			end
-			return "after"
-		end
-		local var1_result1_upvr = ._optional_ast_upvr(arg1.code)
-		local function no_suggestions_upvr(arg1_6) -- Line 103, Named "no_suggestions"
-			--[[ Upvalues[3]:
-				[1]: where_upvr (readonly)
-				[2]: tbl_7_upvr (readonly)
-				[3]: var1_result1_upvr (readonly)
-			]]
-			local module_2 = {
-				at = where_upvr;
-			}
-			module_2.text = arg1_6
-			module_2.logs = tbl_7_upvr
-			module_2.suggestions = {}
-			local var9 = var1_result1_upvr
-			if var9 then
-				var9 = false
-				if var1_result1_upvr.status == "finished" then
-					var9 = var1_result1_upvr.value
-				end
-			end
-			module_2.ast = var9
-			return module_2
-		end
-		if var1_result1_upvr.status == "error" then
-			table.insert(tbl_7_upvr, {
-				kind = "error";
-				text = var1_result1_upvr.why;
-			})
-			return no_suggestions_upvr("")
-		end
-		local process_block_upvw
-		local process_expression_or_command_upvw
-		local process_expression_upvw
-		local function process_command_upvw(arg1_7, arg2) -- Line 135, Named "process_command"
-			--[[ Upvalues[5]:
-				[1]: where_upvr (readonly)
-				[2]: arg1 (readonly)
-				[3]: no_suggestions_upvr (readonly)
-				[4]: process_expression_upvw (read and write)
-				[5]: tbl_7_upvr (readonly)
-			]]
-			-- KONSTANTERROR: [0] 1. Error Block 66 start (CF ANALYSIS FAILED)
-			local span_5 = arg1_7.prefix.span
-			local var15
-			if span_5.x <= where_upvr and where_upvr <= span_5.y then
-				var15 = "within"
-			elseif where_upvr < span_5.x then
-				var15 = "before"
-			else
-				var15 = "after"
-			end
-			-- KONSTANTERROR: [0] 1. Error Block 66 end (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [26] 18. Error Block 9 start (CF ANALYSIS FAILED)
-			do
-				return process_variable(arg1_7.prefix, arg2)
-			end
-			-- KONSTANTERROR: [26] 18. Error Block 9 end (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [33] 23. Error Block 10 start (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [33] 23. Error Block 10 end (CF ANALYSIS FAILED)
-		end
-		function process_if(arg1_8) -- Line 223
-			--[[ Upvalues[4]:
-				[1]: get_span_upvr (readonly)
-				[2]: where_upvr (readonly)
-				[3]: process_expression_or_command_upvw (read and write)
-				[4]: process_block_upvw (read and write)
-			]]
-			local condition = arg1_8.condition
-			local get_span_result1_3 = get_span_upvr(condition)
-			local var18
-			if get_span_result1_3.x <= where_upvr and where_upvr <= get_span_result1_3.y then
-				var18 = "within"
-			elseif where_upvr < get_span_result1_3.x then
-				var18 = "before"
-			else
-				var18 = "after"
-			end
-			if var18 == "within" then
-				return process_expression_or_command_upvw(condition.value)
-			end
-			if arg1_8.block then
-				return process_block_upvw(arg1_8.block.value)
-			end
-		end
-		function parse_if_stat(arg1_9) -- Line 234
-			--[[ Upvalues[3]:
-				[1]: where_upvr (readonly)
-				[2]: get_span_upvr (readonly)
-				[3]: process_block_upvw (read and write)
-			]]
-			-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [36] 26. Error Block 12 start (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [36] 26. Error Block 12 end (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [5] 5. Error Block 34 start (CF ANALYSIS FAILED)
-			-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [36.9]
-			-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-			-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [36.8]
-			if nil <= nil then
-				-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-				if nil <= nil then
-					-- KONSTANTWARNING: GOTO [27] #20
-				end
-			end
-			-- KONSTANTERROR: Expression was reused, decompilation is incorrect (x2)
-			if nil < nil then
-			else
-			end
-			-- KONSTANTERROR: [5] 5. Error Block 34 end (CF ANALYSIS FAILED)
-		end
-		local function process_function_upvw(arg1_10) -- Line 248, Named "process_function"
-			--[[ Upvalues[4]:
-				[1]: no_suggestions_upvr (readonly)
-				[2]: get_span_upvr (readonly)
-				[3]: where_upvr (readonly)
-				[4]: process_block_upvw (read and write)
-			]]
-			if not arg1_10.block then
-				return no_suggestions_upvr("")
-			end
-			local get_span_result1_2 = get_span_upvr(arg1_10.block)
-			local var20
-			if get_span_result1_2.x <= where_upvr and where_upvr <= get_span_result1_2.y then
-				var20 = "within"
-			elseif where_upvr < get_span_result1_2.x then
-				var20 = "before"
-			else
-				var20 = "after"
-			end
-			if var20 == "within" then
-				var20 = process_block_upvw(arg1_10.block.value)
-				return var20
-			end
-			var20 = no_suggestions_upvr("")
-			return var20
-		end
-		function process_var_prefix(arg1_11, arg2) -- Line 257
-			--[[ Upvalues[5]:
-				[1]: where_upvr (readonly)
-				[2]: arg1 (readonly)
-				[3]: process_expression_or_command_upvw (read and write)
-				[4]: tbl_7_upvr (readonly)
-				[5]: var1_result1_upvr (readonly)
-			]]
-			-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
-			local prefix = arg1_11.prefix
-			local var74
-			local var75
-			local tbl_3 = {}
-			if prefix.kind == "global" then
-				local token_2 = prefix.token
-				var75 = string.sub(token_2.text, 1, where_upvr - token_2.span.x)
-				if arg2 and string.sub("true", 1, #var75) == var75 then
-					table.insert(tbl_3, {
-						name = "true";
-						type = "true";
-						replace = arg1_11.span;
-						with = "true";
-					})
-				end
-				if arg2 and string.sub("false", 1, #var75) == var75 then
-					table.insert(tbl_3, {
-						name = "false";
-						type = "false";
-						replace = arg1_11.span;
-						with = "false";
-					})
-				end
-				if arg2 and string.sub("nil", 1, #var75) == var75 then
-					table.insert(tbl_3, {
-						name = "nil";
-						type = "nil";
-						replace = arg1_11.span;
-						with = "nil";
-					})
-				end
-				if not arg2 and string.sub("for", 1, #var75) == var75 then
-					table.insert(tbl_3, {
-						name = "for";
-						type = "for";
-						replace = arg1_11.span;
-						with = "for";
-					})
-				end
-				if not arg2 and string.sub("if", 1, #var75) == var75 then
-					table.insert(tbl_3, {
-						name = "if";
-						type = "if";
-						replace = arg1_11.span;
-						with = "if";
-					})
-				end
-				if not arg2 and string.sub("while", 1, #var75) == var75 then
-					table.insert(tbl_3, {
-						name = "while";
-						type = "while";
-						replace = arg1_11.span;
-						with = "while";
-					})
-				end
-				if not arg2 and string.sub("else", 1, #var75) == var75 then
-					table.insert(tbl_3, {
-						name = "else";
-						type = "else";
-						replace = arg1_11.span;
-						with = "else";
-					})
-				end
-				for i, v in arg1.commands do
-					local string_lower_result1_4 = string.lower(var75)
-					if string.sub(string.lower(v.name), 1, #string_lower_result1_4) == string_lower_result1_4 then
-						if #string_lower_result1_4 == #v.name then
-							var74 = v
-						end
-						table.insert(tbl_3, {
-							name = v.name;
-							description = v.description;
-							type = "Command";
-							replace = arg1_11.span;
-							with = v.name;
-						})
-					end
-				end
-			else
-				local var87
-				if var87 == "name" then
-					local function INLINED_3() -- Internal function, doesn't exist in bytecode
-						var87 = prefix.name.text
-						return var87
-					end
-					if not prefix.name or not INLINED_3() then
-						var87 = ""
-					end
-					var75 = var87
-					i = arg1
-					var87 = i.variables
-					for i_2, v_2 in var87 do
-						local string_lower_result1_5 = string.lower(var75)
-						local var89
-						if string.sub(string.lower(i_2), 1, #string_lower_result1_5) == string_lower_result1_5 then
-							if #string_lower_result1_5 == #i_2 then
-								var74 = {
-									kind = "argument";
-									name = i_2;
-									type = typeof(v_2);
-								}
-							end
-							local tbl_10 = {
-								name = i_2;
-							}
-							var89 = typeof(v_2)
-							tbl_10.type = var89
-							local function INLINED_4() -- Internal function, doesn't exist in bytecode
-								var89 = prefix.name.span
-								return var89
-							end
-							if not prefix.name or not INLINED_4() then
-								var89 = vector.create(prefix.span.x + 1, prefix.span.y)
-							end
-							tbl_10.replace = var89
-							tbl_10.with = i_2
-							table.insert(tbl_3, tbl_10)
-						end
-					end
-				else
-					var87 = prefix.kind
-					if var87 == "paren" then
-						var87 = prefix.expr.value
-						if var87 then
-							var87 = process_expression_or_command_upvw(prefix.expr.value)
-							return var87
-						end
-					end
-				end
-			end
-			var87 = {}
-			local var92 = var87
-			var92.at = where_upvr
-			var92.text = var75
-			var92.logs = tbl_7_upvr
-			var92.ast = var1_result1_upvr.value
-			var92.analyzing = var74
-			var92.suggestions = tbl_3
-			return var92
-		end
-		function process_variable(arg1_12, arg2) -- Line 395
-			--[[ Upvalues[4]:
-				[1]: where_upvr (readonly)
-				[2]: no_suggestions_upvr (readonly)
-				[3]: arg1 (readonly)
-				[4]: tbl_7_upvr (readonly)
-			]]
-			-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
-			-- KONSTANTERROR: [0] 1. Error Block 105 start (CF ANALYSIS FAILED)
-			local span_6 = arg1_12.prefix.span
-			local var102
-			if span_6.x <= where_upvr and where_upvr <= span_6.y then
-				var102 = "within"
-				-- KONSTANTWARNING: GOTO [24] #17
-			end
-			-- KONSTANTERROR: [0] 1. Error Block 105 end (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [16] 11. Error Block 108 start (CF ANALYSIS FAILED)
-			if where_upvr < span_6.x then
-				var102 = "before"
-			else
-				var102 = "after"
-			end
-			if var102 == "within" then
-				var102 = process_var_prefix(arg1_12, arg2)
-				return var102
-			end
-			var102 = arg1_12.prefix.kind
-			if var102 == "paren" then
-				var102 = no_suggestions_upvr("")
-				return var102
-			end
-			var102 = arg1_12.prefix.kind
-			if var102 == "global" then
-				var102 = no_suggestions_upvr("")
-				return var102
-			end
-			var102 = arg1_12.prefix
-			local name = var102.name
-			if name then
-				name = var102.name.text
-			end
-			if not name then
-				return no_suggestions_upvr("")
-			end
-			local var104 = arg1.variables[name]
-			if var104 == nil then
-				local tbl_11 = {}
-				local var106 = "warn"
-				tbl_11.kind = var106
-				tbl_11.text = `no defined variable named "{name}"`
-				table.insert(tbl_7_upvr, tbl_11)
-				return no_suggestions_upvr(name)
-			end
-			if type(var104) ~= "table" and type(var104) ~= "userdata" and type(var104) ~= "vector" then
-				table.insert(tbl_7_upvr, {
-					kind = "warn";
-					text = `probably can't index "{name}" which is a "{typeof(var104)}"`;
-				})
-			end
-			local span_4 = var106.span
-			local var109
-			if span_4.x <= where_upvr and where_upvr <= span_4.y then
-				var109 = "within"
-				-- KONSTANTWARNING: GOTO [176] #126
-			end
-			if where_upvr < span_4.x then
-				var109 = "before"
-			else
-				var109 = "after"
-			end
-			if var109 ~= "within" then
-				var109 = var106.kind
-				if var109 == "nameindex" then
-					var109 = var106.name
-					if var109 then
-						var109 = var106.name.text
-					end
-					if not var109 then
-						return no_suggestions_upvr(var109)
-					end
-				else
-					return no_suggestions_upvr("")
-				end
-				-- KONSTANTWARNING: GOTO [110] #79
-			end
-			-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-			if no_suggestions_upvr("") == "nameindex" then
-				-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-				if no_suggestions_upvr("") then
-				end
-				-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-				if not no_suggestions_upvr("") then
-				end
-				-- KONSTANTERROR: Expression was reused, decompilation is incorrect (x2)
-				if not var109 or not "" then
-				end
-			else
-				-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-				if no_suggestions_upvr("") == "exprindex" then
-					-- KONSTANTWARNING: GOTO [255] #182
-				end
-			end
-			if var104[var109][var109] then
-				-- KONSTANTERROR: Expression was reused, decompilation is incorrect (x2)
-				local tbl_6 = {
-					kind = "argument";
-				}
-				-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-				tbl_6.name = var109
-				tbl_6.type = typeof(var104[var109][var109])
-			end
-			-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-			if type(var104[var109]) == "table" then
-				-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-				for i_3, v_3 in pairs(var104[var109]) do
-					-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-					local string_lower_result1_2 = string.lower(var109)
-					if string.sub(string.lower(i_3), 1, #string_lower_result1_2) == string_lower_result1_2 then
-						table.insert({}, {
-							name = i_3;
-							with = i_3;
-							type = typeof(v_3);
-							replace = vector.create(arg1_12.span.x, 0);
-						})
-					end
-				end
-			end
-			local module = {
-				at = where_upvr;
-			}
-			-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-			module.text = var109
-			module.logs = tbl_7_upvr
-			module.analyzing = tbl_6
-			-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-			module.suggestions = {}
-			do
-				return module
-			end
-			-- KONSTANTERROR: [16] 11. Error Block 108 end (CF ANALYSIS FAILED)
-		end
-		function process_expression_upvw(arg1_13) -- Line 492, Named "process_expression"
-			--[[ Upvalues[6]:
-				[1]: process_function_upvw (read and write)
-				[2]: get_span_upvr (readonly)
-				[3]: where_upvr (readonly)
-				[4]: process_expression_or_command_upvw (read and write)
-				[5]: var117_upvw (read and write)
-				[6]: no_suggestions_upvr (readonly)
-			]]
-			-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [4] 3. Error Block 2 start (CF ANALYSIS FAILED)
-			do
-				return process_function_upvw(arg1_13.body)
-			end
-			-- KONSTANTERROR: [4] 3. Error Block 2 end (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [9] 7. Error Block 3 start (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [9] 7. Error Block 3 end (CF ANALYSIS FAILED)
-		end
-		local var117_upvw = process_expression_upvw
-		local function process_return_upvw(arg1_14) -- Line 518, Named "process_return"
-			--[[ Upvalues[3]:
-				[1]: where_upvr (readonly)
-				[2]: process_expression_or_command_upvw (read and write)
-				[3]: no_suggestions_upvr (readonly)
-			]]
-			for _, v_4 in arg1_14.values do
-				local span_3 = v_4.span
-				local var123
-				if span_3.x <= where_upvr then
-					if where_upvr <= span_3.y then
-						var123 = "within"
-						-- KONSTANTWARNING: GOTO [27] #20
-					end
-				end
-				if where_upvr < span_3.x then
-					var123 = "before"
-				else
-					var123 = "after"
-				end
-				if var123 ~= "before" then
-					var123 = process_expression_or_command_upvw(v_4)
-					return var123
-				end
-			end
-			return no_suggestions_upvr("")
-		end
-		function process_expression_or_command_upvw(arg1_15) -- Line 526, Named "process_expression_or_command"
-			--[[ Upvalues[2]:
-				[1]: process_command_upvw (read and write)
-				[2]: var117_upvw (read and write)
-			]]
-			if arg1_15.kind == "command" then
-				return process_command_upvw(arg1_15, true)
-			end
-			return var117_upvw(arg1_15)
-		end
-		local var124_upvw = process_expression_or_command_upvw
-		local function process_assignment_upvw(arg1_16) -- Line 534, Named "process_assignment"
-			--[[ Upvalues[3]:
-				[1]: no_suggestions_upvr (readonly)
-				[2]: where_upvr (readonly)
-				[3]: var124_upvw (read and write)
-			]]
-			-- KONSTANTERROR: [0] 1. Error Block 19 start (CF ANALYSIS FAILED)
-			if not arg1_16.right then
-				return no_suggestions_upvr("")
-			end
-			local span = arg1_16.operator.span
-			local var126
-			if span.x <= where_upvr and where_upvr <= span.y then
-				var126 = "within"
-				-- KONSTANTWARNING: GOTO [31] #23
-			end
-			-- KONSTANTERROR: [0] 1. Error Block 19 end (CF ANALYSIS FAILED)
-			-- KONSTANTERROR: [23] 17. Error Block 20 start (CF ANALYSIS FAILED)
-			if where_upvr < span.x then
-				var126 = "before"
-			else
-				var126 = "after"
-			end
-			if var126 == "before" then
-				var126 = no_suggestions_upvr("")
-				return var126
-			end
-			var126 = var124_upvw(arg1_16.right)
-			do
-				return var126
-			end
-			-- KONSTANTERROR: [23] 17. Error Block 20 end (CF ANALYSIS FAILED)
-		end
-		local function process_while_upvw(arg1_17) -- Line 542, Named "process_while"
-			--[[ Upvalues[5]:
-				[1]: get_span_upvr (readonly)
-				[2]: where_upvr (readonly)
-				[3]: var124_upvw (read and write)
-				[4]: process_block_upvw (read and write)
-				[5]: no_suggestions_upvr (readonly)
-			]]
-			local get_span_result1 = get_span_upvr(arg1_17.expression)
-			local var128
-			if get_span_result1.x <= where_upvr and where_upvr <= get_span_result1.y then
-				var128 = "within"
-			elseif where_upvr < get_span_result1.x then
-				var128 = "before"
-			else
-				var128 = "after"
-			end
-			if var128 == "within" then
-				var128 = var124_upvw(arg1_17.expression.value, true)
-				return var128
-			end
-			local block = arg1_17.block
-			if block then
-				local get_span_upvr_result1 = get_span_upvr(block)
-				local var131
-				if get_span_upvr_result1.x <= where_upvr and where_upvr <= get_span_upvr_result1.y then
-					var131 = "within"
-				elseif where_upvr < get_span_upvr_result1.x then
-					var131 = "before"
-				else
-					var131 = "after"
-				end
-				if var131 == "within" then
-					var131 = process_block_upvw(block.value)
-					return var131
-				end
-			end
-			return no_suggestions_upvr("")
-		end
-		function parse_for(arg1_18) -- Line 555
-			--[[ Upvalues[5]:
-				[1]: get_span_upvr (readonly)
-				[2]: where_upvr (readonly)
-				[3]: no_suggestions_upvr (readonly)
-				[4]: var117_upvw (read and write)
-				[5]: process_function_upvw (read and write)
-			]]
-			local expression = arg1_18.expression
-			if expression then
-				local get_span_result1_4 = get_span_upvr(arg1_18.expression)
-				if get_span_result1_4.x <= where_upvr then
-					if where_upvr <= get_span_result1_4.y then
-						expression = "within"
-						-- KONSTANTWARNING: GOTO [27] #20
-					end
-				end
-				if where_upvr < get_span_result1_4.x then
-					expression = "before"
-				else
-					expression = "after"
-				end
-				if expression == "within" then
-					expression = arg1_18.expression.value
-					if expression == nil then
-						expression = no_suggestions_upvr("")
-						return expression
-					end
-					expression = var117_upvw(arg1_18.expression.value)
-					return expression
-				end
-			end
-			if arg1_18.call then
-				return process_function_upvw(arg1_18.call)
-			end
-		end
-		function process_block_upvw(arg1_19) -- Line 567, Named "process_block"
-			--[[ Upvalues[6]:
-				[1]: where_upvr (readonly)
-				[2]: no_suggestions_upvr (readonly)
-				[3]: process_assignment_upvw (read and write)
-				[4]: process_command_upvw (read and write)
-				[5]: process_return_upvw (read and write)
-				[6]: process_while_upvw (read and write)
-			]]
-			for _, v_5 in arg1_19.body do
-				local var138 = v_5
-				local span_2 = v_5.span
-				local var140
-				if span_2.x <= where_upvr then
-					if where_upvr <= span_2.y then
-						var140 = "within"
-						-- KONSTANTWARNING: GOTO [29] #22
-					end
-				end
-				if where_upvr < span_2.x then
-					var140 = "before"
-				else
-					var140 = "after"
-				end
-				if var140 ~= "before" and var140 ~= "after" then
-					if var138 == nil then
-						return no_suggestions_upvr("")
-					end
-					if var138.kind == "if" then
-						return parse_if_stat(var138)
-					end
-					if var138.kind == "assign" then
-						return process_assignment_upvw(var138)
-					end
-					if var138.kind == "command" then
-						return process_command_upvw(var138)
-					end
-					if var138.kind == "return" then
-						return process_return_upvw(var138)
-					end
-					if var138.kind == "for" then
-						return parse_for(var138)
-					end
-					if var138.kind == "while" then
-						return process_while_upvw(var138)
-					end
-					return no_suggestions_upvr("")
-				end
-			end
-			return no_suggestions_upvr("")
-		end
-		return process_block_upvw(var1_result1_upvr.value)
-	end;
-}
+    generate_analysis_info = function(v2) --[[ Line: 33 ]] --[[ Name: generate_analysis_info ]]
+        -- upvalues: v0 (copy)
+        local v3 = {};
+        local l_where_0 = v2.where;
+        local function _(v5, v6) --[[ Line: 56 ]] --[[ Name: LOG ]]
+            -- upvalues: v3 (copy)
+            table.insert(v3, {
+                kind = v5, 
+                text = v6
+            });
+        end;
+        local function v11(v8) --[[ Line: 60 ]] --[[ Name: get_span ]]
+            local _ = nil;
+            local _ = nil;
+            return (vector.create(if v8.left then v8.left.span.x else if v8.value then v8.value.span.x else v8.right.span.x, if v8.right then v8.right.span.y else if v8.value then v8.value.span.y else v8.left.span.y, 0));
+        end;
+        local function _(v12) --[[ Line: 85 ]] --[[ Name: get_text_token ]]
+            -- upvalues: l_where_0 (copy)
+            local l_span_0 = v12.span;
+            local v14 = l_where_0 - l_span_0.x;
+            return (string.sub(v12.text, 1, v14));
+        end;
+        local function _(v16) --[[ Line: 91 ]] --[[ Name: position_relative ]]
+            -- upvalues: l_where_0 (copy)
+            if l_where_0 >= v16.x and l_where_0 <= v16.y then
+                return "within";
+            elseif l_where_0 < v16.x then
+                return "before";
+            else
+                return "after";
+            end;
+        end;
+        local v18 = v0(v2.code);
+        local v19 = nil;
+        local function v21(v20) --[[ Line: 103 ]] --[[ Name: no_suggestions ]]
+            -- upvalues: l_where_0 (copy), v3 (copy), v18 (copy)
+            return {
+                at = l_where_0, 
+                text = v20, 
+                logs = v3, 
+                suggestions = {}, 
+                ast = v18 and v18.status == "finished" and v18.value
+            };
+        end;
+        if v18.status == "error" then
+            local l_why_0 = v18.why;
+            table.insert(v3, {
+                kind = "error", 
+                text = l_why_0
+            });
+            return (v21(""));
+        else
+            v19 = v18.value;
+            local v23 = nil;
+            local v24 = nil;
+            local v25 = nil;
+            local v26 = nil;
+            local v27 = nil;
+            local v28 = nil;
+            local v29 = nil;
+            local v30 = nil;
+            v26 = function(v31, v32) --[[ Line: 135 ]] --[[ Name: process_command ]]
+                -- upvalues: l_where_0 (copy), v2 (copy), v21 (copy), v29 (ref), v3 (copy)
+                local l_span_1 = v31.prefix.span;
+                local v34 = l_where_0 >= l_span_1.x and l_where_0 <= l_span_1.y and "within" or l_where_0 < l_span_1.x and "before" or "after";
+                if v34 == "within" then
+                    return process_variable(v31.prefix, v32);
+                elseif v34 == "after" then
+                    local l_prefix_0 = v31.prefix.prefix;
+                    local v36 = nil;
+                    if l_prefix_0.kind == "global" then
+                        for _, v38 in v2.commands do
+                            if v38.name == l_prefix_0.token.text then
+                                v36 = v38;
+                                break;
+                            end;
+                        end;
+                    end;
+                    if not v36 then
+                        return (v21(""));
+                    else
+                        local v39 = 1;
+                        local v40 = vector.create(v31.prefix.span.y, 0);
+                        local v41 = v21("");
+                        for _, v43 in v31.arguments do
+                            local l_span_2 = v43.span;
+                            local v45 = l_where_0 >= l_span_2.x and l_where_0 <= l_span_2.y and "within" or l_where_0 < l_span_2.x and "before" or "after";
+                            if v45 == "within" then
+                                v40 = v43.span;
+                                v41 = v29(v43);
+                                break;
+                            elseif v45 == "after" then
+                                v40 = vector.create(v43.span.y + 1, v43.span.y + 1, 0);
+                                v39 = v39 + 1;
+                            elseif v45 == "before" then
+                                break;
+                            end;
+                        end;
+                        local v46 = v36.arguments[v39];
+                        if #v36.arguments < v39 then
+                            v46 = v36.arguments[#v36.arguments];
+                            if v46 and v46.kind ~= "variadic" then
+                                local v47 = ("no argument #%*"):format(v39);
+                                table.insert(v3, {
+                                    kind = "warn", 
+                                    text = v47
+                                });
+                                return v41;
+                            end;
+                        end;
+                        if v46 and v46.suggestion_generator then
+                            local l_suggestion_generator_0 = v46.suggestion_generator;
+                            local l_text_0 = v41.text;
+                            local v50 = l_suggestion_generator_0(l_text_0);
+                            for v51, v52 in v50 do
+                                v50[v51] = {
+                                    name = v52, 
+                                    type = l_text_0, 
+                                    replace = v40, 
+                                    with = v52
+                                };
+                            end;
+                            table.move(v50, 1, #v50, #v41.suggestions + 1, v41.suggestions);
+                        end;
+                        v41.analyzing = v41.analyzing or v46;
+                        return v41;
+                    end;
+                else
+                    return (v21(""));
+                end;
+            end;
+            process_if = function(v53) --[[ Line: 223 ]] --[[ Name: process_if ]]
+                -- upvalues: v11 (copy), l_where_0 (copy), v30 (ref), v25 (ref)
+                local l_condition_0 = v53.condition;
+                local v55 = v11(l_condition_0);
+                if (l_where_0 >= v55.x and l_where_0 <= v55.y and "within" or l_where_0 < v55.x and "before" or "after") == "within" then
+                    return v30(l_condition_0.value);
+                elseif v53.block then
+                    return v25(v53.block.value);
+                else
+                    return;
+                end;
+            end;
+            parse_if_stat = function(v56) --[[ Line: 234 ]] --[[ Name: parse_if_stat ]]
+                -- upvalues: l_where_0 (copy), v11 (copy), v25 (ref)
+                for _, v58 in v56.ifs do
+                    local l_span_3 = v58.span;
+                    local v60 = l_where_0 >= l_span_3.x and l_where_0 <= l_span_3.y and "within" or l_where_0 < l_span_3.x and "before" or "after";
+                    if v60 ~= "before" then
+                        if v60 ~= "after" then
+                            return process_if(v58);
+                        else
+                            break;
+                        end;
+                    end;
+                end;
+                local l_fallback_0 = v56.fallback;
+                if l_fallback_0 then
+                    local v62 = v11(l_fallback_0);
+                    if (l_where_0 >= v62.x and l_where_0 <= v62.y and "within" or l_where_0 < v62.x and "before" or "after") == "within" then
+                        return v25(l_fallback_0.value);
+                    end;
+                end;
+            end;
+            v27 = function(v63) --[[ Line: 248 ]] --[[ Name: process_function ]]
+                -- upvalues: v21 (copy), v11 (copy), l_where_0 (copy), v25 (ref)
+                if not v63.block then
+                    return (v21(""));
+                else
+                    local v64 = v11(v63.block);
+                    if (l_where_0 >= v64.x and l_where_0 <= v64.y and "within" or l_where_0 < v64.x and "before" or "after") == "within" then
+                        return v25(v63.block.value);
+                    else
+                        return (v21(""));
+                    end;
+                end;
+            end;
+            process_var_prefix = function(v65, v66) --[[ Line: 257 ]] --[[ Name: process_var_prefix ]]
+                -- upvalues: l_where_0 (copy), v2 (copy), v30 (ref), v3 (copy), v18 (copy)
+                local l_prefix_1 = v65.prefix;
+                local v68 = nil;
+                local v69 = nil;
+                local v70 = {};
+                if l_prefix_1.kind == "global" then
+                    local l_token_0 = l_prefix_1.token;
+                    local l_span_4 = l_token_0.span;
+                    local v73 = l_where_0 - l_span_4.x;
+                    v69 = string.sub(l_token_0.text, 1, v73);
+                    if v66 and string.sub("true", 1, #v69) == v69 then
+                        table.insert(v70, {
+                            name = "true", 
+                            type = "true", 
+                            replace = v65.span, 
+                            with = "true"
+                        });
+                    end;
+                    if v66 and string.sub("false", 1, #v69) == v69 then
+                        table.insert(v70, {
+                            name = "false", 
+                            type = "false", 
+                            replace = v65.span, 
+                            with = "false"
+                        });
+                    end;
+                    if v66 and string.sub("nil", 1, #v69) == v69 then
+                        table.insert(v70, {
+                            name = "nil", 
+                            type = "nil", 
+                            replace = v65.span, 
+                            with = "nil"
+                        });
+                    end;
+                    if not v66 and string.sub("for", 1, #v69) == v69 then
+                        table.insert(v70, {
+                            name = "for", 
+                            type = "for", 
+                            replace = v65.span, 
+                            with = "for"
+                        });
+                    end;
+                    if not v66 and string.sub("if", 1, #v69) == v69 then
+                        table.insert(v70, {
+                            name = "if", 
+                            type = "if", 
+                            replace = v65.span, 
+                            with = "if"
+                        });
+                    end;
+                    if not v66 and string.sub("while", 1, #v69) == v69 then
+                        table.insert(v70, {
+                            name = "while", 
+                            type = "while", 
+                            replace = v65.span, 
+                            with = "while"
+                        });
+                    end;
+                    if not v66 and string.sub("else", 1, #v69) == v69 then
+                        table.insert(v70, {
+                            name = "else", 
+                            type = "else", 
+                            replace = v65.span, 
+                            with = "else"
+                        });
+                    end;
+                    for _, v75 in v2.commands do
+                        local v76 = string.lower(v69);
+                        if string.sub(string.lower(v75.name), 1, #v76) == v76 then
+                            if #v76 == #v75.name then
+                                v68 = v75;
+                            end;
+                            table.insert(v70, {
+                                name = v75.name, 
+                                description = v75.description, 
+                                type = "Command", 
+                                replace = v65.span, 
+                                with = v75.name
+                            });
+                        end;
+                    end;
+                elseif l_prefix_1.kind == "name" then
+                    v69 = l_prefix_1.name and l_prefix_1.name.text or "";
+                    for v77, v78 in v2.variables do
+                        local v79 = string.lower(v69);
+                        if string.sub(string.lower(v77), 1, #v79) == v79 then
+                            if #v79 == #v77 then
+                                v68 = {
+                                    kind = "argument", 
+                                    name = v77, 
+                                    type = typeof(v78)
+                                };
+                            end;
+                            table.insert(v70, {
+                                name = v77, 
+                                type = typeof(v78), 
+                                replace = l_prefix_1.name and l_prefix_1.name.span or vector.create(l_prefix_1.span.x + 1, l_prefix_1.span.y), 
+                                with = v77
+                            });
+                        end;
+                    end;
+                elseif l_prefix_1.kind == "paren" and l_prefix_1.expr.value then
+                    return v30(l_prefix_1.expr.value);
+                end;
+                return {
+                    at = l_where_0, 
+                    text = v69, 
+                    logs = v3, 
+                    ast = v18.value, 
+                    analyzing = v68, 
+                    suggestions = v70
+                };
+            end;
+            process_variable = function(v80, v81) --[[ Line: 395 ]] --[[ Name: process_variable ]]
+                -- upvalues: l_where_0 (copy), v21 (copy), v2 (copy), v3 (copy)
+                local l_span_5 = v80.prefix.span;
+                if (l_where_0 >= l_span_5.x and l_where_0 <= l_span_5.y and "within" or l_where_0 < l_span_5.x and "before" or "after") == "within" then
+                    return process_var_prefix(v80, v81);
+                elseif v80.prefix.kind == "paren" then
+                    return (v21(""));
+                elseif v80.prefix.kind == "global" then
+                    return (v21(""));
+                else
+                    local l_prefix_2 = v80.prefix;
+                    l_span_5 = l_prefix_2.name and l_prefix_2.name.text;
+                    if not l_span_5 then
+                        return (v21(""));
+                    else
+                        local v84 = v2.variables[l_span_5];
+                        local v85 = vector.create(v80.span.x, 0);
+                        local v86 = nil;
+                        if v84 == nil then
+                            local v87 = ("no defined variable named \"%*\""):format(l_span_5);
+                            table.insert(v3, {
+                                kind = "warn", 
+                                text = v87
+                            });
+                            return (v21(l_span_5));
+                        else
+                            for _, v89 in v80.suffixes do
+                                if type(v84) ~= "table" and type(v84) ~= "userdata" and type(v84) ~= "vector" then
+                                    local v90 = ("probably can't index \"%*\" which is a \"%*\""):format(l_span_5, (typeof(v84)));
+                                    table.insert(v3, {
+                                        kind = "warn", 
+                                        text = v90
+                                    });
+                                end;
+                                local l_span_6 = v89.span;
+                                if (l_where_0 >= l_span_6.x and l_where_0 <= l_span_6.y and "within" or l_where_0 < l_span_6.x and "before" or "after") ~= "within" then
+                                    if v89.kind == "nameindex" then
+                                        local v92 = v89.name and v89.name.text;
+                                        if not v92 then
+                                            return (v21(v92));
+                                        else
+                                            v84 = v84[v92];
+                                            v86 = v92;
+                                        end;
+                                    else
+                                        return (v21(""));
+                                    end;
+                                elseif v89.kind == "nameindex" then
+                                    local v93 = v89.name and v89.name.text;
+                                    if not v93 then
+                                        return (v21(v93));
+                                    else
+                                        v86 = v93;
+                                        v85 = v89.name and v89.name.span or vector.create(v89.span.x + 1, v89.span.x + 1);
+                                        break;
+                                    end;
+                                elseif v89.kind == "exprindex" then
+                                    return (v21(""));
+                                else
+                                    break;
+                                end;
+                            end;
+                            local v94 = {};
+                            local v95 = nil;
+                            if v84[v86] then
+                                local v96 = v84[v86];
+                                v95 = {
+                                    kind = "argument", 
+                                    name = v86, 
+                                    type = typeof(v96)
+                                };
+                            end;
+                            if type(v84) == "table" then
+                                for v97, v98 in pairs(v84) do
+                                    local v99 = string.lower(v86);
+                                    if string.sub(string.lower(v97), 1, #v99) == v99 then
+                                        table.insert(v94, {
+                                            name = v97, 
+                                            with = v97, 
+                                            type = typeof(v98), 
+                                            replace = v85
+                                        });
+                                    end;
+                                end;
+                            end;
+                            return {
+                                at = l_where_0, 
+                                text = v86, 
+                                logs = v3, 
+                                analyzing = v95, 
+                                suggestions = v94
+                            };
+                        end;
+                    end;
+                end;
+            end;
+            v29 = function(v100) --[[ Line: 492 ]] --[[ Name: process_expression ]]
+                -- upvalues: v27 (ref), v11 (copy), l_where_0 (copy), v30 (ref), v29 (ref), v21 (copy)
+                if v100.kind == "lambda" then
+                    return v27(v100.body);
+                else
+                    if v100.kind == "evaluate" then
+                        local v101 = v11(v100.body);
+                        if (l_where_0 >= v101.x and l_where_0 <= v101.y and "within" or l_where_0 < v101.x and "before" or "after") == "within" and v100.body.value then
+                            return v30(v100.body.value);
+                        end;
+                    elseif v100.kind == "vector" then
+                        for _, v103 in v100.contents.value do
+                            local l_span_7 = v103.span;
+                            if (l_where_0 >= l_span_7.x and l_where_0 <= l_span_7.y and "within" or l_where_0 < l_span_7.x and "before" or "after") ~= "before" then
+                                return v29(v103);
+                            end;
+                        end;
+                    elseif v100.kind == "identifier" then
+                        return (v21(v100.token.text));
+                    elseif v100.kind == "var" then
+                        return process_variable(v100.var, true);
+                    end;
+                    return (v21(""));
+                end;
+            end;
+            v28 = function(v105) --[[ Line: 518 ]] --[[ Name: process_return ]]
+                -- upvalues: l_where_0 (copy), v30 (ref), v21 (copy)
+                for _, v107 in v105.values do
+                    local l_span_8 = v107.span;
+                    if (l_where_0 >= l_span_8.x and l_where_0 <= l_span_8.y and "within" or l_where_0 < l_span_8.x and "before" or "after") ~= "before" then
+                        return v30(v107);
+                    end;
+                end;
+                return (v21(""));
+            end;
+            v30 = function(v109) --[[ Line: 526 ]] --[[ Name: process_expression_or_command ]]
+                -- upvalues: v26 (ref), v29 (ref)
+                if v109.kind == "command" then
+                    return v26(v109, true);
+                else
+                    return v29(v109);
+                end;
+            end;
+            v23 = function(v110) --[[ Line: 534 ]] --[[ Name: process_assignment ]]
+                -- upvalues: v21 (copy), l_where_0 (copy), v30 (ref)
+                if not v110.right then
+                    return (v21(""));
+                else
+                    local l_span_9 = v110.operator.span;
+                    if (l_where_0 >= l_span_9.x and l_where_0 <= l_span_9.y and "within" or l_where_0 < l_span_9.x and "before" or "after") == "before" then
+                        return (v21(""));
+                    else
+                        return v30(v110.right);
+                    end;
+                end;
+            end;
+            v24 = function(v112) --[[ Line: 542 ]] --[[ Name: process_while ]]
+                -- upvalues: v11 (copy), l_where_0 (copy), v30 (ref), v25 (ref), v21 (copy)
+                local v113 = v11(v112.expression);
+                if (l_where_0 >= v113.x and l_where_0 <= v113.y and "within" or l_where_0 < v113.x and "before" or "after") == "within" then
+                    return v30(v112.expression.value, true);
+                else
+                    local l_block_0 = v112.block;
+                    if l_block_0 then
+                        local v115 = v11(l_block_0);
+                        if (l_where_0 >= v115.x and l_where_0 <= v115.y and "within" or l_where_0 < v115.x and "before" or "after") == "within" then
+                            return v25(l_block_0.value);
+                        end;
+                    end;
+                    return (v21(""));
+                end;
+            end;
+            parse_for = function(v116) --[[ Line: 555 ]] --[[ Name: parse_for ]]
+                -- upvalues: v11 (copy), l_where_0 (copy), v21 (copy), v29 (ref), v27 (ref)
+                if v116.expression then
+                    local v117 = v11(v116.expression);
+                    if (l_where_0 >= v117.x and l_where_0 <= v117.y and "within" or l_where_0 < v117.x and "before" or "after") == "within" then
+                        if v116.expression.value == nil then
+                            return (v21(""));
+                        else
+                            return v29(v116.expression.value);
+                        end;
+                    end;
+                end;
+                if v116.call then
+                    return v27(v116.call);
+                else
+                    return;
+                end;
+            end;
+            v25 = function(v118) --[[ Line: 567 ]] --[[ Name: process_block ]]
+                -- upvalues: l_where_0 (copy), v21 (copy), v23 (ref), v26 (ref), v28 (ref), v24 (ref)
+                local v119 = nil;
+                for _, v121 in v118.body do
+                    v119 = v121;
+                    local l_span_10 = v121.span;
+                    local v123 = l_where_0 >= l_span_10.x and l_where_0 <= l_span_10.y and "within" or l_where_0 < l_span_10.x and "before" or "after";
+                    if v123 ~= "before" and v123 ~= "after" then
+                        if v119 == nil then
+                            return (v21(""));
+                        elseif v119.kind == "if" then
+                            return (parse_if_stat(v119));
+                        elseif v119.kind == "assign" then
+                            return (v23(v119));
+                        elseif v119.kind == "command" then
+                            return (v26(v119));
+                        elseif v119.kind == "return" then
+                            return (v28(v119));
+                        elseif v119.kind == "for" then
+                            return (parse_for(v119));
+                        elseif v119.kind == "while" then
+                            return (v24(v119));
+                        else
+                            return (v21(""));
+                        end;
+                    end;
+                end;
+                return (v21(""));
+            end;
+            return v25(v19);
+        end;
+    end
+};

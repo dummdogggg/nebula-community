@@ -1,10 +1,11 @@
 --[[
-    STUB SCRIPT (Original could not be decompiled)
     Script: ReplicatedStorage.Shared.SharedConstants.ValueManagerName
     Type: ModuleScript
-    Error: API Error - Falha na decompilação
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
 return {
-    -- Module content not available
-}
+    Health = "Health", 
+    WalkSpeed = "WalkSpeed", 
+    JumpHeight = "JumpHeight"
+};

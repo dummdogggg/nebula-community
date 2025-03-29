@@ -1,643 +1,498 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.PlayerModule.CameraModule.CameraInput
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:34:40
--- Luau version 6, Types version 3
--- Time taken: 0.012097 seconds
-
-local UserInputService_upvr = game:GetService("UserInputService")
-local VRService_upvr = game:GetService("VRService")
-local any_getUserFlag_result1_upvr = require(script.Parent.Parent:WaitForChild("CommonUtils"):WaitForChild("FlagUtil")).getUserFlag("UserCameraInputDt")
-local var4_upvw = Vector2.new(1, 0.77) * 0.06981317007977318
-local var5_upvr
-if any_getUserFlag_result1_upvr then
-	var4_upvw *= 60
-end
-local pcall_result1, pcall_result2 = pcall(function() -- Line 41
-	return UserSettings():IsUserFeatureEnabled("UserResetTouchStateOnMenuOpen")
-end)
-local var9_upvw = pcall_result1 and pcall_result2
-local pcall_result1_2, pcall_result2_2 = pcall(function() -- Line 49
-	return UserSettings():IsUserFeatureEnabled("UserClearPanOnCameraDisable")
-end)
-local BindableEvent_upvw = Instance.new("BindableEvent")
-local BindableEvent_upvr = Instance.new("BindableEvent")
-UserInputService_upvr.InputBegan:Connect(function(arg1, arg2) -- Line 63
-	--[[ Upvalues[1]:
-		[1]: BindableEvent_upvw (readonly)
-	]]
-	if not arg2 and arg1.UserInputType == Enum.UserInputType.MouseButton2 then
-		BindableEvent_upvw:Fire()
-	end
-end)
-UserInputService_upvr.InputEnded:Connect(function(arg1, arg2) -- Line 69
-	--[[ Upvalues[1]:
-		[1]: BindableEvent_upvr (readonly)
-	]]
-	if arg1.UserInputType == Enum.UserInputType.MouseButton2 then
-		BindableEvent_upvr:Fire()
-	end
-end)
-BindableEvent_upvw = nil
-function BindableEvent_upvw(arg1) -- Line 80, Named "thumbstickCurve"
-	return math.sign(arg1) * math.clamp((math.exp((math.abs(arg1) - 0.1) / 0.9 * 2) - 1) / 6.38905609893065, 0, 1)
-end
-function BindableEvent_upvr(arg1) -- Line 94, Named "adjustTouchPitchSensitivity"
-	local CurrentCamera = workspace.CurrentCamera
-	if not CurrentCamera then
-		return arg1
-	end
-	local any_ToEulerAnglesYXZ_result1 = CurrentCamera.CFrame:ToEulerAnglesYXZ()
-	if 0 <= arg1.Y * any_ToEulerAnglesYXZ_result1 then
-		return arg1
-	end
-	return Vector2.new(1, (1 - (math.abs(any_ToEulerAnglesYXZ_result1) * 2 / math.pi) ^ 0.75) * 0.75 + 0.25) * arg1
-end
-local LocalPlayer_upvr = game:GetService("Players").LocalPlayer
-local function isInDynamicThumbstickArea_upvr(arg1) -- Line 120, Named "isInDynamicThumbstickArea"
-	--[[ Upvalues[1]:
-		[1]: LocalPlayer_upvr (readonly)
-	]]
-	local var34 = LocalPlayer_upvr:FindFirstChildOfClass("PlayerGui")
-	if var34 then
-		var34 = LocalPlayer_upvr:FindFirstChildOfClass("PlayerGui"):FindFirstChild("TouchGui")
-	end
-	local var35 = var34
-	if var35 then
-		var35 = var34:FindFirstChild("TouchControlFrame")
-	end
-	local var36 = var35
-	if var36 then
-		var36 = var35:FindFirstChild("DynamicThumbstickFrame")
-	end
-	if not var36 then
-		return false
-	end
-	if not var34.Enabled then
-		return false
-	end
-	local AbsolutePosition = var36.AbsolutePosition
-	local var38 = AbsolutePosition + var36.AbsoluteSize
-	local var39 = false
-	if AbsolutePosition.X <= arg1.X then
-		var39 = false
-		if AbsolutePosition.Y <= arg1.Y then
-			var39 = false
-			if arg1.X <= var38.X then
-				if arg1.Y > var38.Y then
-					var39 = false
-				else
-					var39 = true
-				end
-			end
-		end
-	end
-	return var39
-end
-local var40_upvw = (1/60)
-game:GetService("RunService").Stepped:Connect(function(arg1, arg2) -- Line 145
-	--[[ Upvalues[1]:
-		[1]: var40_upvw (read and write)
-	]]
-	var40_upvw = arg2
-end)
-local module = {}
-local var43_upvw = 0
-local function _() -- Line 155, Named "incPanInputCount"
-	--[[ Upvalues[1]:
-		[1]: var43_upvw (read and write)
-	]]
-	var43_upvw = math.max(0, var43_upvw + 1)
-end
-local function _() -- Line 159, Named "decPanInputCount"
-	--[[ Upvalues[1]:
-		[1]: var43_upvw (read and write)
-	]]
-	var43_upvw = math.max(0, var43_upvw - 1)
-end
-local function _() -- Line 163, Named "resetPanInputCount"
-	--[[ Upvalues[1]:
-		[1]: var43_upvw (read and write)
-	]]
-	var43_upvw = 0
-end
-local tbl_6_upvr = {
-	Thumbstick2 = Vector2.new();
-}
-local tbl_7_upvr = {
-	Left = 0;
-	Right = 0;
-	I = 0;
-	O = 0;
-}
-local tbl_upvr = {
-	Movement = Vector2.new();
-	Wheel = 0;
-	Pan = Vector2.new();
-	Pinch = 0;
-}
-local tbl_2_upvr = {
-	Move = Vector2.new();
-	Pinch = 0;
-}
-var5_upvr = "BindableEvent"
-local any_upvr = Instance.new(var5_upvr)
-var5_upvr = any_upvr.Event
-module.gamepadZoomPress = var5_upvr
-local function INLINED() -- Internal function, doesn't exist in bytecode
-	var5_upvr = Instance.new("BindableEvent")
-	return var5_upvr
-end
-if not VRService_upvr.VREnabled or not INLINED() then
-	var5_upvr = nil
-end
-if VRService_upvr.VREnabled then
-	module.gamepadReset = var5_upvr.Event
-end
-function module.getRotationActivated() -- Line 196
-	--[[ Upvalues[2]:
-		[1]: var43_upvw (read and write)
-		[2]: tbl_6_upvr (readonly)
-	]]
-	local var49 = true
-	if 0 >= var43_upvw then
-		if 0 >= tbl_6_upvr.Thumbstick2.Magnitude then
-			var49 = false
-		else
-			var49 = true
-		end
-	end
-	return var49
-end
-local UserGameSettings_upvr = UserSettings():GetService("UserGameSettings")
-local var51_upvr = Vector2.new(1, 0.77) * 0.008726646259971648
-local var52_upvr = Vector2.new(1, 0.77) * 0.12217304763960307
-local var53_upvr = Vector2.new(1, 0.66) * 0.017453292519943295
-function module.getRotation(arg1, arg2) -- Line 200
-	--[[ Upvalues[12]:
-		[1]: UserGameSettings_upvr (readonly)
-		[2]: any_getUserFlag_result1_upvr (readonly)
-		[3]: tbl_7_upvr (readonly)
-		[4]: var40_upvw (read and write)
-		[5]: tbl_6_upvr (readonly)
-		[6]: tbl_upvr (readonly)
-		[7]: BindableEvent_upvr (readonly)
-		[8]: tbl_2_upvr (readonly)
-		[9]: var4_upvw (read and write)
-		[10]: var51_upvr (readonly)
-		[11]: var52_upvr (readonly)
-		[12]: var53_upvr (readonly)
-	]]
-	local var54
-	if any_getUserFlag_result1_upvr then
-		var54 = Vector2.new(tbl_7_upvr.Right - tbl_7_upvr.Left, 0) * arg1
-	else
-		var54 = Vector2.new(tbl_7_upvr.Right - tbl_7_upvr.Left, 0) * var40_upvw
-	end
-	local var55 = tbl_6_upvr.Thumbstick2 * UserGameSettings_upvr.GamepadCameraSensitivity
-	if any_getUserFlag_result1_upvr then
-		var55 *= arg1
-	end
-	if arg2 then
-		var54 = Vector2.new()
-	end
-	return (var54 * 2.0943951023931953 + var55 * var4_upvw + tbl_upvr.Movement * var51_upvr + tbl_upvr.Pan * var52_upvr + BindableEvent_upvr(tbl_2_upvr.Move) * var53_upvr) * Vector2.new(1, UserGameSettings_upvr:GetCameraYInvertValue())
-end
-function module.getZoomDelta() -- Line 234
-	--[[ Upvalues[3]:
-		[1]: tbl_7_upvr (readonly)
-		[2]: tbl_upvr (readonly)
-		[3]: tbl_2_upvr (readonly)
-	]]
-	return (tbl_7_upvr.O - tbl_7_upvr.I) * 0.1 + (-tbl_upvr.Wheel + tbl_upvr.Pinch) * 1 + -tbl_2_upvr.Pinch * 0.04
-end
-local function thumbstick_upvr(arg1, arg2, arg3) -- Line 242, Named "thumbstick"
-	--[[ Upvalues[2]:
-		[1]: tbl_6_upvr (readonly)
-		[2]: BindableEvent_upvw (read and write)
-	]]
-	local Position = arg3.Position
-	tbl_6_upvr[arg3.KeyCode.Name] = Vector2.new(BindableEvent_upvw(Position.X), -BindableEvent_upvw(Position.Y))
-	return Enum.ContextActionResult.Pass
-end
-local function _(arg1) -- Line 248, Named "mouseMovement"
-	--[[ Upvalues[1]:
-		[1]: tbl_upvr (readonly)
-	]]
-	local Delta_2 = arg1.Delta
-	tbl_upvr.Movement = Vector2.new(Delta_2.X, Delta_2.Y)
-end
-local function _(arg1, arg2, arg3) -- Line 253, Named "mouseWheel"
-	--[[ Upvalues[1]:
-		[1]: tbl_upvr (readonly)
-	]]
-	tbl_upvr.Wheel = arg3.Position.Z
-	return Enum.ContextActionResult.Pass
-end
-local function keypress_upvr(arg1, arg2, arg3) -- Line 258, Named "keypress"
-	--[[ Upvalues[1]:
-		[1]: tbl_7_upvr (readonly)
-	]]
-	local KeyCode = arg3.KeyCode
-	if arg2 == Enum.UserInputState.Begin then
-		KeyCode = 1
-	else
-		KeyCode = 0
-	end
-	tbl_7_upvr[KeyCode.Name] = KeyCode
-end
-local function gamepadZoomPress_upvr(arg1, arg2, arg3) -- Line 262, Named "gamepadZoomPress"
-	--[[ Upvalues[1]:
-		[1]: any_upvr (readonly)
-	]]
-	if arg2 == Enum.UserInputState.Begin then
-		any_upvr:Fire()
-	end
-end
-local function gamepadReset_upvr(arg1, arg2, arg3) -- Line 268, Named "gamepadReset"
-	--[[ Upvalues[1]:
-		[1]: var5_upvr (readonly)
-	]]
-	if arg2 == Enum.UserInputState.Begin then
-		var5_upvr:Fire()
-	end
-end
-local var59_upvw = pcall_result1_2 and pcall_result2_2
-local function resetInputDevices_upvr() -- Line 274, Named "resetInputDevices"
-	--[[ Upvalues[6]:
-		[1]: tbl_6_upvr (readonly)
-		[2]: tbl_7_upvr (readonly)
-		[3]: tbl_upvr (readonly)
-		[4]: tbl_2_upvr (readonly)
-		[5]: var59_upvw (read and write)
-		[6]: var43_upvw (read and write)
-	]]
-	for _, v in pairs({tbl_6_upvr, tbl_7_upvr, tbl_upvr, tbl_2_upvr}) do
-		for i_2, v_2 in pairs(v) do
-			if type(v_2) == "boolean" then
-				v[i_2] = false
-			else
-				v[i_2] *= 0
-			end
-		end
-	end
-	if var59_upvw then
-		var43_upvw = 0
-	end
-end
-local tbl_5_upvw = {}
-local var72_upvw
-local var73_upvw
-local function touchBegan_upvw(arg1, arg2) -- Line 302, Named "touchBegan"
-	--[[ Upvalues[4]:
-		[1]: var72_upvw (read and write)
-		[2]: isInDynamicThumbstickArea_upvr (readonly)
-		[3]: var43_upvw (read and write)
-		[4]: tbl_5_upvw (read and write)
-	]]
-	local var75
-	if arg1.UserInputType ~= Enum.UserInputType.Touch then
-		var75 = false
-	else
-		var75 = true
-	end
-	assert(var75)
-	if arg1.UserInputState ~= Enum.UserInputState.Begin then
-		var75 = false
-	else
-		var75 = true
-	end
-	assert(var75)
-	if var72_upvw == nil then
-		var75 = arg1.Position
-		if isInDynamicThumbstickArea_upvr(var75) and not arg2 then
-			var72_upvw = arg1
-			return
-		end
-	end
-	if not arg2 then
-		var75 = 0
-		var43_upvw = math.max(var75, var43_upvw + 1)
-	end
-	tbl_5_upvw[arg1] = arg2
-end
-local function touchEnded_upvw(arg1, arg2) -- Line 322, Named "touchEnded"
-	--[[ Upvalues[4]:
-		[1]: var72_upvw (read and write)
-		[2]: tbl_5_upvw (read and write)
-		[3]: var73_upvw (read and write)
-		[4]: var43_upvw (read and write)
-	]]
-	local var76
-	if arg1.UserInputType ~= Enum.UserInputType.Touch then
-		var76 = false
-	else
-		var76 = true
-	end
-	assert(var76)
-	if arg1.UserInputState ~= Enum.UserInputState.End then
-		var76 = false
-	else
-		var76 = true
-	end
-	assert(var76)
-	if arg1 == var72_upvw then
-		var72_upvw = nil
-	end
-	var76 = tbl_5_upvw
-	if var76[arg1] == false then
-		var73_upvw = nil
-		var76 = 0
-		var43_upvw = math.max(var76, var43_upvw - 1)
-	end
-	var76 = nil
-	tbl_5_upvw[arg1] = var76
-end
-local function touchChanged_upvw(arg1, arg2) -- Line 341, Named "touchChanged"
-	--[[ Upvalues[4]:
-		[1]: var72_upvw (read and write)
-		[2]: tbl_5_upvw (read and write)
-		[3]: tbl_2_upvr (readonly)
-		[4]: var73_upvw (read and write)
-	]]
-	local var92
-	if arg1.UserInputType ~= Enum.UserInputType.Touch then
-		var92 = false
-	else
-		var92 = true
-	end
-	assert(var92)
-	if arg1.UserInputState ~= Enum.UserInputState.Change then
-		var92 = false
-	else
-		var92 = true
-	end
-	assert(var92)
-	if arg1 == var72_upvw then
-	else
-		var92 = tbl_5_upvw
-		if var92[arg1] == nil then
-			tbl_5_upvw[arg1] = arg2
-		end
-		local tbl_4 = {}
-		var92 = pairs(tbl_5_upvw)
-		local pairs_result1, pairs_result2, pairs_result3_3 = pairs(tbl_5_upvw)
-		for i_3, v_3 in pairs_result1, pairs_result2, pairs_result3_3 do
-			if not v_3 then
-				table.insert(tbl_4, i_3)
-			end
-		end
-		pairs_result1 = #tbl_4
-		if pairs_result1 == 1 then
-			pairs_result1 = tbl_5_upvw[arg1]
-			if pairs_result1 == false then
-				pairs_result1 = arg1.Delta
-				local var97 = tbl_2_upvr
-				i_3 = Vector2.new
-				v_3 = pairs_result1.X
-				i_3 = i_3(v_3, pairs_result1.Y)
-				var97.Move += i_3
-			end
-		end
-		pairs_result1 = #tbl_4
-		if pairs_result1 == 2 then
-			i_3 = tbl_4[1]
-			v_3 = tbl_4[2]
-			i_3 = v_3.Position
-			pairs_result1 = (i_3.Position - i_3).Magnitude
-			if var73_upvw then
-				local var98 = tbl_2_upvr
-				v_3 = var73_upvw
-				i_3 = pairs_result1 - v_3
-				var98.Pinch += i_3
-			end
-			var73_upvw = pairs_result1
-			return
-		end
-		pairs_result1 = nil
-		var73_upvw = pairs_result1
-	end
-end
-local function resetTouchState_upvw() -- Line 385, Named "resetTouchState"
-	--[[ Upvalues[5]:
-		[1]: tbl_5_upvw (read and write)
-		[2]: var72_upvw (read and write)
-		[3]: var73_upvw (read and write)
-		[4]: var9_upvw (read and write)
-		[5]: var43_upvw (read and write)
-	]]
-	tbl_5_upvw = {}
-	var72_upvw = nil
-	var73_upvw = nil
-	if var9_upvw then
-		var43_upvw = 0
-	end
-end
-local function pointerAction_upvr(arg1, arg2, arg3, arg4) -- Line 395, Named "pointerAction"
-	--[[ Upvalues[1]:
-		[1]: tbl_upvr (readonly)
-	]]
-	if not arg4 then
-		tbl_upvr.Wheel = arg1
-		tbl_upvr.Pan = arg2
-		tbl_upvr.Pinch = -arg3
-	end
-end
-local function inputBegan_upvr(arg1, arg2) -- Line 403, Named "inputBegan"
-	--[[ Upvalues[2]:
-		[1]: touchBegan_upvw (read and write)
-		[2]: var43_upvw (read and write)
-	]]
-	if arg1.UserInputType == Enum.UserInputType.Touch then
-		touchBegan_upvw(arg1, arg2)
-	elseif arg1.UserInputType == Enum.UserInputType.MouseButton2 and not arg2 then
-		var43_upvw = math.max(0, var43_upvw + 1)
-	end
-end
-local function inputChanged_upvr(arg1, arg2) -- Line 412, Named "inputChanged"
-	--[[ Upvalues[2]:
-		[1]: touchChanged_upvw (read and write)
-		[2]: tbl_upvr (readonly)
-	]]
-	if arg1.UserInputType == Enum.UserInputType.Touch then
-		touchChanged_upvw(arg1, arg2)
-	elseif arg1.UserInputType == Enum.UserInputType.MouseMovement then
-		local Delta = arg1.Delta
-		tbl_upvr.Movement = Vector2.new(Delta.X, Delta.Y)
-	end
-end
-local function inputEnded_upvr(arg1, arg2) -- Line 421, Named "inputEnded"
-	--[[ Upvalues[2]:
-		[1]: touchEnded_upvw (read and write)
-		[2]: var43_upvw (read and write)
-	]]
-	if arg1.UserInputType == Enum.UserInputType.Touch then
-		touchEnded_upvw(arg1, arg2)
-	elseif arg1.UserInputType == Enum.UserInputType.MouseButton2 then
-		var43_upvw = math.max(0, var43_upvw - 1)
-	end
-end
-local var100_upvw = false
-local ContextActionService_upvr = game:GetService("ContextActionService")
-local Value_upvr = Enum.ContextActionPriority.Medium.Value
-local tbl_3_upvw = {}
-function module.setInputEnabled(arg1) -- Line 432
-	--[[ Upvalues[17]:
-		[1]: var100_upvw (read and write)
-		[2]: resetInputDevices_upvr (readonly)
-		[3]: resetTouchState_upvw (read and write)
-		[4]: ContextActionService_upvr (readonly)
-		[5]: thumbstick_upvr (readonly)
-		[6]: Value_upvr (readonly)
-		[7]: keypress_upvr (readonly)
-		[8]: VRService_upvr (readonly)
-		[9]: gamepadReset_upvr (readonly)
-		[10]: gamepadZoomPress_upvr (readonly)
-		[11]: tbl_3_upvw (read and write)
-		[12]: UserInputService_upvr (readonly)
-		[13]: inputBegan_upvr (readonly)
-		[14]: inputChanged_upvr (readonly)
-		[15]: inputEnded_upvr (readonly)
-		[16]: pointerAction_upvr (readonly)
-		[17]: var9_upvw (read and write)
-	]]
-	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [3] 3. Error Block 2 start (CF ANALYSIS FAILED)
-	do
-		return
-	end
-	-- KONSTANTERROR: [3] 3. Error Block 2 end (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [4] 4. Error Block 3 start (CF ANALYSIS FAILED)
-	var100_upvw = arg1
-	resetInputDevices_upvr()
-	resetTouchState_upvw()
-	-- KONSTANTERROR: [4] 4. Error Block 3 end (CF ANALYSIS FAILED)
-end
-function module.getInputEnabled() -- Line 504
-	--[[ Upvalues[1]:
-		[1]: var100_upvw (read and write)
-	]]
-	return var100_upvw
-end
-function module.resetInputForFrameEnd() -- Line 508
-	--[[ Upvalues[2]:
-		[1]: tbl_upvr (readonly)
-		[2]: tbl_2_upvr (readonly)
-	]]
-	tbl_upvr.Movement = Vector2.new()
-	tbl_2_upvr.Move = Vector2.new()
-	tbl_2_upvr.Pinch = 0
-	tbl_upvr.Wheel = 0
-	tbl_upvr.Pan = Vector2.new()
-	tbl_upvr.Pinch = 0
-end
-UserInputService_upvr.WindowFocused:Connect(resetInputDevices_upvr)
-UserInputService_upvr.WindowFocusReleased:Connect(resetInputDevices_upvr)
-local var104_upvw = false
-local var105_upvw = false
-function module.getHoldPan() -- Line 529
-	--[[ Upvalues[1]:
-		[1]: var104_upvw (read and write)
-	]]
-	return var104_upvw
-end
-function module.getTogglePan() -- Line 533
-	--[[ Upvalues[1]:
-		[1]: var105_upvw (read and write)
-	]]
-	return var105_upvw
-end
-function module.getPanning() -- Line 537
-	--[[ Upvalues[2]:
-		[1]: var105_upvw (read and write)
-		[2]: var104_upvw (read and write)
-	]]
-	local var106 = var105_upvw
-	if not var106 then
-		var106 = var104_upvw
-	end
-	return var106
-end
-function module.setTogglePan(arg1) -- Line 541
-	--[[ Upvalues[1]:
-		[1]: var105_upvw (read and write)
-	]]
-	var105_upvw = arg1
-end
-local var107_upvw = false
-local var108_upvw
-local var109_upvw
-local Event_upvw = BindableEvent_upvw.Event
-local var111_upvw = 0
-local Event_upvw_2 = BindableEvent_upvr.Event
-function module.enableCameraToggleInput() -- Line 549
-	--[[ Upvalues[9]:
-		[1]: var107_upvw (read and write)
-		[2]: var104_upvw (read and write)
-		[3]: var105_upvw (read and write)
-		[4]: var108_upvw (read and write)
-		[5]: var109_upvw (read and write)
-		[6]: Event_upvw (read and write)
-		[7]: var111_upvw (read and write)
-		[8]: Event_upvw_2 (read and write)
-		[9]: UserInputService_upvr (readonly)
-	]]
-	if var107_upvw then
-	else
-		var107_upvw = true
-		var104_upvw = false
-		var105_upvw = false
-		if var108_upvw then
-			var108_upvw:Disconnect()
-		end
-		if var109_upvw then
-			var109_upvw:Disconnect()
-		end
-		var108_upvw = Event_upvw:Connect(function() -- Line 566
-			--[[ Upvalues[2]:
-				[1]: var104_upvw (copied, read and write)
-				[2]: var111_upvw (copied, read and write)
-			]]
-			var104_upvw = true
-			var111_upvw = tick()
-		end)
-		var109_upvw = Event_upvw_2:Connect(function() -- Line 571
-			--[[ Upvalues[4]:
-				[1]: var104_upvw (copied, read and write)
-				[2]: var111_upvw (copied, read and write)
-				[3]: var105_upvw (copied, read and write)
-				[4]: UserInputService_upvr (copied, readonly)
-			]]
-			var104_upvw = false
-			if tick() - var111_upvw < 0.3 and (var105_upvw or UserInputService_upvr:GetMouseDelta().Magnitude < 2) then
-				var105_upvw = not var105_upvw
-			end
-		end)
-	end
-end
-function module.disableCameraToggleInput() -- Line 579
-	--[[ Upvalues[3]:
-		[1]: var107_upvw (read and write)
-		[2]: var108_upvw (read and write)
-		[3]: var109_upvw (read and write)
-	]]
-	if not var107_upvw then
-	else
-		var107_upvw = false
-		if var108_upvw then
-			var108_upvw:Disconnect()
-			var108_upvw = nil
-		end
-		if var109_upvw then
-			var109_upvw:Disconnect()
-			var109_upvw = nil
-		end
-	end
-end
-return module
+local l_ContextActionService_0 = game:GetService("ContextActionService");
+local l_UserInputService_0 = game:GetService("UserInputService");
+local l_Players_0 = game:GetService("Players");
+local l_RunService_0 = game:GetService("RunService");
+local l_UserGameSettings_0 = UserSettings():GetService("UserGameSettings");
+local l_VRService_0 = game:GetService("VRService");
+local l_CommonUtils_0 = script.Parent.Parent:WaitForChild("CommonUtils");
+local v7 = require(l_CommonUtils_0:WaitForChild("FlagUtil")).getUserFlag("UserCameraInputDt");
+local l_LocalPlayer_0 = l_Players_0.LocalPlayer;
+local l_Value_0 = Enum.ContextActionPriority.Medium.Value;
+local v10 = Vector2.new(1, 0.77) * 0.06981317007977318;
+local v11 = Vector2.new(1, 0.77) * 0.008726646259971648;
+local v12 = Vector2.new(1, 0.77) * 0.12217304763960307;
+local v13 = Vector2.new(1, 0.66) * 0.017453292519943295;
+if v7 then
+    v10 = v10 * 60;
+end;
+local v14 = nil;
+local l_status_0, l_result_0 = pcall(function() --[[ Line: 41 ]]
+    return UserSettings():IsUserFeatureEnabled("UserResetTouchStateOnMenuOpen");
+end);
+v14 = l_status_0 and l_result_0;
+l_status_0 = nil;
+local v17;
+l_result_0, v17 = pcall(function() --[[ Line: 49 ]]
+    return UserSettings():IsUserFeatureEnabled("UserClearPanOnCameraDisable");
+end);
+l_status_0 = l_result_0 and v17;
+l_result_0 = nil;
+local v18;
+v17, v18 = pcall(function() --[[ Line: 57 ]]
+    return UserSettings():IsUserFeatureEnabled("UserFixGamepadSensitivity");
+end);
+l_result_0 = v17 and v18;
+v17 = nil;
+v18 = nil;
+local l_BindableEvent_0 = Instance.new("BindableEvent");
+local l_BindableEvent_1 = Instance.new("BindableEvent");
+v17 = l_BindableEvent_0.Event;
+v18 = l_BindableEvent_1.Event;
+local l_l_BindableEvent_0_0 = l_BindableEvent_0 --[[ copy: 20 -> 52 ]];
+l_UserInputService_0.InputBegan:Connect(function(v22, v23) --[[ Line: 71 ]]
+    -- upvalues: l_l_BindableEvent_0_0 (copy)
+    if not v23 and v22.UserInputType == Enum.UserInputType.MouseButton2 then
+        l_l_BindableEvent_0_0:Fire();
+    end;
+end);
+local l_l_BindableEvent_1_0 = l_BindableEvent_1 --[[ copy: 21 -> 53 ]];
+l_UserInputService_0.InputEnded:Connect(function(v25, _) --[[ Line: 77 ]]
+    -- upvalues: l_l_BindableEvent_1_0 (copy)
+    if v25.UserInputType == Enum.UserInputType.MouseButton2 then
+        l_l_BindableEvent_1_0:Fire();
+    end;
+end);
+l_BindableEvent_0 = nil;
+l_BindableEvent_0 = function(v27) --[[ Line: 88 ]] --[[ Name: thumbstickCurve ]]
+    local v28 = (math.exp((math.abs(v27) - 0.1) / 0.9 * 2) - 1) / 6.38905609893065;
+    return math.sign(v27) * math.clamp(v28, 0, 1);
+end;
+l_BindableEvent_1 = function(v29) --[[ Line: 102 ]] --[[ Name: adjustTouchPitchSensitivity ]]
+    local l_CurrentCamera_0 = workspace.CurrentCamera;
+    if not l_CurrentCamera_0 then
+        return v29;
+    else
+        local v31 = l_CurrentCamera_0.CFrame:ToEulerAnglesYXZ();
+        if v29.Y * v31 >= 0 then
+            return v29;
+        else
+            local v32 = (1 - (math.abs(v31) * 2 / 3.141592653589793) ^ 0.75) * 0.75 + 0.25;
+            return Vector2.new(1, v32) * v29;
+        end;
+    end;
+end;
+local function v41(v33) --[[ Line: 128 ]] --[[ Name: isInDynamicThumbstickArea ]]
+    -- upvalues: l_LocalPlayer_0 (copy)
+    local l_PlayerGui_0 = l_LocalPlayer_0:FindFirstChildOfClass("PlayerGui");
+    local v35 = l_PlayerGui_0 and l_PlayerGui_0:FindFirstChild("TouchGui");
+    local v36 = v35 and v35:FindFirstChild("TouchControlFrame");
+    local v37 = v36 and v36:FindFirstChild("DynamicThumbstickFrame");
+    if not v37 then
+        return false;
+    elseif not v35.Enabled then
+        return false;
+    else
+        local l_AbsolutePosition_0 = v37.AbsolutePosition;
+        local v39 = l_AbsolutePosition_0 + v37.AbsoluteSize;
+        local v40 = false;
+        if v33.X >= l_AbsolutePosition_0.X then
+            v40 = false;
+            if v33.Y >= l_AbsolutePosition_0.Y then
+                v40 = false;
+                if v33.X <= v39.X then
+                    v40 = v33.Y <= v39.Y;
+                end;
+            end;
+        end;
+        return v40;
+    end;
+end;
+local v42 = 0.016666666666666666;
+l_RunService_0.Stepped:Connect(function(_, v44) --[[ Line: 153 ]]
+    -- upvalues: v42 (ref)
+    v42 = v44;
+end);
+local v45 = {};
+local v46 = {};
+local v47 = 0;
+do
+    local l_v46_0, l_v47_0 = v46, v47;
+    local function _() --[[ Line: 163 ]] --[[ Name: incPanInputCount ]]
+        -- upvalues: l_v47_0 (ref)
+        l_v47_0 = math.max(0, l_v47_0 + 1);
+    end;
+    local function _() --[[ Line: 167 ]] --[[ Name: decPanInputCount ]]
+        -- upvalues: l_v47_0 (ref)
+        l_v47_0 = math.max(0, l_v47_0 - 1);
+    end;
+    local function _() --[[ Line: 171 ]] --[[ Name: resetPanInputCount ]]
+        -- upvalues: l_v47_0 (ref)
+        l_v47_0 = 0;
+    end;
+    local v53 = {
+        Thumbstick2 = Vector2.new()
+    };
+    local v54 = {
+        Left = 0, 
+        Right = 0, 
+        I = 0, 
+        O = 0
+    };
+    local v55 = {
+        Movement = Vector2.new(), 
+        Wheel = 0, 
+        Pan = Vector2.new(), 
+        Pinch = 0
+    };
+    local v56 = {
+        Move = Vector2.new(), 
+        Pinch = 0
+    };
+    local l_BindableEvent_2 = Instance.new("BindableEvent");
+    v45.gamepadZoomPress = l_BindableEvent_2.Event;
+    local v58 = l_VRService_0.VREnabled and Instance.new("BindableEvent") or nil;
+    if l_VRService_0.VREnabled then
+        v45.gamepadReset = v58.Event;
+    end;
+    local l_v53_0 = v53 --[[ copy: 30 -> 54 ]];
+    v45.getRotationActivated = function() --[[ Line: 204 ]] --[[ Name: getRotationActivated ]]
+        -- upvalues: l_v47_0 (ref), l_v53_0 (copy)
+        local v60 = true;
+        if l_v47_0 <= 0 then
+            v60 = l_v53_0.Thumbstick2.Magnitude > 0;
+        end;
+        return v60;
+    end;
+    v45.getRotation = function(v61, v62) --[[ Line: 208 ]] --[[ Name: getRotation ]]
+        -- upvalues: l_UserGameSettings_0 (copy), v7 (copy), v54 (copy), v42 (ref), l_result_0 (ref), l_v53_0 (copy), v55 (copy), l_BindableEvent_1 (copy), v56 (copy), v10 (ref), v11 (copy), v12 (copy), v13 (copy)
+        local v63 = Vector2.new(1, l_UserGameSettings_0:GetCameraYInvertValue());
+        local v64 = nil;
+        v64 = if v7 then Vector2.new(v54.Right - v54.Left, 0) * v61 else Vector2.new(v54.Right - v54.Left, 0) * v42;
+        local v65 = nil;
+        v65 = if l_result_0 then l_v53_0.Thumbstick2 * l_UserGameSettings_0.GamepadCameraSensitivity else l_v53_0.Thumbstick2;
+        if v7 then
+            v65 = v65 * v61;
+        end;
+        local l_Movement_0 = v55.Movement;
+        local l_Pan_0 = v55.Pan;
+        local v68 = l_BindableEvent_1(v56.Move);
+        if v62 then
+            v64 = Vector2.new();
+        end;
+        return (v64 * 2.0943951023931953 + v65 * v10 + l_Movement_0 * v11 + l_Pan_0 * v12 + v68 * v13) * v63;
+    end;
+    v45.getZoomDelta = function() --[[ Line: 248 ]] --[[ Name: getZoomDelta ]]
+        -- upvalues: v54 (copy), v55 (copy), v56 (copy)
+        local v69 = v54.O - v54.I;
+        local v70 = -v55.Wheel + v55.Pinch;
+        local v71 = -v56.Pinch;
+        return v69 * 0.1 + v70 * 1 + v71 * 0.04;
+    end;
+    local function v76(_, _, v74) --[[ Line: 256 ]] --[[ Name: thumbstick ]]
+        -- upvalues: l_v53_0 (copy), l_BindableEvent_0 (ref)
+        local l_Position_0 = v74.Position;
+        l_v53_0[v74.KeyCode.Name] = Vector2.new(l_BindableEvent_0(l_Position_0.X), -l_BindableEvent_0(l_Position_0.Y));
+        return Enum.ContextActionResult.Pass;
+    end;
+    local function _(v77) --[[ Line: 262 ]] --[[ Name: mouseMovement ]]
+        -- upvalues: v55 (copy)
+        local l_Delta_0 = v77.Delta;
+        v55.Movement = Vector2.new(l_Delta_0.X, l_Delta_0.Y);
+    end;
+    local _ = function(_, _, v82) --[[ Line: 267 ]] --[[ Name: mouseWheel ]]
+        -- upvalues: v55 (copy)
+        v55.Wheel = v82.Position.Z;
+        return Enum.ContextActionResult.Pass;
+    end;
+    local function v87(_, v85, v86) --[[ Line: 272 ]] --[[ Name: keypress ]]
+        -- upvalues: v54 (copy)
+        v54[v86.KeyCode.Name] = v85 == Enum.UserInputState.Begin and 1 or 0;
+    end;
+    local function v91(_, v89, _) --[[ Line: 276 ]] --[[ Name: gamepadZoomPress ]]
+        -- upvalues: l_BindableEvent_2 (copy)
+        if v89 == Enum.UserInputState.Begin then
+            l_BindableEvent_2:Fire();
+        end;
+    end;
+    local function v95(_, v93, _) --[[ Line: 282 ]] --[[ Name: gamepadReset ]]
+        -- upvalues: v58 (copy)
+        if v93 == Enum.UserInputState.Begin then
+            v58:Fire();
+        end;
+    end;
+    local function v100() --[[ Line: 288 ]] --[[ Name: resetInputDevices ]]
+        -- upvalues: l_v53_0 (copy), v54 (copy), v55 (copy), v56 (copy), l_status_0 (ref), l_v47_0 (ref)
+        for _, v97 in pairs({
+            l_v53_0, 
+            v54, 
+            v55, 
+            v56
+        }) do
+            for v98, v99 in pairs(v97) do
+                if type(v99) == "boolean" then
+                    v97[v98] = false;
+                else
+                    v97[v98] = v97[v98] * 0;
+                end;
+            end;
+        end;
+        if l_status_0 then
+            l_v47_0 = 0;
+        end;
+    end;
+    local v101 = nil;
+    local v102 = nil;
+    local v103 = nil;
+    local v104 = nil;
+    local v105 = {};
+    local v106 = nil;
+    local v107 = nil;
+    do
+        local l_v105_0, l_v106_0, l_v107_0 = v105, v106, v107;
+        v101 = function(v111, v112) --[[ Line: 316 ]] --[[ Name: touchBegan ]]
+            -- upvalues: l_v106_0 (ref), v41 (copy), l_v47_0 (ref), l_v105_0 (ref)
+            assert(v111.UserInputType == Enum.UserInputType.Touch);
+            assert(v111.UserInputState == Enum.UserInputState.Begin);
+            if l_v106_0 == nil and v41(v111.Position) and not v112 then
+                l_v106_0 = v111;
+                return;
+            else
+                if not v112 then
+                    l_v47_0 = math.max(0, l_v47_0 + 1);
+                end;
+                l_v105_0[v111] = v112;
+                return;
+            end;
+        end;
+        v103 = function(v113, _) --[[ Line: 336 ]] --[[ Name: touchEnded ]]
+            -- upvalues: l_v106_0 (ref), l_v105_0 (ref), l_v107_0 (ref), l_v47_0 (ref)
+            assert(v113.UserInputType == Enum.UserInputType.Touch);
+            assert(v113.UserInputState == Enum.UserInputState.End);
+            if v113 == l_v106_0 then
+                l_v106_0 = nil;
+            end;
+            if l_v105_0[v113] == false then
+                l_v107_0 = nil;
+                l_v47_0 = math.max(0, l_v47_0 - 1);
+            end;
+            l_v105_0[v113] = nil;
+        end;
+        v102 = function(v115, v116) --[[ Line: 355 ]] --[[ Name: touchChanged ]]
+            -- upvalues: l_v106_0 (ref), l_v105_0 (ref), v56 (copy), l_v107_0 (ref)
+            assert(v115.UserInputType == Enum.UserInputType.Touch);
+            assert(v115.UserInputState == Enum.UserInputState.Change);
+            if v115 == l_v106_0 then
+                return;
+            else
+                if l_v105_0[v115] == nil then
+                    l_v105_0[v115] = v116;
+                end;
+                local v117 = {};
+                for v118, v119 in pairs(l_v105_0) do
+                    if not v119 then
+                        table.insert(v117, v118);
+                    end;
+                end;
+                if #v117 == 1 and l_v105_0[v115] == false then
+                    local l_Delta_1 = v115.Delta;
+                    local l_v56_0 = v56;
+                    l_v56_0.Move = l_v56_0.Move + Vector2.new(l_Delta_1.X, l_Delta_1.Y);
+                end;
+                if #v117 == 2 then
+                    local l_Magnitude_0 = (v117[1].Position - v117[2].Position).Magnitude;
+                    if l_v107_0 then
+                        local l_v56_1 = v56;
+                        l_v56_1.Pinch = l_v56_1.Pinch + (l_Magnitude_0 - l_v107_0);
+                    end;
+                    l_v107_0 = l_Magnitude_0;
+                    return;
+                else
+                    l_v107_0 = nil;
+                    return;
+                end;
+            end;
+        end;
+        v104 = function() --[[ Line: 399 ]] --[[ Name: resetTouchState ]]
+            -- upvalues: l_v105_0 (ref), l_v106_0 (ref), l_v107_0 (ref), v14 (ref), l_v47_0 (ref)
+            l_v105_0 = {};
+            l_v106_0 = nil;
+            l_v107_0 = nil;
+            if v14 then
+                l_v47_0 = 0;
+            end;
+        end;
+    end;
+    v105 = function(v124, v125, v126, v127) --[[ Line: 409 ]] --[[ Name: pointerAction ]]
+        -- upvalues: v55 (copy)
+        if not v127 then
+            v55.Wheel = v124;
+            v55.Pan = v125;
+            v55.Pinch = -v126;
+        end;
+    end;
+    do
+        local l_v101_0, l_v102_0, l_v103_0, l_v104_0 = v101, v102, v103, v104;
+        v106 = function(v132, v133) --[[ Line: 417 ]] --[[ Name: inputBegan ]]
+            -- upvalues: l_v101_0 (ref), l_v47_0 (ref)
+            if v132.UserInputType == Enum.UserInputType.Touch then
+                l_v101_0(v132, v133);
+                return;
+            else
+                if v132.UserInputType == Enum.UserInputType.MouseButton2 and not v133 then
+                    l_v47_0 = math.max(0, l_v47_0 + 1);
+                end;
+                return;
+            end;
+        end;
+        v107 = function(v134, v135) --[[ Line: 426 ]] --[[ Name: inputChanged ]]
+            -- upvalues: l_v102_0 (ref), v55 (copy)
+            if v134.UserInputType == Enum.UserInputType.Touch then
+                l_v102_0(v134, v135);
+                return;
+            else
+                if v134.UserInputType == Enum.UserInputType.MouseMovement then
+                    local l_Delta_2 = v134.Delta;
+                    v55.Movement = Vector2.new(l_Delta_2.X, l_Delta_2.Y);
+                end;
+                return;
+            end;
+        end;
+        local function v139(v137, v138) --[[ Line: 435 ]] --[[ Name: inputEnded ]]
+            -- upvalues: l_v103_0 (ref), l_v47_0 (ref)
+            if v137.UserInputType == Enum.UserInputType.Touch then
+                l_v103_0(v137, v138);
+                return;
+            else
+                if v137.UserInputType == Enum.UserInputType.MouseButton2 then
+                    l_v47_0 = math.max(0, l_v47_0 - 1);
+                end;
+                return;
+            end;
+        end;
+        local v140 = false;
+        v45.setInputEnabled = function(v141) --[[ Line: 446 ]] --[[ Name: setInputEnabled ]]
+            -- upvalues: v140 (ref), v100 (copy), l_v104_0 (ref), l_ContextActionService_0 (copy), v76 (copy), l_Value_0 (copy), v87 (copy), l_VRService_0 (copy), v95 (copy), v91 (copy), l_v46_0 (ref), l_UserInputService_0 (copy), v106 (copy), v107 (copy), v139 (copy), v105 (copy), v14 (ref)
+            if v140 == v141 then
+                return;
+            else
+                v140 = v141;
+                v100();
+                l_v104_0();
+                if v140 then
+                    l_ContextActionService_0:BindActionAtPriority("RbxCameraThumbstick", v76, false, l_Value_0, Enum.KeyCode.Thumbstick2);
+                    l_ContextActionService_0:BindActionAtPriority("RbxCameraKeypress", v87, false, l_Value_0, Enum.KeyCode.Left, Enum.KeyCode.Right, Enum.KeyCode.I, Enum.KeyCode.O);
+                    if l_VRService_0.VREnabled then
+                        l_ContextActionService_0:BindAction("RbxCameraGamepadReset", v95, false, Enum.KeyCode.ButtonL3);
+                    end;
+                    l_ContextActionService_0:BindAction("RbxCameraGamepadZoom", v91, false, Enum.KeyCode.ButtonR3);
+                    table.insert(l_v46_0, l_UserInputService_0.InputBegan:Connect(v106));
+                    table.insert(l_v46_0, l_UserInputService_0.InputChanged:Connect(v107));
+                    table.insert(l_v46_0, l_UserInputService_0.InputEnded:Connect(v139));
+                    table.insert(l_v46_0, l_UserInputService_0.PointerAction:Connect(v105));
+                    if v14 then
+                        local l_GuiService_0 = game:GetService("GuiService");
+                        table.insert(l_v46_0, l_GuiService_0.MenuOpened:connect(l_v104_0));
+                        return;
+                    end;
+                else
+                    l_ContextActionService_0:UnbindAction("RbxCameraThumbstick");
+                    l_ContextActionService_0:UnbindAction("RbxCameraMouseMove");
+                    l_ContextActionService_0:UnbindAction("RbxCameraMouseWheel");
+                    l_ContextActionService_0:UnbindAction("RbxCameraKeypress");
+                    l_ContextActionService_0:UnbindAction("RbxCameraGamepadZoom");
+                    if l_VRService_0.VREnabled then
+                        l_ContextActionService_0:UnbindAction("RbxCameraGamepadReset");
+                    end;
+                    for _, v144 in pairs(l_v46_0) do
+                        v144:Disconnect();
+                    end;
+                    l_v46_0 = {};
+                end;
+                return;
+            end;
+        end;
+        v45.getInputEnabled = function() --[[ Line: 518 ]] --[[ Name: getInputEnabled ]]
+            -- upvalues: v140 (ref)
+            return v140;
+        end;
+        v45.resetInputForFrameEnd = function() --[[ Line: 522 ]] --[[ Name: resetInputForFrameEnd ]]
+            -- upvalues: v55 (copy), v56 (copy)
+            v55.Movement = Vector2.new();
+            v56.Move = Vector2.new();
+            v56.Pinch = 0;
+            v55.Wheel = 0;
+            v55.Pan = Vector2.new();
+            v55.Pinch = 0;
+        end;
+        l_UserInputService_0.WindowFocused:Connect(v100);
+        l_UserInputService_0.WindowFocusReleased:Connect(v100);
+    end;
+end;
+v46 = false;
+v47 = false;
+local v145 = 0;
+do
+    local l_v46_1, l_v47_1, l_v145_0 = v46, v47, v145;
+    v45.getHoldPan = function() --[[ Line: 543 ]] --[[ Name: getHoldPan ]]
+        -- upvalues: l_v46_1 (ref)
+        return l_v46_1;
+    end;
+    v45.getTogglePan = function() --[[ Line: 547 ]] --[[ Name: getTogglePan ]]
+        -- upvalues: l_v47_1 (ref)
+        return l_v47_1;
+    end;
+    v45.getPanning = function() --[[ Line: 551 ]] --[[ Name: getPanning ]]
+        -- upvalues: l_v47_1 (ref), l_v46_1 (ref)
+        return l_v47_1 or l_v46_1;
+    end;
+    v45.setTogglePan = function(v149) --[[ Line: 555 ]] --[[ Name: setTogglePan ]]
+        -- upvalues: l_v47_1 (ref)
+        l_v47_1 = v149;
+    end;
+    local v150 = false;
+    local v151 = nil;
+    local v152 = nil;
+    v45.enableCameraToggleInput = function() --[[ Line: 563 ]] --[[ Name: enableCameraToggleInput ]]
+        -- upvalues: v150 (ref), l_v46_1 (ref), l_v47_1 (ref), v151 (ref), v152 (ref), v17 (ref), l_v145_0 (ref), v18 (ref), l_UserInputService_0 (copy)
+        if v150 then
+            return;
+        else
+            v150 = true;
+            l_v46_1 = false;
+            l_v47_1 = false;
+            if v151 then
+                v151:Disconnect();
+            end;
+            if v152 then
+                v152:Disconnect();
+            end;
+            v151 = v17:Connect(function() --[[ Line: 580 ]]
+                -- upvalues: l_v46_1 (ref), l_v145_0 (ref)
+                l_v46_1 = true;
+                l_v145_0 = tick();
+            end);
+            v152 = v18:Connect(function() --[[ Line: 585 ]]
+                -- upvalues: l_v46_1 (ref), l_v145_0 (ref), l_v47_1 (ref), l_UserInputService_0 (ref)
+                l_v46_1 = false;
+                if tick() - l_v145_0 < 0.3 and (l_v47_1 or l_UserInputService_0:GetMouseDelta().Magnitude < 2) then
+                    l_v47_1 = not l_v47_1;
+                end;
+            end);
+            return;
+        end;
+    end;
+    v45.disableCameraToggleInput = function() --[[ Line: 593 ]] --[[ Name: disableCameraToggleInput ]]
+        -- upvalues: v150 (ref), v151 (ref), v152 (ref)
+        if not v150 then
+            return;
+        else
+            v150 = false;
+            if v151 then
+                v151:Disconnect();
+                v151 = nil;
+            end;
+            if v152 then
+                v152:Disconnect();
+                v152 = nil;
+            end;
+            return;
+        end;
+    end;
+end;
+return v45;

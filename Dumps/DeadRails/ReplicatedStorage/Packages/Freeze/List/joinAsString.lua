@@ -1,15 +1,9 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.List.joinAsString
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:34:06
--- Luau version 6, Types version 3
--- Time taken: 0.000340 seconds
-
-return function(arg1, arg2) -- Line 15, Named "joinAsString"
-	return table.concat(arg1, arg2 or ',')
-end
+return function(v0, v1) --[[ Line: 15 ]] --[[ Name: joinAsString ]]
+    return table.concat(v0, v1 or ",");
+end;

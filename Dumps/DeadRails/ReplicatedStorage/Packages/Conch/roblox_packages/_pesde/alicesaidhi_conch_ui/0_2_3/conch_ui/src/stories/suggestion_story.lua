@@ -1,42 +1,32 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.alicesaidhi+conch_ui.0.2.3.conch_ui.src.stories.suggestion.story
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:37:31
--- Luau version 6, Types version 3
--- Time taken: 0.000769 seconds
-
-local ._____roblox_packages_vide_upvr = require("../../roblox_packages/vide")
-local .__state_upvr = require("../state")
-local ._____roblox_packages_conch_upvr = require("../../roblox_packages/conch")
-local .__components_suggestion_upvr = require("../components/suggestion")
-local source_upvr = ._____roblox_packages_vide_upvr.source
-return function(arg1) -- Line 9
-	--[[ Upvalues[5]:
-		[1]: .__state_upvr (readonly)
-		[2]: ._____roblox_packages_conch_upvr (readonly)
-		[3]: ._____roblox_packages_vide_upvr (readonly)
-		[4]: .__components_suggestion_upvr (readonly)
-		[5]: source_upvr (readonly)
-	]]
-	.__state_upvr.opened(true)
-	._____roblox_packages_conch_upvr._.create_local_user()
-	return ._____roblox_packages_vide_upvr.mount(function() -- Line 13
-		--[[ Upvalues[2]:
-			[1]: .__components_suggestion_upvr (copied, readonly)
-			[2]: source_upvr (copied, readonly)
-		]]
-		return .__components_suggestion_upvr({
-			highlighted_suggestion = source_upvr({
-				name = "highlight";
-				description = "this argument onmly takes like a vector or something and does this and that i honestly dont care.";
-				type = "meow";
-			});
-			suggestions = source_upvr({"test", "value", "grapes", "apples"});
-		})
-	end, arg1)
-end
+local v0 = require("../../roblox_packages/conch");
+local v1 = require("../../roblox_packages/vide");
+local v2 = require("../state");
+local v3 = require("../components/suggestion");
+local l_source_0 = v1.source;
+return function(v5) --[[ Line: 9 ]]
+    -- upvalues: v2 (copy), v0 (copy), v1 (copy), v3 (copy), l_source_0 (copy)
+    v2.opened(true);
+    v0._.create_local_user();
+    return v1.mount(function() --[[ Line: 13 ]]
+        -- upvalues: v3 (ref), l_source_0 (ref)
+        return v3({
+            highlighted_suggestion = l_source_0({
+                name = "highlight", 
+                description = "this argument onmly takes like a vector or something and does this and that i honestly dont care.", 
+                type = "meow"
+            }), 
+            suggestions = l_source_0({
+                "test", 
+                "value", 
+                "grapes", 
+                "apples"
+            })
+        });
+    end, v5);
+end;

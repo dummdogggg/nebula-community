@@ -1,139 +1,113 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.roblox_testez@0.4.1.testez.TestBootstrap
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:36:21
--- Luau version 6, Types version 3
--- Time taken: 0.004056 seconds
-
-local module_3 = {}
-local function _(arg1) -- Line 11, Named "stripSpecSuffix"
-	return arg1:gsub("%.spec$", "")
-end
-local function _(arg1) -- Line 14, Named "isSpecScript"
-	local children = arg1:IsA("ModuleScript")
-	if children then
-		children = arg1.Name:match("%.spec$")
-	end
-	return children
-end
-local function getPath_upvr(arg1, arg2) -- Line 18, Named "getPath"
-	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
-	local var3 = arg2
-	if not var3 then
-		var3 = game
-	end
-	local var4 = var3
-	local module_2 = {}
-	local var6 = arg1
-	if var6.Name == "init.spec" then
-		local Parent = var6.Parent
-	end
-	while Parent ~= nil and Parent ~= var4 do
-		table.insert(module_2, Parent.Name:gsub("%.spec$", ""))
-	end
-	table.insert(module_2, var4.Name:gsub("%.spec$", ""))
-	return module_2
-end
-local function _(arg1) -- Line 38, Named "toStringPath"
-	local var15
-	for _, v in ipairs(arg1) do
-		if true then
-			var15 = v
-		else
-			var15 = v..' '..var15
-		end
-	end
-	return var15
-end
-function module_3.getModulesImpl(arg1, arg2, arg3, arg4) -- Line 52
-	--[[ Upvalues[1]:
-		[1]: getPath_upvr (readonly)
-	]]
-	local var20 = arg3
-	if not var20 then
-		var20 = {}
-	end
-	local var21 = arg4 or arg2
-	local var22 = var21
-	var20 = var22:IsA("ModuleScript")
-	local var23 = var20
-	if var23 then
-		var23 = var22.Name:match("%.spec$")
-		local var24
-	end
-	if var23 then
-		var24 = arg2
-		local getPath_upvr_result1 = getPath_upvr(var21, var24)
-		var24 = ""
-		for _, v_2 in ipairs(getPath_upvr_result1) do
-			if true then
-				var24 = v_2
-			else
-				var24 = v_2..' '..var24
-			end
-		end
-		var24 = table.insert
-		var24(var20, {
-			method = require(var21);
-			path = getPath_upvr_result1;
-			pathStringForSorting = var24:lower();
-		})
-	end
-end
-function module_3.getModules(arg1, arg2) -- Line 72
-	local module = {}
-	arg1:getModulesImpl(arg2, module)
-	for _, v_3 in ipairs(arg2:GetDescendants()) do
-		arg1:getModulesImpl(arg2, module, v_3)
-	end
-	return module
-end
-local TextReporter_upvr = require(script.Parent.Reporters.TextReporter)
-local TestPlanner_upvr = require(script.Parent.TestPlanner)
-local TestRunner_upvr = require(script.Parent.TestRunner)
-function module_3.run(arg1, arg2, arg3, arg4) -- Line 99
-	--[[ Upvalues[3]:
-		[1]: TextReporter_upvr (readonly)
-		[2]: TestPlanner_upvr (readonly)
-		[3]: TestRunner_upvr (readonly)
-	]]
-	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
-	local var57 = arg3
-	if not var57 then
-		var57 = TextReporter_upvr
-	end
-	var57 = arg4
-	local var58 = var57
-	if not var58 then
-		var58 = {}
-	end
-	local var59 = var58
-	local extraEnvironment = var59.extraEnvironment
-	if not extraEnvironment then
-		extraEnvironment = {}
-	end
-	if type(arg2) ~= "table" then
-		error("Bad argument #1 to TestBootstrap:run. Expected table, got %s":format(typeof(arg2)), 2)
-	end
-	for _, v_4 in ipairs(arg2) do
-		for _, v_5 in ipairs(arg1:getModules(v_4)) do
-			table.insert({}, v_5)
-			local var67
-		end
-	end
-	local tick_result1_2 = tick()
-	local tick_result1_3 = tick()
-	local any_runPlan_result1 = TestRunner_upvr.runPlan(TestPlanner_upvr.createPlan(var67, var59.testNamePattern, extraEnvironment))
-	local tick_result1 = tick()
-	var57.report(any_runPlan_result1)
-	if var59.showTimingInfo or false then
-		print(table.concat({"Took %f seconds to locate test modules":format(tick_result1_2 - tick()), "Took %f seconds to create test plan":format(tick_result1_3 - tick_result1_2), "Took %f seconds to run tests":format(tick_result1 - tick_result1_3), "Took %f seconds to report tests":format(tick() - tick_result1)}, '\n'))
-	end
-	return any_runPlan_result1
-end
-return module_3
+local v0 = require(script.Parent.TestPlanner);
+local v1 = require(script.Parent.TestRunner);
+local v2 = require(script.Parent.Reporters.TextReporter);
+local v3 = {};
+local function _(v4) --[[ Line: 11 ]] --[[ Name: stripSpecSuffix ]]
+    return (v4:gsub("%.spec$", ""));
+end;
+local function _(v6) --[[ Line: 14 ]] --[[ Name: isSpecScript ]]
+    return v6:IsA("ModuleScript") and v6.Name:match("%.spec$");
+end;
+local function v12(v8, v9) --[[ Line: 18 ]] --[[ Name: getPath ]]
+    v9 = v9 or game;
+    local v10 = {};
+    local l_v8_0 = v8;
+    if l_v8_0.Name == "init.spec" then
+        l_v8_0 = l_v8_0.Parent;
+    end;
+    while l_v8_0 ~= nil and l_v8_0 ~= v9 do
+        table.insert(v10, (l_v8_0.Name:gsub("%.spec$", "")));
+        l_v8_0 = l_v8_0.Parent;
+    end;
+    table.insert(v10, (v9.Name:gsub("%.spec$", "")));
+    return v10;
+end;
+local _ = function(v13) --[[ Line: 38 ]] --[[ Name: toStringPath ]]
+    local v14 = "";
+    local v15 = true;
+    for _, v17 in ipairs(v13) do
+        if v15 then
+            v14 = v17;
+            v15 = false;
+        else
+            v14 = v17 .. " " .. v14;
+        end;
+    end;
+    return v14;
+end;
+v3.getModulesImpl = function(_, v20, v21, v22) --[[ Line: 52 ]] --[[ Name: getModulesImpl ]]
+    -- upvalues: v12 (copy)
+    v21 = v21 or {};
+    v22 = v22 or v20;
+    local l_v22_0 = v22;
+    if l_v22_0:IsA("ModuleScript") and l_v22_0.Name:match("%.spec$") then
+        local v24 = require(v22);
+        l_v22_0 = v12(v22, v20);
+        local v25 = "";
+        local v26 = true;
+        for _, v28 in ipairs(l_v22_0) do
+            if v26 then
+                v25 = v28;
+                v26 = false;
+            else
+                v25 = v28 .. " " .. v25;
+            end;
+        end;
+        table.insert(v21, {
+            method = v24, 
+            path = l_v22_0, 
+            pathStringForSorting = v25:lower()
+        });
+    end;
+end;
+v3.getModules = function(v29, v30) --[[ Line: 72 ]] --[[ Name: getModules ]]
+    local v31 = {};
+    v29:getModulesImpl(v30, v31);
+    for _, v33 in ipairs(v30:GetDescendants()) do
+        v29:getModulesImpl(v30, v31, v33);
+    end;
+    return v31;
+end;
+v3.run = function(v34, v35, v36, v37) --[[ Line: 99 ]] --[[ Name: run ]]
+    -- upvalues: v2 (copy), v0 (copy), v1 (copy)
+    v36 = v36 or v2;
+    v37 = v37 or {};
+    local v38 = v37.showTimingInfo or false;
+    local l_testNamePattern_0 = v37.testNamePattern;
+    local v40 = v37.extraEnvironment or {};
+    if type(v35) ~= "table" then
+        error(("Bad argument #1 to TestBootstrap:run. Expected table, got %s"):format((typeof(v35))), 2);
+    end;
+    local v41 = tick();
+    local v42 = {};
+    for _, v44 in ipairs(v35) do
+        local v45 = v34:getModules(v44);
+        for _, v47 in ipairs(v45) do
+            table.insert(v42, v47);
+        end;
+    end;
+    local v48 = tick();
+    local v49 = v0.createPlan(v42, l_testNamePattern_0, v40);
+    local v50 = tick();
+    local v51 = v1.runPlan(v49);
+    local v52 = tick();
+    v36.report(v51);
+    local v53 = tick();
+    if v38 then
+        local v54 = {
+            ("Took %f seconds to locate test modules"):format(v48 - v41), 
+            ("Took %f seconds to create test plan"):format(v50 - v48), 
+            ("Took %f seconds to run tests"):format(v52 - v50), 
+            ("Took %f seconds to report tests"):format(v53 - v52)
+        };
+        print(table.concat(v54, "\n"));
+    end;
+    return v51;
+end;
+return v3;

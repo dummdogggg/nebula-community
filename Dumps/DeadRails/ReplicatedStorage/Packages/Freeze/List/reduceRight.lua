@@ -1,10 +1,11 @@
 --[[
-    STUB SCRIPT (Original could not be decompiled)
     Script: ReplicatedStorage.Packages.Freeze.List.reduceRight
     Type: ModuleScript
-    Error: API Error - Falha na decompilação
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
-return {
-    -- Module content not available
-}
+local v0 = require(script.Parent.Parent.utils.reduce);
+return function(v1, v2, v3) --[[ Line: 18 ]] --[[ Name: reduceRight ]]
+    -- upvalues: v0 (copy)
+    return v0(v1, v2, v3, true);
+end;

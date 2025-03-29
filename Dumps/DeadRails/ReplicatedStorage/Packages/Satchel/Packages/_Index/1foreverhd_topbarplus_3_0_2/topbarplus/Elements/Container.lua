@@ -1,166 +1,139 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.1foreverhd_topbarplus@3.0.2.topbarplus.Elements.Container
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:35:05
--- Luau version 6, Types version 3
--- Time taken: 0.003990 seconds
-
-return function(arg1) -- Line 1
-	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
-	local GuiService = game:GetService("GuiService")
-	local isOldTopbar = arg1.isOldTopbar
-	local module = {}
-	local any_IsTenFootInterface_result1 = GuiService:IsTenFootInterface()
-	local var6
-	if isOldTopbar then
-		var6 = 12
-	else
-		var6 = GuiService:GetGuiInset().Y - 46
-	end
-	if any_IsTenFootInterface_result1 then
-		var6 = 10
-	end
-	local ScreenGui_upvr = Instance.new("ScreenGui")
-	ScreenGui_upvr:SetAttribute("StartInset", var6)
-	ScreenGui_upvr.Name = "TopbarStandard"
-	ScreenGui_upvr.Enabled = true
-	ScreenGui_upvr.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	ScreenGui_upvr.IgnoreGuiInset = true
-	ScreenGui_upvr.ResetOnSpawn = false
-	ScreenGui_upvr.ScreenInsets = Enum.ScreenInsets.TopbarSafeInsets
-	module[ScreenGui_upvr.Name] = ScreenGui_upvr
-	ScreenGui_upvr.DisplayOrder = arg1.baseDisplayOrder
-	arg1.baseDisplayOrderChanged:Connect(function() -- Line 22
-		--[[ Upvalues[2]:
-			[1]: ScreenGui_upvr (readonly)
-			[2]: arg1 (readonly)
-		]]
-		ScreenGui_upvr.DisplayOrder = arg1.baseDisplayOrder
-	end)
-	local Frame = Instance.new("Frame")
-	if isOldTopbar then
-	else
-	end
-	if any_IsTenFootInterface_result1 then
-		local var10_upvw = 50
-	end
-	Frame.Name = "Holders"
-	Frame.BackgroundTransparency = 1
-	Frame.Position = UDim2.new(0, 0, 0, 0 + 13)
-	Frame.Size = UDim2.new(1, 0, 1, var10_upvw)
-	Frame.Visible = true
-	Frame.ZIndex = 1
-	Frame.Parent = ScreenGui_upvr
-	local clone_5_upvr = ScreenGui_upvr:Clone()
-	local Holders_upvr = clone_5_upvr.Holders
-	local GuiService_2_upvr = game:GetService("GuiService")
-	clone_5_upvr.Name = "TopbarCentered"
-	clone_5_upvr.ScreenInsets = Enum.ScreenInsets.None
-	arg1.baseDisplayOrderChanged:Connect(function() -- Line 49
-		--[[ Upvalues[2]:
-			[1]: clone_5_upvr (readonly)
-			[2]: arg1 (readonly)
-		]]
-		clone_5_upvr.DisplayOrder = arg1.baseDisplayOrder
-	end)
-	module[clone_5_upvr.Name] = clone_5_upvr
-	GuiService_2_upvr:GetPropertyChangedSignal("TopbarInset"):Connect(function() -- Line 44, Named "updateCenteredHoldersHeight"
-		--[[ Upvalues[3]:
-			[1]: Holders_upvr (readonly)
-			[2]: GuiService_2_upvr (readonly)
-			[3]: var10_upvw (read and write)
-		]]
-		Holders_upvr.Size = UDim2.new(1, 0, 0, GuiService_2_upvr.TopbarInset.Height + var10_upvw)
-	end)
-	Holders_upvr.Size = UDim2.new(1, 0, 0, GuiService_2_upvr.TopbarInset.Height + var10_upvw)
-	local clone_3_upvr = ScreenGui_upvr:Clone()
-	clone_3_upvr.Name ..= "Clipped"
-	clone_3_upvr.DisplayOrder += 1
-	arg1.baseDisplayOrderChanged:Connect(function() -- Line 59
-		--[[ Upvalues[2]:
-			[1]: clone_3_upvr (readonly)
-			[2]: arg1 (readonly)
-		]]
-		clone_3_upvr.DisplayOrder = arg1.baseDisplayOrder + 1
-	end)
-	module[clone_3_upvr.Name] = clone_3_upvr
-	local clone_4_upvr = clone_5_upvr:Clone()
-	clone_4_upvr.Name ..= "Clipped"
-	clone_4_upvr.DisplayOrder += 1
-	arg1.baseDisplayOrderChanged:Connect(function() -- Line 67
-		--[[ Upvalues[2]:
-			[1]: clone_4_upvr (readonly)
-			[2]: arg1 (readonly)
-		]]
-		clone_4_upvr.DisplayOrder = arg1.baseDisplayOrder + 1
-	end)
-	module[clone_4_upvr.Name] = clone_4_upvr
-	if isOldTopbar then
-		task.defer(function() -- Line 73
-			--[[ Upvalues[2]:
-				[1]: GuiService_2_upvr (readonly)
-				[2]: arg1 (readonly)
-			]]
-			GuiService_2_upvr:GetPropertyChangedSignal("MenuIsOpen"):Connect(function() -- Line 74, Named "decideToHideTopbar"
-				--[[ Upvalues[2]:
-					[1]: GuiService_2_upvr (copied, readonly)
-					[2]: arg1 (copied, readonly)
-				]]
-				if GuiService_2_upvr.MenuIsOpen then
-					arg1.setTopbarEnabled(false, true)
-				else
-					arg1.setTopbarEnabled()
-				end
-			end)
-			if GuiService_2_upvr.MenuIsOpen then
-				arg1.setTopbarEnabled(false, true)
-			else
-				arg1.setTopbarEnabled()
-			end
-		end)
-	end
-	local ScrollingFrame = Instance.new("ScrollingFrame")
-	ScrollingFrame:SetAttribute("IsAHolder", true)
-	ScrollingFrame.Name = "Left"
-	ScrollingFrame.Position = UDim2.fromOffset(var6, 0)
-	ScrollingFrame.Size = UDim2.new(1, -24, 1, 0)
-	ScrollingFrame.BackgroundTransparency = 1
-	ScrollingFrame.Visible = true
-	ScrollingFrame.ZIndex = 1
-	ScrollingFrame.Active = false
-	ScrollingFrame.ClipsDescendants = true
-	ScrollingFrame.HorizontalScrollBarInset = Enum.ScrollBarInset.None
-	ScrollingFrame.CanvasSize = UDim2.new(0, 0, 1, -1)
-	ScrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.X
-	ScrollingFrame.ScrollingDirection = Enum.ScrollingDirection.X
-	ScrollingFrame.ScrollBarThickness = 0
-	ScrollingFrame.BorderSizePixel = 0
-	ScrollingFrame.Selectable = false
-	ScrollingFrame.ScrollingEnabled = false
-	ScrollingFrame.ElasticBehavior = Enum.ElasticBehavior.Never
-	ScrollingFrame.Parent = Frame
-	local UIListLayout = Instance.new("UIListLayout")
-	UIListLayout.Padding = UDim.new(0, var6)
-	UIListLayout.FillDirection = Enum.FillDirection.Horizontal
-	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-	UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
-	UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
-	UIListLayout.Parent = ScrollingFrame
-	local clone = ScrollingFrame:Clone()
-	clone.ScrollingEnabled = false
-	clone.UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-	clone.Name = "Center"
-	clone.Parent = Holders_upvr
-	local clone_2 = ScrollingFrame:Clone()
-	clone_2.UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
-	clone_2.Name = "Right"
-	clone_2.AnchorPoint = Vector2.new(1, 0)
-	clone_2.Position = UDim2.new(1, -12, 0, 0)
-	clone_2.Parent = Frame
-	return module
-end
+return function(v0) --[[ Line: 1 ]]
+    local l_GuiService_0 = game:GetService("GuiService");
+    local l_isOldTopbar_0 = v0.isOldTopbar;
+    local v3 = {};
+    local l_l_GuiService_0_GuiInset_0 = l_GuiService_0:GetGuiInset();
+    local v5 = l_GuiService_0:IsTenFootInterface();
+    local v6 = l_isOldTopbar_0 and 12 or l_l_GuiService_0_GuiInset_0.Y - 46;
+    if v5 then
+        v6 = 10;
+    end;
+    local l_ScreenGui_0 = Instance.new("ScreenGui");
+    l_ScreenGui_0:SetAttribute("StartInset", v6);
+    l_ScreenGui_0.Name = "TopbarStandard";
+    l_ScreenGui_0.Enabled = true;
+    l_ScreenGui_0.ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
+    l_ScreenGui_0.IgnoreGuiInset = true;
+    l_ScreenGui_0.ResetOnSpawn = false;
+    l_ScreenGui_0.ScreenInsets = Enum.ScreenInsets.TopbarSafeInsets;
+    v3[l_ScreenGui_0.Name] = l_ScreenGui_0;
+    l_ScreenGui_0.DisplayOrder = v0.baseDisplayOrder;
+    v0.baseDisplayOrderChanged:Connect(function() --[[ Line: 22 ]]
+        -- upvalues: l_ScreenGui_0 (copy), v0 (copy)
+        l_ScreenGui_0.DisplayOrder = v0.baseDisplayOrder;
+    end);
+    local l_Frame_0 = Instance.new("Frame");
+    local v9 = l_isOldTopbar_0 and 2 or 0;
+    local v10 = -2;
+    if v5 then
+        v9 = v9 + 13;
+        v10 = 50;
+    end;
+    l_Frame_0.Name = "Holders";
+    l_Frame_0.BackgroundTransparency = 1;
+    l_Frame_0.Position = UDim2.new(0, 0, 0, v9);
+    l_Frame_0.Size = UDim2.new(1, 0, 1, v10);
+    l_Frame_0.Visible = true;
+    l_Frame_0.ZIndex = 1;
+    l_Frame_0.Parent = l_ScreenGui_0;
+    local v11 = l_ScreenGui_0:Clone();
+    local l_Holders_0 = v11.Holders;
+    local l_GuiService_1 = game:GetService("GuiService");
+    local function v14() --[[ Line: 44 ]] --[[ Name: updateCenteredHoldersHeight ]]
+        -- upvalues: l_Holders_0 (copy), l_GuiService_1 (copy), v10 (ref)
+        l_Holders_0.Size = UDim2.new(1, 0, 0, l_GuiService_1.TopbarInset.Height + v10);
+    end;
+    v11.Name = "TopbarCentered";
+    v11.ScreenInsets = Enum.ScreenInsets.None;
+    v0.baseDisplayOrderChanged:Connect(function() --[[ Line: 49 ]]
+        -- upvalues: v11 (copy), v0 (copy)
+        v11.DisplayOrder = v0.baseDisplayOrder;
+    end);
+    v3[v11.Name] = v11;
+    l_GuiService_1:GetPropertyChangedSignal("TopbarInset"):Connect(v14);
+    l_Holders_0.Size = UDim2.new(1, 0, 0, l_GuiService_1.TopbarInset.Height + v10);
+    local v15 = l_ScreenGui_0:Clone();
+    v15.Name = v15.Name .. "Clipped";
+    v15.DisplayOrder = v15.DisplayOrder + 1;
+    v0.baseDisplayOrderChanged:Connect(function() --[[ Line: 59 ]]
+        -- upvalues: v15 (copy), v0 (copy)
+        v15.DisplayOrder = v0.baseDisplayOrder + 1;
+    end);
+    v3[v15.Name] = v15;
+    local v16 = v11:Clone();
+    v16.Name = v16.Name .. "Clipped";
+    v16.DisplayOrder = v16.DisplayOrder + 1;
+    v0.baseDisplayOrderChanged:Connect(function() --[[ Line: 67 ]]
+        -- upvalues: v16 (copy), v0 (copy)
+        v16.DisplayOrder = v0.baseDisplayOrder + 1;
+    end);
+    v3[v16.Name] = v16;
+    if l_isOldTopbar_0 then
+        task.defer(function() --[[ Line: 73 ]]
+            -- upvalues: l_GuiService_1 (copy), v0 (copy)
+            local function v17() --[[ Line: 74 ]] --[[ Name: decideToHideTopbar ]]
+                -- upvalues: l_GuiService_1 (ref), v0 (ref)
+                if l_GuiService_1.MenuIsOpen then
+                    v0.setTopbarEnabled(false, true);
+                    return;
+                else
+                    v0.setTopbarEnabled();
+                    return;
+                end;
+            end;
+            l_GuiService_1:GetPropertyChangedSignal("MenuIsOpen"):Connect(v17);
+            if l_GuiService_1.MenuIsOpen then
+                v0.setTopbarEnabled(false, true);
+                return;
+            else
+                v0.setTopbarEnabled();
+                return;
+            end;
+        end);
+    end;
+    local l_ScrollingFrame_0 = Instance.new("ScrollingFrame");
+    l_ScrollingFrame_0:SetAttribute("IsAHolder", true);
+    l_ScrollingFrame_0.Name = "Left";
+    l_ScrollingFrame_0.Position = UDim2.fromOffset(v6, 0);
+    l_ScrollingFrame_0.Size = UDim2.new(1, -24, 1, 0);
+    l_ScrollingFrame_0.BackgroundTransparency = 1;
+    l_ScrollingFrame_0.Visible = true;
+    l_ScrollingFrame_0.ZIndex = 1;
+    l_ScrollingFrame_0.Active = false;
+    l_ScrollingFrame_0.ClipsDescendants = true;
+    l_ScrollingFrame_0.HorizontalScrollBarInset = Enum.ScrollBarInset.None;
+    l_ScrollingFrame_0.CanvasSize = UDim2.new(0, 0, 1, -1);
+    l_ScrollingFrame_0.AutomaticCanvasSize = Enum.AutomaticSize.X;
+    l_ScrollingFrame_0.ScrollingDirection = Enum.ScrollingDirection.X;
+    l_ScrollingFrame_0.ScrollBarThickness = 0;
+    l_ScrollingFrame_0.BorderSizePixel = 0;
+    l_ScrollingFrame_0.Selectable = false;
+    l_ScrollingFrame_0.ScrollingEnabled = false;
+    l_ScrollingFrame_0.ElasticBehavior = Enum.ElasticBehavior.Never;
+    l_ScrollingFrame_0.Parent = l_Frame_0;
+    local l_UIListLayout_0 = Instance.new("UIListLayout");
+    l_UIListLayout_0.Padding = UDim.new(0, v6);
+    l_UIListLayout_0.FillDirection = Enum.FillDirection.Horizontal;
+    l_UIListLayout_0.SortOrder = Enum.SortOrder.LayoutOrder;
+    l_UIListLayout_0.VerticalAlignment = Enum.VerticalAlignment.Bottom;
+    l_UIListLayout_0.HorizontalAlignment = Enum.HorizontalAlignment.Left;
+    l_UIListLayout_0.Parent = l_ScrollingFrame_0;
+    local v20 = l_ScrollingFrame_0:Clone();
+    v20.ScrollingEnabled = false;
+    v20.UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center;
+    v20.Name = "Center";
+    v20.Parent = l_Holders_0;
+    local v21 = l_ScrollingFrame_0:Clone();
+    v21.UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right;
+    v21.Name = "Right";
+    v21.AnchorPoint = Vector2.new(1, 0);
+    v21.Position = UDim2.new(1, -12, 0, 0);
+    v21.Parent = l_Frame_0;
+    return v3;
+end;

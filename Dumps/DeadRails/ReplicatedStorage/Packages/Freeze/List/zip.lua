@@ -1,38 +1,32 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.List.zip
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:35:05
--- Luau version 6, Types version 3
--- Time taken: 0.001001 seconds
-
-local maybeFreeze_upvr = require(script.Parent.Parent.utils.maybeFreeze)
-return function(...) -- Line 19, Named "zip"
-	--[[ Upvalues[1]:
-		[1]: maybeFreeze_upvr (readonly)
-	]]
-	local module = {}
-	local arg_count = select('#', ...)
-	local var10
-	if arg_count <= var10 then
-		return module
-	end
-	var10 = #select(1, ...)
-	for i = 2, arg_count do
-		local len = #select(i, ...)
-		if len < var10 then
-			var10 = len
-		end
-	end
-	for i_2 = 1, var10 do
-		module[i_2] = {}
-		for i_3 = 1, arg_count do
-			module[i_2][i_3] = select(i_3, ...)[i_2]
-		end
-	end
-	return maybeFreeze_upvr(module)
-end
+local v0 = require(script.Parent.Parent.utils.maybeFreeze);
+return function(...) --[[ Line: 19 ]] --[[ Name: zip ]]
+    -- upvalues: v0 (copy)
+    local v1 = select(1, ...);
+    local v2 = {};
+    local v3 = select("#", ...);
+    if v3 <= 0 then
+        return v2;
+    else
+        local v4 = #v1;
+        for v5 = 2, v3 do
+            local v6 = #select(v5, ...);
+            if v6 < v4 then
+                v4 = v6;
+            end;
+        end;
+        for v7 = 1, v4 do
+            v2[v7] = {};
+            for v8 = 1, v3 do
+                local v9 = select(v8, ...);
+                v2[v7][v8] = v9[v7];
+            end;
+        end;
+        return v0(v2);
+    end;
+end;

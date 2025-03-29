@@ -1,33 +1,23 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.centau_vide@0.3.1.vide.mount
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:34:21
--- Luau version 6, Types version 3
--- Time taken: 0.000584 seconds
-
 if not game then
-	script = require("test/relative-string") -- Setting global
-end
-local root_upvr = require(script.Parent.root)
-local apply_upvr = require(script.Parent.apply)
-return function(arg1, arg2) -- Line 6, Named "mount"
-	--[[ Upvalues[2]:
-		[1]: root_upvr (readonly)
-		[2]: apply_upvr (readonly)
-	]]
-	return root_upvr(function() -- Line 7
-		--[[ Upvalues[3]:
-			[1]: arg1 (readonly)
-			[2]: arg2 (readonly)
-			[3]: apply_upvr (copied, readonly)
-		]]
-		if arg2 then
-			apply_upvr(arg2, {arg1()})
-		end
-	end)
-end
+    script = require("test/relative-string");
+end;
+local v0 = require(script.Parent.root);
+local v1 = require(script.Parent.apply);
+return function(v2, v3) --[[ Line: 6 ]] --[[ Name: mount ]]
+    -- upvalues: v0 (copy), v1 (copy)
+    return v0(function() --[[ Line: 7 ]]
+        -- upvalues: v2 (copy), v3 (copy), v1 (ref)
+        local v4 = v2();
+        if v3 then
+            v1(v3, {
+                v4
+            });
+        end;
+    end);
+end;

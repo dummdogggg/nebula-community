@@ -1,64 +1,61 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.List.remove
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:33:50
--- Luau version 6, Types version 3
--- Time taken: 0.001713 seconds
-
-local function removeSingle_upvr(arg1, arg2) -- Line 4, Named "removeSingle"
-	local len = #arg1
-	local var6
-	if var6 < 1 then
-		var6 += len + 1
-	end
-	if var6 <= 0 or len < var6 then
-		return arg1
-	end
-	for i, v in arg1 do
-		if i ~= var6 then
-			table.create(len - 1)[1] = v
-		end
-	end
-	-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-	return table.create(len - 1)
-end
-local maybeFreeze_upvr = require(script.Parent.Parent.utils.maybeFreeze)
-return function(arg1, ...) -- Line 44, Named "remove"
-	--[[ Upvalues[2]:
-		[1]: removeSingle_upvr (readonly)
-		[2]: maybeFreeze_upvr (readonly)
-	]]
-	local args_list = {...}
-	local var18
-	if var18 == 1 then
-		var18 = removeSingle_upvr(arg1, args_list[1])
-		return var18
-	end
-	var18 = 0
-	local len_2 = #arg1
-	for _, v_2 in args_list do
-		if v_2 < 1 then
-			v_2 += len_2 + 1
-		end
-		if v_2 > 0 and len_2 >= v_2 then
-			({})[v_2] = true
-			var18 += 1
-		end
-	end
-	if var18 == 0 then
-		return arg1
-	end
-	for i_3, v_3 in arg1 do
-		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-		if not ({})[i_3] then
-			table.create(math.max(1, len_2 - var18))[1] = v_3
-		end
-	end
-	-- KONSTANTERROR: Expression was reused, decompilation is incorrect
-	return maybeFreeze_upvr(table.create(math.max(1, len_2 - var18)))
-end
+local v0 = require(script.Parent.Parent.utils.maybeFreeze);
+local function v8(v1, v2) --[[ Line: 4 ]] --[[ Name: removeSingle ]]
+    local v3 = #v1;
+    local v4 = table.create(v3 - 1);
+    if v2 < 1 then
+        v2 = v2 + (v3 + 1);
+    end;
+    if v2 <= 0 or v3 < v2 then
+        return v1;
+    else
+        local v5 = 1;
+        for v6, v7 in v1 do
+            if v6 ~= v2 then
+                v4[v5] = v7;
+                v5 = v5 + 1;
+            end;
+        end;
+        return v4;
+    end;
+end;
+return function(v9, ...) --[[ Line: 44 ]] --[[ Name: remove ]]
+    -- upvalues: v8 (copy), v0 (copy)
+    local v10 = {
+        ...
+    };
+    if #v10 == 1 then
+        return (v8(v9, v10[1]));
+    else
+        local v11 = 0;
+        local v12 = #v9;
+        local v13 = {};
+        for _, v15 in v10 do
+            if v15 < 1 then
+                v15 = v15 + (v12 + 1);
+            end;
+            if v15 > 0 and v12 >= v15 then
+                v13[v15] = true;
+                v11 = v11 + 1;
+            end;
+        end;
+        if v11 == 0 then
+            return v9;
+        else
+            local v16 = table.create((math.max(1, v12 - v11)));
+            local v17 = 1;
+            for v18, v19 in v9 do
+                if not v13[v18] then
+                    v16[v17] = v19;
+                    v17 = v17 + 1;
+                end;
+            end;
+            return v0(v16);
+        end;
+    end;
+end;

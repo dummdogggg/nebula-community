@@ -1,150 +1,124 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.1foreverhd_topbarplus@3.0.2.topbarplus.Packages.GoodSignal
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:36:00
--- Luau version 6, Types version 3
--- Time taken: 0.003416 seconds
-
-local var1_upvw
-local function acquireRunnerThreadAndCallEventHandler_upvr(arg1, ...) -- Line 34, Named "acquireRunnerThreadAndCallEventHandler"
-	--[[ Upvalues[1]:
-		[1]: var1_upvw (read and write)
-	]]
-	var1_upvw = nil
-	arg1(...)
-	var1_upvw = var1_upvw
-end
-local function runEventHandlerInFreeThread_upvr() -- Line 45, Named "runEventHandlerInFreeThread"
-	--[[ Upvalues[1]:
-		[1]: acquireRunnerThreadAndCallEventHandler_upvr (readonly)
-	]]
-	while true do
-		acquireRunnerThreadAndCallEventHandler_upvr(coroutine.yield())
-	end
-end
-local tbl_upvr = {}
-tbl_upvr.__index = tbl_upvr
-local function new(arg1, arg2) -- Line 60
-	--[[ Upvalues[1]:
-		[1]: tbl_upvr (readonly)
-	]]
-	local module = {
-		_connected = true;
-	}
-	module._signal = arg1
-	module._fn = arg2
-	module._next = false
-	return setmetatable(module, tbl_upvr)
-end
-tbl_upvr.new = new
-function tbl_upvr.Disconnect(arg1) -- Line 69
-	arg1._connected = false
-	local var4
-	if var4 == arg1 then
-		var4 = arg1._signal
-		var4._handlerListHead = arg1._next
-	else
-		var4 = arg1._signal._handlerListHead
-		while var4 and var4._next ~= arg1 do
-			var4 = var4._next
-		end
-		if var4 then
-			var4._next = arg1._next
-		end
-	end
-end
-tbl_upvr.Destroy = tbl_upvr.Disconnect
-local tbl = {}
-local function __index(arg1, arg2) -- Line 92
-	error("Attempt to get Connection::%s (not a valid member)":format(tostring(arg2)), 2)
-end
-tbl.__index = __index
-local function __newindex(arg1, arg2, arg3) -- Line 95
-	error("Attempt to set Connection::%s (not a valid member)":format(tostring(arg2)), 2)
-end
-tbl.__newindex = __newindex
-setmetatable(tbl_upvr, tbl)
-local module_2_upvr = {}
-module_2_upvr.__index = module_2_upvr
-function module_2_upvr.new() -- Line 104
-	--[[ Upvalues[1]:
-		[1]: module_2_upvr (readonly)
-	]]
-	return setmetatable({
-		_handlerListHead = false;
-	}, module_2_upvr)
-end
-function module_2_upvr.Connect(arg1, arg2) -- Line 110
-	--[[ Upvalues[1]:
-		[1]: tbl_upvr (readonly)
-	]]
-	local any_new_result1 = tbl_upvr.new(arg1, arg2)
-	if arg1._handlerListHead then
-		any_new_result1._next = arg1._handlerListHead
-		arg1._handlerListHead = any_new_result1
-		return any_new_result1
-	end
-	arg1._handlerListHead = any_new_result1
-	return any_new_result1
-end
-function module_2_upvr.DisconnectAll(arg1) -- Line 123
-	arg1._handlerListHead = false
-end
-module_2_upvr.Destroy = module_2_upvr.DisconnectAll
-function module_2_upvr.Fire(arg1, ...) -- Line 132
-	--[[ Upvalues[2]:
-		[1]: var1_upvw (read and write)
-		[2]: runEventHandlerInFreeThread_upvr (readonly)
-	]]
-	local _handlerListHead = arg1._handlerListHead
-	while _handlerListHead do
-		if _handlerListHead._connected then
-			if not var1_upvw then
-				var1_upvw = coroutine.create(runEventHandlerInFreeThread_upvr)
-				coroutine.resume(var1_upvw)
-			end
-			task.spawn(var1_upvw, _handlerListHead._fn, ...)
-		end
-	end
-end
-function module_2_upvr.Wait(arg1) -- Line 149
-	local var11_upvw
-	local current_thread_upvr = coroutine.running()
-	var11_upvw = arg1:Connect(function(...) -- Line 152
-		--[[ Upvalues[2]:
-			[1]: var11_upvw (read and write)
-			[2]: current_thread_upvr (readonly)
-		]]
-		var11_upvw:Disconnect()
-		task.spawn(current_thread_upvr, ...)
-	end)
-	return coroutine.yield()
-end
-function module_2_upvr.Once(arg1, arg2) -- Line 161
-	local var14_upvw
-	var14_upvw = arg1:Connect(function(...) -- Line 163
-		--[[ Upvalues[2]:
-			[1]: var14_upvw (read and write)
-			[2]: arg2 (readonly)
-		]]
-		if var14_upvw._connected then
-			var14_upvw:Disconnect()
-		end
-		arg2(...)
-	end)
-	return var14_upvw
-end
-setmetatable(module_2_upvr, {
-	__index = function(arg1, arg2) -- Line 174, Named "__index"
-		error("Attempt to get Signal::%s (not a valid member)":format(tostring(arg2)), 2)
-	end;
-	__newindex = function(arg1, arg2, arg3) -- Line 177, Named "__newindex"
-		error("Attempt to set Signal::%s (not a valid member)":format(tostring(arg2)), 2)
-	end;
-})
-return module_2_upvr
+local v0 = nil;
+local function v3(v1, ...) --[[ Line: 34 ]] --[[ Name: acquireRunnerThreadAndCallEventHandler ]]
+    -- upvalues: v0 (ref)
+    local l_v0_0 = v0;
+    v0 = nil;
+    v1(...);
+    v0 = l_v0_0;
+end;
+local function v4() --[[ Line: 45 ]] --[[ Name: runEventHandlerInFreeThread ]]
+    -- upvalues: v3 (copy)
+    while true do
+        v3(coroutine.yield());
+    end;
+end;
+local v5 = {};
+v5.__index = v5;
+v5.new = function(v6, v7) --[[ Line: 60 ]] --[[ Name: new ]]
+    -- upvalues: v5 (copy)
+    return (setmetatable({
+        _connected = true, 
+        _signal = v6, 
+        _fn = v7, 
+        _next = false
+    }, v5));
+end;
+v5.Disconnect = function(v8) --[[ Line: 69 ]] --[[ Name: Disconnect ]]
+    v8._connected = false;
+    if v8._signal._handlerListHead == v8 then
+        v8._signal._handlerListHead = v8._next;
+        return;
+    else
+        local l__handlerListHead_0 = v8._signal._handlerListHead;
+        while l__handlerListHead_0 and l__handlerListHead_0._next ~= v8 do
+            l__handlerListHead_0 = l__handlerListHead_0._next;
+        end;
+        if l__handlerListHead_0 then
+            l__handlerListHead_0._next = v8._next;
+        end;
+        return;
+    end;
+end;
+v5.Destroy = v5.Disconnect;
+setmetatable(v5, {
+    __index = function(_, v11) --[[ Line: 92 ]] --[[ Name: __index ]]
+        error(("Attempt to get Connection::%s (not a valid member)"):format((tostring(v11))), 2);
+    end, 
+    __newindex = function(_, v13, _) --[[ Line: 95 ]] --[[ Name: __newindex ]]
+        error(("Attempt to set Connection::%s (not a valid member)"):format((tostring(v13))), 2);
+    end
+});
+local v15 = {};
+v15.__index = v15;
+v15.new = function() --[[ Line: 104 ]] --[[ Name: new ]]
+    -- upvalues: v15 (copy)
+    return (setmetatable({
+        _handlerListHead = false
+    }, v15));
+end;
+v15.Connect = function(v16, v17) --[[ Line: 110 ]] --[[ Name: Connect ]]
+    -- upvalues: v5 (copy)
+    local v18 = v5.new(v16, v17);
+    if v16._handlerListHead then
+        v18._next = v16._handlerListHead;
+        v16._handlerListHead = v18;
+        return v18;
+    else
+        v16._handlerListHead = v18;
+        return v18;
+    end;
+end;
+v15.DisconnectAll = function(v19) --[[ Line: 123 ]] --[[ Name: DisconnectAll ]]
+    v19._handlerListHead = false;
+end;
+v15.Destroy = v15.DisconnectAll;
+v15.Fire = function(v20, ...) --[[ Line: 132 ]] --[[ Name: Fire ]]
+    -- upvalues: v0 (ref), v4 (copy)
+    local l__handlerListHead_1 = v20._handlerListHead;
+    while l__handlerListHead_1 do
+        if l__handlerListHead_1._connected then
+            if not v0 then
+                v0 = coroutine.create(v4);
+                coroutine.resume(v0);
+            end;
+            task.spawn(v0, l__handlerListHead_1._fn, ...);
+        end;
+        l__handlerListHead_1 = l__handlerListHead_1._next;
+    end;
+end;
+v15.Wait = function(v22) --[[ Line: 149 ]] --[[ Name: Wait ]]
+    local v23 = coroutine.running();
+    local v24 = nil;
+    v24 = v22:Connect(function(...) --[[ Line: 152 ]]
+        -- upvalues: v24 (ref), v23 (copy)
+        v24:Disconnect();
+        task.spawn(v23, ...);
+    end);
+    return coroutine.yield();
+end;
+v15.Once = function(v25, v26) --[[ Line: 161 ]] --[[ Name: Once ]]
+    local v27 = nil;
+    v27 = v25:Connect(function(...) --[[ Line: 163 ]]
+        -- upvalues: v27 (ref), v26 (copy)
+        if v27._connected then
+            v27:Disconnect();
+        end;
+        v26(...);
+    end);
+    return v27;
+end;
+setmetatable(v15, {
+    __index = function(_, v29) --[[ Line: 174 ]] --[[ Name: __index ]]
+        error(("Attempt to get Signal::%s (not a valid member)"):format((tostring(v29))), 2);
+    end, 
+    __newindex = function(_, v31, _) --[[ Line: 177 ]] --[[ Name: __newindex ]]
+        error(("Attempt to set Signal::%s (not a valid member)"):format((tostring(v31))), 2);
+    end
+});
+return v15;

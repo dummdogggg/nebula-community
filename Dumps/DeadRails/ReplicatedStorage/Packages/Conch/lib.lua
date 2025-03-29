@@ -1,10 +1,12 @@
 --[[
-    STUB SCRIPT (Original could not be decompiled)
     Script: ReplicatedStorage.Packages.Conch.lib
     Type: ModuleScript
-    Error: API Error - Falha na decompilação
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
-return {
-    -- Module content not available
-}
+local v0 = require("./roblox_packages/conch");
+return (setmetatable({
+    ui = require("./roblox_packages/ui")
+}, {
+    __index = v0
+}));

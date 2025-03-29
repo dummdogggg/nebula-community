@@ -1,123 +1,99 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.PlayerModule.CameraModule.Poppercam
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:35:02
--- Luau version 6, Types version 3
--- Time taken: 0.002930 seconds
+local l_CommonUtils_0 = script.Parent.Parent:WaitForChild("CommonUtils");
+local l_FlagUtil_0 = require(l_CommonUtils_0:WaitForChild("FlagUtil"));
+local l_ZoomController_0 = require(script.Parent:WaitForChild("ZoomController"));
+local v3 = l_FlagUtil_0.getUserFlag("UserFixCameraFPError");
+local v4 = {};
+v4.__index = v4;
+local v5 = CFrame.new();
+local function v9(v6) --[[ Line: 17 ]] --[[ Name: cframeToAxis ]]
+    local v7, v8 = v6:ToAxisAngle();
+    return v7 * v8;
+end;
+local l_v5_0 = v5 --[[ copy: 5 -> 9 ]];
+local function _(v11) --[[ Line: 22 ]] --[[ Name: axisToCFrame ]]
+    -- upvalues: l_v5_0 (copy)
+    local l_Magnitude_0 = v11.Magnitude;
+    if l_Magnitude_0 > 1.0E-5 then
+        return CFrame.fromAxisAngle(v11, l_Magnitude_0);
+    else
+        return l_v5_0;
+    end;
+end;
+local _ = function(v14) --[[ Line: 30 ]] --[[ Name: extractRotation ]]
+    local _, _, _, v18, v19, v20, v21, v22, v23, v24, v25, v26 = v14:GetComponents();
+    return CFrame.new(0, 0, 0, v18, v19, v20, v21, v22, v23, v24, v25, v26);
+end;
+v4.new = function() --[[ Line: 35 ]] --[[ Name: new ]]
+    -- upvalues: v4 (copy)
+    return (setmetatable({
+        lastCFrame = nil
+    }, v4));
+end;
+v4.Step = function(v28, v29, v30) --[[ Line: 41 ]] --[[ Name: Step ]]
+    -- upvalues: l_v5_0 (copy)
+    local v31 = v28.lastCFrame or v30;
+    v28.lastCFrame = v30;
+    local l_Position_0 = v30.Position;
+    local l_v30_Components_0, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44 = v30:GetComponents();
+    local v45 = CFrame.new(0, 0, 0, v36, v37, v38, v39, v40, v41, v42, v43, v44);
+    l_v30_Components_0 = v31.p;
+    local v46, v47;
+    v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v46, v47 = v31:GetComponents();
+    v34 = CFrame.new(0, 0, 0, v38, v39, v40, v41, v42, v43, v44, v46, v47);
+    v35 = (l_Position_0 - l_v30_Components_0) / v29;
+    v39, v40 = (v45 * v34:inverse()):ToAxisAngle();
+    v36 = v39 * v40 / v29;
+    return {
+        extrapolate = function(v48) --[[ Line: 56 ]] --[[ Name: extrapolate ]]
+            -- upvalues: v35 (copy), l_Position_0 (copy), v36 (copy), l_v5_0 (ref), v45 (copy)
+            local v49 = v35 * v48 + l_Position_0;
+            local v50 = v36 * v48;
+            local l_Magnitude_1 = v50.Magnitude;
+            return (if l_Magnitude_1 > 1.0E-5 then CFrame.fromAxisAngle(v50, l_Magnitude_1) else l_v5_0) * v45 + v49;
+        end, 
+        posVelocity = v35, 
+        rotVelocity = v36
+    };
+end;
+v4.Reset = function(v52) --[[ Line: 69 ]] --[[ Name: Reset ]]
+    v52.lastCFrame = nil;
+end;
+v5 = require(script.Parent:WaitForChild("BaseOcclusion"));
+v9 = setmetatable({}, v5);
+v9.__index = v9;
+v9.new = function() --[[ Line: 79 ]] --[[ Name: new ]]
+    -- upvalues: v5 (copy), v9 (copy), v4 (copy)
+    local v53 = setmetatable(v5.new(), v9);
+    v53.focusExtrapolator = v4.new();
+    return v53;
+end;
+v9.GetOcclusionMode = function(_) --[[ Line: 85 ]] --[[ Name: GetOcclusionMode ]]
+    return Enum.DevCameraOcclusionMode.Zoom;
+end;
+v9.Enable = function(v55, _) --[[ Line: 89 ]] --[[ Name: Enable ]]
+    v55.focusExtrapolator:Reset();
+end;
+v9.Update = function(v57, v58, v59, v60, _) --[[ Line: 93 ]] --[[ Name: Update ]]
+    -- upvalues: v3 (copy), l_ZoomController_0 (copy)
+    local v62 = nil;
+    v62 = if v3 then CFrame.lookAlong(v60.p, -v59.LookVector) * CFrame.new(0, 0, 0, -1, 0, 0, 0, 1, 0, 0, 0, -1) else CFrame.new(v60.p, v59.p) * CFrame.new(0, 0, 0, -1, 0, 0, 0, 1, 0, 0, 0, -1);
+    local v63 = v57.focusExtrapolator:Step(v58, v62);
+    local v64 = l_ZoomController_0.Update(v58, v62, v63);
+    return v62 * CFrame.new(0, 0, v64), v60;
+end;
+v9.CharacterAdded = function(_, _, _) --[[ Line: 117 ]] --[[ Name: CharacterAdded ]]
 
-local tbl_upvr = {}
-tbl_upvr.__index = tbl_upvr
-local zero_cframe_upvr = CFrame.new()
-local function _(arg1) -- Line 17, Named "cframeToAxis"
-	local any_ToAxisAngle_result1, any_ToAxisAngle_result2 = arg1:ToAxisAngle()
-	return any_ToAxisAngle_result1 * any_ToAxisAngle_result2
-end
-local function _(arg1) -- Line 22, Named "axisToCFrame"
-	--[[ Upvalues[1]:
-		[1]: zero_cframe_upvr (readonly)
-	]]
-	local Magnitude = arg1.Magnitude
-	if 0.00001 < Magnitude then
-		return CFrame.fromAxisAngle(arg1, Magnitude)
-	end
-	return zero_cframe_upvr
-end
-local function _(arg1) -- Line 30, Named "extractRotation"
-	local _, _, _, any_GetComponents_result4, any_GetComponents_result5, any_GetComponents_result6, any_GetComponents_result7_3, any_GetComponents_result8, any_GetComponents_result9_3, any_GetComponents_result10_2, any_GetComponents_result11_2, any_GetComponents_result12_2 = arg1:GetComponents()
-	return CFrame.new(0, 0, 0, any_GetComponents_result4, any_GetComponents_result5, any_GetComponents_result6, any_GetComponents_result7_3, any_GetComponents_result8, any_GetComponents_result9_3, any_GetComponents_result10_2, any_GetComponents_result11_2, any_GetComponents_result12_2)
-end
-local function new() -- Line 35
-	--[[ Upvalues[1]:
-		[1]: tbl_upvr (readonly)
-	]]
-	return setmetatable({
-		lastCFrame = nil;
-	}, tbl_upvr)
-end
-tbl_upvr.new = new
-function tbl_upvr.Step(arg1, arg2, arg3) -- Line 41
-	--[[ Upvalues[1]:
-		[1]: zero_cframe_upvr (readonly)
-	]]
-	local var19 = arg1.lastCFrame or arg3
-	arg1.lastCFrame = arg3
-	local Position_upvr = arg3.Position
-	local _, _, _, any_GetComponents_result4_3, any_GetComponents_result5_3, any_GetComponents_result6_2, any_GetComponents_result7_2, any_GetComponents_result8_2, any_GetComponents_result9, any_GetComponents_result10_3, any_GetComponents_result11, any_GetComponents_result12_3 = arg3:GetComponents()
-	local cframe_upvr = CFrame.new(0, 0, 0, any_GetComponents_result4_3, any_GetComponents_result5_3, any_GetComponents_result6_2, any_GetComponents_result7_2, any_GetComponents_result8_2, any_GetComponents_result9, any_GetComponents_result10_3, any_GetComponents_result11, any_GetComponents_result12_3)
-	local _, _, _, any_GetComponents_result4_2, any_GetComponents_result5_2, any_GetComponents_result6_3, any_GetComponents_result7, any_GetComponents_result8_3, any_GetComponents_result9_2, any_GetComponents_result10, any_GetComponents_result11_3, any_GetComponents_result12 = var19:GetComponents()
-	local var46_upvr = (Position_upvr - var19.p) / arg2
-	local any_ToAxisAngle_result1_2, any_ToAxisAngle_result2_2 = cframe_upvr * CFrame.new(0, 0, 0, any_GetComponents_result4_2, any_GetComponents_result5_2, any_GetComponents_result6_3, any_GetComponents_result7, any_GetComponents_result8_3, any_GetComponents_result9_2, any_GetComponents_result10, any_GetComponents_result11_3, any_GetComponents_result12):inverse():ToAxisAngle()
-	local var49_upvr = any_ToAxisAngle_result1_2 * any_ToAxisAngle_result2_2 / arg2
-	return {
-		extrapolate = function(arg1_2) -- Line 56, Named "extrapolate"
-			--[[ Upvalues[5]:
-				[1]: var46_upvr (readonly)
-				[2]: Position_upvr (readonly)
-				[3]: var49_upvr (readonly)
-				[4]: zero_cframe_upvr (copied, readonly)
-				[5]: cframe_upvr (readonly)
-			]]
-			local var50 = Position_upvr
-			local var51 = var49_upvr * arg1_2
-			local Magnitude_2 = var51.Magnitude
-			if 0.00001 < Magnitude_2 then
-				var50 = CFrame.fromAxisAngle(var51, Magnitude_2)
-			else
-				var50 = zero_cframe_upvr
-			end
-			return (var50 * cframe_upvr) + (var46_upvr * arg1_2 + var50)
-		end;
-		posVelocity = var46_upvr;
-		rotVelocity = var49_upvr;
-	}
-end
-function tbl_upvr.Reset(arg1) -- Line 69
-	arg1.lastCFrame = nil
-end
-zero_cframe_upvr = require(script.Parent:WaitForChild("BaseOcclusion"))
-local var54_upvr = zero_cframe_upvr
-local setmetatable_result1_2_upvr = setmetatable({}, var54_upvr)
-setmetatable_result1_2_upvr.__index = setmetatable_result1_2_upvr
-function setmetatable_result1_2_upvr.new() -- Line 79
-	--[[ Upvalues[3]:
-		[1]: var54_upvr (readonly)
-		[2]: setmetatable_result1_2_upvr (readonly)
-		[3]: tbl_upvr (readonly)
-	]]
-	local setmetatable_result1 = setmetatable(var54_upvr.new(), setmetatable_result1_2_upvr)
-	setmetatable_result1.focusExtrapolator = tbl_upvr.new()
-	return setmetatable_result1
-end
-function setmetatable_result1_2_upvr.GetOcclusionMode(arg1) -- Line 85
-	return Enum.DevCameraOcclusionMode.Zoom
-end
-function setmetatable_result1_2_upvr.Enable(arg1, arg2) -- Line 89
-	arg1.focusExtrapolator:Reset()
-end
-local any_getUserFlag_result1_upvr = require(script.Parent.Parent:WaitForChild("CommonUtils"):WaitForChild("FlagUtil")).getUserFlag("UserFixCameraFPError")
-local module_upvr = require(script.Parent:WaitForChild("ZoomController"))
-function setmetatable_result1_2_upvr.Update(arg1, arg2, arg3, arg4, arg5) -- Line 93
-	--[[ Upvalues[2]:
-		[1]: any_getUserFlag_result1_upvr (readonly)
-		[2]: module_upvr (readonly)
-	]]
-	local var59
-	if any_getUserFlag_result1_upvr then
-		var59 = CFrame.lookAlong(arg4.p, -arg3.LookVector) * CFrame.new(0, 0, 0, -1, 0, 0, 0, 1, 0, 0, 0, -1)
-	else
-		var59 = CFrame.new(arg4.p, arg3.p) * CFrame.new(0, 0, 0, -1, 0, 0, 0, 1, 0, 0, 0, -1)
-	end
-	return var59 * CFrame.new(0, 0, module_upvr.Update(arg2, var59, arg1.focusExtrapolator:Step(arg2, var59))), arg4
-end
-function setmetatable_result1_2_upvr.CharacterAdded(arg1, arg2, arg3) -- Line 117
-end
-function setmetatable_result1_2_upvr.CharacterRemoving(arg1, arg2, arg3) -- Line 121
-end
-function setmetatable_result1_2_upvr.OnCameraSubjectChanged(arg1, arg2) -- Line 124
-end
-return setmetatable_result1_2_upvr
+end;
+v9.CharacterRemoving = function(_, _, _) --[[ Line: 121 ]] --[[ Name: CharacterRemoving ]]
+
+end;
+v9.OnCameraSubjectChanged = function(_, _) --[[ Line: 124 ]] --[[ Name: OnCameraSubjectChanged ]]
+
+end;
+return v9;

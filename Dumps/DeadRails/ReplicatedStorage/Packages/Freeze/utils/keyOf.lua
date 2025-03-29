@@ -1,27 +1,15 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.utils.keyOf
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:36:17
--- Luau version 6, Types version 3
--- Time taken: 0.000855 seconds
-
-local findKey_upvr = require(script.Parent.findKey)
-local is_upvr = require(script.Parent.is)
-return function(arg1, arg2) -- Line 4
-	--[[ Upvalues[2]:
-		[1]: findKey_upvr (readonly)
-		[2]: is_upvr (readonly)
-	]]
-	return findKey_upvr(arg1, function(arg1_2) -- Line 5
-		--[[ Upvalues[2]:
-			[1]: is_upvr (copied, readonly)
-			[2]: arg2 (readonly)
-		]]
-		return is_upvr(arg1_2, arg2)
-	end)
-end
+local v0 = require(script.Parent.findKey);
+local v1 = require(script.Parent.is);
+return function(v2, v3) --[[ Line: 4 ]]
+    -- upvalues: v0 (copy), v1 (copy)
+    return v0(v2, function(v4) --[[ Line: 5 ]]
+        -- upvalues: v1 (ref), v3 (copy)
+        return v1(v4, v3);
+    end);
+end;

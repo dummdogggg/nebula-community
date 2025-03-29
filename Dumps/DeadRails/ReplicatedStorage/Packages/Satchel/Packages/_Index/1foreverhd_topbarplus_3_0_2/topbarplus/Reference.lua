@@ -1,42 +1,32 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.1foreverhd_topbarplus@3.0.2.topbarplus.Reference
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:34:55
--- Luau version 6, Types version 3
--- Time taken: 0.000763 seconds
-
-local ReplicatedStorage_upvr = game:GetService("ReplicatedStorage")
-local module_upvr = {
-	objectName = "TopbarPlusReference";
-}
-function module_upvr.addToReplicatedStorage() -- Line 10
-	--[[ Upvalues[2]:
-		[1]: ReplicatedStorage_upvr (readonly)
-		[2]: module_upvr (readonly)
-	]]
-	if ReplicatedStorage_upvr:FindFirstChild(module_upvr.objectName) then
-		return false
-	end
-	local ObjectValue = Instance.new("ObjectValue")
-	ObjectValue.Name = module_upvr.objectName
-	ObjectValue.Value = script.Parent
-	ObjectValue.Parent = ReplicatedStorage_upvr
-	return ObjectValue
-end
-function module_upvr.getObject() -- Line 22
-	--[[ Upvalues[2]:
-		[1]: ReplicatedStorage_upvr (readonly)
-		[2]: module_upvr (readonly)
-	]]
-	local SOME = ReplicatedStorage_upvr:FindFirstChild(module_upvr.objectName)
-	if SOME then
-		return SOME
-	end
-	return false
-end
-return module_upvr
+local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
+local v1 = {
+    objectName = "TopbarPlusReference"
+};
+v1.addToReplicatedStorage = function() --[[ Line: 10 ]] --[[ Name: addToReplicatedStorage ]]
+    -- upvalues: l_ReplicatedStorage_0 (copy), v1 (copy)
+    if l_ReplicatedStorage_0:FindFirstChild(v1.objectName) then
+        return false;
+    else
+        local l_ObjectValue_0 = Instance.new("ObjectValue");
+        l_ObjectValue_0.Name = v1.objectName;
+        l_ObjectValue_0.Value = script.Parent;
+        l_ObjectValue_0.Parent = l_ReplicatedStorage_0;
+        return l_ObjectValue_0;
+    end;
+end;
+v1.getObject = function() --[[ Line: 22 ]] --[[ Name: getObject ]]
+    -- upvalues: l_ReplicatedStorage_0 (copy), v1 (copy)
+    local l_l_ReplicatedStorage_0_FirstChild_0 = l_ReplicatedStorage_0:FindFirstChild(v1.objectName);
+    if l_l_ReplicatedStorage_0_FirstChild_0 then
+        return l_l_ReplicatedStorage_0_FirstChild_0;
+    else
+        return false;
+    end;
+end;
+return v1;

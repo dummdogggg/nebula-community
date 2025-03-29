@@ -1,228 +1,211 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.PlayerModule.CameraModule.TransparencyController
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:35:03
--- Luau version 6, Types version 3
--- Time taken: 0.006498 seconds
-
-local tbl_2_upvr = {"BasePart", "Decal", "Beam", "ParticleEmitter", "Trail", "Fire", "Smoke", "Sparkles", "Explosion"}
-local pcall_result1, pcall_result2 = pcall(function() -- Line 27
-	return UserSettings():IsUserFeatureEnabled("UserHideCharacterParticlesInFirstPerson")
-end)
-local module_upvr = {}
-module_upvr.__index = module_upvr
-function module_upvr.new() -- Line 38
-	--[[ Upvalues[1]:
-		[1]: module_upvr (readonly)
-	]]
-	local setmetatable_result1 = setmetatable({}, module_upvr)
-	setmetatable_result1.transparencyDirty = false
-	setmetatable_result1.enabled = false
-	setmetatable_result1.lastTransparency = nil
-	setmetatable_result1.descendantAddedConn = nil
-	setmetatable_result1.descendantRemovingConn = nil
-	setmetatable_result1.toolDescendantAddedConns = {}
-	setmetatable_result1.toolDescendantRemovingConns = {}
-	setmetatable_result1.cachedParts = {}
-	return setmetatable_result1
-end
-function module_upvr.HasToolAncestor(arg1, arg2) -- Line 54
-	if arg2.Parent == nil then
-		return false
-	end
-	assert(arg2.Parent, "")
-	local children = arg2.Parent:IsA("Tool")
-	if not children then
-		children = arg1:HasToolAncestor(arg2.Parent)
-	end
-	return children
-end
-local var8_upvw = pcall_result1 and pcall_result2
-function module_upvr.IsValidPartToModify(arg1, arg2) -- Line 60
-	--[[ Upvalues[2]:
-		[1]: var8_upvw (read and write)
-		[2]: tbl_2_upvr (readonly)
-	]]
-	if var8_upvw then
-		for i, v in tbl_2_upvr do
-			if arg2:IsA(v) then
-				return not arg1:HasToolAncestor(arg2)
-			end
-		end
-	elseif arg2:IsA("BasePart") or arg2:IsA("Decal") then
-		i = arg2
-		return not arg1:HasToolAncestor(i)
-	end
-	return false
-end
-function module_upvr.CachePartsRecursive(arg1, arg2) -- Line 76
-	if arg2 then
-		if arg1:IsValidPartToModify(arg2) then
-			arg1.cachedParts[arg2] = true
-			arg1.transparencyDirty = true
-		end
-		for _, v_2 in pairs(arg2:GetChildren()) do
-			arg1:CachePartsRecursive(v_2)
-		end
-	end
-end
-function module_upvr.TeardownTransparency(arg1) -- Line 88
-	for i_3, _ in pairs(arg1.cachedParts) do
-		i_3.LocalTransparencyModifier = 0
-	end
-	arg1.cachedParts = {}
-	arg1.transparencyDirty = true
-	arg1.lastTransparency = nil
-	if arg1.descendantAddedConn then
-		arg1.descendantAddedConn:disconnect()
-		arg1.descendantAddedConn = nil
-	end
-	if arg1.descendantRemovingConn then
-		arg1.descendantRemovingConn:disconnect()
-		arg1.descendantRemovingConn = nil
-	end
-	for i_4, v_4 in pairs(arg1.toolDescendantAddedConns) do
-		v_4:Disconnect()
-		arg1.toolDescendantAddedConns[i_4] = nil
-	end
-	for i_5, v_5 in pairs(arg1.toolDescendantRemovingConns) do
-		v_5:Disconnect()
-		arg1.toolDescendantRemovingConns[i_5] = nil
-	end
-end
-function module_upvr.SetupTransparency(arg1, arg2) -- Line 114
-	arg1:TeardownTransparency()
-	if arg1.descendantAddedConn then
-		arg1.descendantAddedConn:disconnect()
-	end
-	arg1.descendantAddedConn = arg2.DescendantAdded:Connect(function(arg1_2) -- Line 118
-		--[[ Upvalues[2]:
-			[1]: arg1 (readonly)
-			[2]: arg2 (readonly)
-		]]
-		if arg1:IsValidPartToModify(arg1_2) then
-			arg1.cachedParts[arg1_2] = true
-			arg1.transparencyDirty = true
-		elseif arg1_2:IsA("Tool") then
-			if arg1.toolDescendantAddedConns[arg1_2] then
-				arg1.toolDescendantAddedConns[arg1_2]:Disconnect()
-			end
-			arg1.toolDescendantAddedConns[arg1_2] = arg1_2.DescendantAdded:Connect(function(arg1_3) -- Line 126
-				--[[ Upvalues[1]:
-					[1]: arg1 (copied, readonly)
-				]]
-				arg1.cachedParts[arg1_3] = nil
-				if arg1_3:IsA("BasePart") or arg1_3:IsA("Decal") then
-					arg1_3.LocalTransparencyModifier = 0
-				end
-			end)
-			if arg1.toolDescendantRemovingConns[arg1_2] then
-				arg1.toolDescendantRemovingConns[arg1_2]:disconnect()
-			end
-			arg1.toolDescendantRemovingConns[arg1_2] = arg1_2.DescendantRemoving:Connect(function(arg1_4) -- Line 134
-				--[[ Upvalues[2]:
-					[1]: arg2 (copied, readonly)
-					[2]: arg1 (copied, readonly)
-				]]
-				wait()
-				if arg2 and arg1_4 and arg1_4:IsDescendantOf(arg2) and arg1:IsValidPartToModify(arg1_4) then
-					arg1.cachedParts[arg1_4] = true
-					arg1.transparencyDirty = true
-				end
-			end)
-		end
-	end)
-	if arg1.descendantRemovingConn then
-		arg1.descendantRemovingConn:disconnect()
-	end
-	arg1.descendantRemovingConn = arg2.DescendantRemoving:connect(function(arg1_5) -- Line 146
-		--[[ Upvalues[1]:
-			[1]: arg1 (readonly)
-		]]
-		if arg1.cachedParts[arg1_5] then
-			arg1.cachedParts[arg1_5] = nil
-			arg1_5.LocalTransparencyModifier = 0
-		end
-	end)
-	arg1:CachePartsRecursive(arg2)
-end
-function module_upvr.Enable(arg1, arg2) -- Line 157
-	if arg1.enabled ~= arg2 then
-		arg1.enabled = arg2
-	end
-end
-function module_upvr.SetSubject(arg1, arg2) -- Line 163
-	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
-	if arg2 and arg2:IsA("Humanoid") then
-		local var35
-	end
-	if arg2 and arg2:IsA("VehicleSeat") and arg2.Occupant then
-		var35 = arg2.Occupant.Parent
-		local var36 = var35
-	end
-	if var36 then
-		arg1:SetupTransparency(var36)
-	else
-		arg1:TeardownTransparency()
-	end
-end
-local module_upvr_2 = require(script.Parent:WaitForChild("CameraUtils"))
-local VRService_upvr = game:GetService("VRService")
-function module_upvr.Update(arg1, arg2) -- Line 178
-	--[[ Upvalues[2]:
-		[1]: module_upvr_2 (readonly)
-		[2]: VRService_upvr (readonly)
-	]]
-	local CurrentCamera_2 = workspace.CurrentCamera
-	if CurrentCamera_2 then
-		local var56
-		if arg1.enabled then
-			var56 = CurrentCamera_2.Focus.p - CurrentCamera_2.CoordinateFrame.p
-			local magnitude_2 = var56.magnitude
-			local function INLINED_2() -- Internal function, doesn't exist in bytecode
-				var56 = 1 - (magnitude_2 - 0.5) / 1.5
-				return var56
-			end
-			if magnitude_2 >= 2 or not INLINED_2() then
-				var56 = 0
-			end
-			if var56 < 0.5 then
-				var56 = 0
-			end
-			if arg1.lastTransparency and var56 < 1 and arg1.lastTransparency < 0.95 then
-				local var58 = 2.8 * arg2
-				var56 = arg1.lastTransparency + math.clamp(var56 - arg1.lastTransparency, -var58, var58)
-			else
-				arg1.transparencyDirty = true
-			end
-			var56 = math.clamp(module_upvr_2.Round(var56, 2), 0, 1)
-			if arg1.transparencyDirty or arg1.lastTransparency ~= var56 then
-				for i_6, _ in pairs(arg1.cachedParts) do
-					if VRService_upvr.VREnabled and VRService_upvr.AvatarGestures then
-						if i_6.Parent:IsA("Accessory") and ({
-							[Enum.AccessoryType.Hat] = true;
-							[Enum.AccessoryType.Hair] = true;
-							[Enum.AccessoryType.Face] = true;
-							[Enum.AccessoryType.Eyebrow] = true;
-							[Enum.AccessoryType.Eyelash] = true;
-						})[i_6.Parent.AccessoryType] or i_6.Name == "Head" then
-							i_6.LocalTransparencyModifier = var56
-						else
-							i_6.LocalTransparencyModifier = 0
-						end
-					else
-						i_6.LocalTransparencyModifier = var56
-					end
-				end
-				arg1.transparencyDirty = false
-				arg1.lastTransparency = var56
-			end
-		end
-	end
-end
-return module_upvr
+local l_VRService_0 = game:GetService("VRService");
+local v1 = {
+    "BasePart", 
+    "Decal", 
+    "Beam", 
+    "ParticleEmitter", 
+    "Trail", 
+    "Fire", 
+    "Smoke", 
+    "Sparkles", 
+    "Explosion"
+};
+local l_CameraUtils_0 = require(script.Parent:WaitForChild("CameraUtils"));
+local v3 = nil;
+local l_status_0, l_result_0 = pcall(function() --[[ Line: 27 ]]
+    return UserSettings():IsUserFeatureEnabled("UserHideCharacterParticlesInFirstPerson");
+end);
+v3 = l_status_0 and l_result_0;
+l_status_0 = {};
+l_status_0.__index = l_status_0;
+l_status_0.new = function() --[[ Line: 38 ]] --[[ Name: new ]]
+    -- upvalues: l_status_0 (copy)
+    local v6 = setmetatable({}, l_status_0);
+    v6.transparencyDirty = false;
+    v6.enabled = false;
+    v6.lastTransparency = nil;
+    local v7 = nil;
+    local v8 = nil;
+    v6.descendantAddedConn = v7;
+    v6.descendantRemovingConn = v8;
+    v6.toolDescendantAddedConns = {};
+    v6.toolDescendantRemovingConns = {};
+    v6.cachedParts = {};
+    return v6;
+end;
+l_status_0.HasToolAncestor = function(v9, v10) --[[ Line: 54 ]] --[[ Name: HasToolAncestor ]]
+    if v10.Parent == nil then
+        return false;
+    else
+        assert(v10.Parent, "");
+        return v10.Parent:IsA("Tool") or v9:HasToolAncestor(v10.Parent);
+    end;
+end;
+l_status_0.IsValidPartToModify = function(v11, v12) --[[ Line: 60 ]] --[[ Name: IsValidPartToModify ]]
+    -- upvalues: v3 (ref), v1 (copy)
+    if v3 then
+        for _, v14 in v1 do
+            if v12:IsA(v14) then
+                return not v11:HasToolAncestor(v12);
+            end;
+        end;
+    elseif v12:IsA("BasePart") or v12:IsA("Decal") then
+        return not v11:HasToolAncestor(v12);
+    end;
+    return false;
+end;
+l_status_0.CachePartsRecursive = function(v15, v16) --[[ Line: 76 ]] --[[ Name: CachePartsRecursive ]]
+    if v16 then
+        if v15:IsValidPartToModify(v16) then
+            v15.cachedParts[v16] = true;
+            v15.transparencyDirty = true;
+        end;
+        for _, v18 in pairs(v16:GetChildren()) do
+            v15:CachePartsRecursive(v18);
+        end;
+    end;
+end;
+l_status_0.TeardownTransparency = function(v19) --[[ Line: 88 ]] --[[ Name: TeardownTransparency ]]
+    for v20, _ in pairs(v19.cachedParts) do
+        v20.LocalTransparencyModifier = 0;
+    end;
+    v19.cachedParts = {};
+    v19.transparencyDirty = true;
+    v19.lastTransparency = nil;
+    if v19.descendantAddedConn then
+        v19.descendantAddedConn:disconnect();
+        v19.descendantAddedConn = nil;
+    end;
+    if v19.descendantRemovingConn then
+        v19.descendantRemovingConn:disconnect();
+        v19.descendantRemovingConn = nil;
+    end;
+    for v22, v23 in pairs(v19.toolDescendantAddedConns) do
+        v23:Disconnect();
+        v19.toolDescendantAddedConns[v22] = nil;
+    end;
+    for v24, v25 in pairs(v19.toolDescendantRemovingConns) do
+        v25:Disconnect();
+        v19.toolDescendantRemovingConns[v24] = nil;
+    end;
+end;
+l_status_0.SetupTransparency = function(v26, v27) --[[ Line: 114 ]] --[[ Name: SetupTransparency ]]
+    v26:TeardownTransparency();
+    if v26.descendantAddedConn then
+        v26.descendantAddedConn:disconnect();
+    end;
+    v26.descendantAddedConn = v27.DescendantAdded:Connect(function(v28) --[[ Line: 118 ]]
+        -- upvalues: v26 (copy), v27 (copy)
+        if v26:IsValidPartToModify(v28) then
+            v26.cachedParts[v28] = true;
+            v26.transparencyDirty = true;
+            return;
+        else
+            if v28:IsA("Tool") then
+                if v26.toolDescendantAddedConns[v28] then
+                    v26.toolDescendantAddedConns[v28]:Disconnect();
+                end;
+                v26.toolDescendantAddedConns[v28] = v28.DescendantAdded:Connect(function(v29) --[[ Line: 126 ]]
+                    -- upvalues: v26 (ref)
+                    v26.cachedParts[v29] = nil;
+                    if v29:IsA("BasePart") or v29:IsA("Decal") then
+                        v29.LocalTransparencyModifier = 0;
+                    end;
+                end);
+                if v26.toolDescendantRemovingConns[v28] then
+                    v26.toolDescendantRemovingConns[v28]:disconnect();
+                end;
+                v26.toolDescendantRemovingConns[v28] = v28.DescendantRemoving:Connect(function(v30) --[[ Line: 134 ]]
+                    -- upvalues: v27 (ref), v26 (ref)
+                    wait();
+                    if v27 and v30 and v30:IsDescendantOf(v27) and v26:IsValidPartToModify(v30) then
+                        v26.cachedParts[v30] = true;
+                        v26.transparencyDirty = true;
+                    end;
+                end);
+            end;
+            return;
+        end;
+    end);
+    if v26.descendantRemovingConn then
+        v26.descendantRemovingConn:disconnect();
+    end;
+    v26.descendantRemovingConn = v27.DescendantRemoving:connect(function(v31) --[[ Line: 146 ]]
+        -- upvalues: v26 (copy)
+        if v26.cachedParts[v31] then
+            v26.cachedParts[v31] = nil;
+            v31.LocalTransparencyModifier = 0;
+        end;
+    end);
+    v26:CachePartsRecursive(v27);
+end;
+l_status_0.Enable = function(v32, v33) --[[ Line: 157 ]] --[[ Name: Enable ]]
+    if v32.enabled ~= v33 then
+        v32.enabled = v33;
+    end;
+end;
+l_status_0.SetSubject = function(v34, v35) --[[ Line: 163 ]] --[[ Name: SetSubject ]]
+    local v36 = nil;
+    if v35 and v35:IsA("Humanoid") then
+        v36 = v35.Parent;
+    end;
+    if v35 and v35:IsA("VehicleSeat") and v35.Occupant then
+        v36 = v35.Occupant.Parent;
+    end;
+    if v36 then
+        v34:SetupTransparency(v36);
+        return;
+    else
+        v34:TeardownTransparency();
+        return;
+    end;
+end;
+l_status_0.Update = function(v37, v38) --[[ Line: 178 ]] --[[ Name: Update ]]
+    -- upvalues: l_CameraUtils_0 (copy), l_VRService_0 (copy)
+    local l_CurrentCamera_0 = workspace.CurrentCamera;
+    if l_CurrentCamera_0 and v37.enabled then
+        local l_magnitude_0 = (l_CurrentCamera_0.Focus.p - l_CurrentCamera_0.CoordinateFrame.p).magnitude;
+        local v41 = l_magnitude_0 < 2 and 1 - (l_magnitude_0 - 0.5) / 1.5 or 0;
+        if v41 < 0.5 then
+            v41 = 0;
+        end;
+        if v37.lastTransparency and v41 < 1 and v37.lastTransparency < 0.95 then
+            local v42 = v41 - v37.lastTransparency;
+            local v43 = 2.8 * v38;
+            v42 = math.clamp(v42, -v43, v43);
+            v41 = v37.lastTransparency + v42;
+        else
+            v37.transparencyDirty = true;
+        end;
+        v41 = math.clamp(l_CameraUtils_0.Round(v41, 2), 0, 1);
+        if v37.transparencyDirty or v37.lastTransparency ~= v41 then
+            for v44, _ in pairs(v37.cachedParts) do
+                if l_VRService_0.VREnabled and l_VRService_0.AvatarGestures then
+                    local v46 = {
+                        [Enum.AccessoryType.Hat] = true, 
+                        [Enum.AccessoryType.Hair] = true, 
+                        [Enum.AccessoryType.Face] = true, 
+                        [Enum.AccessoryType.Eyebrow] = true, 
+                        [Enum.AccessoryType.Eyelash] = true
+                    };
+                    if v44.Parent:IsA("Accessory") and v46[v44.Parent.AccessoryType] or v44.Name == "Head" then
+                        v44.LocalTransparencyModifier = v41;
+                    else
+                        v44.LocalTransparencyModifier = 0;
+                    end;
+                else
+                    v44.LocalTransparencyModifier = v41;
+                end;
+            end;
+            v37.transparencyDirty = false;
+            v37.lastTransparency = v41;
+        end;
+    end;
+end;
+return l_status_0;

@@ -1,357 +1,311 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.1foreverhd_topbarplus@3.0.2.topbarplus.Packages.Janitor
     Type: ModuleScript
-    Decompiled with Konstant using Nebula Decompiler
+    Decompiled with Wave using Nebula Decompiler
 --]]
 
--- Decompiler will be improved VERY SOON!
--- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
--- Decompiled on 2025-03-29 09:36:01
--- Luau version 6, Types version 3
--- Time taken: 0.008331 seconds
-
-local RunService_upvr = game:GetService("RunService")
-local function _() -- Line 25, Named "getPromiseReference"
-	--[[ Upvalues[1]:
-		[1]: RunService_upvr (readonly)
-	]]
-	if RunService_upvr:IsRunning() then
-		return require(game:GetService("ReplicatedStorage").Framework).modules.Promise
-	end
-end
-local newproxy_result1_2_upvr = newproxy(true)
-getmetatable(newproxy_result1_2_upvr).__tostring = function() -- Line 33
-	return "IndicesReference"
-end
-local newproxy_result1_3_upvr = newproxy(true)
-getmetatable(newproxy_result1_3_upvr).__tostring = function() -- Line 38
-	return "LinkToInstanceIndex"
-end
-local module_upvr = {
-	IGNORE_MEMORY_DEBUG = true;
-	ClassName = "Janitor";
-	__index = {
-		CurrentlyCleaning = true;
-		[newproxy_result1_2_upvr] = nil;
-	};
-}
-local tbl_3_upvr = {
-	["function"] = true;
-	Promise = "cancel";
-	RBXScriptConnection = "Disconnect";
-}
-function module_upvr.new() -- Line 64
-	--[[ Upvalues[2]:
-		[1]: newproxy_result1_2_upvr (readonly)
-		[2]: module_upvr (readonly)
-	]]
-	return setmetatable({
-		CurrentlyCleaning = false;
-		[newproxy_result1_2_upvr] = nil;
-	}, module_upvr)
-end
-function module_upvr.Is(arg1) -- Line 76
-	--[[ Upvalues[1]:
-		[1]: module_upvr (readonly)
-	]]
-	local var14 = false
-	if type(arg1) == "table" then
-		if getmetatable(arg1) ~= module_upvr then
-			var14 = false
-		else
-			var14 = true
-		end
-	end
-	return var14
-end
-module_upvr.is = module_upvr.Is
-module_upvr.__index.Add = function(arg1, arg2, arg3, arg4) -- Line 89, Named "Add"
-	--[[ Upvalues[2]:
-		[1]: newproxy_result1_2_upvr (readonly)
-		[2]: tbl_3_upvr (readonly)
-	]]
-	if arg4 then
-		arg1:Remove(arg4)
-		local var20 = arg1[newproxy_result1_2_upvr]
-		if not var20 then
-			var20 = {}
-			arg1[newproxy_result1_2_upvr] = var20
-		end
-		var20[arg4] = arg2
-	end
-	local var21
-	if var21 == "table" and string.match(tostring(arg2), "Promise") then
-		var21 = "Promise"
-	end
-	local var22 = arg3
-	if not var22 then
-		var22 = tbl_3_upvr[var21]
-		if not var22 then
-			var22 = "Destroy"
-		end
-	end
-	local var23 = var22
-	if type(arg2) ~= "function" then
-		if not arg2[var23] then
-			warn(string.format("Object %s doesn't have method %s, are you sure you want to add it? Traceback: %s", tostring(arg2), tostring(var23), debug.traceback(nil, 2)))
-		end
-	end
-	arg1[arg2] = {var23, debug.traceback("")}
-	return arg2
-end
-module_upvr.__index.Give = module_upvr.__index.Add
-module_upvr.__index.AddPromise = function(arg1, arg2) -- Line 126, Named "AddPromise"
-	--[[ Upvalues[1]:
-		[1]: RunService_upvr (readonly)
-	]]
-	local var25
-	if RunService_upvr:IsRunning() then
-		var25 = require(game:GetService("ReplicatedStorage").Framework).modules.Promise
-	else
-		var25 = nil
-	end
-	if var25 then
-		if not var25.is(arg2) then
-			error(string.format("Invalid argument #1 to 'Janitor:AddPromise' (Promise expected, got %s (%s))", typeof(arg2), tostring(arg2)))
-		end
-		if arg2:getStatus() == var25.Status.Started then
-			local newproxy_result1 = newproxy(false)
-			local any_Add_result1 = arg1:Add(var25.new(function(arg1_2, arg2_2, arg3) -- Line 134
-				--[[ Upvalues[1]:
-					[1]: arg2 (readonly)
-				]]
-				if arg3(function() -- Line 135
-					--[[ Upvalues[1]:
-						[1]: arg2 (copied, readonly)
-					]]
-					arg2:cancel()
-				end) then
-				else
-					arg1_2(arg2)
-				end
-			end), "cancel", newproxy_result1)
-			any_Add_result1:finallyCall(arg1.Remove, arg1, newproxy_result1)
-			return any_Add_result1
-		end
-		return arg2
-	end
-	return arg2
-end
-module_upvr.__index.GivePromise = module_upvr.__index.AddPromise
-module_upvr.__index.AddObject = function(arg1, arg2) -- Line 156, Named "AddObject"
-	--[[ Upvalues[1]:
-		[1]: RunService_upvr (readonly)
-	]]
-	local newproxy_result1_4 = newproxy(false)
-	local var31
-	if RunService_upvr:IsRunning() then
-		var31 = require(game:GetService("ReplicatedStorage").Framework).modules.Promise
-	else
-		var31 = nil
-	end
-	if var31 and var31.is(arg2) then
-		if arg2:getStatus() == var31.Status.Started then
-			local any_Add_result1_2 = arg1:Add(var31.resolve(arg2), "cancel", newproxy_result1_4)
-			any_Add_result1_2:finallyCall(arg1.Remove, arg1, newproxy_result1_4)
-			return any_Add_result1_2, newproxy_result1_4
-		end
-		return arg2
-	end
-	return arg1:Add(arg2, false, newproxy_result1_4), newproxy_result1_4
-end
-module_upvr.__index.GiveObject = module_upvr.__index.AddObject
-module_upvr.__index.Remove = function(arg1, arg2) -- Line 179, Named "Remove"
-	--[[ Upvalues[1]:
-		[1]: newproxy_result1_2_upvr (readonly)
-	]]
-	local var38 = arg1[newproxy_result1_2_upvr]
-	if var38 then
-		local var39 = var38[arg2]
-		local var40
-		if var39 then
-			local var41 = arg1[var39]
-			var40 = var41
-			if var40 then
-				var40 = var41[1]
-			end
-			if var40 then
-				if var40 == true then
-					var39()
-				else
-					local var42 = var39[var40]
-					if var42 then
-						var42(var39)
-					end
-				end
-				arg1[var39] = nil
-			end
-			var38[arg2] = nil
-		end
-	end
-	return arg1
-end
-module_upvr.__index.Get = function(arg1, arg2) -- Line 213, Named "Get"
-	--[[ Upvalues[1]:
-		[1]: newproxy_result1_2_upvr (readonly)
-	]]
-	local var43 = arg1[newproxy_result1_2_upvr]
-	if var43 then
-		return var43[arg2]
-	end
-end
-module_upvr.__index.Cleanup = function(arg1) -- Line 224, Named "Cleanup"
-	--[[ Upvalues[1]:
-		[1]: newproxy_result1_2_upvr (readonly)
-	]]
-	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [105] 86. Error Block 37 start (CF ANALYSIS FAILED)
-	local var46 = arg1[newproxy_result1_2_upvr]
-	if var46 then
-		for i in next, var46 do
-			var46[i] = nil
-			local _
-		end
-		arg1[newproxy_result1_2_upvr] = {}
-	end
-	arg1.CurrentlyCleaning = false
-	-- KONSTANTERROR: [105] 86. Error Block 37 end (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [124] 101. Error Block 28 start (CF ANALYSIS FAILED)
-	-- KONSTANTERROR: [124] 101. Error Block 28 end (CF ANALYSIS FAILED)
-end
-module_upvr.__index.Clean = module_upvr.__index.Cleanup
-module_upvr.__index.Destroy = function(arg1) -- Line 284, Named "Destroy"
-	arg1:Cleanup()
-end
-module_upvr.__call = module_upvr.__index.Cleanup
-local tbl_2_upvr = {
-	Connected = true;
-}
-tbl_2_upvr.__index = tbl_2_upvr
-function tbl_2_upvr.Disconnect(arg1) -- Line 298
-	if arg1.Connected then
-		arg1.Connected = false
-		arg1.Connection:Disconnect()
-	end
-end
-function tbl_2_upvr.__tostring(arg1) -- Line 305
-	return "Disconnect<"..tostring(arg1.Connected)..'>'
-end
-local Heartbeat_upvr = RunService_upvr.Heartbeat
-module_upvr.__index.LinkToInstance = function(arg1, arg2, arg3) -- Line 315, Named "LinkToInstance"
-	--[[ Upvalues[3]:
-		[1]: newproxy_result1_3_upvr (readonly)
-		[2]: tbl_2_upvr (readonly)
-		[3]: Heartbeat_upvr (readonly)
-	]]
-	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
-	local var50_upvw
-	local function INLINED() -- Internal function, doesn't exist in bytecode
-		var50_upvw = false
-		return newproxy(var50_upvw)
-	end
-	if not arg3 or not INLINED() then
-	end
-	if arg2.Parent ~= nil then
-		var50_upvw = false
-	else
-		var50_upvw = true
-	end
-	local setmetatable_result1_upvr = setmetatable({}, tbl_2_upvr)
-	local var52_upvw
-	var52_upvw = arg2.AncestryChanged:Connect(function(arg1_3, arg2_3) -- Line 321, Named "ChangedFunction"
-		--[[ Upvalues[5]:
-			[1]: setmetatable_result1_upvr (readonly)
-			[2]: var50_upvw (read and write)
-			[3]: Heartbeat_upvr (copied, readonly)
-			[4]: var52_upvw (read and write)
-			[5]: arg1 (readonly)
-		]]
-		local Connected = setmetatable_result1_upvr.Connected
-		if Connected then
-			if arg2_3 ~= nil then
-				Connected = false
-			else
-				Connected = true
-			end
-			var50_upvw = Connected
-			Connected = var50_upvw
-			if Connected then
-				Connected = coroutine.wrap
-				Connected = Connected(function() -- Line 327
-					--[[ Upvalues[5]:
-						[1]: Heartbeat_upvr (copied, readonly)
-						[2]: setmetatable_result1_upvr (copied, readonly)
-						[3]: var52_upvw (copied, read and write)
-						[4]: arg1 (copied, readonly)
-						[5]: var50_upvw (copied, read and write)
-					]]
-					Heartbeat_upvr:Wait()
-					if not setmetatable_result1_upvr.Connected then
-					else
-						if not var52_upvw.Connected then
-							arg1:Cleanup()
-							return
-						end
-						while var50_upvw and var52_upvw.Connected and setmetatable_result1_upvr.Connected do
-							Heartbeat_upvr:Wait()
-						end
-						if setmetatable_result1_upvr.Connected and var50_upvw then
-							arg1:Cleanup()
-						end
-					end
-				end)
-				Connected()
-			end
-		end
-	end)
-	local var55_upvw = var52_upvw
-	setmetatable_result1_upvr.Connection = var55_upvw
-	if var50_upvw and setmetatable_result1_upvr.Connected then
-		if arg2.Parent ~= nil then
-			var50_upvw = false
-		else
-			var50_upvw = true
-		end
-		if var50_upvw then
-			coroutine.wrap(function() -- Line 327
-				--[[ Upvalues[5]:
-					[1]: Heartbeat_upvr (copied, readonly)
-					[2]: setmetatable_result1_upvr (readonly)
-					[3]: var55_upvw (read and write)
-					[4]: arg1 (readonly)
-					[5]: var50_upvw (read and write)
-				]]
-				Heartbeat_upvr:Wait()
-				if not setmetatable_result1_upvr.Connected then
-				else
-					if not var55_upvw.Connected then
-						arg1:Cleanup()
-						return
-					end
-					while var50_upvw and var55_upvw.Connected and setmetatable_result1_upvr.Connected do
-						Heartbeat_upvr:Wait()
-					end
-					if setmetatable_result1_upvr.Connected and var50_upvw then
-						arg1:Cleanup()
-					end
-				end
-			end)()
-		end
-	end
-	return arg1:Add(setmetatable_result1_upvr, "Disconnect", newproxy_result1_3_upvr)
-end
-module_upvr.__index.LinkToInstances = function(arg1, ...) -- Line 363, Named "LinkToInstances"
-	--[[ Upvalues[1]:
-		[1]: module_upvr (readonly)
-	]]
-	local any_new_result1 = module_upvr.new()
-	for _, v in ipairs({...}) do
-		any_new_result1:Add(arg1:LinkToInstance(v, true), "Disconnect")
-	end
-	return any_new_result1
-end
-for i_3, v_2 in next, module_upvr.__index do
-	module_upvr.__index[string.sub(string.lower(i_3), 1, 1)..string.sub(i_3, 2)] = v_2
-end
-return module_upvr
+local l_RunService_0 = game:GetService("RunService");
+local l_Heartbeat_0 = l_RunService_0.Heartbeat;
+local function _() --[[ Line: 25 ]] --[[ Name: getPromiseReference ]]
+    -- upvalues: l_RunService_0 (copy)
+    if l_RunService_0:IsRunning() then
+        return require(game:GetService("ReplicatedStorage").Framework).modules.Promise;
+    else
+        return;
+    end;
+end;
+local v3 = newproxy(true);
+getmetatable(v3).__tostring = function() --[[ Line: 33 ]]
+    return "IndicesReference";
+end;
+local v4 = newproxy(true);
+getmetatable(v4).__tostring = function() --[[ Line: 38 ]]
+    return "LinkToInstanceIndex";
+end;
+local v5 = {
+    IGNORE_MEMORY_DEBUG = true, 
+    ClassName = "Janitor", 
+    __index = {
+        CurrentlyCleaning = true, 
+        [v3] = nil
+    }
+};
+local v6 = {
+    ["function"] = true, 
+    Promise = "cancel", 
+    RBXScriptConnection = "Disconnect"
+};
+v5.new = function() --[[ Line: 64 ]] --[[ Name: new ]]
+    -- upvalues: v3 (copy), v5 (copy)
+    return (setmetatable({
+        CurrentlyCleaning = false, 
+        [v3] = nil
+    }, v5));
+end;
+v5.Is = function(v7) --[[ Line: 76 ]] --[[ Name: Is ]]
+    -- upvalues: v5 (copy)
+    local v8 = false;
+    if type(v7) == "table" then
+        v8 = getmetatable(v7) == v5;
+    end;
+    return v8;
+end;
+v5.is = v5.Is;
+v5.__index.Add = function(v9, v10, v11, v12) --[[ Line: 89 ]] --[[ Name: Add ]]
+    -- upvalues: v3 (copy), v6 (copy)
+    if v12 then
+        v9:Remove(v12);
+        local v13 = v9[v3];
+        if not v13 then
+            v13 = {};
+            v9[v3] = v13;
+        end;
+        v13[v12] = v10;
+    end;
+    local v14 = typeof(v10);
+    if v14 == "table" and string.match(tostring(v10), "Promise") then
+        v14 = "Promise";
+    end;
+    v11 = v11 or v6[v14] or "Destroy";
+    if type(v10) ~= "function" and not v10[v11] then
+        warn(string.format("Object %s doesn't have method %s, are you sure you want to add it? Traceback: %s", tostring(v10), tostring(v11), debug.traceback(nil, 2)));
+    end;
+    v9[v10] = {
+        v11, 
+        (debug.traceback(""))
+    };
+    return v10;
+end;
+v5.__index.Give = v5.__index.Add;
+v5.__index.AddPromise = function(v15, v16) --[[ Line: 126 ]] --[[ Name: AddPromise ]]
+    -- upvalues: l_RunService_0 (copy)
+    local v17 = if l_RunService_0:IsRunning() then require(game:GetService("ReplicatedStorage").Framework).modules.Promise else nil;
+    if v17 then
+        if not v17.is(v16) then
+            error(string.format("Invalid argument #1 to 'Janitor:AddPromise' (Promise expected, got %s (%s))", typeof(v16), (tostring(v16))));
+        end;
+        if v16:getStatus() == v17.Status.Started then
+            local v18 = newproxy(false);
+            local v22 = v15:Add(v17.new(function(v19, _, v21) --[[ Line: 134 ]]
+                -- upvalues: v16 (copy)
+                if v21(function() --[[ Line: 135 ]]
+                    -- upvalues: v16 (ref)
+                    v16:cancel();
+                end) then
+                    return;
+                else
+                    v19(v16);
+                    return;
+                end;
+            end), "cancel", v18);
+            v22:finallyCall(v15.Remove, v15, v18);
+            return v22;
+        else
+            return v16;
+        end;
+    else
+        return v16;
+    end;
+end;
+v5.__index.GivePromise = v5.__index.AddPromise;
+v5.__index.AddObject = function(v23, v24) --[[ Line: 156 ]] --[[ Name: AddObject ]]
+    -- upvalues: l_RunService_0 (copy)
+    local v25 = newproxy(false);
+    local v26 = if l_RunService_0:IsRunning() then require(game:GetService("ReplicatedStorage").Framework).modules.Promise else nil;
+    if v26 and v26.is(v24) then
+        if v24:getStatus() == v26.Status.Started then
+            local v27 = v23:Add(v26.resolve(v24), "cancel", v25);
+            v27:finallyCall(v23.Remove, v23, v25);
+            return v27, v25;
+        else
+            return v24;
+        end;
+    else
+        return v23:Add(v24, false, v25), v25;
+    end;
+end;
+v5.__index.GiveObject = v5.__index.AddObject;
+v5.__index.Remove = function(v28, v29) --[[ Line: 179 ]] --[[ Name: Remove ]]
+    -- upvalues: v3 (copy)
+    local v30 = v28[v3];
+    if v30 then
+        local v31 = v30[v29];
+        if v31 then
+            local v32 = v28[v31];
+            local v33 = v32 and v32[1];
+            if v33 then
+                if v33 == true then
+                    v31();
+                else
+                    local v34 = v31[v33];
+                    if v34 then
+                        v34(v31);
+                    end;
+                end;
+                v28[v31] = nil;
+            end;
+            v30[v29] = nil;
+        end;
+    end;
+    return v28;
+end;
+v5.__index.Get = function(v35, v36) --[[ Line: 213 ]] --[[ Name: Get ]]
+    -- upvalues: v3 (copy)
+    local v37 = v35[v3];
+    if v37 then
+        return v37[v36];
+    else
+        return;
+    end;
+end;
+v5.__index.Cleanup = function(v38) --[[ Line: 224 ]] --[[ Name: Cleanup ]]
+    -- upvalues: v3 (copy)
+    if not v38.CurrentlyCleaning then
+        v38.CurrentlyCleaning = nil;
+        for v39, v40 in next, v38 do
+            if v39 ~= v3 then
+                local v41 = type(v39);
+                if v41 == "string" or v41 == "number" then
+                    v38[v39] = nil;
+                else
+                    local v42 = v40[1];
+                    local v43 = v40[2];
+                    local function _(v44) --[[ Line: 241 ]] --[[ Name: warnUser ]]
+                        -- upvalues: v43 (copy)
+                        local v45 = debug.traceback("", 3);
+                        local l_v43_0 = v43;
+                        warn("-------- Janitor Error --------" .. "\n" .. tostring(v44) .. "\n" .. v45 .. "" .. l_v43_0);
+                    end;
+                    if v42 == true then
+                        local l_status_0, l_result_0 = pcall(v39);
+                        if not l_status_0 then
+                            local v50 = debug.traceback("", 3);
+                            warn("-------- Janitor Error --------" .. "\n" .. tostring(l_result_0) .. "\n" .. v50 .. "" .. v43);
+                        end;
+                    else
+                        local v51 = v39[v42];
+                        if v51 then
+                            local l_status_1, l_result_1 = pcall(v51, v39);
+                            local v54 = false;
+                            if typeof(v39) == "Instance" then
+                                v54 = v51 == "Destroy";
+                            end;
+                            if not l_status_1 and not v54 then
+                                local v55 = debug.traceback("", 3);
+                                warn("-------- Janitor Error --------" .. "\n" .. tostring(l_result_1) .. "\n" .. v55 .. "" .. v43);
+                            end;
+                        end;
+                    end;
+                    v38[v39] = nil;
+                end;
+            end;
+        end;
+        local v56 = v38[v3];
+        if v56 then
+            for v57 in next, v56 do
+                v56[v57] = nil;
+            end;
+            v38[v3] = {};
+        end;
+        v38.CurrentlyCleaning = false;
+    end;
+end;
+v5.__index.Clean = v5.__index.Cleanup;
+v5.__index.Destroy = function(v58) --[[ Line: 284 ]] --[[ Name: Destroy ]]
+    v58:Cleanup();
+end;
+v5.__call = v5.__index.Cleanup;
+local v59 = {
+    Connected = true
+};
+v59.__index = v59;
+v59.Disconnect = function(v60) --[[ Line: 298 ]] --[[ Name: Disconnect ]]
+    if v60.Connected then
+        v60.Connected = false;
+        v60.Connection:Disconnect();
+    end;
+end;
+v59.__tostring = function(v61) --[[ Line: 305 ]] --[[ Name: __tostring ]]
+    return "Disconnect<" .. tostring(v61.Connected) .. ">";
+end;
+v5.__index.LinkToInstance = function(v62, v63, v64) --[[ Line: 315 ]] --[[ Name: LinkToInstance ]]
+    -- upvalues: v4 (copy), v59 (copy), l_Heartbeat_0 (copy)
+    local v65 = nil;
+    local v66 = v64 and newproxy(false) or v4;
+    local v67 = v63.Parent == nil;
+    local v68 = setmetatable({}, v59);
+    local function v71(v69, v70) --[[ Line: 321 ]] --[[ Name: ChangedFunction ]]
+        -- upvalues: v68 (copy), v67 (ref), l_Heartbeat_0 (ref), v65 (ref), v62 (copy)
+        if v68.Connected then
+            v69 = nil;
+            v67 = v70 == nil;
+            if v67 then
+                coroutine.wrap(function() --[[ Line: 327 ]]
+                    -- upvalues: l_Heartbeat_0 (ref), v68 (ref), v65 (ref), v62 (ref), v67 (ref)
+                    l_Heartbeat_0:Wait();
+                    if not v68.Connected then
+                        return;
+                    elseif not v65.Connected then
+                        v62:Cleanup();
+                        return;
+                    else
+                        while v67 and v65.Connected and v68.Connected do
+                            l_Heartbeat_0:Wait();
+                        end;
+                        if v68.Connected and v67 then
+                            v62:Cleanup();
+                        end;
+                        return;
+                    end;
+                end)();
+            end;
+        end;
+    end;
+    v65 = v63.AncestryChanged:Connect(v71);
+    v68.Connection = v65;
+    if v67 then
+        local v72 = nil;
+        local l_Parent_0 = v63.Parent;
+        if v68.Connected then
+            v72 = nil;
+            v67 = l_Parent_0 == nil;
+            if v67 then
+                coroutine.wrap(function() --[[ Line: 327 ]]
+                    -- upvalues: l_Heartbeat_0 (ref), v68 (copy), v65 (ref), v62 (copy), v67 (ref)
+                    l_Heartbeat_0:Wait();
+                    if not v68.Connected then
+                        return;
+                    elseif not v65.Connected then
+                        v62:Cleanup();
+                        return;
+                    else
+                        while v67 and v65.Connected and v68.Connected do
+                            l_Heartbeat_0:Wait();
+                        end;
+                        if v68.Connected and v67 then
+                            v62:Cleanup();
+                        end;
+                        return;
+                    end;
+                end)();
+            end;
+        end;
+    end;
+    v63 = nil;
+    return v62:Add(v68, "Disconnect", v66);
+end;
+v5.__index.LinkToInstances = function(v74, ...) --[[ Line: 363 ]] --[[ Name: LinkToInstances ]]
+    -- upvalues: v5 (copy)
+    local v75 = v5.new();
+    for _, v77 in ipairs({
+        ...
+    }) do
+        v75:Add(v74:LinkToInstance(v77, true), "Disconnect");
+    end;
+    return v75;
+end;
+for v78, v79 in next, v5.__index do
+    local v80 = string.sub(string.lower(v78), 1, 1) .. string.sub(v78, 2);
+    v5.__index[v80] = v79;
+end;
+return v5;
