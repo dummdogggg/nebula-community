@@ -1,409 +1,608 @@
 --[[
     Script: ReplicatedStorage.Packages.SimplePath
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
---!native
-local v0 = {
-    TIME_VARIANCE = 0.07, 
-    COMPARISON_CHECKS = 1, 
-    JUMP_WHEN_STUCK = true
-};
-local l_PathfindingService_0 = game:GetService("PathfindingService");
-local l_Players_0 = game:GetService("Players");
-local function _(v3, v4) --[[ Line: 26 ]] --[[ Name: output ]]
-    v3((v3 == error and "SimplePath Error: " or "SimplePath: ") .. v4);
-end;
-local v6 = {
-    StatusType = {
-        Idle = "Idle", 
-        Active = "Active"
-    }, 
-    ErrorType = {
-        LimitReached = "LimitReached", 
-        TargetUnreachable = "TargetUnreachable", 
-        ComputationError = "ComputationError", 
-        AgentStuck = "AgentStuck"
-    }
-};
-v6.__index = function(v7, v8) --[[ Line: 41 ]]
-    -- upvalues: v6 (copy)
-    if v8 == "Stopped" and not v7._humanoid then
-        local l_error_0 = error;
-        l_error_0((l_error_0 == error and "SimplePath Error: " or "SimplePath: ") .. "Attempt to use Path.Stopped on a non-humanoid.");
-    end;
-    return v7._events[v8] and v7._events[v8].Event or v8 == "LastError" and v7._lastError or v8 == "Status" and v7._status or v6[v8];
-end;
-local l_Part_0 = Instance.new("Part");
-l_Part_0.Size = Vector3.new(0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0);
-l_Part_0.Anchored = true;
-l_Part_0.CanCollide = false;
-l_Part_0.Material = Enum.Material.Neon;
-l_Part_0.Shape = Enum.PartType.Ball;
-local function _(v11, v12) --[[ Line: 60 ]] --[[ Name: declareError ]]
-    v11._lastError = v12;
-    v11._events.Error:Fire(v12);
-end;
-local function v19(v14) --[[ Line: 66 ]] --[[ Name: createVisualWaypoints ]]
-    -- upvalues: l_Part_0 (copy)
-    local v15 = {};
-    for _, v17 in ipairs(v14) do
-        local v18 = l_Part_0:Clone();
-        v18.Position = v17.Position;
-        v18.Parent = workspace;
-        v18.Color = v17 == v14[#v14] and Color3.fromRGB(0, 255, 0) or v17.Action == Enum.PathWaypointAction.Jump and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 139, 0);
-        table.insert(v15, v18);
-    end;
-    return v15;
-end;
-local _ = function(v20) --[[ Line: 82 ]] --[[ Name: destroyVisualWaypoints ]]
-    if v20 then
-        for _, v22 in ipairs(v20) do
-            v22:Destroy();
-        end;
-    end;
-end;
-local function v26(v24) --[[ Line: 92 ]] --[[ Name: getNonHumanoidWaypoint ]]
-    for v25 = 2, #v24._waypoints do
-        if (v24._waypoints[v25].Position - v24._waypoints[v25 - 1].Position).Magnitude > 0.1 then
-            return v25;
-        end;
-    end;
-    return 2;
-end;
-local function _(v27) --[[ Line: 103 ]] --[[ Name: setJumpState ]]
-    pcall(function() --[[ Line: 104 ]]
-        -- upvalues: v27 (copy)
-        if v27._humanoid:GetState() ~= Enum.HumanoidStateType.Jumping and v27._humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
-            v27._humanoid:ChangeState(Enum.HumanoidStateType.Jumping);
-        end;
-    end);
-end;
-local function _(v29) --[[ Line: 112 ]] --[[ Name: move ]]
-    if v29._waypoints[v29._currentWaypoint].Action == Enum.PathWaypointAction.Jump then
-        pcall(function() --[[ Line: 104 ]]
-            -- upvalues: v29 (copy)
-            if v29._humanoid:GetState() ~= Enum.HumanoidStateType.Jumping and v29._humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
-                v29._humanoid:ChangeState(Enum.HumanoidStateType.Jumping);
-            end;
-        end);
-    end;
-    v29._humanoid:MoveTo(v29._waypoints[v29._currentWaypoint].Position);
-end;
-local function _(v31) --[[ Line: 120 ]] --[[ Name: disconnectMoveConnection ]]
-    v31._moveConnection:Disconnect();
-    v31._moveConnection = nil;
-end;
-local function _(v33) --[[ Line: 126 ]] --[[ Name: invokeWaypointReached ]]
-    local v34 = v33._waypoints[v33._currentWaypoint - 1];
-    local v35 = v33._waypoints[v33._currentWaypoint];
-    v33._events.WaypointReached:Fire(v33._agent, v34, v35);
-end;
-local function v57(v37, v38) --[[ Line: 132 ]] --[[ Name: moveToFinished ]]
-    -- upvalues: v6 (copy)
-    if not getmetatable(v37) then
-        return;
-    elseif not v37._humanoid then
-        if v38 and v37._currentWaypoint + 1 <= #v37._waypoints then
-            local v39 = v37._waypoints[v37._currentWaypoint - 1];
-            local v40 = v37._waypoints[v37._currentWaypoint];
-            v37._events.WaypointReached:Fire(v37._agent, v39, v40);
-            v37._currentWaypoint = v37._currentWaypoint + 1;
-            return;
-        elseif v38 then
-            local l__visualWaypoints_0 = v37._visualWaypoints;
-            if l__visualWaypoints_0 then
-                for _, v43 in ipairs(l__visualWaypoints_0) do
-                    v43:Destroy();
-                end;
-            end;
-            v37._visualWaypoints = nil;
-            v37._target = nil;
-            v37._events.Reached:Fire(v37._agent, v37._waypoints[v37._currentWaypoint]);
-            return;
-        else
-            local l__visualWaypoints_1 = v37._visualWaypoints;
-            if l__visualWaypoints_1 then
-                for _, v46 in ipairs(l__visualWaypoints_1) do
-                    v46:Destroy();
-                end;
-            end;
-            v37._visualWaypoints = nil;
-            v37._target = nil;
-            local l_TargetUnreachable_0 = v37.ErrorType.TargetUnreachable;
-            v37._lastError = l_TargetUnreachable_0;
-            v37._events.Error:Fire(l_TargetUnreachable_0);
-            return;
-        end;
-    elseif v38 and v37._currentWaypoint + 1 <= #v37._waypoints then
-        if v37._currentWaypoint + 1 < #v37._waypoints then
-            local v48 = v37._waypoints[v37._currentWaypoint - 1];
-            local v49 = v37._waypoints[v37._currentWaypoint];
-            v37._events.WaypointReached:Fire(v37._agent, v48, v49);
-        end;
-        v37._currentWaypoint = v37._currentWaypoint + 1;
-        if v37._waypoints[v37._currentWaypoint].Action == Enum.PathWaypointAction.Jump then
-            pcall(function() --[[ Line: 104 ]]
-                -- upvalues: v37 (copy)
-                if v37._humanoid:GetState() ~= Enum.HumanoidStateType.Jumping and v37._humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
-                    v37._humanoid:ChangeState(Enum.HumanoidStateType.Jumping);
-                end;
-            end);
-        end;
-        v37._humanoid:MoveTo(v37._waypoints[v37._currentWaypoint].Position);
-        return;
-    elseif v38 then
-        v37._moveConnection:Disconnect();
-        v37._moveConnection = nil;
-        v37._status = v6.StatusType.Idle;
-        local l__visualWaypoints_2 = v37._visualWaypoints;
-        if l__visualWaypoints_2 then
-            for _, v52 in ipairs(l__visualWaypoints_2) do
-                v52:Destroy();
-            end;
-        end;
-        v37._visualWaypoints = nil;
-        v37._events.Reached:Fire(v37._agent, v37._waypoints[v37._currentWaypoint]);
-        return;
-    else
-        v37._moveConnection:Disconnect();
-        v37._moveConnection = nil;
-        v37._status = v6.StatusType.Idle;
-        local l__visualWaypoints_3 = v37._visualWaypoints;
-        if l__visualWaypoints_3 then
-            for _, v55 in ipairs(l__visualWaypoints_3) do
-                v55:Destroy();
-            end;
-        end;
-        v37._visualWaypoints = nil;
-        local l_TargetUnreachable_1 = v37.ErrorType.TargetUnreachable;
-        v37._lastError = l_TargetUnreachable_1;
-        v37._events.Error:Fire(l_TargetUnreachable_1);
-        return;
-    end;
-end;
-local function v60(v58) --[[ Line: 174 ]] --[[ Name: comparePosition ]]
-    if v58._currentWaypoint == #v58._waypoints then
-        return;
-    else
-        v58._position._count = (v58._agent.PrimaryPart.Position - v58._position._last).Magnitude <= 0.07 and v58._position._count + 1 or 0;
-        v58._position._last = v58._agent.PrimaryPart.Position;
-        if v58._position._count >= v58._settings.COMPARISON_CHECKS then
-            if v58._settings.JUMP_WHEN_STUCK then
-                pcall(function() --[[ Line: 104 ]]
-                    -- upvalues: v58 (copy)
-                    if v58._humanoid:GetState() ~= Enum.HumanoidStateType.Jumping and v58._humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
-                        v58._humanoid:ChangeState(Enum.HumanoidStateType.Jumping);
-                    end;
-                end);
-            end;
-            local l_AgentStuck_0 = v58.ErrorType.AgentStuck;
-            v58._lastError = l_AgentStuck_0;
-            v58._events.Error:Fire(l_AgentStuck_0);
-        end;
-        return;
-    end;
-end;
-local function v68(v61) --[[ Line: 186 ]] --[[ Name: findWaypointIndexClosestToAgent ]]
-    local v62 = nil;
-    local v63 = 1e999;
-    local l_Position_0 = v61._agent.PrimaryPart.Position;
-    for v65, v66 in v61._waypoints do
-        local l_Magnitude_0 = (v66.Position - l_Position_0).Magnitude;
-        if l_Magnitude_0 < v63 then
-            v62 = v65;
-            v63 = l_Magnitude_0;
-        end;
-    end;
-    return v62;
-end;
-v6.GetNearestCharacter = function(v69) --[[ Line: 205 ]] --[[ Name: GetNearestCharacter ]]
-    -- upvalues: l_Players_0 (copy)
-    local v70 = nil;
-    local v71 = 1e999;
-    for _, v73 in ipairs(l_Players_0:GetPlayers()) do
-        if v73.Character and (v73.Character.PrimaryPart.Position - v69).Magnitude < v71 then
-            v70 = v73.Character;
-            v71 = (v73.Character.PrimaryPart.Position - v69).Magnitude;
-        end;
-    end;
-    return v70;
-end;
-v6.new = function(v74, v75, v76) --[[ Line: 216 ]] --[[ Name: new ]]
-    -- upvalues: v0 (copy), l_PathfindingService_0 (copy), v6 (copy)
-    if not v74 or not v74:IsA("Model") or not v74.PrimaryPart then
-        local l_error_1 = error;
-        l_error_1((l_error_1 == error and "SimplePath Error: " or "SimplePath: ") .. "Pathfinding agent must be a valid Model Instance with a set PrimaryPart.");
-    end;
-    local v78 = setmetatable({
-        _settings = v76 or v0, 
-        _events = {
-            Reached = Instance.new("BindableEvent"), 
-            WaypointReached = Instance.new("BindableEvent"), 
-            Blocked = Instance.new("BindableEvent"), 
-            Error = Instance.new("BindableEvent"), 
-            Stopped = Instance.new("BindableEvent")
-        }, 
-        _agent = v74, 
-        _humanoid = v74:FindFirstChildOfClass("Humanoid"), 
-        _path = l_PathfindingService_0:CreatePath(v75), 
-        _status = "Idle", 
-        _t = 0, 
-        _position = {
-            _last = Vector3.new(), 
-            _count = 0
-        }
-    }, v6);
-    for v79, v80 in pairs(v0) do
-        v78._settings[v79] = v78._settings[v79] == nil and v80 or v78._settings[v79];
-    end;
-    v78._path.Blocked:Connect(function(...) --[[ Line: 247 ]]
-        -- upvalues: v78 (copy)
-        if v78._currentWaypoint <= ... and ... <= v78._currentWaypoint + 1 and v78._humanoid then
-            local l_v78_0 = v78;
-            pcall(function() --[[ Line: 104 ]]
-                -- upvalues: l_v78_0 (copy)
-                if l_v78_0._humanoid:GetState() ~= Enum.HumanoidStateType.Jumping and l_v78_0._humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
-                    l_v78_0._humanoid:ChangeState(Enum.HumanoidStateType.Jumping);
-                end;
-            end);
-            v78._events.Blocked:Fire(v78._agent, v78._waypoints[...]);
-        end;
-    end);
-    return v78;
-end;
-v6.Destroy = function(v82) --[[ Line: 259 ]] --[[ Name: Destroy ]]
-    for _, v84 in ipairs(v82._events) do
-        v84:Destroy();
-    end;
-    v82._events = nil;
-    if rawget(v82, "_visualWaypoints") then
-        local l__visualWaypoints_4 = v82._visualWaypoints;
-        if l__visualWaypoints_4 then
-            for _, v87 in ipairs(l__visualWaypoints_4) do
-                v87:Destroy();
-            end;
-        end;
-        v82._visualWaypoints = nil;
-    end;
-    v82._path:Destroy();
-    setmetatable(v82, nil);
-    for v88, _ in pairs(v82) do
-        v82[v88] = nil;
-    end;
-end;
-v6.Stop = function(v90) --[[ Line: 274 ]] --[[ Name: Stop ]]
-    -- upvalues: v6 (copy)
-    if not v90._humanoid then
-        local l_error_2 = error;
-        l_error_2((l_error_2 == error and "SimplePath Error: " or "SimplePath: ") .. "Attempt to call Path:Stop() on a non-humanoid.");
-        return;
-    elseif v90._status == v6.StatusType.Idle then
-        local function v93(v92) --[[ Line: 280 ]]
-            warn(debug.traceback(v92));
-        end;
-        v93((v93 == error and "SimplePath Error: " or "SimplePath: ") .. "Attempt to run Path:Stop() in idle state");
-        return;
-    else
-        v90._moveConnection:Disconnect();
-        v90._moveConnection = nil;
-        v90._status = v6.StatusType.Idle;
-        local l__visualWaypoints_5 = v90._visualWaypoints;
-        if l__visualWaypoints_5 then
-            for _, v96 in ipairs(l__visualWaypoints_5) do
-                v96:Destroy();
-            end;
-        end;
-        v90._visualWaypoints = nil;
-        v90._events.Stopped:Fire(v90._model);
-        return;
-    end;
-end;
-v6.Run = function(v97, v98) --[[ Line: 291 ]] --[[ Name: Run ]]
-    -- upvalues: v57 (copy), v6 (copy), v68 (copy), v60 (copy), v19 (copy), v26 (copy)
-    if not v98 and not v97._humanoid and v97._target then
-        v57(v97, true);
-        return;
-    else
-        if not v98 or typeof(v98) ~= "Vector3" and not v98:IsA("BasePart") then
-            local l_error_3 = error;
-            l_error_3((l_error_3 == error and "SimplePath Error: " or "SimplePath: ") .. "Pathfinding target must be a valid Vector3 or BasePart.");
-        end;
-        if os.clock() - v97._t <= v97._settings.TIME_VARIANCE and v97._humanoid then
-            task.wait(os.clock() - v97._t);
-            local l_LimitReached_0 = v97.ErrorType.LimitReached;
-            v97._lastError = l_LimitReached_0;
-            v97._events.Error:Fire(l_LimitReached_0);
-            return false;
-        else
-            if v97._humanoid then
-                v97._t = os.clock();
-            end;
-            local l_status_0, _ = pcall(function() --[[ Line: 314 ]]
-                -- upvalues: v97 (copy), v98 (copy)
-                v97._path:ComputeAsync(v97._agent.PrimaryPart.Position, typeof(v98) == "Vector3" and v98 or v98.Position);
-            end);
-            if not l_status_0 or v97._path.Status == Enum.PathStatus.NoPath or #v97._path:GetWaypoints() < 2 or v97._humanoid and v97._humanoid:GetState() == Enum.HumanoidStateType.Freefall then
-                local l__visualWaypoints_6 = v97._visualWaypoints;
-                if l__visualWaypoints_6 then
-                    for _, v105 in ipairs(l__visualWaypoints_6) do
-                        v105:Destroy();
-                    end;
-                end;
-                v97._visualWaypoints = nil;
-                task.wait();
-                local l_ComputationError_0 = v97.ErrorType.ComputationError;
-                v97._lastError = l_ComputationError_0;
-                v97._events.Error:Fire(l_ComputationError_0);
-                return false;
-            else
-                v97._status = v97._humanoid and v6.StatusType.Active or v6.StatusType.Idle;
-                v97._target = v98;
-                pcall(function() --[[ Line: 334 ]]
-                    -- upvalues: v97 (copy)
-                    v97._agent.PrimaryPart:SetNetworkOwner(nil);
-                end);
-                v97._waypoints = v97._path:GetWaypoints();
-                if #v97._waypoints >= 3 then
-                    local v107 = v68(v97);
-                    v97._currentWaypoint = v107 and math.min(v107 + 3, #v97._waypoints) or 3;
-                else
-                    v97._currentWaypoint = 2;
-                end;
-                if v97._humanoid then
-                    v60(v97);
-                end;
-                local l__visualWaypoints_7 = v97._visualWaypoints;
-                if l__visualWaypoints_7 then
-                    for _, v110 in ipairs(l__visualWaypoints_7) do
-                        v110:Destroy();
-                    end;
-                end;
-                v97._visualWaypoints = v97.Visualize and v19(v97._waypoints);
-                v97._moveConnection = v97._humanoid and (v97._moveConnection or v97._humanoid.MoveToFinished:Connect(function(...) --[[ Line: 358 ]]
-                    -- upvalues: v57 (ref), v97 (copy)
-                    v57(v97, ...);
-                end));
-                if v97._humanoid then
-                    v97._humanoid:MoveTo(v97._waypoints[v97._currentWaypoint].Position);
-                elseif #v97._waypoints == 2 then
-                    v97._target = nil;
-                    local l__visualWaypoints_8 = v97._visualWaypoints;
-                    if l__visualWaypoints_8 then
-                        for _, v113 in ipairs(l__visualWaypoints_8) do
-                            v113:Destroy();
-                        end;
-                    end;
-                    v97._visualWaypoints = nil;
-                    v97._events.Reached:Fire(v97._agent, v97._waypoints[2]);
-                else
-                    v97._currentWaypoint = v26(v97);
-                    v57(v97, true);
-                end;
-                return true;
-            end;
-        end;
-    end;
-end;
-return v6;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:49:27
+-- Luau version 6, Types version 3
+-- Time taken: 0.015922 seconds
+
+local tbl_upvr = {
+	TIME_VARIANCE = 0.07;
+	COMPARISON_CHECKS = 1;
+	JUMP_WHEN_STUCK = true;
+}
+local function _(arg1, arg2) -- Line 26, Named "output"
+	local var2
+	if arg1 == error then
+		var2 = "SimplePath Error: "
+	else
+		var2 = "SimplePath: "
+	end
+	arg1(var2..arg2)
+end
+local module_upvr = {
+	StatusType = {
+		Idle = "Idle";
+		Active = "Active";
+	};
+	ErrorType = {
+		LimitReached = "LimitReached";
+		TargetUnreachable = "TargetUnreachable";
+		ComputationError = "ComputationError";
+		AgentStuck = "AgentStuck";
+	};
+}
+function module_upvr.__index(arg1, arg2) -- Line 41
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	if arg2 == "Stopped" then
+		local var9
+		if not arg1._humanoid then
+			local error = error
+			if error == error then
+				var9 = "SimplePath Error: "
+			else
+				var9 = "SimplePath: "
+			end
+			error(var9.."Attempt to use Path.Stopped on a non-humanoid.")
+		end
+	end
+	if not arg1._events[arg2] or not arg1._events[arg2].Event or arg2 ~= "LastError" or not arg1._lastError or arg2 ~= "Status" or not arg1._status then
+	end
+	return module_upvr[arg2]
+end
+local Part_upvr = Instance.new("Part")
+Part_upvr.Size = Vector3.new(0.30000, 0.30000, 0.30000)
+Part_upvr.Anchored = true
+Part_upvr.CanCollide = false
+Part_upvr.Material = Enum.Material.Neon
+Part_upvr.Shape = Enum.PartType.Ball
+local function _(arg1, arg2) -- Line 60, Named "declareError"
+	arg1._lastError = arg2
+	arg1._events.Error:Fire(arg2)
+end
+local function createVisualWaypoints_upvr(arg1) -- Line 66, Named "createVisualWaypoints"
+	--[[ Upvalues[1]:
+		[1]: Part_upvr (readonly)
+	]]
+	local module = {}
+	for _, v in ipairs(arg1) do
+		local clone = Part_upvr:Clone()
+		clone.Position = v.Position
+		clone.Parent = workspace
+		local var21
+		local function INLINED() -- Internal function, doesn't exist in bytecode
+			var21 = Color3.fromRGB(0, 255, 0)
+			return var21
+		end
+		local function INLINED_2() -- Internal function, doesn't exist in bytecode
+			var21 = Color3.fromRGB(255, 0, 0)
+			return var21
+		end
+		if v ~= arg1[#arg1] or not INLINED() or v.Action ~= Enum.PathWaypointAction.Jump or not INLINED_2() then
+			var21 = Color3.fromRGB(255, 139, 0)
+		end
+		clone.Color = var21
+		var21 = table.insert
+		var21(module, clone)
+	end
+	return module
+end
+local function _(arg1) -- Line 82, Named "destroyVisualWaypoints"
+	if arg1 then
+		for _, v_2 in ipairs(arg1) do
+			v_2:Destroy()
+		end
+	end
+end
+local function getNonHumanoidWaypoint_upvr(arg1) -- Line 92, Named "getNonHumanoidWaypoint"
+	for i_3 = 2, #arg1._waypoints do
+		if 0.1 < (arg1._waypoints[i_3].Position - arg1._waypoints[i_3 - 1].Position).Magnitude then
+			return i_3
+		end
+	end
+	return 2
+end
+local function _(arg1) -- Line 103, Named "setJumpState"
+	pcall(function() -- Line 104
+		--[[ Upvalues[1]:
+			[1]: arg1 (readonly)
+		]]
+		if arg1._humanoid:GetState() ~= Enum.HumanoidStateType.Jumping and arg1._humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
+			arg1._humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+		end
+	end)
+end
+local function _(arg1) -- Line 112, Named "move"
+	if arg1._waypoints[arg1._currentWaypoint].Action == Enum.PathWaypointAction.Jump then
+		pcall(function() -- Line 104
+			--[[ Upvalues[1]:
+				[1]: arg1 (readonly)
+			]]
+			if arg1._humanoid:GetState() ~= Enum.HumanoidStateType.Jumping and arg1._humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
+				arg1._humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+			end
+		end)
+	end
+	arg1._humanoid:MoveTo(arg1._waypoints[arg1._currentWaypoint].Position)
+end
+local function _(arg1) -- Line 120, Named "disconnectMoveConnection"
+	arg1._moveConnection:Disconnect()
+	arg1._moveConnection = nil
+end
+local function _(arg1) -- Line 126, Named "invokeWaypointReached"
+	arg1._events.WaypointReached:Fire(arg1._agent, arg1._waypoints[arg1._currentWaypoint - 1], arg1._waypoints[arg1._currentWaypoint])
+end
+local function moveToFinished_upvr(arg1, arg2) -- Line 132, Named "moveToFinished"
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	if not getmetatable(arg1) then
+	else
+		if not arg1._humanoid then
+			if arg2 and arg1._currentWaypoint + 1 <= #arg1._waypoints then
+				arg1._events.WaypointReached:Fire(arg1._agent, arg1._waypoints[arg1._currentWaypoint - 1], arg1._waypoints[arg1._currentWaypoint])
+				arg1._currentWaypoint += 1
+			else
+				if arg2 then
+					local _visualWaypoints_7 = arg1._visualWaypoints
+					if _visualWaypoints_7 then
+						for _, v_15 in ipairs(_visualWaypoints_7) do
+							v_15:Destroy()
+						end
+					end
+					arg1._visualWaypoints = nil
+					arg1._target = nil
+					arg1._events.Reached:Fire(arg1._agent, arg1._waypoints[arg1._currentWaypoint])
+					return
+				end
+				local _visualWaypoints_6 = arg1._visualWaypoints
+				if _visualWaypoints_6 then
+					for _, v_16 in ipairs(_visualWaypoints_6) do
+						v_16:Destroy()
+					end
+				end
+				arg1._visualWaypoints = nil
+				arg1._target = nil
+				local TargetUnreachable = arg1.ErrorType.TargetUnreachable
+				arg1._lastError = TargetUnreachable
+				arg1._events.Error:Fire(TargetUnreachable)
+			end
+		end
+		if arg2 and arg1._currentWaypoint + 1 <= #arg1._waypoints then
+			if arg1._currentWaypoint + 1 < #arg1._waypoints then
+				arg1._events.WaypointReached:Fire(arg1._agent, arg1._waypoints[arg1._currentWaypoint - 1], arg1._waypoints[arg1._currentWaypoint])
+			end
+			arg1._currentWaypoint += 1
+			if arg1._waypoints[arg1._currentWaypoint].Action == Enum.PathWaypointAction.Jump then
+				pcall(function() -- Line 104
+					--[[ Upvalues[1]:
+						[1]: arg1 (readonly)
+					]]
+					if arg1._humanoid:GetState() ~= Enum.HumanoidStateType.Jumping and arg1._humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
+						arg1._humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+					end
+				end)
+			end
+			arg1._humanoid:MoveTo(arg1._waypoints[arg1._currentWaypoint].Position)
+			return
+		end
+		if arg2 then
+			arg1._moveConnection:Disconnect()
+			arg1._moveConnection = nil
+			arg1._status = module_upvr.StatusType.Idle
+			local _visualWaypoints_3 = arg1._visualWaypoints
+			if _visualWaypoints_3 then
+				for _, v_11 in ipairs(_visualWaypoints_3) do
+					v_11:Destroy()
+				end
+			end
+			arg1._visualWaypoints = nil
+			arg1._events.Reached:Fire(arg1._agent, arg1._waypoints[arg1._currentWaypoint])
+			return
+		end
+		arg1._moveConnection:Disconnect()
+		arg1._moveConnection = nil
+		arg1._status = module_upvr.StatusType.Idle
+		local _visualWaypoints_8 = arg1._visualWaypoints
+		if _visualWaypoints_8 then
+			for _, v_12 in ipairs(_visualWaypoints_8) do
+				v_12:Destroy()
+			end
+		end
+		arg1._visualWaypoints = nil
+		local TargetUnreachable_2 = arg1.ErrorType.TargetUnreachable
+		arg1._lastError = TargetUnreachable_2
+		arg1._events.Error:Fire(TargetUnreachable_2)
+	end
+end
+local function comparePosition_upvr(arg1) -- Line 174, Named "comparePosition"
+	local var58
+	if arg1._currentWaypoint == var58 then
+	else
+		local function INLINED_3() -- Internal function, doesn't exist in bytecode
+			var58 = arg1._position._count + 1
+			return var58
+		end
+		if (arg1._agent.PrimaryPart.Position - arg1._position._last).Magnitude > 0.07 or not INLINED_3() then
+			var58 = 0
+		end
+		arg1._position._count = var58
+		var58 = arg1._agent.PrimaryPart.Position
+		arg1._position._last = var58
+		var58 = arg1._position
+		var58 = arg1._settings.COMPARISON_CHECKS
+		if var58 <= var58._count then
+			var58 = arg1._settings
+			if var58.JUMP_WHEN_STUCK then
+				function var58() -- Line 104
+					--[[ Upvalues[1]:
+						[1]: arg1 (readonly)
+					]]
+					if arg1._humanoid:GetState() ~= Enum.HumanoidStateType.Jumping and arg1._humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
+						arg1._humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+					end
+				end
+				pcall(var58)
+			end
+			var58 = arg1.ErrorType
+			local AgentStuck = var58.AgentStuck
+			arg1._lastError = AgentStuck
+			var58 = arg1._events.Error:Fire
+			var58(AgentStuck)
+		end
+	end
+end
+local function findWaypointIndexClosestToAgent_upvr(arg1) -- Line 186, Named "findWaypointIndexClosestToAgent"
+	local var64
+	for i_4, v_3 in arg1._waypoints do
+		if (v_3.Position - arg1._agent.PrimaryPart.Position).Magnitude < math.huge then
+		end
+	end
+	return nil
+end
+local Players_upvr = game:GetService("Players")
+function module_upvr.GetNearestCharacter(arg1) -- Line 205
+	--[[ Upvalues[1]:
+		[1]: Players_upvr (readonly)
+	]]
+	local var74
+	for _, v_4 in ipairs(Players_upvr:GetPlayers()) do
+		if v_4.Character and (v_4.Character.PrimaryPart.Position - arg1).Magnitude < math.huge then
+		end
+	end
+	return nil
+end
+local PathfindingService_upvr = game:GetService("PathfindingService")
+function module_upvr.new(arg1, arg2, arg3) -- Line 216
+	--[[ Upvalues[3]:
+		[1]: tbl_upvr (readonly)
+		[2]: PathfindingService_upvr (readonly)
+		[3]: module_upvr (readonly)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [1] 2. Error Block 31 start (CF ANALYSIS FAILED)
+	local var80
+	if not arg1:IsA("Model") or not arg1.PrimaryPart then
+		-- KONSTANTERROR: [9] 8. Error Block 29 start (CF ANALYSIS FAILED)
+		local error_5 = error
+		if error_5 == error then
+			var80 = "SimplePath Error: "
+		else
+			var80 = "SimplePath: "
+		end
+		error_5(var80.."Pathfinding agent must be a valid Model Instance with a set PrimaryPart.")
+		-- KONSTANTERROR: [9] 8. Error Block 29 end (CF ANALYSIS FAILED)
+	end
+	local tbl = {}
+	local var83 = arg3
+	if not var83 then
+		var83 = tbl_upvr
+	end
+	tbl._settings = var83
+	tbl._events = {
+		Reached = Instance.new("BindableEvent");
+		WaypointReached = Instance.new("BindableEvent");
+		Blocked = Instance.new("BindableEvent");
+		Error = Instance.new("BindableEvent");
+		Stopped = Instance.new("BindableEvent");
+	}
+	tbl._agent = arg1
+	tbl._humanoid = arg1:FindFirstChildOfClass("Humanoid")
+	tbl._path = PathfindingService_upvr:CreatePath(arg2)
+	tbl._status = "Idle"
+	tbl._t = 0
+	tbl._position = {
+		_last = Vector3.new();
+		_count = 0;
+	}
+	local setmetatable_result1_upvr = setmetatable(tbl, module_upvr)
+	for i_6, v_5 in pairs(tbl_upvr) do
+		local var90
+		local function INLINED_4() -- Internal function, doesn't exist in bytecode
+			var90 = v_5
+			return var90
+		end
+		if setmetatable_result1_upvr._settings[i_6] ~= nil or not INLINED_4() then
+			var90 = setmetatable_result1_upvr._settings[i_6]
+		end
+		setmetatable_result1_upvr._settings[i_6] = var90
+	end
+	setmetatable_result1_upvr._path.Blocked:Connect(function(...) -- Line 247
+		--[[ Upvalues[1]:
+			[1]: setmetatable_result1_upvr (readonly)
+		]]
+		if setmetatable_result1_upvr._currentWaypoint <= ... and ... <= setmetatable_result1_upvr._currentWaypoint + 1 and setmetatable_result1_upvr._humanoid then
+			pcall(function() -- Line 104
+				--[[ Upvalues[1]:
+					[1]: setmetatable_result1_upvr (readonly)
+				]]
+				if setmetatable_result1_upvr._humanoid:GetState() ~= Enum.HumanoidStateType.Jumping and setmetatable_result1_upvr._humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
+					setmetatable_result1_upvr._humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+				end
+			end)
+			setmetatable_result1_upvr._events.Blocked:Fire(setmetatable_result1_upvr._agent, setmetatable_result1_upvr._waypoints[...])
+		end
+	end)
+	do
+		return setmetatable_result1_upvr
+	end
+	-- KONSTANTERROR: [1] 2. Error Block 31 end (CF ANALYSIS FAILED)
+end
+function module_upvr.Destroy(arg1) -- Line 259
+	for i_7, v_6 in ipairs(arg1._events) do
+		v_6:Destroy()
+	end
+	arg1._events = nil
+	if rawget(arg1, "_visualWaypoints") then
+		local _visualWaypoints_5 = arg1._visualWaypoints
+		if _visualWaypoints_5 then
+			i_7 = _visualWaypoints_5
+			for _, v_7 in ipairs(i_7) do
+				v_7:Destroy()
+			end
+		end
+		arg1._visualWaypoints = nil
+	end
+	arg1._path:Destroy()
+	setmetatable(arg1, nil)
+	for i_9, _ in pairs(arg1) do
+		arg1[i_9] = nil
+	end
+end
+function module_upvr.Stop(arg1) -- Line 274
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	local var113
+	if not arg1._humanoid then
+		local error_2 = error
+		if error_2 == error then
+			var113 = "SimplePath Error: "
+		else
+			var113 = "SimplePath: "
+		end
+		error_2(var113.."Attempt to call Path:Stop() on a non-humanoid.")
+	else
+		var113 = module_upvr
+		if arg1._status == var113.StatusType.Idle then
+			local function var115(arg1_2) -- Line 280
+				warn(debug.traceback(arg1_2))
+			end
+			if var115 == error then
+				var113 = "SimplePath Error: "
+			else
+				var113 = "SimplePath: "
+			end
+			var115(var113.."Attempt to run Path:Stop() in idle state")
+			return
+		end
+		arg1._moveConnection:Disconnect()
+		arg1._moveConnection = nil
+		arg1._status = module_upvr.StatusType.Idle
+		local _visualWaypoints_4 = arg1._visualWaypoints
+		if _visualWaypoints_4 then
+			var113 = _visualWaypoints_4
+			for _, v_13 in ipairs(var113) do
+				v_13:Destroy()
+			end
+		end
+		arg1._visualWaypoints = nil
+		arg1._events.Stopped:Fire(arg1._model)
+	end
+end
+function module_upvr.Run(arg1, arg2) -- Line 291
+	--[[ Upvalues[6]:
+		[1]: moveToFinished_upvr (readonly)
+		[2]: module_upvr (readonly)
+		[3]: findWaypointIndexClosestToAgent_upvr (readonly)
+		[4]: comparePosition_upvr (readonly)
+		[5]: createVisualWaypoints_upvr (readonly)
+		[6]: getNonHumanoidWaypoint_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	if not arg2 then
+		if not arg1._humanoid and arg1._target then
+			moveToFinished_upvr(arg1, true)
+			do
+				return
+			end
+			local var188
+		end
+	end
+	if not arg2 or typeof(arg2) ~= "Vector3" and not arg2:IsA("BasePart") then
+		local error_6 = error
+		if error_6 == error then
+			var188 = "SimplePath Error: "
+		else
+			var188 = "SimplePath: "
+		end
+		error_6(var188.."Pathfinding target must be a valid Vector3 or BasePart.")
+	end
+	local var179
+	if os.clock() - arg1._t <= arg1._settings.TIME_VARIANCE and arg1._humanoid then
+		var179 = os.clock()
+		var188 = arg1._t
+		task.wait(var179 - var188)
+		local LimitReached = arg1.ErrorType.LimitReached
+		arg1._lastError = LimitReached
+		var179 = arg1._events
+		var188 = LimitReached
+		var179.Error:Fire(var188)
+		return false
+	end
+	if arg1._humanoid then
+		arg1._t = os.clock()
+	end
+	local pcall_result1_2, _ = pcall(function() -- Line 314
+		--[[ Upvalues[2]:
+			[1]: arg1 (readonly)
+			[2]: arg2 (readonly)
+		]]
+		local var182
+		local function INLINED_12() -- Internal function, doesn't exist in bytecode
+			var182 = arg2
+			return var182
+		end
+		if typeof(arg2) ~= "Vector3" or not INLINED_12() then
+			var182 = arg2.Position
+		end
+		arg1._path:ComputeAsync(arg1._agent.PrimaryPart.Position, var182)
+	end)
+	local function INLINED_13() -- Internal function, doesn't exist in bytecode
+		var188 = Enum.PathStatus.NoPath
+		var179 = var188.Status
+		var188 = arg1._path
+		return var179 == var188
+	end
+	local function INLINED_14() -- Internal function, doesn't exist in bytecode
+		var188 = 2
+		var179 = #var188
+		var188 = arg1._path:GetWaypoints()
+		return var179 < var188
+	end
+	local function INLINED_15() -- Internal function, doesn't exist in bytecode
+		var179 = arg1._humanoid
+		return var179
+	end
+	local function INLINED_16() -- Internal function, doesn't exist in bytecode
+		var188 = Enum.HumanoidStateType.Freefall
+		var179 = arg1._humanoid:GetState()
+		return var179 == var188
+	end
+	if not pcall_result1_2 or INLINED_13() or INLINED_14() or INLINED_15() and INLINED_16() then
+		var188 = arg1._visualWaypoints
+		if var188 then
+			for _, v_9 in ipairs(var188) do
+				v_9:Destroy()
+			end
+		end
+		var179 = nil
+		arg1._visualWaypoints = var179
+		var179 = task.wait
+		var179()
+		var188 = arg1.ErrorType
+		var179 = var188.ComputationError
+		arg1._lastError = var179
+		var188 = arg1._events.Error:Fire
+		var188(var179)
+		var179 = false
+		return var179
+	end
+	var188 = arg1._humanoid
+	local function INLINED_17() -- Internal function, doesn't exist in bytecode
+		var179 = var188.Active
+		var188 = module_upvr.StatusType
+		return var179
+	end
+	if not var188 or not INLINED_17() then
+		var188 = module_upvr.StatusType
+		var179 = var188.Idle
+	end
+	arg1._status = var179
+	arg1._target = arg2
+	var179 = pcall
+	function var188() -- Line 334
+		--[[ Upvalues[1]:
+			[1]: arg1 (readonly)
+		]]
+		arg1._agent.PrimaryPart:SetNetworkOwner(nil)
+	end
+	var179(var188)
+	var179 = arg1._path:GetWaypoints()
+	arg1._waypoints = var179
+	var188 = arg1._waypoints
+	var179 = #var188
+	var188 = 3
+	if var188 <= var179 then
+		var179 = findWaypointIndexClosestToAgent_upvr
+		var188 = arg1
+		var179 = var179(var188)
+		local function INLINED_18() -- Internal function, doesn't exist in bytecode
+			var188 = math.min(var179 + 3, #arg1._waypoints)
+			return var188
+		end
+		if not var179 or not INLINED_18() then
+			var188 = 3
+		end
+		arg1._currentWaypoint = var188
+	else
+		var179 = 2
+		arg1._currentWaypoint = var179
+	end
+	var179 = arg1._humanoid
+	if var179 then
+		var179 = comparePosition_upvr
+		var179(arg1)
+	end
+	local _visualWaypoints = arg1._visualWaypoints
+	if _visualWaypoints then
+		for _, v_10 in ipairs(_visualWaypoints) do
+			v_10:Destroy()
+		end
+	end
+	_visualWaypoints = arg1.Visualize
+	local var193 = _visualWaypoints
+	if var193 then
+	end
+	arg1._visualWaypoints = createVisualWaypoints_upvr(arg1._waypoints)
+	local _humanoid = arg1._humanoid
+	if _humanoid then
+		_humanoid = arg1._moveConnection
+		if not _humanoid then
+			_humanoid = arg1._humanoid.MoveToFinished
+			_humanoid = _humanoid:Connect(function(...) -- Line 358
+				--[[ Upvalues[2]:
+					[1]: moveToFinished_upvr (copied, readonly)
+					[2]: arg1 (readonly)
+				]]
+				moveToFinished_upvr(arg1, ...)
+			end)
+		end
+	end
+	arg1._moveConnection = _humanoid
+	if arg1._humanoid then
+		arg1._humanoid:MoveTo(arg1._waypoints[arg1._currentWaypoint].Position)
+	elseif #arg1._waypoints == 2 then
+		arg1._target = nil
+		if arg1._visualWaypoints then
+			-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+			for _, v_14 in ipairs(arg1._visualWaypoints) do
+				v_14:Destroy()
+			end
+		end
+		arg1._visualWaypoints = nil
+		arg1._events.Reached:Fire(arg1._agent, arg1._waypoints[2])
+	else
+		arg1._currentWaypoint = getNonHumanoidWaypoint_upvr(arg1)
+		moveToFinished_upvr(arg1, true)
+	end
+	return true
+end
+return module_upvr

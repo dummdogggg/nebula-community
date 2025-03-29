@@ -1,126 +1,203 @@
 --[[
     Script: ReplicatedStorage.Packages.FastCastRedux.Signal
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local _ = require(script.Parent.TypeDefinitions);
-local l_TestService_0 = game:GetService("TestService");
-local v2 = require(script.Parent.Table);
-local v3 = {};
-v3.__index = v3;
-v3.__type = "Signal";
-local v4 = {};
-v4.__index = v4;
-v4.__type = "SignalConnection";
-v3.new = function(v5) --[[ Line: 44 ]] --[[ Name: new ]]
-    -- upvalues: v3 (copy)
-    return (setmetatable({
-        Name = v5, 
-        Connections = {}, 
-        YieldingThreads = {}
-    }, v3));
-end;
-local function _(v6, v7) --[[ Line: 53 ]] --[[ Name: NewConnection ]]
-    -- upvalues: v4 (copy)
-    return (setmetatable({
-        Signal = v6, 
-        Delegate = v7, 
-        Index = -1
-    }, v4));
-end;
-local function v15(v9, v10, v11) --[[ Line: 62 ]] --[[ Name: ThreadAndReportError ]]
-    -- upvalues: l_TestService_0 (copy)
-    local v12 = coroutine.create(function() --[[ Line: 63 ]]
-        -- upvalues: v9 (copy), v10 (copy)
-        v9(unpack(v10));
-    end);
-    local v13, v14 = coroutine.resume(v12);
-    if not v13 then
-        l_TestService_0:Error(string.format("Exception thrown in your %s event handler: %s", v11, v14));
-        l_TestService_0:Checkpoint(debug.traceback(v12));
-    end;
-end;
-v3.Connect = function(v16, v17) --[[ Line: 75 ]] --[[ Name: Connect ]]
-    -- upvalues: v3 (copy), v4 (copy), v2 (copy)
-    assert(getmetatable(v16) == v3, ("Cannot statically invoke method '%s' - It is an instance method. Call it on an instance of this class created via %s"):format("Connect", "Signal.new()"));
-    local v18 = setmetatable({
-        Signal = v16, 
-        Delegate = v17, 
-        Index = -1
-    }, v4);
-    v18.Index = #v16.Connections + 1;
-    v2.insert(v16.Connections, v18.Index, v18);
-    return v18;
-end;
-v3.Fire = function(v19, ...) --[[ Line: 83 ]] --[[ Name: Fire ]]
-    -- upvalues: v3 (copy), v2 (copy), v15 (copy)
-    assert(getmetatable(v19) == v3, ("Cannot statically invoke method '%s' - It is an instance method. Call it on an instance of this class created via %s"):format("Fire", "Signal.new()"));
-    local v20 = v2.pack(...);
-    local l_Connections_0 = v19.Connections;
-    local l_YieldingThreads_0 = v19.YieldingThreads;
-    for v23 = 1, #l_Connections_0 do
-        local v24 = l_Connections_0[v23];
-        if v24.Delegate ~= nil then
-            v15(v24.Delegate, v20, v24.Signal.Name);
-        end;
-    end;
-    for v25 = 1, #l_YieldingThreads_0 do
-        local v26 = l_YieldingThreads_0[v25];
-        if v26 ~= nil then
-            coroutine.resume(v26, ...);
-        end;
-    end;
-end;
-v3.FireSync = function(v27, ...) --[[ Line: 103 ]] --[[ Name: FireSync ]]
-    -- upvalues: v3 (copy), v2 (copy)
-    assert(getmetatable(v27) == v3, ("Cannot statically invoke method '%s' - It is an instance method. Call it on an instance of this class created via %s"):format("FireSync", "Signal.new()"));
-    local v28 = v2.pack(...);
-    local l_Connections_1 = v27.Connections;
-    local l_YieldingThreads_1 = v27.YieldingThreads;
-    for v31 = 1, #l_Connections_1 do
-        local v32 = l_Connections_1[v31];
-        if v32.Delegate ~= nil then
-            v32.Delegate(unpack(v28));
-        end;
-    end;
-    for v33 = 1, #l_YieldingThreads_1 do
-        local v34 = l_YieldingThreads_1[v33];
-        if v34 ~= nil then
-            coroutine.resume(v34, ...);
-        end;
-    end;
-end;
-v3.Wait = function(v35) --[[ Line: 123 ]] --[[ Name: Wait ]]
-    -- upvalues: v3 (copy), v2 (copy)
-    assert(getmetatable(v35) == v3, ("Cannot statically invoke method '%s' - It is an instance method. Call it on an instance of this class created via %s"):format("Wait", "Signal.new()"));
-    local v36 = {};
-    local v37 = coroutine.running();
-    v2.insert(v35.YieldingThreads, v37);
-    v36 = {
-        coroutine.yield()
-    };
-    v2.removeObject(v35.YieldingThreads, v37);
-    return unpack(v36);
-end;
-v3.Dispose = function(v38) --[[ Line: 133 ]] --[[ Name: Dispose ]]
-    -- upvalues: v3 (copy)
-    assert(getmetatable(v38) == v3, ("Cannot statically invoke method '%s' - It is an instance method. Call it on an instance of this class created via %s"):format("Dispose", "Signal.new()"));
-    local l_Connections_2 = v38.Connections;
-    for v40 = 1, #l_Connections_2 do
-        l_Connections_2[v40]:Disconnect();
-    end;
-    v38.Connections = {};
-    setmetatable(v38, nil);
-end;
-v4.Disconnect = function(v41) --[[ Line: 143 ]] --[[ Name: Disconnect ]]
-    -- upvalues: v4 (copy), v2 (copy)
-    assert(getmetatable(v41) == v4, ("Cannot statically invoke method '%s' - It is an instance method. Call it on an instance of this class created via %s"):format("Disconnect", "private function NewConnection()"));
-    v2.remove(v41.Signal.Connections, v41.Index);
-    v41.SignalStatic = nil;
-    v41.Delegate = nil;
-    v41.YieldingThreads = {};
-    v41.Index = -1;
-    setmetatable(v41, nil);
-end;
-return v3;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:26
+-- Luau version 6, Types version 3
+-- Time taken: 0.004449 seconds
+
+local Table_upvr = require(script.Parent.Table)
+local module_2_upvr = {}
+module_2_upvr.__index = module_2_upvr
+module_2_upvr.__type = "Signal"
+local tbl_upvr = {}
+tbl_upvr.__index = tbl_upvr
+tbl_upvr.__type = "SignalConnection"
+function module_2_upvr.new(arg1) -- Line 44
+	--[[ Upvalues[1]:
+		[1]: module_2_upvr (readonly)
+	]]
+	local module = {}
+	module.Name = arg1
+	module.Connections = {}
+	module.YieldingThreads = {}
+	return setmetatable(module, module_2_upvr)
+end
+local function _(arg1, arg2) -- Line 53, Named "NewConnection"
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	local module_3 = {}
+	module_3.Signal = arg1
+	module_3.Delegate = arg2
+	module_3.Index = -1
+	return setmetatable(module_3, tbl_upvr)
+end
+local TestService_upvr = game:GetService("TestService")
+local function ThreadAndReportError_upvr(arg1, arg2, arg3) -- Line 62, Named "ThreadAndReportError"
+	--[[ Upvalues[1]:
+		[1]: TestService_upvr (readonly)
+	]]
+	local coroutine_create_result1 = coroutine.create(function() -- Line 63
+		--[[ Upvalues[2]:
+			[1]: arg1 (readonly)
+			[2]: arg2 (readonly)
+		]]
+		arg1(unpack(arg2))
+	end)
+	local coroutine_resume_result1, coroutine_resume_result2 = coroutine.resume(coroutine_create_result1)
+	if not coroutine_resume_result1 then
+		TestService_upvr:Error(string.format("Exception thrown in your %s event handler: %s", arg3, coroutine_resume_result2))
+		TestService_upvr:Checkpoint(debug.traceback(coroutine_create_result1))
+	end
+end
+function module_2_upvr.Connect(arg1, arg2) -- Line 75
+	--[[ Upvalues[3]:
+		[1]: module_2_upvr (readonly)
+		[2]: tbl_upvr (readonly)
+		[3]: Table_upvr (readonly)
+	]]
+	local var11
+	if getmetatable(arg1) ~= module_2_upvr then
+		var11 = false
+	else
+		var11 = true
+	end
+	assert(var11, "Cannot statically invoke method '%s' - It is an instance method. Call it on an instance of this class created via %s":format("Connect", "Signal.new()"))
+	var11 = {}
+	var11.Signal = arg1
+	var11.Delegate = arg2
+	var11.Index = -1
+	local setmetatable_result1 = setmetatable(var11, tbl_upvr)
+	var11 = #arg1.Connections + 1
+	setmetatable_result1.Index = var11
+	var11 = Table_upvr.insert
+	var11(arg1.Connections, setmetatable_result1.Index, setmetatable_result1)
+	return setmetatable_result1
+end
+function module_2_upvr.Fire(arg1, ...) -- Line 83
+	--[[ Upvalues[3]:
+		[1]: module_2_upvr (readonly)
+		[2]: Table_upvr (readonly)
+		[3]: ThreadAndReportError_upvr (readonly)
+	]]
+	local var17
+	if getmetatable(arg1) ~= module_2_upvr then
+		var17 = false
+	else
+		var17 = true
+	end
+	assert(var17, "Cannot statically invoke method '%s' - It is an instance method. Call it on an instance of this class created via %s":format("Fire", "Signal.new()"))
+	var17 = Table_upvr
+	var17 = ...
+	var17 = arg1.Connections
+	local YieldingThreads_2 = arg1.YieldingThreads
+	for i = 1, #var17 do
+		local var19 = var17[i]
+		if var19.Delegate ~= nil then
+			ThreadAndReportError_upvr(var19.Delegate, var17.pack(var17), var19.Signal.Name)
+		end
+	end
+	for i_2 = 1, #YieldingThreads_2 do
+		local var20 = YieldingThreads_2[i_2]
+		if var20 ~= nil then
+			coroutine.resume(var20, ...)
+		end
+	end
+end
+function module_2_upvr.FireSync(arg1, ...) -- Line 103
+	--[[ Upvalues[2]:
+		[1]: module_2_upvr (readonly)
+		[2]: Table_upvr (readonly)
+	]]
+	local var25
+	if getmetatable(arg1) ~= module_2_upvr then
+		var25 = false
+	else
+		var25 = true
+	end
+	assert(var25, "Cannot statically invoke method '%s' - It is an instance method. Call it on an instance of this class created via %s":format("FireSync", "Signal.new()"))
+	var25 = Table_upvr
+	var25 = ...
+	var25 = arg1.Connections
+	local YieldingThreads = arg1.YieldingThreads
+	for i_3 = 1, #var25 do
+		local var27 = var25[i_3]
+		if var27.Delegate ~= nil then
+			var27.Delegate(unpack(var25.pack(var25)))
+		end
+	end
+	for i_4 = 1, #YieldingThreads do
+		local var28 = YieldingThreads[i_4]
+		if var28 ~= nil then
+			coroutine.resume(var28, ...)
+		end
+	end
+end
+function module_2_upvr.Wait(arg1) -- Line 123
+	--[[ Upvalues[2]:
+		[1]: module_2_upvr (readonly)
+		[2]: Table_upvr (readonly)
+	]]
+	local var29
+	if getmetatable(arg1) ~= module_2_upvr then
+		var29 = false
+	else
+		var29 = true
+	end
+	assert(var29, "Cannot statically invoke method '%s' - It is an instance method. Call it on an instance of this class created via %s":format("Wait", "Signal.new()"))
+	var29 = coroutine.running()
+	Table_upvr.insert(arg1.YieldingThreads, var29)
+	Table_upvr.removeObject(arg1.YieldingThreads, var29)
+	return unpack({coroutine.yield()})
+end
+function module_2_upvr.Dispose(arg1) -- Line 133
+	--[[ Upvalues[1]:
+		[1]: module_2_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local var35
+	if getmetatable(arg1) ~= module_2_upvr then
+		var35 = false
+	else
+		var35 = true
+	end
+	assert(var35, "Cannot statically invoke method '%s' - It is an instance method. Call it on an instance of this class created via %s":format("Dispose", "Signal.new()"))
+	local Connections = arg1.Connections
+	var35 = #Connections
+	for i_5 = 1, var35 do
+		Connections[i_5]:Disconnect()
+		local _
+	end
+	var35 = {}
+	arg1.Connections = var35
+	var35 = setmetatable
+	var35(arg1, nil)
+end
+function tbl_upvr.Disconnect(arg1) -- Line 143
+	--[[ Upvalues[2]:
+		[1]: tbl_upvr (readonly)
+		[2]: Table_upvr (readonly)
+	]]
+	local var38
+	if getmetatable(arg1) ~= tbl_upvr then
+		var38 = false
+	else
+		var38 = true
+	end
+	assert(var38, "Cannot statically invoke method '%s' - It is an instance method. Call it on an instance of this class created via %s":format("Disconnect", "private function NewConnection()"))
+	var38 = Table_upvr
+	var38 = arg1.Signal.Connections
+	var38.remove(var38, arg1.Index)
+	arg1.SignalStatic = nil
+	arg1.Delegate = nil
+	arg1.YieldingThreads = {}
+	arg1.Index = -1
+	var38 = arg1
+	setmetatable(var38, nil)
+end
+return module_2_upvr

@@ -1,369 +1,453 @@
 --[[
     Script: ReplicatedStorage.Client.Controllers.ActionController
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local _ = game:GetService("ReplicatedStorage");
-local l_ContextActionService_0 = game:GetService("ContextActionService");
-local l_UserInputService_0 = game:GetService("UserInputService");
-local l_Players_0 = game:GetService("Players");
-local l_RunService_0 = game:GetService("RunService");
-local v5 = require("./ActionController/InputCategorizer");
-local v6 = require("./ActionController/InputMetadata");
-local l_PlayerGui_0 = l_Players_0.LocalPlayer:WaitForChild("PlayerGui");
-local l_Instances_0 = script:FindFirstChild("Instances");
-local l_ActionGui_0 = l_Instances_0.ActionGui;
-local v10 = {
-    _registeredActions = {}, 
-    _initialized = false
-};
-local function _(v11) --[[ Line: 58 ]] --[[ Name: validateAction ]]
-    -- upvalues: v10 (copy)
-    if not v10._registeredActions[v11] then
-        warn(debug.traceback(("Action %* is not a registered action!"):format(v11), 1));
-        return false;
-    else
-        return true;
-    end;
-end;
-v10._updateButtonVisibility = function() --[[ Line: 68 ]] --[[ Name: _updateButtonVisibility ]]
-    -- upvalues: v10 (copy), v5 (copy)
-    local v13 = {};
-    for _, v15 in pairs(v10._registeredActions) do
-        local v16 = tostring(v15.actionContext.buttonPosition);
-        if not v13[v16] then
-            v13[v16] = {};
-        end;
-        table.insert(v13[v16], v15);
-    end;
-    for _, v18 in pairs(v13) do
-        if #v18 > 1 then
-            table.sort(v18, function(v19, v20) --[[ Line: 86 ]]
-                return v19.priority < v20.priority;
-            end);
-            for v21, v22 in ipairs(v18) do
-                if v21 == 1 then
-                    v22.button.Visible = v22.actionContext.showAction and v5.getLastInputCategory() == v5.InputCategory.Touch;
-                else
-                    v22.button.Visible = false;
-                end;
-            end;
-        else
-            local v23 = v18[1];
-            v23.button.Visible = v23.actionContext.showAction and v5.getLastInputCategory() == v5.InputCategory.Touch;
-        end;
-    end;
-end;
-v10.setButtonVisibility = function(v24, v25) --[[ Line: 111 ]] --[[ Name: setButtonVisibility ]]
-    -- upvalues: v10 (copy)
-    local v26;
-    if not v10._registeredActions[v24] then
-        warn(debug.traceback(("Action %* is not a registered action!"):format(v24), 1));
-        v26 = false;
-    else
-        v26 = true;
-    end;
-    if not v26 then
-        return;
-    else
-        v10._registeredActions[v24].actionContext.showAction = v25;
-        v10._updateButtonVisibility();
-        return;
-    end;
-end;
-v10.isBound = function(v27) --[[ Line: 123 ]] --[[ Name: isBound ]]
-    -- upvalues: v10 (copy)
-    assert(typeof(v27) == "string", "First argument must be a string!");
-    return v10._registeredActions[v27] ~= nil;
-end;
-v10.bindAction = function(v28, v29, v30, v31, v32, v33) --[[ Line: 128 ]] --[[ Name: bindAction ]]
-    -- upvalues: v10 (copy), l_Instances_0 (copy), l_ActionGui_0 (copy), v5 (copy), l_ContextActionService_0 (copy)
-    if v10._registeredActions[v28] then
-        warn((("Action %* is already registered!"):format(v28)));
-        return;
-    else
-        local v34 = {
-            actionName = v28, 
-            actionContext = v30, 
-            keyboardAndMouseInput = v31, 
-            gamepadInput = v32, 
-            priority = v33 or 0, 
-            connections = {}, 
-            pressed = false
-        };
-        local function _() --[[ Line: 152 ]] --[[ Name: createActionFrame ]]
-            -- upvalues: l_Instances_0 (ref), v30 (copy), v34 (copy), l_ActionGui_0 (ref)
-            local v35 = l_Instances_0.ActionFrame:Clone();
-            v35.ContentFrame.ActionLabel.Text = v30.buttonText;
-            v35.LayoutOrder = v34.priority;
-            v35.Parent = l_ActionGui_0.RightListFrame;
-            return v35;
-        end;
-        local v37 = l_Instances_0.ActionFrame:Clone();
-        v37.ContentFrame.ActionLabel.Text = v30.buttonText;
-        v37.LayoutOrder = v34.priority;
-        v37.Parent = l_ActionGui_0.RightListFrame;
-        v34.frame = v37;
-        local v38 = l_Instances_0.TouchButton:Clone();
-        v38.ActionText.Text = v30.buttonText or "";
-        v38.ActionIcon.Image = v30.buttonImage or "";
-        v38.Size = v30.buttonSize;
-        v38.Position = v30.buttonPosition;
-        v38.Parent = l_ActionGui_0.TouchButtons;
-        v38.Visible = v30.showAction and v5.getLastInputCategory() == v5.InputCategory.Touch;
-        v34.button = v38;
-        v37 = function(...) --[[ Line: 178 ]]
-            -- upvalues: v28 (copy), v34 (copy), l_Instances_0 (ref), v30 (copy), l_ActionGui_0 (ref), v38 (copy), v29 (copy)
-            local v39, v40 = ...;
-            if v39 == v28 then
-                if v40 == Enum.UserInputState.Begin then
-                    v34.pressed = true;
-                    if v34.frame then
-                        local l_ContentFrame_0 = v34.frame:FindFirstChild("ContentFrame");
-                        if l_ContentFrame_0 then
-                            if not l_ContentFrame_0:FindFirstChild("ActionLabel") then
-                                v34.frame:Destroy();
-                                local l_v34_0 = v34;
-                                local v43 = l_Instances_0.ActionFrame:Clone();
-                                v43.ContentFrame.ActionLabel.Text = v30.buttonText;
-                                v43.LayoutOrder = v34.priority;
-                                v43.Parent = l_ActionGui_0.RightListFrame;
-                                l_v34_0.frame = v43;
-                            end;
-                        else
-                            v34.frame:Destroy();
-                            local l_v34_1 = v34;
-                            local v45 = l_Instances_0.ActionFrame:Clone();
-                            v45.ContentFrame.ActionLabel.Text = v30.buttonText;
-                            v45.LayoutOrder = v34.priority;
-                            v45.Parent = l_ActionGui_0.RightListFrame;
-                            l_v34_1.frame = v45;
-                        end;
-                    else
-                        local l_v34_2 = v34;
-                        local v47 = l_Instances_0.ActionFrame:Clone();
-                        v47.ContentFrame.ActionLabel.Text = v30.buttonText;
-                        v47.LayoutOrder = v34.priority;
-                        v47.Parent = l_ActionGui_0.RightListFrame;
-                        l_v34_2.frame = v47;
-                    end;
-                    v34.frame.ContentFrame.ActionLabel.BackgroundColor3 = Color3.new(1, 1, 1);
-                    v34.frame.ContentFrame.ActionLabel.TextColor3 = Color3.new(0, 0, 0);
-                    v38.BackgroundColor3 = Color3.new(1, 1, 1);
-                elseif v40 == Enum.UserInputState.End then
-                    v34.pressed = false;
-                    if v34.frame then
-                        local l_ContentFrame_1 = v34.frame:FindFirstChild("ContentFrame");
-                        if l_ContentFrame_1 then
-                            if not l_ContentFrame_1:FindFirstChild("ActionLabel") then
-                                v34.frame:Destroy();
-                                local l_v34_3 = v34;
-                                local v50 = l_Instances_0.ActionFrame:Clone();
-                                v50.ContentFrame.ActionLabel.Text = v30.buttonText;
-                                v50.LayoutOrder = v34.priority;
-                                v50.Parent = l_ActionGui_0.RightListFrame;
-                                l_v34_3.frame = v50;
-                            end;
-                        else
-                            v34.frame:Destroy();
-                            local l_v34_4 = v34;
-                            local v52 = l_Instances_0.ActionFrame:Clone();
-                            v52.ContentFrame.ActionLabel.Text = v30.buttonText;
-                            v52.LayoutOrder = v34.priority;
-                            v52.Parent = l_ActionGui_0.RightListFrame;
-                            l_v34_4.frame = v52;
-                        end;
-                    else
-                        local l_v34_5 = v34;
-                        local v54 = l_Instances_0.ActionFrame:Clone();
-                        v54.ContentFrame.ActionLabel.Text = v30.buttonText;
-                        v54.LayoutOrder = v34.priority;
-                        v54.Parent = l_ActionGui_0.RightListFrame;
-                        l_v34_5.frame = v54;
-                    end;
-                    v34.frame.ContentFrame.ActionLabel.BackgroundColor3 = Color3.new(0, 0, 0);
-                    v34.frame.ContentFrame.ActionLabel.TextColor3 = Color3.new(1, 1, 1);
-                    v38.BackgroundColor3 = Color3.new(0, 0, 0);
-                end;
-            end;
-            return v29(...);
-        end;
-        v10._updateInputDisplay(v34, v5.getLastInputCategory());
-        table.insert(v34.connections, v38.InputBegan:Connect(function(v55) --[[ Line: 243 ]]
-            -- upvalues: v37 (copy), v28 (copy)
-            if v55.UserInputType == Enum.UserInputType.Touch and v55.UserInputState ~= Enum.UserInputState.Change then
-                v37(v28, Enum.UserInputState.Begin, v55);
-            end;
-        end));
-        table.insert(v34.connections, v38.InputEnded:Connect(function(v56) --[[ Line: 252 ]]
-            -- upvalues: v37 (copy), v28 (copy)
-            if v56.UserInputType == Enum.UserInputType.Touch then
-                v37(v28, Enum.UserInputState.End, v56);
-            end;
-        end));
-        l_ContextActionService_0:BindActionAtPriority(v34.actionName, v37, false, v34.priority, v34.keyboardAndMouseInput, v34.gamepadInput);
-        v10._registeredActions[v28] = v34;
-        v10._updateButtonVisibility();
-        return;
-    end;
-end;
-v10.unbindAction = function(v57) --[[ Line: 274 ]] --[[ Name: unbindAction ]]
-    -- upvalues: v10 (copy), l_ContextActionService_0 (copy)
-    local v58 = v10._registeredActions[v57];
-    if v58 then
-        for _, v60 in v58.connections do
-            v60:Disconnect();
-        end;
-        v58.frame:Destroy();
-        v58.button:Destroy();
-        v10._registeredActions[v57] = nil;
-        v10._updateButtonVisibility();
-    end;
-    l_ContextActionService_0:UnbindAction(v57);
-end;
-v10.isPressed = function(v61) --[[ Line: 296 ]] --[[ Name: isPressed ]]
-    -- upvalues: v10 (copy)
-    local v62;
-    if not v10._registeredActions[v61] then
-        warn(debug.traceback(("Action %* is not a registered action!"):format(v61), 1));
-        v62 = false;
-    else
-        v62 = true;
-    end;
-    if not v62 then
-        return false;
-    else
-        return v10._registeredActions[v61].pressed;
-    end;
-end;
-v10.setButtonText = function(v63, v64) --[[ Line: 305 ]] --[[ Name: setButtonText ]]
-    -- upvalues: v10 (copy)
-    local v65;
-    if not v10._registeredActions[v63] then
-        warn(debug.traceback(("Action %* is not a registered action!"):format(v63), 1));
-        v65 = false;
-    else
-        v65 = true;
-    end;
-    if not v65 then
-        return;
-    else
-        v65 = v10._registeredActions[v63];
-        v65.actionContext.buttonText = v64 or "";
-        v65.frame.ContentFrame.ActionLabel.Text = v65.actionContext.buttonText;
-        v65.button.ActionText.Text = v65.actionContext.buttonText;
-        return;
-    end;
-end;
-v10._updateInputDisplay = function(v66, v67) --[[ Line: 321 ]] --[[ Name: _updateInputDisplay ]]
-    -- upvalues: v5 (copy), v10 (copy)
-    local l_ButtonDisplayFrame_0 = v66.frame.ContentFrame.InputFrame:FindFirstChild("ButtonDisplayFrame");
-    if l_ButtonDisplayFrame_0 then
-        l_ButtonDisplayFrame_0:Destroy();
-    end;
-    local v69 = nil;
-    if v67 == v5.InputCategory.KeyboardAndMouse then
-        v69 = v10._getButtonDisplayForInput(v66.keyboardAndMouseInput);
-    elseif v67 == v5.InputCategory.Gamepad then
-        v69 = v10._getButtonDisplayForInput(v66.gamepadInput);
-    elseif v67 == v5.InputCategory.Touch then
-        v69 = v10._getButtonDisplayForInput(Enum.UserInputType.Touch);
-    end;
-    v69.Parent = v66.frame.ContentFrame.InputFrame;
-    if v67 == v5.InputCategory.Touch then
-        v10._updateButtonVisibility();
-        return;
-    else
-        v66.button.Visible = false;
-        return;
-    end;
-end;
-v10._getButtonDisplayForInput = function(v70) --[[ Line: 349 ]] --[[ Name: _getButtonDisplayForInput ]]
-    -- upvalues: l_Instances_0 (copy), l_UserInputService_0 (copy), v6 (copy)
-    local v71 = l_Instances_0.ButtonDisplayFrame:Clone();
-    local v72 = nil;
-    if v70.EnumType == Enum.KeyCode then
-        v72 = l_UserInputService_0:GetImageForKeyCode(v70);
-    end;
-    if v70 == Enum.UserInputType.Touch then
-        l_Instances_0.TouchImageLabel:Clone().Parent = v71;
-        return v71;
-    elseif v72 and v72 ~= "" then
-        local v73 = l_Instances_0.GamepadImageLabel:Clone();
-        v73.Image = v72;
-        v73.Parent = v71;
-        return v71;
-    elseif v6.MouseButtonImage[v70] then
-        local v74 = l_Instances_0.MouseImageLabel:Clone();
-        v74.Image = v6.MouseButtonImage[v70];
-        v74.Parent = v71;
-        return v71;
-    else
-        l_Instances_0.KeyboardBorderImage:Clone().Parent = v71;
-        local l_l_UserInputService_0_StringForKeyCode_0 = l_UserInputService_0:GetStringForKeyCode(v70);
-        local v76 = v6.KeyboardButtonImage[v70] or v6.KeyboardButtonIconMapping[l_l_UserInputService_0_StringForKeyCode_0];
-        if not v76 then
-            local v77 = v6.KeyCodeToTextMapping[v70];
-            if v77 then
-                l_l_UserInputService_0_StringForKeyCode_0 = v77;
-            end;
-        end;
-        if v76 then
-            local v78 = l_Instances_0.KeyboardImageLabel:Clone();
-            v78.Image = v76;
-            v78.Parent = v71;
-            return v71;
-        else
-            if l_l_UserInputService_0_StringForKeyCode_0 and l_l_UserInputService_0_StringForKeyCode_0 ~= "" then
-                local v79 = l_Instances_0.KeyboardTextLabel:Clone();
-                v79.Text = l_l_UserInputService_0_StringForKeyCode_0;
-                v79.TextSize = v6.KeyCodeToFontSize[v70] or v6.DefaultFontSize;
-                v79.Parent = v71;
-            end;
-            return v71;
-        end;
-    end;
-end;
-v10._updateUIPositionAndScale = function() --[[ Line: 405 ]] --[[ Name: _updateUIPositionAndScale ]]
-    -- upvalues: l_PlayerGui_0 (copy), l_ActionGui_0 (copy), v5 (copy)
-    local v80 = l_PlayerGui_0:FindFirstChild("TouchGui") ~= nil;
-    local v81 = math.min(l_ActionGui_0.AbsoluteSize.X, l_ActionGui_0.AbsoluteSize.Y) < 500;
-    if v80 and v5.getLastInputCategory() == v5.InputCategory.Touch then
-        l_ActionGui_0.RightListFrame.Visible = false;
-    else
-        l_ActionGui_0.RightListFrame.Visible = true;
-    end;
-    l_ActionGui_0.RightListFrame.UIScale.Scale = v81 and 0.85 or 1;
-    l_ActionGui_0.RightListFrame.Position = UDim2.new(1, -40, 1, -40);
-end;
-v10._start = function() --[[ Line: 424 ]] --[[ Name: _start ]]
-    -- upvalues: v10 (copy), l_RunService_0 (copy), l_PlayerGui_0 (copy), v5 (copy), l_ActionGui_0 (copy)
-    assert(not v10._initialized, "ActionController already initialized!");
-    assert(l_RunService_0:IsClient(), "ActionController can only be used on the client!");
-    l_PlayerGui_0.ChildAdded:Connect(function(v82) --[[ Line: 429 ]]
-        -- upvalues: v10 (ref)
-        if v82.Name == "TouchGui" then
-            v10._updateUIPositionAndScale();
-        end;
-    end);
-    l_PlayerGui_0.ChildRemoved:Connect(function(v83) --[[ Line: 435 ]]
-        -- upvalues: v10 (ref)
-        if v83.Name == "TouchGui" then
-            v10._updateUIPositionAndScale();
-        end;
-    end);
-    v5.lastInputCategoryChanged:Connect(function(v84) --[[ Line: 442 ]]
-        -- upvalues: v10 (ref)
-        for _, v86 in v10._registeredActions do
-            v10._updateInputDisplay(v86, v84);
-        end;
-        v10._updateButtonVisibility();
-    end);
-    l_ActionGui_0:GetPropertyChangedSignal("AbsoluteSize"):Connect(v10._updateUIPositionAndScale);
-    v5.lastInputCategoryChanged:Connect(v10._updateUIPositionAndScale);
-    l_ActionGui_0.Parent = l_PlayerGui_0;
-    v10._initialized = true;
-end;
-v10._start();
-return v10;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:45:52
+-- Luau version 6, Types version 3
+-- Time taken: 0.010691 seconds
+
+local ContextActionService_upvr = game:GetService("ContextActionService")
+local ._ActionController_InputCategorizer_upvr = require("./ActionController/InputCategorizer")
+local PlayerGui_upvr = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+local Instances_upvr = script:FindFirstChild("Instances")
+local ActionGui_upvr = Instances_upvr.ActionGui
+local module_upvr = {
+	_registeredActions = {};
+	_initialized = false;
+}
+local function _(arg1) -- Line 58, Named "validateAction"
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	if not module_upvr._registeredActions[arg1] then
+		warn(debug.traceback(`Action {arg1} is not a registered action!`, 1))
+		return false
+	end
+	return true
+end
+function module_upvr._updateButtonVisibility() -- Line 68
+	--[[ Upvalues[2]:
+		[1]: module_upvr (readonly)
+		[2]: ._ActionController_InputCategorizer_upvr (readonly)
+	]]
+	local tbl = {}
+	for _, v in pairs(module_upvr._registeredActions) do
+		local tostring_result1 = tostring(v.actionContext.buttonPosition)
+		if not tbl[tostring_result1] then
+			tbl[tostring_result1] = {}
+		end
+		table.insert(tbl[tostring_result1], v)
+	end
+	for _, v_2 in pairs(tbl) do
+		local var28
+		if 1 < #v_2 then
+			function var28(arg1, arg2) -- Line 86
+				local var29
+				if arg1.priority >= arg2.priority then
+					var29 = false
+				else
+					var29 = true
+				end
+				return var29
+			end
+			table.sort(v_2, var28)
+			local ipairs_result1, ipairs_result2, ipairs_result3 = ipairs(v_2)
+			for i_3, v_3 in ipairs_result1, ipairs_result2, ipairs_result3 do
+				if i_3 == 1 then
+					local showAction = v_3.actionContext.showAction
+					if showAction then
+						if ._ActionController_InputCategorizer_upvr.getLastInputCategory() ~= ._ActionController_InputCategorizer_upvr.InputCategory.Touch then
+							showAction = false
+						else
+							showAction = true
+						end
+					end
+					v_3.button.Visible = showAction
+				else
+					v_3.button.Visible = false
+				end
+			end
+		else
+			local _1 = v_2[1]
+			i_3 = _1.actionContext
+			ipairs_result3 = i_3.showAction
+			if ipairs_result3 then
+				v_3 = ._ActionController_InputCategorizer_upvr
+				i_3 = v_3.getLastInputCategory()
+				v_3 = ._ActionController_InputCategorizer_upvr.InputCategory.Touch
+				if i_3 ~= v_3 then
+					ipairs_result3 = false
+				else
+					ipairs_result3 = true
+				end
+			end
+			_1.button.Visible = ipairs_result3
+		end
+	end
+end
+function module_upvr.setButtonVisibility(arg1, arg2) -- Line 111
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	local var35
+	if not module_upvr._registeredActions[arg1] then
+		warn(debug.traceback(`Action {arg1} is not a registered action!`, 1))
+		var35 = false
+	else
+		var35 = true
+	end
+	if not var35 then
+	else
+		var35 = module_upvr._registeredActions[arg1]
+		var35.actionContext.showAction = arg2
+		module_upvr._updateButtonVisibility()
+	end
+end
+function module_upvr.isBound(arg1) -- Line 123
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local var36
+	if typeof(arg1) ~= "string" then
+		var36 = false
+	else
+		var36 = true
+	end
+	assert(var36, "First argument must be a string!")
+	var36 = module_upvr._registeredActions[arg1]
+	if var36 == nil then
+	else
+	end
+	return true
+end
+function module_upvr.bindAction(arg1, arg2, arg3, arg4, arg5, arg6) -- Line 128
+	--[[ Upvalues[5]:
+		[1]: module_upvr (readonly)
+		[2]: Instances_upvr (readonly)
+		[3]: ActionGui_upvr (readonly)
+		[4]: ._ActionController_InputCategorizer_upvr (readonly)
+		[5]: ContextActionService_upvr (readonly)
+	]]
+	if module_upvr._registeredActions[arg1] then
+		warn(`Action {arg1} is already registered!`)
+	else
+		local tbl_2_upvr = {}
+		tbl_2_upvr.actionName = arg1
+		tbl_2_upvr.actionContext = arg3
+		tbl_2_upvr.keyboardAndMouseInput = arg4
+		tbl_2_upvr.gamepadInput = arg5
+		tbl_2_upvr.priority = arg6 or 0
+		tbl_2_upvr.connections = {}
+		tbl_2_upvr.pressed = false
+		local function _() -- Line 152, Named "createActionFrame"
+			--[[ Upvalues[4]:
+				[1]: Instances_upvr (copied, readonly)
+				[2]: arg3 (readonly)
+				[3]: tbl_2_upvr (readonly)
+				[4]: ActionGui_upvr (copied, readonly)
+			]]
+			local clone_8 = Instances_upvr.ActionFrame:Clone()
+			clone_8.ContentFrame.ActionLabel.Text = arg3.buttonText
+			clone_8.LayoutOrder = tbl_2_upvr.priority
+			clone_8.Parent = ActionGui_upvr.RightListFrame
+			return clone_8
+		end
+		local clone_10 = Instances_upvr.ActionFrame:Clone()
+		clone_10.ContentFrame.ActionLabel.Text = arg3.buttonText
+		clone_10.LayoutOrder = tbl_2_upvr.priority
+		clone_10.Parent = ActionGui_upvr.RightListFrame
+		tbl_2_upvr.frame = clone_10
+		local clone_9_upvr = Instances_upvr.TouchButton:Clone()
+		clone_9_upvr.ActionText.Text = arg3.buttonText or ""
+		clone_9_upvr.ActionIcon.Image = arg3.buttonImage or ""
+		clone_9_upvr.Size = arg3.buttonSize
+		clone_9_upvr.Position = arg3.buttonPosition
+		clone_9_upvr.Parent = ActionGui_upvr.TouchButtons
+		local showAction_2 = arg3.showAction
+		if showAction_2 then
+			if ._ActionController_InputCategorizer_upvr.getLastInputCategory() ~= ._ActionController_InputCategorizer_upvr.InputCategory.Touch then
+				showAction_2 = false
+			else
+				showAction_2 = true
+			end
+		end
+		clone_9_upvr.Visible = showAction_2
+		tbl_2_upvr.button = clone_9_upvr
+		local function var42_upvr(...) -- Line 178
+			--[[ Upvalues[7]:
+				[1]: arg1 (readonly)
+				[2]: tbl_2_upvr (readonly)
+				[3]: Instances_upvr (copied, readonly)
+				[4]: arg3 (readonly)
+				[5]: ActionGui_upvr (copied, readonly)
+				[6]: clone_9_upvr (readonly)
+				[7]: arg2 (readonly)
+			]]
+			-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+			local var43, var44 = ...
+			-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+			-- KONSTANTERROR: [131] 87. Error Block 11 start (CF ANALYSIS FAILED)
+			tbl_2_upvr.frame.ContentFrame.ActionLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+			tbl_2_upvr.frame.ContentFrame.ActionLabel.TextColor3 = Color3.new(0, 0, 0)
+			clone_9_upvr.BackgroundColor3 = Color3.new(1, 1, 1)
+			-- KONSTANTERROR: [131] 87. Error Block 11 end (CF ANALYSIS FAILED)
+			-- KONSTANTERROR: [171] 115. Error Block 26 start (CF ANALYSIS FAILED)
+			-- KONSTANTERROR: [171] 115. Error Block 26 end (CF ANALYSIS FAILED)
+			-- KONSTANTERROR: [297] 197. Error Block 22 start (CF ANALYSIS FAILED)
+			tbl_2_upvr.frame.ContentFrame.ActionLabel.BackgroundColor3 = Color3.new(0, 0, 0)
+			tbl_2_upvr.frame.ContentFrame.ActionLabel.TextColor3 = Color3.new(1, 1, 1)
+			clone_9_upvr.BackgroundColor3 = Color3.new(0, 0, 0)
+			-- KONSTANTERROR: [297] 197. Error Block 22 end (CF ANALYSIS FAILED)
+			-- KONSTANTERROR: [336] 224. Error Block 23 start (CF ANALYSIS FAILED)
+			do
+				return arg2(...)
+			end
+			-- KONSTANTERROR: [336] 224. Error Block 23 end (CF ANALYSIS FAILED)
+		end
+		module_upvr._updateInputDisplay(tbl_2_upvr, ._ActionController_InputCategorizer_upvr.getLastInputCategory())
+		table.insert(tbl_2_upvr.connections, clone_9_upvr.InputBegan:Connect(function(arg1_2) -- Line 243
+			--[[ Upvalues[2]:
+				[1]: var42_upvr (readonly)
+				[2]: arg1 (readonly)
+			]]
+			if arg1_2.UserInputType == Enum.UserInputType.Touch and arg1_2.UserInputState ~= Enum.UserInputState.Change then
+				var42_upvr(arg1, Enum.UserInputState.Begin, arg1_2)
+			end
+		end))
+		table.insert(tbl_2_upvr.connections, clone_9_upvr.InputEnded:Connect(function(arg1_3) -- Line 252
+			--[[ Upvalues[2]:
+				[1]: var42_upvr (readonly)
+				[2]: arg1 (readonly)
+			]]
+			if arg1_3.UserInputType == Enum.UserInputType.Touch then
+				var42_upvr(arg1, Enum.UserInputState.End, arg1_3)
+			end
+		end))
+		ContextActionService_upvr:BindActionAtPriority(tbl_2_upvr.actionName, var42_upvr, false, tbl_2_upvr.priority, tbl_2_upvr.keyboardAndMouseInput, tbl_2_upvr.gamepadInput)
+		module_upvr._registeredActions[arg1] = tbl_2_upvr
+		module_upvr._updateButtonVisibility()
+	end
+end
+function module_upvr.unbindAction(arg1) -- Line 274
+	--[[ Upvalues[2]:
+		[1]: module_upvr (readonly)
+		[2]: ContextActionService_upvr (readonly)
+	]]
+	local var49 = module_upvr._registeredActions[arg1]
+	if var49 then
+		for _, v_4 in var49.connections do
+			v_4:Disconnect()
+		end
+		var49.frame:Destroy()
+		var49.button:Destroy()
+		module_upvr._registeredActions[arg1] = nil
+		module_upvr._updateButtonVisibility()
+	end
+	ContextActionService_upvr:UnbindAction(arg1)
+end
+function module_upvr.isPressed(arg1) -- Line 296
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	local var50
+	if not module_upvr._registeredActions[arg1] then
+		warn(debug.traceback(`Action {arg1} is not a registered action!`, 1))
+		var50 = false
+	else
+		var50 = true
+	end
+	if not var50 then
+		var50 = false
+		return var50
+	end
+	var50 = module_upvr._registeredActions[arg1]
+	return var50.pressed
+end
+function module_upvr.setButtonText(arg1, arg2) -- Line 305
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	local var51
+	if not module_upvr._registeredActions[arg1] then
+		warn(debug.traceback(`Action {arg1} is not a registered action!`, 1))
+		var51 = false
+	else
+		var51 = true
+	end
+	if not var51 then
+	else
+		var51 = module_upvr._registeredActions[arg1]
+		var51.actionContext.buttonText = arg2 or ""
+		var51.frame.ContentFrame.ActionLabel.Text = var51.actionContext.buttonText
+		var51.button.ActionText.Text = var51.actionContext.buttonText
+	end
+end
+function module_upvr._updateInputDisplay(arg1, arg2) -- Line 321
+	--[[ Upvalues[2]:
+		[1]: ._ActionController_InputCategorizer_upvr (readonly)
+		[2]: module_upvr (readonly)
+	]]
+	local ButtonDisplayFrame = arg1.frame.ContentFrame.InputFrame:FindFirstChild("ButtonDisplayFrame")
+	if ButtonDisplayFrame then
+		ButtonDisplayFrame:Destroy()
+	end
+	local var53
+	if arg2 == ._ActionController_InputCategorizer_upvr.InputCategory.KeyboardAndMouse then
+		var53 = module_upvr._getButtonDisplayForInput(arg1.keyboardAndMouseInput)
+	elseif arg2 == ._ActionController_InputCategorizer_upvr.InputCategory.Gamepad then
+		var53 = module_upvr._getButtonDisplayForInput(arg1.gamepadInput)
+	elseif arg2 == ._ActionController_InputCategorizer_upvr.InputCategory.Touch then
+		var53 = module_upvr._getButtonDisplayForInput(Enum.UserInputType.Touch)
+	end
+	var53.Parent = arg1.frame.ContentFrame.InputFrame
+	if arg2 == ._ActionController_InputCategorizer_upvr.InputCategory.Touch then
+		module_upvr._updateButtonVisibility()
+	else
+		arg1.button.Visible = false
+	end
+end
+local UserInputService_upvr = game:GetService("UserInputService")
+local ._ActionController_InputMetadata_upvr = require("./ActionController/InputMetadata")
+function module_upvr._getButtonDisplayForInput(arg1) -- Line 349
+	--[[ Upvalues[3]:
+		[1]: Instances_upvr (readonly)
+		[2]: UserInputService_upvr (readonly)
+		[3]: ._ActionController_InputMetadata_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local clone_7 = Instances_upvr.ButtonDisplayFrame:Clone()
+	local var67
+	if arg1.EnumType == Enum.KeyCode then
+		var67 = UserInputService_upvr:GetImageForKeyCode(arg1)
+	end
+	if arg1 == Enum.UserInputType.Touch then
+		Instances_upvr.TouchImageLabel:Clone().Parent = clone_7
+		do
+			return clone_7
+		end
+		local var68
+	end
+	if var67 and var67 ~= "" then
+		local clone_12 = Instances_upvr.GamepadImageLabel:Clone()
+		clone_12.Image = var67
+		clone_12.Parent = clone_7
+		return clone_7
+	end
+	var68 = ._ActionController_InputMetadata_upvr
+	if var68.MouseButtonImage[arg1] then
+		local clone_5 = Instances_upvr.MouseImageLabel:Clone()
+		var68 = ._ActionController_InputMetadata_upvr.MouseButtonImage
+		clone_5.Image = var68[arg1]
+		clone_5.Parent = clone_7
+		return clone_7
+	end
+	Instances_upvr.KeyboardBorderImage:Clone().Parent = clone_7
+	var68 = ._ActionController_InputMetadata_upvr.KeyboardButtonImage[arg1]
+	if not var68 then
+		var68 = ._ActionController_InputMetadata_upvr.KeyboardButtonIconMapping[UserInputService_upvr:GetStringForKeyCode(arg1)]
+	end
+	if not var68 then
+		local var71 = ._ActionController_InputMetadata_upvr.KeyCodeToTextMapping[arg1]
+		if var71 then
+			local var72 = var71
+		end
+	end
+	if var68 then
+		local clone_4 = Instances_upvr.KeyboardImageLabel:Clone()
+		clone_4.Image = var68
+		clone_4.Parent = clone_7
+		return clone_7
+	end
+	if var72 and var72 ~= "" then
+		local clone_6 = Instances_upvr.KeyboardTextLabel:Clone()
+		clone_6.Text = var72
+		local var75 = ._ActionController_InputMetadata_upvr.KeyCodeToFontSize[arg1]
+		if not var75 then
+			var75 = ._ActionController_InputMetadata_upvr.DefaultFontSize
+		end
+		clone_6.TextSize = var75
+		clone_6.Parent = clone_7
+	end
+	return clone_7
+end
+function module_upvr._updateUIPositionAndScale() -- Line 405
+	--[[ Upvalues[3]:
+		[1]: PlayerGui_upvr (readonly)
+		[2]: ActionGui_upvr (readonly)
+		[3]: ._ActionController_InputCategorizer_upvr (readonly)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 25 start (CF ANALYSIS FAILED)
+	local var76
+	if PlayerGui_upvr:FindFirstChild("TouchGui") == nil then
+		var76 = false
+	else
+		var76 = true
+	end
+	if math.min(ActionGui_upvr.AbsoluteSize.X, ActionGui_upvr.AbsoluteSize.Y) >= 500 then
+		-- KONSTANTWARNING: GOTO [29] #21
+	end
+	-- KONSTANTERROR: [0] 1. Error Block 25 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [28] 20. Error Block 27 start (CF ANALYSIS FAILED)
+	if var76 and ._ActionController_InputCategorizer_upvr.getLastInputCategory() == ._ActionController_InputCategorizer_upvr.InputCategory.Touch then
+		ActionGui_upvr.RightListFrame.Visible = false
+	else
+		ActionGui_upvr.RightListFrame.Visible = true
+	end
+	local RightListFrame = ActionGui_upvr.RightListFrame
+	if true then
+		RightListFrame = 0.85
+	else
+		RightListFrame = 1
+	end
+	RightListFrame.UIScale.Scale = RightListFrame
+	ActionGui_upvr.RightListFrame.Position = UDim2.new(1, -40, 1, -40)
+	-- KONSTANTERROR: [28] 20. Error Block 27 end (CF ANALYSIS FAILED)
+end
+local RunService_upvr = game:GetService("RunService")
+function module_upvr._start() -- Line 424
+	--[[ Upvalues[5]:
+		[1]: module_upvr (readonly)
+		[2]: RunService_upvr (readonly)
+		[3]: PlayerGui_upvr (readonly)
+		[4]: ._ActionController_InputCategorizer_upvr (readonly)
+		[5]: ActionGui_upvr (readonly)
+	]]
+	assert(not module_upvr._initialized, "ActionController already initialized!")
+	assert(RunService_upvr:IsClient(), "ActionController can only be used on the client!")
+	PlayerGui_upvr.ChildAdded:Connect(function(arg1) -- Line 429
+		--[[ Upvalues[1]:
+			[1]: module_upvr (copied, readonly)
+		]]
+		if arg1.Name == "TouchGui" then
+			module_upvr._updateUIPositionAndScale()
+		end
+	end)
+	PlayerGui_upvr.ChildRemoved:Connect(function(arg1) -- Line 435
+		--[[ Upvalues[1]:
+			[1]: module_upvr (copied, readonly)
+		]]
+		if arg1.Name == "TouchGui" then
+			module_upvr._updateUIPositionAndScale()
+		end
+	end)
+	._ActionController_InputCategorizer_upvr.lastInputCategoryChanged:Connect(function(arg1) -- Line 442
+		--[[ Upvalues[1]:
+			[1]: module_upvr (copied, readonly)
+		]]
+		for _, v_5 in module_upvr._registeredActions do
+			module_upvr._updateInputDisplay(v_5, arg1)
+		end
+		module_upvr._updateButtonVisibility()
+	end)
+	ActionGui_upvr:GetPropertyChangedSignal("AbsoluteSize"):Connect(module_upvr._updateUIPositionAndScale)
+	._ActionController_InputCategorizer_upvr.lastInputCategoryChanged:Connect(module_upvr._updateUIPositionAndScale)
+	ActionGui_upvr.Parent = PlayerGui_upvr
+	module_upvr._initialized = true
+end
+module_upvr._start()
+return module_upvr

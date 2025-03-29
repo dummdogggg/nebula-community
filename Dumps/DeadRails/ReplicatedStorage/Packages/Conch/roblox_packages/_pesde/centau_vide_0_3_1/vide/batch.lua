@@ -1,29 +1,39 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.centau_vide@0.3.1.vide.batch
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:49:00
+-- Luau version 6, Types version 3
+-- Time taken: 0.000874 seconds
+
 if not game then
-    script = require("test/relative-string");
-end;
-local v0 = require(script.Parent.flags);
-local v1 = require(script.Parent.throw);
-local v2 = require(script.Parent.graph);
-return function(v3) --[[ Line: 7 ]] --[[ Name: batch ]]
-    -- upvalues: v0 (copy), v2 (copy), v1 (copy)
-    local l_batch_0 = v0.batch;
-    local v5 = nil;
-    if not l_batch_0 then
-        v0.batch = true;
-        v5 = v2.get_update_queue_length();
-    end;
-    local l_status_0, l_result_0 = pcall(v3);
-    if not l_batch_0 then
-        v0.batch = false;
-        v2.flush_update_queue(v5);
-    end;
-    if not l_status_0 then
-        v1((("error occured while batching updates: %*"):format(l_result_0)));
-    end;
-end;
+	script = require("test/relative-string") -- Setting global
+end
+local flags_upvr = require(script.Parent.flags)
+local graph_upvr = require(script.Parent.graph)
+local throw_upvr = require(script.Parent.throw)
+return function(arg1) -- Line 7, Named "batch"
+	--[[ Upvalues[3]:
+		[1]: flags_upvr (readonly)
+		[2]: graph_upvr (readonly)
+		[3]: throw_upvr (readonly)
+	]]
+	local batch = flags_upvr.batch
+	local var5
+	if not batch then
+		flags_upvr.batch = true
+		var5 = graph_upvr.get_update_queue_length()
+	end
+	local pcall_result1, pcall_result2 = pcall(arg1)
+	if not batch then
+		flags_upvr.batch = false
+		graph_upvr.flush_update_queue(var5)
+	end
+	if not pcall_result1 then
+		throw_upvr(`error occured while batching updates: {pcall_result2}`)
+	end
+end

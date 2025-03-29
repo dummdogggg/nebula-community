@@ -1,104 +1,139 @@
 --[[
     Script: ReplicatedStorage.Client.Handlers.DraggableItemHandlers.ClientActivatableObjectHandler
     Type: Script
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local l_Players_0 = game:GetService("Players");
-local l_Packages_0 = l_ReplicatedStorage_0.Packages;
-local v3 = require(l_Packages_0.RemotePromise);
-local l_LocalPlayer_0 = l_Players_0.LocalPlayer;
-local l_Shared_0 = l_ReplicatedStorage_0.Shared;
-local v6 = require(l_Shared_0.Utils.DraggableObjectUtil);
-local l_isValidDraggableObject_0 = v6.isValidDraggableObject;
-local _ = v6.isDraggableObjectWelded;
-local v9 = require(l_ReplicatedStorage_0.Shared.SharedConstants.Tag);
-local _ = require(l_ReplicatedStorage_0.Shared.SharedConstants.Attribute);
-local v11 = require(l_ReplicatedStorage_0.Client.DataBanks.ActionData);
-local l_script_FirstAncestor_0 = script:FindFirstAncestor("Client");
-local l_FirstChild_0 = l_script_FirstAncestor_0.Handlers:FindFirstChild("ClientDraggableObjectHandler", true);
-local l_HoveringObject_0 = l_FirstChild_0.HoveringObject;
-local _ = l_FirstChild_0.DraggingObject;
-local v16 = require(l_script_FirstAncestor_0.Controllers.ActionController);
-local v17 = require(l_script_FirstAncestor_0.DataBanks.ClientActivatableObjectCallbacks);
-local v18 = v3.new("ActivateObject");
-local v19 = nil;
-local v20 = false;
-local function v26(_, v22) --[[ Line: 35 ]] --[[ Name: activateObjectActionCallback ]]
-    -- upvalues: v19 (ref), v18 (copy), v17 (copy), v3 (copy)
-    if v22 ~= Enum.UserInputState.Begin then
-        return Enum.ContextActionResult.Pass;
-    else
-        if v19 then
-            v18:InvokeServer(v19):andThen(function(v23, ...) --[[ Line: 41 ]]
-                -- upvalues: v17 (ref), v19 (ref)
-                if v23 then
-                    local v24 = v17[v19.Name];
-                    if v24 then
-                        v24(v19, ...);
-                    end;
-                end;
-            end):timeout(10):catch(function(v25) --[[ Line: 49 ]]
-                -- upvalues: v3 (ref)
-                if v3.Error.isKind(v25, v3.Error.Kind.TimedOut) then
-                    return;
-                else
-                    return;
-                end;
-            end);
-        end;
-        return Enum.ContextActionResult.Sink;
-    end;
-end;
-local function v29(v27) --[[ Line: 61 ]] --[[ Name: updateBind ]]
-    -- upvalues: v20 (ref), v16 (copy), v11 (copy), v26 (copy), v19 (ref)
-    if v27 and not v20 then
-        v16.bindAction(v11.Action.ActivateObject, v26, v11.ActionContext[v11.Action.ActivateObject], Enum.KeyCode.E, Enum.KeyCode.DPadLeft, 3);
-        v20 = true;
-    elseif not v27 and v20 then
-        v16.unbindAction(v11.Action.ActivateObject);
-        v20 = false;
-    end;
-    if v20 and v19 then
-        local l_v19_Attribute_0 = v19:GetAttribute("ActivateText");
-        v16.setButtonText(v11.Action.ActivateObject, l_v19_Attribute_0 or "Activate");
-    end;
-end;
-local function v31() --[[ Line: 84 ]] --[[ Name: update ]]
-    -- upvalues: l_LocalPlayer_0 (copy), v29 (copy), l_HoveringObject_0 (copy), l_isValidDraggableObject_0 (copy), v9 (copy), v19 (ref)
-    if not l_LocalPlayer_0.Character then
-        v29(false);
-        return;
-    else
-        local l_Value_0 = l_HoveringObject_0.Value;
-        if l_Value_0 and l_isValidDraggableObject_0(l_Value_0) and l_Value_0:HasTag(v9.Activatable) and (not l_Value_0:GetAttribute("OwnerId") or l_Value_0:GetAttribute("OwnerId") == l_LocalPlayer_0.UserId) then
-            v19 = l_Value_0;
-        else
-            v19 = nil;
-        end;
-        v29(v19 ~= nil);
-        return;
-    end;
-end;
-local function v36(v32) --[[ Line: 108 ]] --[[ Name: onCharacterAdded ]]
-    -- upvalues: v31 (copy), v29 (copy)
-    local function v33() --[[ Line: 109 ]] --[[ Name: handleChildChanged ]]
-        -- upvalues: v31 (ref)
-        v31();
-    end;
-    local v34 = v32.ChildAdded:Connect(v33);
-    local v35 = v32.ChildRemoved:Connect(v33);
-    v32.Destroying:Once(function() --[[ Line: 116 ]]
-        -- upvalues: v34 (copy), v35 (copy), v29 (ref)
-        v34:Disconnect();
-        v35:Disconnect();
-        v29(false);
-    end);
-    v31();
-end;
-if l_LocalPlayer_0.Character then
-    v36(l_LocalPlayer_0.Character);
-end;
-l_HoveringObject_0.Changed:Connect(v31);
-l_LocalPlayer_0.CharacterAdded:Connect(v36);
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:43
+-- Luau version 6, Types version 3
+-- Time taken: 0.002827 seconds
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RemotePromise_upvr = require(ReplicatedStorage.Packages.RemotePromise)
+local LocalPlayer_upvr = game:GetService("Players").LocalPlayer
+local Client = script:FindFirstAncestor("Client")
+local HoveringObject_upvr = Client.Handlers:FindFirstChild("ClientDraggableObjectHandler", true).HoveringObject
+local var8_upvw
+local any_new_result1_upvr = RemotePromise_upvr.new("ActivateObject")
+local ClientActivatableObjectCallbacks_upvr = require(Client.DataBanks.ClientActivatableObjectCallbacks)
+local function activateObjectActionCallback_upvr(arg1, arg2) -- Line 35, Named "activateObjectActionCallback"
+	--[[ Upvalues[4]:
+		[1]: var8_upvw (read and write)
+		[2]: any_new_result1_upvr (readonly)
+		[3]: ClientActivatableObjectCallbacks_upvr (readonly)
+		[4]: RemotePromise_upvr (readonly)
+	]]
+	if arg2 ~= Enum.UserInputState.Begin then
+		return Enum.ContextActionResult.Pass
+	end
+	if var8_upvw then
+		any_new_result1_upvr:InvokeServer(var8_upvw):andThen(function(arg1_2, ...) -- Line 41
+			--[[ Upvalues[2]:
+				[1]: ClientActivatableObjectCallbacks_upvr (copied, readonly)
+				[2]: var8_upvw (copied, read and write)
+			]]
+			if arg1_2 then
+				local var13 = ClientActivatableObjectCallbacks_upvr[var8_upvw.Name]
+				if var13 then
+					var13(var8_upvw, ...)
+				end
+			end
+		end):timeout(10):catch(function(arg1_3) -- Line 49
+			--[[ Upvalues[1]:
+				[1]: RemotePromise_upvr (copied, readonly)
+			]]
+			if RemotePromise_upvr.Error.isKind(arg1_3, RemotePromise_upvr.Error.Kind.TimedOut) then return end
+		end)
+	end
+	return Enum.ContextActionResult.Sink
+end
+local var15_upvw = false
+local ActionController_upvr = require(Client.Controllers.ActionController)
+local ActionData_upvr = require(ReplicatedStorage.Client.DataBanks.ActionData)
+local function updateBind_upvr(arg1) -- Line 61, Named "updateBind"
+	--[[ Upvalues[5]:
+		[1]: var15_upvw (read and write)
+		[2]: ActionController_upvr (readonly)
+		[3]: ActionData_upvr (readonly)
+		[4]: activateObjectActionCallback_upvr (readonly)
+		[5]: var8_upvw (read and write)
+	]]
+	if arg1 and not var15_upvw then
+		ActionController_upvr.bindAction(ActionData_upvr.Action.ActivateObject, activateObjectActionCallback_upvr, ActionData_upvr.ActionContext[ActionData_upvr.Action.ActivateObject], Enum.KeyCode.E, Enum.KeyCode.DPadLeft, 3)
+		var15_upvw = true
+	elseif not arg1 and var15_upvw then
+		ActionController_upvr.unbindAction(ActionData_upvr.Action.ActivateObject)
+		var15_upvw = false
+	end
+	if var15_upvw and var8_upvw then
+		ActionController_upvr.setButtonText(ActionData_upvr.Action.ActivateObject, var8_upvw:GetAttribute("ActivateText") or "Activate")
+	end
+end
+local isValidDraggableObject_upvr = require(ReplicatedStorage.Shared.Utils.DraggableObjectUtil).isValidDraggableObject
+local Tag_upvr = require(ReplicatedStorage.Shared.SharedConstants.Tag)
+local function update_upvr() -- Line 84, Named "update"
+	--[[ Upvalues[6]:
+		[1]: LocalPlayer_upvr (readonly)
+		[2]: updateBind_upvr (readonly)
+		[3]: HoveringObject_upvr (readonly)
+		[4]: isValidDraggableObject_upvr (readonly)
+		[5]: Tag_upvr (readonly)
+		[6]: var8_upvw (read and write)
+	]]
+	if not LocalPlayer_upvr.Character then
+		updateBind_upvr(false)
+	else
+		local Value = HoveringObject_upvr.Value
+		local function INLINED() -- Internal function, doesn't exist in bytecode
+			local var21
+			return isValidDraggableObject_upvr(Value)
+		end
+		local function INLINED_2() -- Internal function, doesn't exist in bytecode
+			var21 = LocalPlayer_upvr.UserId
+			return Value:GetAttribute("OwnerId") == var21
+		end
+		if Value and INLINED() and Value:HasTag(Tag_upvr.Activatable) and (not Value:GetAttribute("OwnerId") or INLINED_2()) then
+			var8_upvw = Value
+		else
+			var8_upvw = nil
+		end
+		if var8_upvw == nil then
+			var21 = false
+		else
+			var21 = true
+		end
+		updateBind_upvr(var21)
+	end
+end
+local function onCharacterAdded(arg1) -- Line 108
+	--[[ Upvalues[2]:
+		[1]: update_upvr (readonly)
+		[2]: updateBind_upvr (readonly)
+	]]
+	local function handleChildChanged() -- Line 109
+		--[[ Upvalues[1]:
+			[1]: update_upvr (copied, readonly)
+		]]
+		update_upvr()
+	end
+	local any_Connect_result1_upvr = arg1.ChildAdded:Connect(handleChildChanged)
+	local any_Connect_result1_upvr_2 = arg1.ChildRemoved:Connect(handleChildChanged)
+	arg1.Destroying:Once(function() -- Line 116
+		--[[ Upvalues[3]:
+			[1]: any_Connect_result1_upvr (readonly)
+			[2]: any_Connect_result1_upvr_2 (readonly)
+			[3]: updateBind_upvr (copied, readonly)
+		]]
+		any_Connect_result1_upvr:Disconnect()
+		any_Connect_result1_upvr_2:Disconnect()
+		updateBind_upvr(false)
+	end)
+	update_upvr()
+end
+if LocalPlayer_upvr.Character then
+	onCharacterAdded(LocalPlayer_upvr.Character)
+end
+HoveringObject_upvr.Changed:Connect(update_upvr)
+LocalPlayer_upvr.CharacterAdded:Connect(onCharacterAdded)

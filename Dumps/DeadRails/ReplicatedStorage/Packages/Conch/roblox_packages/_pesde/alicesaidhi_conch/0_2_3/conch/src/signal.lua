@@ -1,43 +1,50 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.alicesaidhi+conch.0.2.3.conch.src.signal
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local _ = require("./types");
-return function() --[[ Line: 4 ]] --[[ Name: create_signal ]]
-    local v1 = {};
-    return {
-        connect = function(_, v3) --[[ Line: 8 ]] --[[ Name: connect ]]
-            -- upvalues: v1 (copy)
-            local v4 = false;
-            local v5 = {
-                callback = v3
-            };
-            v5.disconnect = function() --[[ Line: 12 ]] --[[ Name: disconnect ]]
-                -- upvalues: v4 (ref), v5 (copy), v1 (ref)
-                if v4 then
-                    return;
-                else
-                    v4 = true;
-                    v5.disconnected = true;
-                    local v6 = table.find(v1, v5);
-                    if not v6 then
-                        return;
-                    else
-                        table.remove(v1, v6);
-                        return;
-                    end;
-                end;
-            end;
-            table.insert(v1, v5);
-            return v5;
-        end, 
-        fire = function(_, ...) --[[ Line: 29 ]] --[[ Name: fire ]]
-            -- upvalues: v1 (copy)
-            for _, v9 in v1 do
-                v9.callback(...);
-            end;
-        end
-    };
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:47:53
+-- Luau version 6, Types version 3
+-- Time taken: 0.001128 seconds
+
+return function() -- Line 4, Named "create_signal"
+	local tbl_upvr = {}
+	return {
+		connect = function(arg1, arg2) -- Line 8, Named "connect"
+			--[[ Upvalues[1]:
+				[1]: tbl_upvr (readonly)
+			]]
+			local module_upvr = {}
+			module_upvr.callback = arg2
+			local var4_upvw = false
+			function module_upvr.disconnect() -- Line 12
+				--[[ Upvalues[3]:
+					[1]: var4_upvw (read and write)
+					[2]: module_upvr (readonly)
+					[3]: tbl_upvr (copied, readonly)
+				]]
+				if var4_upvw then
+				else
+					var4_upvw = true
+					module_upvr.disconnected = true
+					local table_find_result1 = table.find(tbl_upvr, module_upvr)
+					if not table_find_result1 then return end
+					table.remove(tbl_upvr, table_find_result1)
+				end
+			end
+			table.insert(tbl_upvr, module_upvr)
+			return module_upvr
+		end;
+		fire = function(arg1, ...) -- Line 29, Named "fire"
+			--[[ Upvalues[1]:
+				[1]: tbl_upvr (readonly)
+			]]
+			for _, v in tbl_upvr do
+				v.callback(...)
+			end
+		end;
+	}
+end

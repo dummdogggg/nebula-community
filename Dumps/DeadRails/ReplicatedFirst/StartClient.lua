@@ -1,84 +1,80 @@
 --[[
     Script: ReplicatedFirst.StartClient
     Type: LocalScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local _ = game:GetService("ContentProvider");
-local l_Players_0 = game:GetService("Players");
-local _ = game:GetService("ReplicatedFirst");
-local v4 = require(script.Parent.LoadingScreen);
-local l_LocalPlayer_0 = l_Players_0.LocalPlayer;
-local function _() --[[ Line: 10 ]] --[[ Name: preGameLoadTasksAsync ]]
-    -- upvalues: v4 (copy)
-    v4.enableAsync();
-    v4.updateDetailText("Initializing client...");
-end;
-local function _() --[[ Line: 15 ]] --[[ Name: waitForGameLoadAsync ]]
-    -- upvalues: v4 (copy)
-    v4.updateDetailText("Loading game...");
-    if not game:IsLoaded() then
-        game.Loaded:Wait();
-    end;
-end;
-local function v25() --[[ Line: 22 ]] --[[ Name: postGameLoadTasksAsync ]]
-    -- upvalues: l_ReplicatedStorage_0 (copy), v4 (copy), l_LocalPlayer_0 (copy)
-    local v8 = require(l_ReplicatedStorage_0.Shared.ComponentCreator);
-    local v9 = require(l_ReplicatedStorage_0.Shared.SharedConstants.FeatureFlags);
-    local v10 = require(l_ReplicatedStorage_0.Shared.SharedConstants.CollectionServiceTag.CharacterTags);
-    local v11 = require(l_ReplicatedStorage_0.Client.LocalPlayerObjectsContainer);
-    local v12 = require(l_ReplicatedStorage_0.Client.Handlers.DraggableItemHandlers.ClientInteractableObjectHandler);
-    local v13 = require(l_ReplicatedStorage_0.Client.Handlers.CursorHandler);
-    local v14 = require(l_ReplicatedStorage_0.Client.Handlers.MouseLockHandler);
-    local v15 = require(l_ReplicatedStorage_0.Client.Handlers.ClientPlayerFlopHandler);
-    local v16 = require(l_ReplicatedStorage_0.Client.Handlers.ClientCommandHandler);
-    local v17 = require(l_ReplicatedStorage_0.Client.Handlers.UIHandlers.CorpseEatPromptHandler);
-    local v18 = require(l_ReplicatedStorage_0.Client.Inventory.ClientBackpackHandler);
-    local v19 = require(l_ReplicatedStorage_0.Client.Controllers.PlayerDataController);
-    local v20 = require(l_ReplicatedStorage_0.Client.Controllers.WeaponController);
-    local v21 = require(l_ReplicatedStorage_0.Client.Components.LocalDeath);
-    v4.updateDetailText("Loading player data...");
-    if not v19.isPlayerDataLoaded() then
-        v19.waitForDataLoadAsync();
-    end;
-    v11.registerLocalPlayer();
-    v13.startAsync();
-    v14.start();
-    v15.start();
-    v16.start();
-    v17.start();
-    v18.startAsync();
-    if v9.Experimental.NewDragSystem then
-        v12.start();
-    end;
-    v20.start();
-    v8.new(v10.Dead, v21):listen();
-    v4.updateDetailText("Loading map...");
-    local l_IsMapGenerating_0 = l_ReplicatedStorage_0:FindFirstChild("IsMapGenerating");
-    while l_IsMapGenerating_0.Value do
-        local l_l_IsMapGenerating_0_Attribute_0 = l_IsMapGenerating_0:GetAttribute("GenerationText");
-        v4.updateDetailText((("%*..."):format(l_l_IsMapGenerating_0_Attribute_0)));
-        task.wait();
-    end;
-    v4.updateDetailText("Loading character...");
-    local l_Character_0 = l_LocalPlayer_0.Character;
-    if not l_Character_0 then
-        l_LocalPlayer_0.CharacterAdded:Wait();
-    end;
-    while not l_Character_0.PrimaryPart do
-        task.wait();
-    end;
-    l_Character_0:WaitForChild("HumanoidRootPart");
-    l_Character_0:WaitForChild("Humanoid");
-    v4.updateDetailText("Done!");
-    v4.disableAsync();
-    script:SetAttribute("IsStarted", true);
-end;
-v4.enableAsync();
-v4.updateDetailText("Initializing client...");
-v4.updateDetailText("Loading game...");
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:53
+-- Luau version 6, Types version 3
+-- Time taken: 0.001947 seconds
+
+local LoadingScreen_upvr = require(script.Parent.LoadingScreen)
+local function _() -- Line 10, Named "preGameLoadTasksAsync"
+	--[[ Upvalues[1]:
+		[1]: LoadingScreen_upvr (readonly)
+	]]
+	LoadingScreen_upvr.enableAsync()
+	LoadingScreen_upvr.updateDetailText("Initializing client...")
+end
+local function _() -- Line 15, Named "waitForGameLoadAsync"
+	--[[ Upvalues[1]:
+		[1]: LoadingScreen_upvr (readonly)
+	]]
+	LoadingScreen_upvr.updateDetailText("Loading game...")
+	if not game:IsLoaded() then
+		game.Loaded:Wait()
+	end
+end
+local ReplicatedStorage_upvr = game:GetService("ReplicatedStorage")
+local LocalPlayer_upvr = game:GetService("Players").LocalPlayer
+LoadingScreen_upvr.enableAsync()
+LoadingScreen_upvr.updateDetailText("Initializing client...")
+LoadingScreen_upvr.updateDetailText("Loading game...")
 if not game:IsLoaded() then
-    game.Loaded:Wait();
-end;
-v25();
+	game.Loaded:Wait()
+end
+;(function() -- Line 22, Named "postGameLoadTasksAsync"
+	--[[ Upvalues[3]:
+		[1]: ReplicatedStorage_upvr (readonly)
+		[2]: LoadingScreen_upvr (readonly)
+		[3]: LocalPlayer_upvr (readonly)
+	]]
+	local PlayerDataController = require(ReplicatedStorage_upvr.Client.Controllers.PlayerDataController)
+	LoadingScreen_upvr.updateDetailText("Loading player data...")
+	if not PlayerDataController.isPlayerDataLoaded() then
+		PlayerDataController.waitForDataLoadAsync()
+	end
+	require(ReplicatedStorage_upvr.Client.LocalPlayerObjectsContainer).registerLocalPlayer()
+	require(ReplicatedStorage_upvr.Client.Handlers.CursorHandler).startAsync()
+	require(ReplicatedStorage_upvr.Client.Handlers.MouseLockHandler).start()
+	require(ReplicatedStorage_upvr.Client.Handlers.ClientPlayerFlopHandler).start()
+	require(ReplicatedStorage_upvr.Client.Handlers.ClientCommandHandler).start()
+	require(ReplicatedStorage_upvr.Client.Handlers.UIHandlers.CorpseEatPromptHandler).start()
+	require(ReplicatedStorage_upvr.Client.Inventory.ClientBackpackHandler).startAsync()
+	if require(ReplicatedStorage_upvr.Shared.SharedConstants.FeatureFlags).Experimental.NewDragSystem then
+		require(ReplicatedStorage_upvr.Client.Handlers.DraggableItemHandlers.ClientInteractableObjectHandler).start()
+	end
+	require(ReplicatedStorage_upvr.Client.Controllers.WeaponController).start()
+	require(ReplicatedStorage_upvr.Shared.ComponentCreator).new(require(ReplicatedStorage_upvr.Shared.SharedConstants.CollectionServiceTag.CharacterTags).Dead, require(ReplicatedStorage_upvr.Client.Components.LocalDeath)):listen()
+	LoadingScreen_upvr.updateDetailText("Loading map...")
+	local IsMapGenerating = ReplicatedStorage_upvr:FindFirstChild("IsMapGenerating")
+	while IsMapGenerating.Value do
+		LoadingScreen_upvr.updateDetailText(`{IsMapGenerating:GetAttribute("GenerationText")}...`)
+		task.wait()
+	end
+	LoadingScreen_upvr.updateDetailText("Loading character...")
+	local Character = LocalPlayer_upvr.Character
+	if not Character then
+		LocalPlayer_upvr.CharacterAdded:Wait()
+	end
+	while not Character.PrimaryPart do
+		task.wait()
+	end
+	Character:WaitForChild("HumanoidRootPart")
+	Character:WaitForChild("Humanoid")
+	LoadingScreen_upvr.updateDetailText("Done!")
+	LoadingScreen_upvr.disableAsync()
+	script:SetAttribute("IsStarted", true)
+end)()

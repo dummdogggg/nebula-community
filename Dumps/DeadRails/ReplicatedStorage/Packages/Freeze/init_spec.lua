@@ -1,53 +1,84 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.init.spec
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.utils.equalsDeep);
-local function v1(v2) --[[ Line: 3 ]] --[[ Name: toString ]]
-    -- upvalues: v1 (copy)
-    if type(v2) == "table" then
-        local v3 = {};
-        for v4, v5 in pairs(v2) do
-            table.insert(v3, if type(v4) == "number" then v1(v5) else v1(v4) .. "=" .. v1(v5));
-        end;
-        return "{" .. table.concat(v3, ", ") .. "}";
-    else
-        return (tostring(v2));
-    end;
-end;
-return function() --[[ Line: 16 ]]
-    -- upvalues: v0 (copy), v1 (copy)
-    beforeAll(function() --[[ Line: 17 ]]
-        -- upvalues: v0 (ref), v1 (ref)
-        expect.extend({
-            toEqual = function(v6, v7) --[[ Line: 19 ]] --[[ Name: toEqual ]]
-                -- upvalues: v0 (ref), v1 (ref)
-                if v6 == v7 then
-                    return {
-                        pass = true, 
-                        message = "Expected to not equal"
-                    };
-                elseif v0(v6, v7) then
-                    return {
-                        pass = true, 
-                        message = "Expected to not equal"
-                    };
-                else
-                    return {
-                        pass = false, 
-                        message = string.format("Does not equal.\n\t\tGot:      %q\n\t\tExpected: %q\n\n", v1(v6), (v1(v7)))
-                    };
-                end;
-            end, 
-            toBe = function(v8, v9) --[[ Line: 44 ]] --[[ Name: toBe ]]
-                -- upvalues: v1 (ref)
-                return {
-                    pass = v8 == v9, 
-                    message = string.format("Does not equal.\n\t\tGot:      %q\n\t\tExpected: %q\n\n", v1(v8), (v1(v9)))
-                };
-            end
-        });
-    end);
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:16
+-- Luau version 6, Types version 3
+-- Time taken: 0.001888 seconds
+
+local function toString_upvr(arg1) -- Line 3, Named "toString"
+	--[[ Upvalues[1]:
+		[1]: toString_upvr (readonly)
+	]]
+	if type(arg1) == "table" then
+		local module = {}
+		for i, v in pairs(arg1) do
+			local var9
+			if type(i) == "number" then
+				var9 = toString_upvr(v)
+			else
+				var9 = toString_upvr(i)..'='..toString_upvr(v)
+			end
+			table.insert(module, var9)
+		end
+		return '{'..table.concat(module, ", ")..'}'
+	end
+	return tostring(arg1)
+end
+local equalsDeep_upvr = require(script.Parent.utils.equalsDeep)
+return function() -- Line 16
+	--[[ Upvalues[2]:
+		[1]: equalsDeep_upvr (readonly)
+		[2]: toString_upvr (readonly)
+	]]
+	beforeAll(function() -- Line 17
+		--[[ Upvalues[2]:
+			[1]: equalsDeep_upvr (copied, readonly)
+			[2]: toString_upvr (copied, readonly)
+		]]
+		expect.extend({
+			toEqual = function(arg1, arg2) -- Line 19, Named "toEqual"
+				--[[ Upvalues[2]:
+					[1]: equalsDeep_upvr (copied, readonly)
+					[2]: toString_upvr (copied, readonly)
+				]]
+				if arg1 == arg2 then
+					return {
+						pass = true;
+						message = "Expected to not equal";
+					}
+				end
+				if equalsDeep_upvr(arg1, arg2) then
+					return {
+						pass = true;
+						message = "Expected to not equal";
+					}
+				end
+				return {
+					pass = false;
+					message = string.format("Does not equal.\n\t\tGot:      %q\n\t\tExpected: %q\n\n", toString_upvr(arg1), toString_upvr(arg2));
+				}
+			end;
+			toBe = function(arg1, arg2) -- Line 44, Named "toBe"
+				--[[ Upvalues[1]:
+					[1]: toString_upvr (copied, readonly)
+				]]
+				local module_2 = {}
+				local var18
+				if arg1 ~= arg2 then
+					var18 = false
+				else
+					var18 = true
+				end
+				module_2.pass = var18
+				var18 = string.format("Does not equal.\n\t\tGot:      %q\n\t\tExpected: %q\n\n", toString_upvr(arg1), toString_upvr(arg2))
+				module_2.message = var18
+				return module_2
+			end;
+		})
+	end)
+end

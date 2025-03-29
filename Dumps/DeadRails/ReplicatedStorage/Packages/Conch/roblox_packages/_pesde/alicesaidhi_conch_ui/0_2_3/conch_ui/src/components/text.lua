@@ -1,48 +1,99 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.alicesaidhi+conch_ui.0.2.3.conch_ui.src.components.text
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require("../theme");
-local v1 = require("../../roblox_packages/vide");
-local l_create_0 = v1.create;
-local l_read_0 = v1.read;
-return function(v4) --[[ Line: 23 ]]
-    -- upvalues: l_create_0 (copy), l_read_0 (copy), v0 (copy)
-    return l_create_0("TextLabel")({
-        Size = function() --[[ Line: 25 ]] --[[ Name: Size ]]
-            -- upvalues: l_read_0 (ref), v4 (copy)
-            return UDim2.fromOffset(l_read_0(v4.width) or 0, l_read_0(v4.height) or 0);
-        end, 
-        AutomaticSize = if v4.width and v4.height then nil else if v4.width then Enum.AutomaticSize.Y else Enum.AutomaticSize.X, 
-        Text = v4.text, 
-        TextSize = v4.text_size, 
-        TextColor3 = function() --[[ Line: 38 ]] --[[ Name: TextColor3 ]]
-            -- upvalues: v4 (copy), l_read_0 (ref), v0 (ref)
-            local l_text_style_0 = v4.text_style;
-            if l_read_0(l_text_style_0) == "normal" then
-                return (v0.text());
-            elseif l_read_0(l_text_style_0) == "warn" then
-                return (v0.text_warn());
-            elseif l_read_0(l_text_style_0) == "error" then
-                return (v0.text_error());
-            elseif l_read_0(l_text_style_0) == "info" then
-                return (v0.text_info());
-            else
-                return (v0.text());
-            end;
-        end, 
-        FontFace = function() --[[ Line: 47 ]] --[[ Name: FontFace ]]
-            -- upvalues: v0 (ref), l_read_0 (ref), v4 (copy)
-            local v6 = v0.font();
-            local v7 = l_read_0(v4.weight) or Enum.FontWeight.Regular;
-            return Font.new(v6.Family, v7);
-        end, 
-        TextWrapped = v4.wrapped, 
-        TextXAlignment = v4.xalignment, 
-        LayoutOrder = v4.order, 
-        BackgroundTransparency = 1; 
-        unpack(v4)
-    });
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:48:48
+-- Luau version 6, Types version 3
+-- Time taken: 0.001759 seconds
+
+local ._____roblox_packages_vide = require("../../roblox_packages/vide")
+local create_upvr = ._____roblox_packages_vide.create
+local read_upvr = ._____roblox_packages_vide.read
+local .__theme_upvr = require("../theme")
+return function(arg1) -- Line 23
+	--[[ Upvalues[3]:
+		[1]: create_upvr (readonly)
+		[2]: read_upvr (readonly)
+		[3]: .__theme_upvr (readonly)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 13 start (CF ANALYSIS FAILED)
+	local module = {
+		Size = function() -- Line 25, Named "Size"
+			--[[ Upvalues[2]:
+				[1]: read_upvr (copied, readonly)
+				[2]: arg1 (readonly)
+			]]
+			return UDim2.fromOffset(read_upvr(arg1.width) or 0, read_upvr(arg1.height) or 0)
+		end;
+	}
+	local FontFace
+	if arg1.width and arg1.height then
+		FontFace = nil
+		-- KONSTANTWARNING: GOTO [26] #20
+	end
+	-- KONSTANTERROR: [0] 1. Error Block 13 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [18] 15. Error Block 14 start (CF ANALYSIS FAILED)
+	if arg1.width then
+		FontFace = Enum.AutomaticSize.Y
+	else
+		FontFace = Enum.AutomaticSize.X
+	end
+	module.AutomaticSize = FontFace
+	FontFace = arg1.text
+	module.Text = FontFace
+	FontFace = arg1.text_size
+	module.TextSize = FontFace
+	function FontFace() -- Line 38, Named "TextColor3"
+		--[[ Upvalues[3]:
+			[1]: arg1 (readonly)
+			[2]: read_upvr (copied, readonly)
+			[3]: .__theme_upvr (copied, readonly)
+		]]
+		local text_style = arg1.text_style
+		if read_upvr(text_style) == "normal" then
+			return .__theme_upvr.text()
+		end
+		if read_upvr(text_style) == "warn" then
+			return .__theme_upvr.text_warn()
+		end
+		if read_upvr(text_style) == "error" then
+			return .__theme_upvr.text_error()
+		end
+		if read_upvr(text_style) == "info" then
+			return .__theme_upvr.text_info()
+		end
+		return .__theme_upvr.text()
+	end
+	module.TextColor3 = FontFace
+	function FontFace() -- Line 47
+		--[[ Upvalues[3]:
+			[1]: .__theme_upvr (copied, readonly)
+			[2]: read_upvr (copied, readonly)
+			[3]: arg1 (readonly)
+		]]
+		local read_upvr_result1 = read_upvr(arg1.weight)
+		if not read_upvr_result1 then
+			read_upvr_result1 = Enum.FontWeight.Regular
+		end
+		return Font.new(.__theme_upvr.font().Family, read_upvr_result1)
+	end
+	module.FontFace = FontFace
+	FontFace = arg1.wrapped
+	module.TextWrapped = FontFace
+	FontFace = arg1.xalignment
+	module.TextXAlignment = FontFace
+	FontFace = arg1.order
+	module.LayoutOrder = FontFace
+	FontFace = 1
+	module.BackgroundTransparency = FontFace
+	FontFace = arg1
+	module[1] = unpack(FontFace)
+	do
+		return create_upvr("TextLabel")(module)
+	end
+	-- KONSTANTERROR: [18] 15. Error Block 14 end (CF ANALYSIS FAILED)
+end

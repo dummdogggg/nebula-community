@@ -1,1783 +1,2329 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ContextActionService_0 = game:GetService("ContextActionService");
-local l_TextChatService_0 = game:GetService("TextChatService");
-local l_UserInputService_0 = game:GetService("UserInputService");
-local l_StarterGui_0 = game:GetService("StarterGui");
-local l_GuiService_0 = game:GetService("GuiService");
-local l_RunService_0 = game:GetService("RunService");
-local l_VRService_0 = game:GetService("VRService");
-local l_Players_0 = game:GetService("Players");
-local l_PlayerGui_0 = l_Players_0.LocalPlayer:WaitForChild("PlayerGui");
-local v9 = {
-    OpenClose = nil, 
-    IsOpen = false, 
-    StateChanged = Instance.new("BindableEvent"), 
-    ModuleName = "Backpack", 
-    KeepVRTopbarOpen = true, 
-    VRIsExclusive = true, 
-    VRClosesNonExclusive = true, 
-    BackpackEmpty = Instance.new("BindableEvent")
-};
-v9.BackpackEmpty.Name = "BackpackEmpty";
-v9.BackpackItemAdded = Instance.new("BindableEvent");
-v9.BackpackItemAdded.Name = "BackpackAdded";
-v9.BackpackItemRemoved = Instance.new("BindableEvent");
-v9.BackpackItemRemoved.Name = "BackpackRemoved";
-local l_script_0 = script;
-local v11 = l_GuiService_0.PreferredTransparency or 1;
-local v12 = not l_script_0:GetAttribute("OutlineEquipBorder") or false;
-local l_l_script_0_Attribute_0 = l_script_0:GetAttribute("InsetIconPadding");
-local v14 = l_script_0:GetAttribute("BackgroundTransparency") or 0.3;
-local v15 = v14 * v11;
-local v16 = l_script_0:GetAttribute("CornerRadius") or UDim.new(0, 8);
-local v17 = l_script_0:GetAttribute("BackgroundColor3") or Color3.new(0.09803921568627451, 0.10588235294117647, 0.11372549019607843);
-local v18 = l_script_0:GetAttribute("EquipBorderColor3") or Color3.new(0, 0.6352941176470588, 1);
-local v19 = l_script_0:GetAttribute("BackgroundTransparency") or 0.3;
-local v20 = v19 * v11;
-local v21 = l_script_0:GetAttribute("EquipBorderSizePixel") or 5;
-local v22 = l_script_0:GetAttribute("CornerRadius") or UDim.new(0, 8);
-local v23 = Color3.new(1, 1, 1);
-local v24 = v22 - UDim.new(0, 5) or UDim.new(0, 3);
-local v25 = l_script_0:GetAttribute("BackgroundColor3") or Color3.new(0.09803921568627451, 0.10588235294117647, 0.11372549019607843);
-local v26 = l_script_0:GetAttribute("TextColor3") or Color3.new(1, 1, 1);
-local v27 = l_script_0:GetAttribute("TextStrokeTransparency") or 0.5;
-local v28 = l_script_0:GetAttribute("TextStrokeColor3") or Color3.new(0, 0, 0);
-local v29 = Color3.new(0.09803921568627451, 0.10588235294117647, 0.11372549019607843);
-local v30 = v11 * 0.2;
-local v31 = Color3.new(1, 1, 1);
-local v32 = v22 - UDim.new(0, 5) or UDim.new(0, 3);
-local v33 = l_script_0:GetAttribute("FontFace") or Font.new("rbxasset://fonts/families/BuilderSans.json");
-local v34 = l_script_0:GetAttribute("TextSize") or 16;
-local l_Value_0 = Enum.KeyCode.Backspace.Value;
-local l_Value_1 = Enum.KeyCode.Zero.Value;
-local v37 = 60;
-local v38 = {
-    [Enum.UserInputType.MouseButton1] = true, 
-    [Enum.UserInputType.MouseButton2] = true, 
-    [Enum.UserInputType.MouseButton3] = true, 
-    [Enum.UserInputType.MouseMovement] = true, 
-    [Enum.UserInputType.MouseWheel] = true
-};
-local v39 = {
-    [Enum.UserInputType.Gamepad1] = true, 
-    [Enum.UserInputType.Gamepad2] = true, 
-    [Enum.UserInputType.Gamepad3] = true, 
-    [Enum.UserInputType.Gamepad4] = true, 
-    [Enum.UserInputType.Gamepad5] = true, 
-    [Enum.UserInputType.Gamepad6] = true, 
-    [Enum.UserInputType.Gamepad7] = true, 
-    [Enum.UserInputType.Gamepad8] = true
-};
-local v40 = true;
-local v41 = require(script.Packages:WaitForChild("topbarplus")).new():setName("Inventory"):setImage("rbxasset://textures/ui/TopBar/inventoryOn.png", "Selected"):setImage("rbxasset://textures/ui/TopBar/inventoryOff.png", "Deselected"):setImageScale(1):setCaption("Inventory"):bindToggleKey(Enum.KeyCode.Backquote):autoDeselect(false):setOrder(-1);
-v41.toggled:Connect(function() --[[ Line: 170 ]]
-    -- upvalues: l_GuiService_0 (copy), v9 (copy)
-    if not l_GuiService_0.MenuIsOpen then
-        v9.OpenClose();
-    end;
-end);
-local l_ScreenGui_0 = Instance.new("ScreenGui");
-l_ScreenGui_0.DisplayOrder = 120;
-l_ScreenGui_0.IgnoreGuiInset = true;
-l_ScreenGui_0.ResetOnSpawn = false;
-l_ScreenGui_0.Name = "BackpackGui";
-l_ScreenGui_0.Parent = l_PlayerGui_0;
-local v43 = l_GuiService_0:IsTenFootInterface();
-if v43 then
-    v37 = 100;
-    v34 = 24;
-end;
-local v44 = false;
-local v45 = l_UserInputService_0.TouchEnabled and workspace.CurrentCamera.ViewportSize.X < 1024;
-local l_LocalPlayer_0 = l_Players_0.LocalPlayer;
-local v47 = nil;
-local v48 = nil;
-local v49 = nil;
-local v50 = nil;
-local v51 = nil;
-local v52 = nil;
-local v53 = nil;
-local v54 = nil;
-local v55 = nil;
-local v56 = nil;
-local v57 = l_LocalPlayer_0.Character or l_LocalPlayer_0.CharacterAdded:Wait();
-local l_Humanoid_0 = v57:WaitForChild("Humanoid");
-local l_Backpack_0 = l_LocalPlayer_0:WaitForChild("Backpack");
-local v60 = {};
-local v61 = nil;
-local v62 = {};
-local v63 = {};
-local v64 = {};
-local v65 = 0;
-local v66 = nil;
-local v67 = false;
-local v68 = false;
-local v69 = false;
-local v70 = false;
-local v71 = {};
-local v72 = false;
-local l_VREnabled_0 = l_VRService_0.VREnabled;
-local v74 = l_VREnabled_0 and 6 or v45 and 6 or 10;
-local v75 = l_VREnabled_0 and 3 or v45 and 2 or 4;
-local v76 = nil;
-local function _(v77) --[[ Line: 233 ]] --[[ Name: EvaluateBackpackPanelVisibility ]]
-    -- upvalues: v41 (copy), v40 (ref), l_VRService_0 (copy)
-    return v77 and v41.enabled and v40 and l_VRService_0.VREnabled;
-end;
-local function _() --[[ Line: 237 ]] --[[ Name: ShowVRBackpackPopup ]]
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:47
+-- Luau version 6, Types version 3
+-- Time taken: 0.076242 seconds
 
-end;
-local function _() --[[ Line: 243 ]] --[[ Name: FindLowestEmpty ]]
-    -- upvalues: v74 (copy), v60 (copy)
-    for v80 = 1, v74 do
-        local v81 = v60[v80];
-        if not v81.Tool then
-            return v81;
-        end;
-    end;
-    return nil;
-end;
-v9.IsInventoryEmpty = function() --[[ Line: 253 ]] --[[ Name: isInventoryEmpty ]]
-    -- upvalues: v74 (copy), v60 (copy)
-    for v83 = v74 + 1, #v60 do
-        local v84 = v60[v83];
-        if v84 and v84.Tool then
-            return false;
-        end;
-    end;
-    return true;
-end;
-local function _() --[[ Line: 265 ]] --[[ Name: UseGazeSelection ]]
-    return false;
-end;
-local function v91() --[[ Line: 269 ]] --[[ Name: AdjustHotbarFrames ]]
-    -- upvalues: v49 (ref), v74 (copy), v65 (ref), v60 (copy)
-    local l_Visible_0 = v49.Visible;
-    local v87 = l_Visible_0 and v74 or v65;
-    local v88 = 0;
-    for v89 = 1, v74 do
-        local v90 = v60[v89];
-        if v90.Tool or l_Visible_0 then
-            v88 = v88 + 1;
-            v90:Readjust(v88, v87);
-            v90.Frame.Visible = true;
-        else
-            v90.Frame.Visible = false;
-        end;
-    end;
-end;
-local function v94() --[[ Line: 286 ]] --[[ Name: UpdateScrollingFrameCanvasSize ]]
-    -- upvalues: v51 (ref), v37 (ref), v52 (ref)
-    local v92 = math.floor(v51.AbsoluteSize.X / (v37 + 5));
-    local v93 = math.ceil((#v52:GetChildren() - 1) / v92) * (v37 + 5) + 5;
-    v51.CanvasSize = UDim2.new(0, 0, 0, v93);
-end;
-local function v97() --[[ Line: 293 ]] --[[ Name: AdjustInventoryFrames ]]
-    -- upvalues: v74 (copy), v60 (copy), v94 (copy)
-    for v95 = v74 + 1, #v60 do
-        local v96 = v60[v95];
-        v96.Frame.LayoutOrder = v96.Index;
-        v96.Frame.Visible = v96.Tool ~= nil;
-    end;
-    v94();
-end;
-local function v98() --[[ Line: 302 ]] --[[ Name: UpdateBackpackLayout ]]
-    -- upvalues: v48 (ref), v74 (copy), v37 (ref), v49 (ref), v75 (copy), l_VREnabled_0 (copy), v51 (ref), v91 (copy), v97 (copy)
-    v48.Size = UDim2.new(0, v74 * (v37 + 5) + 5, 0, v37 + 5 + 5);
-    v48.Position = UDim2.new(0.5, -v48.Size.X.Offset / 2, 1, -v48.Size.Y.Offset);
-    v49.Size = UDim2.new(0, v48.Size.X.Offset, 0, v48.Size.Y.Offset * v75 + 40 + (l_VREnabled_0 and 80 or 0));
-    v49.Position = UDim2.new(0.5, -v49.Size.X.Offset / 2, 1, v48.Position.Y.Offset - v49.Size.Y.Offset);
-    v51.Size = UDim2.new(1, v51.ScrollBarThickness + 1, 1, -40 - (l_VREnabled_0 and 80 or 0));
-    v51.Position = UDim2.new(0, 0, 0, 40 + (l_VREnabled_0 and 40 or 0));
-    v91();
-    v97();
-end;
-local function _(v99, v100, v101) --[[ Line: 336 ]] --[[ Name: Clamp ]]
-    return (math.min(v100, (math.max(v99, v101))));
-end;
-local function _(v103, v104, v105) --[[ Line: 340 ]] --[[ Name: CheckBounds ]]
-    local l_AbsolutePosition_0 = v103.AbsolutePosition;
-    local l_AbsoluteSize_0 = v103.AbsoluteSize;
-    local v108 = false;
-    if l_AbsolutePosition_0.X < v104 then
-        v108 = false;
-        if v104 <= l_AbsolutePosition_0.X + l_AbsoluteSize_0.X then
-            v108 = false;
-            if l_AbsolutePosition_0.Y < v105 then
-                v108 = v105 <= l_AbsolutePosition_0.Y + l_AbsoluteSize_0.Y;
-            end;
-        end;
-    end;
-    return v108;
-end;
-local function _(v110, v111) --[[ Line: 346 ]] --[[ Name: GetOffset ]]
-    return (v110.AbsolutePosition + v110.AbsoluteSize / 2 - v111).Magnitude;
-end;
-local function _() --[[ Line: 351 ]] --[[ Name: DisableActiveHopper ]]
-    -- upvalues: v66 (ref), v62 (copy)
-    v66:ToggleSelect();
-    v62[v66]:UpdateEquipView();
-    v66 = nil;
-end;
-local function _() --[[ Line: 357 ]] --[[ Name: UnequipAllTools ]]
-    -- upvalues: l_Humanoid_0 (ref), v66 (ref), v62 (copy)
-    if l_Humanoid_0 then
-        l_Humanoid_0:UnequipTools();
-        if v66 then
-            v66:ToggleSelect();
-            v62[v66]:UpdateEquipView();
-            v66 = nil;
-        end;
-    end;
-end;
-local function _(v115) --[[ Line: 366 ]] --[[ Name: EquipNewTool ]]
-    -- upvalues: l_Humanoid_0 (ref), v66 (ref), v62 (copy)
-    if l_Humanoid_0 then
-        l_Humanoid_0:UnequipTools();
-        if v66 then
-            v66:ToggleSelect();
-            v62[v66]:UpdateEquipView();
-            v66 = nil;
-        end;
-    end;
-    l_Humanoid_0:EquipTool(v115);
-end;
-local function _(v117) --[[ Line: 372 ]] --[[ Name: IsEquipped ]]
-    -- upvalues: v57 (ref)
-    return v117 and v117.Parent == v57;
-end;
-local function v119(v120, v121) --[[ Line: 377 ]] --[[ Name: MakeSlot ]]
-    -- upvalues: v60 (copy), v20 (ref), v48 (ref), v37 (ref), v74 (copy), v49 (ref), l_UserInputService_0 (copy), v65 (ref), v68 (ref), v44 (ref), l_ContextActionService_0 (copy), v56 (ref), v62 (copy), v61 (ref), v57 (ref), v76 (ref), v21 (copy), v18 (copy), v12 (copy), v94 (copy), l_Humanoid_0 (ref), v66 (ref), l_Backpack_0 (ref), v17 (copy), v23 (copy), v22 (copy), l_l_script_0_Attribute_0 (copy), v26 (copy), v27 (copy), v28 (copy), v33 (copy), v34 (ref), v25 (copy), v24 (copy), v119 (copy), v52 (ref), v70 (ref), v63 (copy), l_Value_1 (copy), v64 (copy), v41 (copy), v51 (ref)
-    local v122 = v121 or #v60 + 1;
-    local v123 = {
-        Tool = nil, 
-        Index = v122, 
-        Frame = nil
-    };
-    local v124 = nil;
-    local v125 = nil;
-    local v126 = nil;
-    local v127 = nil;
-    local v128 = nil;
-    local v129 = nil;
-    local v130 = nil;
-    local v131 = nil;
-    local v132 = nil;
-    local function _() --[[ Line: 402 ]] --[[ Name: UpdateSlotFading ]]
-        -- upvalues: v124 (ref), v20 (ref)
-        v124.SelectionImageObject = nil;
-        v124.BackgroundTransparency = v124.Draggable and 0 or v20;
-    end;
-    v123.Readjust = function(_, v135, v136) --[[ Line: 408 ]] --[[ Name: Readjust ]]
-        -- upvalues: v48 (ref), v37 (ref), v124 (ref)
-        local v137 = v48.Size.X.Offset / 2;
-        local v138 = v37 + 5;
-        local v139 = v135 - (v136 / 2 + 0.5);
-        v124.Position = UDim2.new(0, v137 - v37 / 2 + v138 * v139, 0, 5);
-    end;
-    v123.Fill = function(v140, v141) --[[ Line: 418 ]] --[[ Name: Fill ]]
-        -- upvalues: v126 (ref), v127 (ref), v131 (ref), v128 (ref), v74 (ref), v49 (ref), l_UserInputService_0 (ref), v124 (ref), v65 (ref), v68 (ref), v44 (ref), l_ContextActionService_0 (ref), v56 (ref), v62 (ref), v61 (ref), v60 (ref)
-        local v142 = false;
-        if not v141 then
-            return v140:Clear();
-        else
-            v140.Tool = v141;
-            local function v144() --[[ Line: 427 ]] --[[ Name: assignToolData ]]
-                -- upvalues: v141 (copy), v126 (ref), v127 (ref), v131 (ref)
-                local l_TextureId_0 = v141.TextureId;
-                v126.Image = l_TextureId_0;
-                if l_TextureId_0 ~= "" then
-                    v127.Visible = false;
-                else
-                    v127.Visible = true;
-                end;
-                v127.Text = v141.Name;
-                if v131 and v141:IsA("Tool") then
-                    v131.Text = v141.ToolTip;
-                    v131.Size = UDim2.new(0, 0, 0, 16);
-                    v131.Position = UDim2.new(0.5, 0, 0, -5);
-                end;
-            end;
-            v144();
-            if v128 then
-                v128:Disconnect();
-                v128 = nil;
-            end;
-            v128 = v141.Changed:Connect(function(v145) --[[ Line: 456 ]]
-                -- upvalues: v144 (copy)
-                if v145 == "TextureId" or v145 == "Name" or v145 == "ToolTip" then
-                    v144();
-                end;
-            end);
-            local v146 = v140.Index <= v74;
-            local l_Visible_1 = v49.Visible;
-            if (not v146 or l_Visible_1) and not l_UserInputService_0.VREnabled then
-                v124.Draggable = true;
-            end;
-            v140:UpdateEquipView();
-            if v146 then
-                v65 = v65 + 1;
-                if v68 and v65 >= 1 and not v44 then
-                    v44 = true;
-                    l_ContextActionService_0:BindAction("BackpackHotbarEquip", v56, false, Enum.KeyCode.ButtonL1, Enum.KeyCode.ButtonR1);
-                end;
-            end;
-            v62[v141] = v140;
-            local v148;
-            for v149 = 1, v74 do
-                local v150 = v60[v149];
-                if not v150.Tool then
-                    v148 = v150;
-                    v142 = true;
-                end;
-                if v142 then
-                    break;
-                end;
-            end;
-            if not v142 then
-                v148 = nil;
-            end;
-            v142 = false;
-            v61 = v148;
-            return;
-        end;
-    end;
-    v123.Clear = function(v151) --[[ Line: 492 ]] --[[ Name: Clear ]]
-        -- upvalues: v128 (ref), v126 (ref), v127 (ref), v131 (ref), v124 (ref), v74 (ref), v65 (ref), v44 (ref), l_ContextActionService_0 (ref), v62 (ref), v61 (ref), v60 (ref)
-        local v152 = false;
-        if not v151.Tool then
-            return;
-        else
-            if v128 then
-                v128:Disconnect();
-                v128 = nil;
-            end;
-            v126.Image = "";
-            v127.Text = "";
-            if v131 then
-                v131.Text = "";
-                v131.Visible = false;
-            end;
-            v124.Draggable = false;
-            v151:UpdateEquipView(true);
-            if v151.Index <= v74 then
-                v65 = v65 - 1;
-                if v65 < 1 then
-                    v44 = false;
-                    l_ContextActionService_0:UnbindAction("BackpackHotbarEquip");
-                end;
-            end;
-            v62[v151.Tool] = nil;
-            v151.Tool = nil;
-            local v153;
-            for v154 = 1, v74 do
-                local v155 = v60[v154];
-                if not v155.Tool then
-                    v153 = v155;
-                    v152 = true;
-                end;
-                if v152 then
-                    break;
-                end;
-            end;
-            if not v152 then
-                v153 = nil;
-            end;
-            v152 = false;
-            v61 = v153;
-            return;
-        end;
-    end;
-    v123.UpdateEquipView = function(v156, v157) --[[ Line: 527 ]] --[[ Name: UpdateEquipView ]]
-        -- upvalues: v57 (ref), v76 (ref), v123 (copy), v129 (ref), v21 (ref), v18 (ref), v12 (ref), v126 (ref), v124 (ref), v20 (ref)
-        local v158 = false;
-        if not (v157 or false) then
-            local l_Tool_0 = v156.Tool;
-            if l_Tool_0 and l_Tool_0.Parent == v57 then
-                v76 = v123;
-                if not v129 then
-                    v129 = Instance.new("UIStroke");
-                    v129.Name = "Border";
-                    v129.Thickness = v21;
-                    v129.Color = v18;
-                    v129.ApplyStrokeMode = Enum.ApplyStrokeMode.Border;
-                end;
-                if v12 == true then
-                    v129.Parent = v126;
-                    v158 = true;
-                else
-                    v129.Parent = v124;
-                    v158 = true;
-                end;
-            end;
-        end;
-        if not v158 then
-            if not v158 then
-                if v129 then
-                    v129.Parent = nil;
-                end;
-            end;
-        end;
-        v158 = false;
-        v124.SelectionImageObject = nil;
-        v124.BackgroundTransparency = v124.Draggable and 0 or v20;
-    end;
-    v123.IsEquipped = function(v160) --[[ Line: 551 ]] --[[ Name: IsEquipped ]]
-        -- upvalues: v57 (ref)
-        local l_Tool_1 = v160.Tool;
-        return l_Tool_1 and l_Tool_1.Parent == v57;
-    end;
-    v123.Delete = function(v162) --[[ Line: 555 ]] --[[ Name: Delete ]]
-        -- upvalues: v124 (ref), v60 (ref), v94 (ref)
-        v124:Destroy();
-        table.remove(v60, v162.Index);
-        local v163 = #v60;
-        for v164 = v162.Index, v163 do
-            v60[v164]:SlideBack();
-        end;
-        v94();
-    end;
-    v123.Swap = function(v165, v166) --[[ Line: 568 ]] --[[ Name: Swap ]]
-        local l_Tool_2 = v165.Tool;
-        local l_Tool_3 = v166.Tool;
-        v165:Clear();
-        if l_Tool_3 then
-            v166:Clear();
-            v165:Fill(l_Tool_3);
-        end;
-        if l_Tool_2 then
-            v166:Fill(l_Tool_2);
-            return;
-        else
-            v166:Clear();
-            return;
-        end;
-    end;
-    v123.SlideBack = function(v169) --[[ Line: 582 ]] --[[ Name: SlideBack ]]
-        -- upvalues: v124 (ref)
-        v169.Index = v169.Index - 1;
-        v124.Name = v169.Index;
-        v124.LayoutOrder = v169.Index;
-    end;
-    v123.TurnNumber = function(_, v171) --[[ Line: 588 ]] --[[ Name: TurnNumber ]]
-        -- upvalues: v132 (ref)
-        if v132 then
-            v132.Visible = v171;
-        end;
-    end;
-    v123.SetClickability = function(v172, v173) --[[ Line: 594 ]] --[[ Name: SetClickability ]]
-        -- upvalues: l_UserInputService_0 (ref), v124 (ref), v20 (ref)
-        if v172.Tool then
-            if l_UserInputService_0.VREnabled then
-                v124.Draggable = false;
-            else
-                v124.Draggable = not v173;
-            end;
-            v124.SelectionImageObject = nil;
-            v124.BackgroundTransparency = v124.Draggable and 0 or v20;
-        end;
-    end;
-    v123.CheckTerms = function(v174, v175) --[[ Line: 605 ]] --[[ Name: CheckTerms ]]
-        -- upvalues: v127 (ref), v131 (ref)
-        local v176 = 0;
-        local _ = function(v177, v178) --[[ Line: 607 ]] --[[ Name: checkEm ]]
-            -- upvalues: v176 (ref)
-            local _, v180 = v177:lower():gsub(v178, "");
-            v176 = v176 + v180;
-        end;
-        local l_Tool_4 = v174.Tool;
-        if l_Tool_4 then
-            for v183 in pairs(v175) do
-                local v184, v185 = v127.Text:lower():gsub(v183, "");
-                v176 = v176 + v185;
-                if l_Tool_4:IsA("Tool") then
-                    v184, v185 = (v131 and v131.Text or ""):lower():gsub(v183, "");
-                    v176 = v176 + v185;
-                end;
-            end;
-        end;
-        return v176;
-    end;
-    v123.Select = function(_) --[[ Line: 625 ]] --[[ Name: Select ]]
-        -- upvalues: v123 (copy), v57 (ref), l_Humanoid_0 (ref), v66 (ref), v62 (ref), l_Backpack_0 (ref)
-        local l_Tool_5 = v123.Tool;
-        if l_Tool_5 then
-            if l_Tool_5 and l_Tool_5.Parent == v57 then
-                if l_Humanoid_0 then
-                    l_Humanoid_0:UnequipTools();
-                    if v66 then
-                        v66:ToggleSelect();
-                        v62[v66]:UpdateEquipView();
-                        v66 = nil;
-                        return;
-                    end;
-                end;
-            elseif l_Tool_5.Parent == l_Backpack_0 then
-                if l_Humanoid_0 then
-                    l_Humanoid_0:UnequipTools();
-                    if v66 then
-                        v66:ToggleSelect();
-                        v62[v66]:UpdateEquipView();
-                        v66 = nil;
-                    end;
-                end;
-                l_Humanoid_0:EquipTool(l_Tool_5);
-            end;
-        end;
-    end;
-    v124 = Instance.new("TextButton");
-    v124.Name = tostring(v122);
-    v124.BackgroundColor3 = v17;
-    v124.BorderColor3 = v23;
-    v124.Text = "";
-    v124.BorderSizePixel = 0;
-    v124.Size = UDim2.new(0, v37, 0, v37);
-    v124.Active = true;
-    v124.Draggable = false;
-    v124.BackgroundTransparency = v20;
-    v124.MouseButton1Click:Connect(function() --[[ Line: 648 ]]
-        -- upvalues: v123 (copy)
-        changeSlot(v123);
-    end);
-    local l_UICorner_0 = Instance.new("UICorner");
-    l_UICorner_0.Name = "Corner";
-    l_UICorner_0.CornerRadius = v22;
-    l_UICorner_0.Parent = v124;
-    v123.Frame = v124;
-    local l_Frame_0 = Instance.new("Frame");
-    l_Frame_0.Name = "SelectionObjectClipper";
-    l_Frame_0.BackgroundTransparency = 1;
-    l_Frame_0.Visible = false;
-    l_Frame_0.Parent = v124;
-    v130 = Instance.new("ImageLabel");
-    v130.Name = "Selector";
-    v130.BackgroundTransparency = 1;
-    v130.Size = UDim2.new(1, 0, 1, 0);
-    v130.Image = "rbxasset://textures/ui/Keyboard/key_selection_9slice.png";
-    v130.ScaleType = Enum.ScaleType.Slice;
-    v130.SliceCenter = Rect.new(12, 12, 52, 52);
-    v130.Parent = l_Frame_0;
-    v126 = Instance.new("ImageLabel");
-    v126.BackgroundTransparency = 1;
-    v126.Name = "Icon";
-    v126.Size = UDim2.new(1, 0, 1, 0);
-    v126.Position = UDim2.new(0.5, 0, 0.5, 0);
-    v126.AnchorPoint = Vector2.new(0.5, 0.5);
-    if l_l_script_0_Attribute_0 == true then
-        v126.Size = UDim2.new(1, -v21 * 2, 1, -v21 * 2);
-    else
-        v126.Size = UDim2.new(1, 0, 1, 0);
-    end;
-    v126.Parent = v124;
-    l_Frame_0 = Instance.new("UICorner");
-    l_Frame_0.Name = "Corner";
-    if l_l_script_0_Attribute_0 == true then
-        l_Frame_0.CornerRadius = v22 - UDim.new(0, v21);
-    else
-        l_Frame_0.CornerRadius = v22;
-    end;
-    l_Frame_0.Parent = v126;
-    v127 = Instance.new("TextLabel");
-    v127.BackgroundTransparency = 1;
-    v127.Name = "ToolName";
-    v127.Text = "";
-    v127.TextColor3 = v26;
-    v127.TextStrokeTransparency = v27;
-    v127.TextStrokeColor3 = v28;
-    v127.FontFace = Font.new(v33.Family, Enum.FontWeight.Medium, Enum.FontStyle.Normal);
-    v127.TextSize = v34;
-    v127.Size = UDim2.new(1, -v21 * 2, 1, -v21 * 2);
-    v127.Position = UDim2.new(0.5, 0, 0.5, 0);
-    v127.AnchorPoint = Vector2.new(0.5, 0.5);
-    v127.TextWrapped = true;
-    v127.TextTruncate = Enum.TextTruncate.None;
-    v127.Parent = v124;
-    v123.Frame.LayoutOrder = v123.Index;
-    if v122 <= v74 then
-        v131 = Instance.new("TextLabel");
-        v131.Name = "ToolTip";
-        v131.Text = "";
-        v131.Size = UDim2.new(1, 0, 1, 0);
-        v131.TextColor3 = v26;
-        v131.TextStrokeTransparency = v27;
-        v131.TextStrokeColor3 = v28;
-        v131.FontFace = Font.new(v33.Family, Enum.FontWeight.Medium, Enum.FontStyle.Normal);
-        v131.TextSize = v34;
-        v131.ZIndex = 2;
-        v131.TextWrapped = false;
-        v131.TextYAlignment = Enum.TextYAlignment.Center;
-        v131.BackgroundColor3 = v25;
-        v131.BackgroundTransparency = v20;
-        v131.AnchorPoint = Vector2.new(0.5, 1);
-        v131.BorderSizePixel = 0;
-        v131.Visible = false;
-        v131.AutomaticSize = Enum.AutomaticSize.X;
-        v131.Parent = v124;
-        local l_UICorner_1 = Instance.new("UICorner");
-        l_UICorner_1.Name = "Corner";
-        l_UICorner_1.CornerRadius = v24;
-        l_UICorner_1.Parent = v131;
-        local l_UIPadding_0 = Instance.new("UIPadding");
-        l_UIPadding_0.PaddingLeft = UDim.new(0, 4);
-        l_UIPadding_0.PaddingRight = UDim.new(0, 4);
-        l_UIPadding_0.PaddingTop = UDim.new(0, 4);
-        l_UIPadding_0.PaddingBottom = UDim.new(0, 4);
-        l_UIPadding_0.Parent = v131;
-        v124.MouseEnter:Connect(function() --[[ Line: 747 ]]
-            -- upvalues: v131 (ref)
-            if v131.Text ~= "" then
-                v131.Visible = true;
-            end;
-        end);
-        v124.MouseLeave:Connect(function() --[[ Line: 752 ]]
-            -- upvalues: v131 (ref)
-            v131.Visible = false;
-        end);
-        v123.MoveToInventory = function(v192) --[[ Line: 756 ]] --[[ Name: MoveToInventory ]]
-            -- upvalues: v123 (copy), v74 (ref), v119 (ref), v52 (ref), v57 (ref), l_Humanoid_0 (ref), v66 (ref), v62 (ref), v70 (ref), v49 (ref)
-            if v123.Index <= v74 then
-                local l_Tool_6 = v123.Tool;
-                v192:Clear();
-                local v194 = v119(v52);
-                v194:Fill(l_Tool_6);
-                if l_Tool_6 and l_Tool_6.Parent == v57 and l_Humanoid_0 then
-                    l_Humanoid_0:UnequipTools();
-                    if v66 then
-                        v66:ToggleSelect();
-                        v62[v66]:UpdateEquipView();
-                        v66 = nil;
-                    end;
-                end;
-                if v70 then
-                    v194.Frame.Visible = false;
-                    v194.Parent = v49;
-                end;
-            end;
-        end;
-        if v122 < 10 or v122 == v74 then
-            local v195 = v122 < 10 and v122 or 0;
-            v132 = Instance.new("TextLabel");
-            v132.BackgroundTransparency = 1;
-            v132.Name = "Number";
-            v132.TextColor3 = v26;
-            v132.TextStrokeTransparency = v27;
-            v132.TextStrokeColor3 = v28;
-            v132.TextSize = v34;
-            v132.Text = tostring(v195);
-            v132.FontFace = Font.new(v33.Family, Enum.FontWeight.Heavy, Enum.FontStyle.Normal);
-            v132.Size = UDim2.new(0.4, 0, 0.4, 0);
-            v132.Visible = false;
-            v132.Parent = v124;
-            v63[l_Value_1 + v195] = v123.Select;
-        end;
-    end;
-    local l_Position_0 = v124.Position;
-    local v197 = 0;
-    local v198 = nil;
-    do
-        local l_l_Position_0_0, l_v197_0, l_v198_0 = l_Position_0, v197, v198;
-        v124.DragBegin:Connect(function(v202) --[[ Line: 797 ]]
-            -- upvalues: v64 (ref), v124 (ref), l_l_Position_0_0 (ref), v41 (ref), v126 (ref), v127 (ref), v132 (ref), l_v198_0 (ref), v52 (ref), v49 (ref), v125 (ref)
-            v64[v124] = true;
-            l_l_Position_0_0 = v202;
-            v124.BorderSizePixel = 2;
-            v41:lock();
-            v124.ZIndex = 2;
-            v126.ZIndex = 2;
-            v127.ZIndex = 2;
-            v124.Parent.ZIndex = 2;
-            if v132 then
-                v132.ZIndex = 2;
-            end;
-            l_v198_0 = v124.Parent;
-            if l_v198_0 == v52 then
-                local v203 = UDim2.new(0, v124.AbsolutePosition.X - v49.AbsolutePosition.X, 0, v124.AbsolutePosition.Y - v49.AbsolutePosition.Y);
-                v124.Parent = v49;
-                v124.Position = v203;
-                v125 = Instance.new("Frame");
-                v125.Name = "FakeSlot";
-                v125.LayoutOrder = v124.LayoutOrder;
-                v125.Size = v124.Size;
-                v125.BackgroundTransparency = 1;
-                v125.Parent = v52;
-            end;
-        end);
-        v124.DragStopped:Connect(function(v204, v205) --[[ Line: 840 ]]
-            -- upvalues: v125 (ref), v124 (ref), l_l_Position_0_0 (ref), l_v198_0 (ref), v41 (ref), v126 (ref), v127 (ref), v132 (ref), v64 (ref), v123 (copy), v49 (ref), v74 (ref), l_v197_0 (ref), v61 (ref), v48 (ref), v60 (ref), v57 (ref), l_Humanoid_0 (ref), v66 (ref), v62 (ref), v70 (ref)
-            if v125 then
-                v125:Destroy();
-            end;
-            local v206 = os.clock();
-            v124.Position = l_l_Position_0_0;
-            v124.Parent = l_v198_0;
-            v124.BorderSizePixel = 0;
-            v41:unlock();
-            v124.ZIndex = 1;
-            v126.ZIndex = 1;
-            v127.ZIndex = 1;
-            l_v198_0.ZIndex = 1;
-            if v132 then
-                v132.ZIndex = 1;
-            end;
-            v64[v124] = nil;
-            if not v123.Tool then
-                return;
-            else
-                local l_v49_0 = v49;
-                local l_AbsolutePosition_1 = l_v49_0.AbsolutePosition;
-                local l_AbsoluteSize_1 = l_v49_0.AbsoluteSize;
-                local v210 = false;
-                if l_AbsolutePosition_1.X < v204 then
-                    v210 = false;
-                    if v204 <= l_AbsolutePosition_1.X + l_AbsoluteSize_1.X then
-                        v210 = false;
-                        if l_AbsolutePosition_1.Y < v205 then
-                            v210 = v205 <= l_AbsolutePosition_1.Y + l_AbsoluteSize_1.Y;
-                        end;
-                    end;
-                end;
-                if v210 then
-                    if v123.Index <= v74 then
-                        v123:MoveToInventory();
-                    end;
-                    if v123.Index > v74 and v206 - l_v197_0 < 0.5 then
-                        if v61 then
-                            v210 = v123.Tool;
-                            v123:Clear();
-                            v61:Fill(v210);
-                            v123:Delete();
-                        end;
-                        v206 = 0;
-                    end;
-                else
-                    l_v49_0 = v48;
-                    l_AbsolutePosition_1 = l_v49_0.AbsolutePosition;
-                    l_AbsoluteSize_1 = l_v49_0.AbsoluteSize;
-                    v210 = false;
-                    if l_AbsolutePosition_1.X < v204 then
-                        v210 = false;
-                        if v204 <= l_AbsolutePosition_1.X + l_AbsoluteSize_1.X then
-                            v210 = false;
-                            if l_AbsolutePosition_1.Y < v205 then
-                                v210 = v205 <= l_AbsolutePosition_1.Y + l_AbsoluteSize_1.Y;
-                            end;
-                        end;
-                    end;
-                    if v210 then
-                        v210 = {
-                            1e999, 
-                            nil
-                        };
-                        for v211 = 1, v74 do
-                            local v212 = v60[v211];
-                            local l_Frame_1 = v212.Frame;
-                            local v214 = Vector2.new(v204, v205);
-                            local l_Magnitude_0 = (l_Frame_1.AbsolutePosition + l_Frame_1.AbsoluteSize / 2 - v214).Magnitude;
-                            if l_Magnitude_0 < v210[1] then
-                                v210 = {
-                                    l_Magnitude_0, 
-                                    v212
-                                };
-                            end;
-                        end;
-                        l_v49_0 = v210[2];
-                        if l_v49_0 ~= v123 then
-                            v123:Swap(l_v49_0);
-                            if v123.Index > v74 then
-                                l_AbsolutePosition_1 = v123.Tool;
-                                if not l_AbsolutePosition_1 then
-                                    v123:Delete();
-                                else
-                                    if l_AbsolutePosition_1 and l_AbsolutePosition_1.Parent == v57 and l_Humanoid_0 then
-                                        l_Humanoid_0:UnequipTools();
-                                        if v66 then
-                                            v66:ToggleSelect();
-                                            v62[v66]:UpdateEquipView();
-                                            v66 = nil;
-                                        end;
-                                    end;
-                                    if v70 then
-                                        v123.Frame.Visible = false;
-                                        v123.Frame.Parent = v49;
-                                    end;
-                                end;
-                            end;
-                        end;
-                    elseif v123.Index <= v74 then
-                        v123:MoveToInventory();
-                    end;
-                end;
-                l_v197_0 = v206;
-                return;
-            end;
-        end);
-    end;
-    v124.Parent = v120;
-    v60[v122] = v123;
-    if v74 < v122 then
-        v94();
-        if v49.Visible and not v70 then
-            l_Position_0 = v51.CanvasSize.Y.Offset - v51.AbsoluteSize.Y;
-            v51.CanvasPosition = Vector2.new(0, (math.max(0, l_Position_0)));
-        end;
-    end;
-    return v123;
-end;
-local function v225(v216) --[[ Line: 950 ]] --[[ Name: OnChildAdded ]]
-    -- upvalues: v57 (ref), l_Humanoid_0 (ref), v66 (ref), v62 (copy), v67 (ref), l_LocalPlayer_0 (ref), v61 (ref), v119 (copy), v52 (ref), v60 (copy), l_Backpack_0 (ref), v91 (copy), v74 (copy), v49 (ref), v9 (copy)
-    if not v216:IsA("Tool") and not v216:IsA("HopperBin") then
-        if v216:IsA("Humanoid") and v216.Parent == v57 then
-            l_Humanoid_0 = v216;
-        end;
-        return;
-    else
-        if v216.Parent == v57 then
-
-        end;
-        if v66 and v216.Parent == v57 then
-            v66:ToggleSelect();
-            v62[v66]:UpdateEquipView();
-            v66 = nil;
-        end;
-        if not v67 and v216.Parent == v57 and not v62[v216] then
-            local l_StarterGear_0 = l_LocalPlayer_0:FindFirstChild("StarterGear");
-            if l_StarterGear_0 and l_StarterGear_0:FindFirstChild(v216.Name) then
-                v67 = true;
-                local v218 = v61 or v119(v52);
-                for v219 = v218.Index, 1, -1 do
-                    local v220 = v60[v219];
-                    local v221 = v219 - 1;
-                    if v221 > 0 then
-                        v60[v221]:Swap(v220);
-                    else
-                        v220:Fill(v216);
-                    end;
-                end;
-                for _, v223 in pairs(v57:GetChildren()) do
-                    if v223:IsA("Tool") and v223 ~= v216 then
-                        v223.Parent = l_Backpack_0;
-                    end;
-                end;
-                v91();
-                return;
-            end;
-        end;
-        local v224 = v62[v216];
-        if v224 then
-            v224:UpdateEquipView();
-        else
-            v224 = v61 or v119(v52);
-            v224:Fill(v216);
-            if v224.Index <= v74 and not v49.Visible then
-                v91();
-            end;
-            if v216:IsA("HopperBin") and v216.Active then
-                if l_Humanoid_0 then
-                    l_Humanoid_0:UnequipTools();
-                    if v66 then
-                        v66:ToggleSelect();
-                        v62[v66]:UpdateEquipView();
-                        v66 = nil;
-                    end;
-                end;
-                v66 = v216;
-            end;
-        end;
-        v9.BackpackItemAdded:Fire();
-        return;
-    end;
-end;
-local function v233(v226) --[[ Line: 1017 ]] --[[ Name: OnChildRemoved ]]
-    -- upvalues: v57 (ref), l_Backpack_0 (ref), v62 (copy), v74 (copy), v49 (ref), v91 (copy), v66 (ref), v9 (copy), v60 (copy)
-    local v227 = false;
-    if not v226:IsA("Tool") and not v226:IsA("HopperBin") then
-        return;
-    else
-        local l_Parent_0 = v226.Parent;
-        if l_Parent_0 == v57 or l_Parent_0 == l_Backpack_0 then
-            return;
-        else
-            local v229 = v62[v226];
-            if v229 then
-                v229:Clear();
-                if v229.Index > v74 then
-                    v229:Delete();
-                elseif not v49.Visible then
-                    v91();
-                end;
-            end;
-            if v226 == v66 then
-                v66 = nil;
-            end;
-            v9.BackpackItemRemoved:Fire();
-            local v230;
-            for v231 = v74 + 1, #v60 do
-                local v232 = v60[v231];
-                if v232 and v232.Tool then
-                    v230 = false;
-                    v227 = true;
-                end;
-                if v227 then
-                    break;
-                end;
-            end;
-            if not v227 then
-                v230 = true;
-            end;
-            v227 = false;
-            if v230 then
-                v9.BackpackEmpty:Fire();
-            end;
-            return;
-        end;
-    end;
-end;
-local function v243(v234) --[[ Line: 1051 ]] --[[ Name: OnCharacterAdded ]]
-    -- upvalues: v60 (copy), v74 (copy), v66 (ref), v71 (ref), v57 (ref), v233 (copy), v225 (copy), l_Backpack_0 (ref), l_LocalPlayer_0 (ref), v91 (copy)
-    for v235 = #v60, 1, -1 do
-        local v236 = v60[v235];
-        if v236.Tool then
-            v236:Clear();
-        end;
-        if v74 < v235 then
-            v236:Delete();
-        end;
-    end;
-    v66 = nil;
-    for _, v238 in pairs(v71) do
-        v238:Disconnect();
-    end;
-    v71 = {};
-    v57 = v234;
-    table.insert(v71, v234.ChildRemoved:Connect(v233));
-    table.insert(v71, v234.ChildAdded:Connect(v225));
-    for _, v240 in pairs(v234:GetChildren()) do
-        v225(v240);
-    end;
-    l_Backpack_0 = l_LocalPlayer_0:WaitForChild("Backpack");
-    table.insert(v71, l_Backpack_0.ChildRemoved:Connect(v233));
-    table.insert(v71, l_Backpack_0.ChildAdded:Connect(v225));
-    for _, v242 in pairs(l_Backpack_0:GetChildren()) do
-        v225(v242);
-    end;
-    v91();
-end;
-local function v249(v244, v245) --[[ Line: 1090 ]] --[[ Name: OnInputBegan ]]
-    -- upvalues: l_TextChatService_0 (copy), v69 (ref), v68 (ref), l_Value_0 (copy), v63 (copy), v49 (ref), v41 (copy)
-    local l_ChatInputBarConfiguration_0 = l_TextChatService_0:FindFirstChildOfClass("ChatInputBarConfiguration");
-    if v244.UserInputType == Enum.UserInputType.Keyboard and not v69 and not l_ChatInputBarConfiguration_0.IsFocused and (v68 or v244.KeyCode.Value == l_Value_0) then
-        local v247 = v63[v244.KeyCode.Value];
-        if v247 then
-            v247(v245);
-        end;
-    end;
-    local l_UserInputType_0 = v244.UserInputType;
-    if not v245 and (l_UserInputType_0 == Enum.UserInputType.MouseButton1 or l_UserInputType_0 == Enum.UserInputType.Touch) and v49.Visible then
-        v41:deselect();
-    end;
-end;
-local function v258() --[[ Line: 1116 ]] --[[ Name: OnUISChanged ]]
-    -- upvalues: l_UserInputService_0 (copy), v74 (copy), v60 (copy), v38 (copy), v39 (copy)
-    if l_UserInputService_0:GetLastInputType() == Enum.UserInputType.Touch then
-        for v250 = 1, v74 do
-            v60[v250]:TurnNumber(false);
-        end;
-        return;
-    elseif l_UserInputService_0:GetLastInputType() == Enum.UserInputType.Keyboard then
-        for v251 = 1, v74 do
-            v60[v251]:TurnNumber(true);
-        end;
-        return;
-    else
-        for _, v253 in pairs(v38) do
-            if l_UserInputService_0:GetLastInputType() == v253 then
-                for v254 = 1, v74 do
-                    v60[v254]:TurnNumber(true);
-                end;
-                return;
-            end;
-        end;
-        for _, v256 in pairs(v39) do
-            if l_UserInputService_0:GetLastInputType() == v256 then
-                for v257 = 1, v74 do
-                    v60[v257]:TurnNumber(false);
-                end;
-                return;
-            end;
-        end;
-        return;
-    end;
-end;
-local v259 = nil;
-local v260 = nil;
-local function v261() --[[ Line: 1157 ]]
-
-end;
-unbindAllGamepadEquipActions = function() --[[ Line: 1160 ]] --[[ Name: unbindAllGamepadEquipActions ]]
-    -- upvalues: l_ContextActionService_0 (copy)
-    l_ContextActionService_0:UnbindAction("BackpackHasGamepadFocus");
-    l_ContextActionService_0:UnbindAction("BackpackCloseInventory");
-end;
-v56 = function(_, v263, v264) --[[ Line: 1236 ]]
-    -- upvalues: v259 (ref), v260 (ref), l_Humanoid_0 (ref), v66 (ref), v62 (copy), v74 (copy), v60 (copy), v76 (ref)
-    if v263 ~= Enum.UserInputState.Begin then
-        return;
-    elseif v259 and (v259.KeyCode == Enum.KeyCode.ButtonR1 and v264.KeyCode == Enum.KeyCode.ButtonL1 or v259.KeyCode == Enum.KeyCode.ButtonL1 and v264.KeyCode == Enum.KeyCode.ButtonR1) and os.clock() - v260 <= 0.06 then
-        if l_Humanoid_0 then
-            l_Humanoid_0:UnequipTools();
-            if v66 then
-                v66:ToggleSelect();
-                v62[v66]:UpdateEquipView();
-                v66 = nil;
-            end;
-        end;
-        v259 = v264;
-        v260 = os.clock();
-        return;
-    else
-        v259 = v264;
-        v260 = os.clock();
-        task.delay(0.06, function() --[[ Line: 1264 ]]
-            -- upvalues: v259 (ref), v264 (copy), v74 (ref), v60 (ref), l_Humanoid_0 (ref), v66 (ref), v62 (ref), v76 (ref)
-            if v259 ~= v264 then
-                return;
-            else
-                local v265 = 0;
-                v265 = v264.KeyCode == Enum.KeyCode.ButtonL1 and -1 or 1;
-                for v266 = 1, v74 do
-                    if v60[v266]:IsEquipped() then
-                        local v267 = v265 + v266;
-                        local v268 = false;
-                        if v74 < v267 then
-                            v267 = 1;
-                            v268 = true;
-                        elseif v267 < 1 then
-                            v267 = v74;
-                            v268 = true;
-                        end;
-                        local l_v267_0 = v267;
-                        while true do
-                            if not v60[v267].Tool then
-                                v267 = v267 + v265;
-                                if v267 == l_v267_0 then
-                                    return;
-                                elseif v74 < v267 then
-                                    v267 = 1;
-                                    v268 = true;
-                                elseif v267 < 1 then
-                                    v267 = v74;
-                                    v268 = true;
-                                end;
-                            elseif v268 then
-                                if l_Humanoid_0 then
-                                    l_Humanoid_0:UnequipTools();
-                                    if v66 then
-                                        v66:ToggleSelect();
-                                        v62[v66]:UpdateEquipView();
-                                        v66 = nil;
-                                    end;
-                                end;
-                                v76 = nil;
-                                return;
-                            else
-                                v60[v267]:Select();
-                                return;
-                            end;
-                        end;
-                    end;
-                end;
-                if v76 and v76.Tool then
-                    v76:Select();
-                    return;
-                else
-                    local v270 = v265 == -1 and v74 or 1;
-                    local v271 = v265 == -1 and 1 or v74;
-                    for v272 = v270, v271, v265 do
-                        if v60[v272].Tool then
-                            v60[v272]:Select();
-                            return;
-                        end;
-                    end;
-                    return;
-                end;
-            end;
-        end);
-        return;
-    end;
-end;
-getGamepadSwapSlot = function() --[[ Line: 1331 ]] --[[ Name: getGamepadSwapSlot ]]
-    -- upvalues: v60 (copy)
-    for v273 = 1, #v60 do
-        if v60[v273].Frame.BorderSizePixel > 0 then
-            return v60[v273];
-        end;
-    end;
-end;
-changeSlot = function(v274) --[[ Line: 1341 ]] --[[ Name: changeSlot ]]
-    -- upvalues: l_VRService_0 (copy), v49 (ref), l_GuiService_0 (copy), v50 (ref), v74 (copy)
-    local v275 = not l_VRService_0.VREnabled or v49.Visible;
-    if v274.Frame == l_GuiService_0.SelectedObject and v275 then
-        local v276 = getGamepadSwapSlot();
-        if v276 then
-            v276.Frame.BorderSizePixel = 0;
-            if v276 ~= v274 then
-                v274:Swap(v276);
-                v50.SelectionImageObject.Visible = false;
-                if v274.Index > v74 and not v274.Tool then
-                    if l_GuiService_0.SelectedObject == v274.Frame then
-                        l_GuiService_0.SelectedObject = v276.Frame;
-                    end;
-                    v274:Delete();
-                end;
-                if v276.Index > v74 and not v276.Tool then
-                    if l_GuiService_0.SelectedObject == v276.Frame then
-                        l_GuiService_0.SelectedObject = v274.Frame;
-                    end;
-                    v276:Delete();
-                    return;
-                end;
-            end;
-        else
-            local l_Size_0 = v274.Frame.Size;
-            local l_Position_1 = v274.Frame.Position;
-            v274.Frame:TweenSizeAndPosition(l_Size_0 + UDim2.new(0, 10, 0, 10), l_Position_1 - UDim2.new(0, 5, 0, 5), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.1, true, function() --[[ Line: 1377 ]]
-                -- upvalues: v274 (copy), l_Size_0 (copy), l_Position_1 (copy)
-                v274.Frame:TweenSizeAndPosition(l_Size_0, l_Position_1, Enum.EasingDirection.In, Enum.EasingStyle.Quad, 0.1, true);
-            end);
-            v274.Frame.BorderSizePixel = 3;
-            v50.SelectionImageObject.Visible = true;
-            return;
-        end;
-    else
-        v274:Select();
-        v50.SelectionImageObject.Visible = false;
-    end;
-end;
-vrMoveSlotToInventory = function() --[[ Line: 1397 ]] --[[ Name: vrMoveSlotToInventory ]]
-    -- upvalues: l_VRService_0 (copy), v50 (ref)
-    if not l_VRService_0.VREnabled then
-        return;
-    else
-        local v279 = getGamepadSwapSlot();
-        if v279 and v279.Tool then
-            v279.Frame.BorderSizePixel = 0;
-            v279:MoveToInventory();
-            v50.SelectionImageObject.Visible = false;
-        end;
-        return;
-    end;
-end;
-enableGamepadInventoryControl = function() --[[ Line: 1410 ]] --[[ Name: enableGamepadInventoryControl ]]
-    -- upvalues: v49 (ref), v41 (copy), l_ContextActionService_0 (copy), v261 (copy), l_GuiService_0 (copy), v48 (ref)
-    local function v281() --[[ Line: 1411 ]]
-        -- upvalues: v49 (ref), v41 (ref)
-        if getGamepadSwapSlot() then
-            local v280 = getGamepadSwapSlot();
-            if v280 then
-                v280.Frame.BorderSizePixel = 0;
-                return;
-            end;
-        elseif v49.Visible then
-            v41:deselect();
-        end;
-    end;
-    l_ContextActionService_0:BindAction("BackpackHasGamepadFocus", v261, false, Enum.UserInputType.Gamepad1);
-    l_ContextActionService_0:BindAction("BackpackCloseInventory", v281, false, Enum.KeyCode.ButtonB, Enum.KeyCode.ButtonStart);
-    if not false then
-        l_GuiService_0.SelectedObject = v48:FindFirstChild("1");
-    end;
-end;
-disableGamepadInventoryControl = function() --[[ Line: 1444 ]] --[[ Name: disableGamepadInventoryControl ]]
-    -- upvalues: v74 (copy), v60 (copy), l_GuiService_0 (copy), v47 (ref)
-    unbindAllGamepadEquipActions();
-    for v282 = 1, v74 do
-        local v283 = v60[v282];
-        if v283 and v283.Frame then
-            v283.Frame.BorderSizePixel = 0;
-        end;
-    end;
-    if l_GuiService_0.SelectedObject and l_GuiService_0.SelectedObject:IsDescendantOf(v47) then
-        l_GuiService_0.SelectedObject = nil;
-    end;
-end;
-local function _() --[[ Line: 1459 ]] --[[ Name: bindBackpackHotbarAction ]]
-    -- upvalues: v68 (ref), v44 (ref), l_ContextActionService_0 (copy), v56 (ref)
-    if v68 and not v44 then
-        v44 = true;
-        l_ContextActionService_0:BindAction("BackpackHotbarEquip", v56, false, Enum.KeyCode.ButtonL1, Enum.KeyCode.ButtonR1);
-    end;
-end;
-local function _() --[[ Line: 1472 ]] --[[ Name: unbindBackpackHotbarAction ]]
-    -- upvalues: v44 (ref), l_ContextActionService_0 (copy)
-    disableGamepadInventoryControl();
-    v44 = false;
-    l_ContextActionService_0:UnbindAction("BackpackHotbarEquip");
-end;
-gamepadDisconnected = function() --[[ Line: 1478 ]] --[[ Name: gamepadDisconnected ]]
-    -- upvalues: v72 (ref)
-    v72 = false;
-    disableGamepadInventoryControl();
-end;
-gamepadConnected = function() --[[ Line: 1483 ]] --[[ Name: gamepadConnected ]]
-    -- upvalues: v72 (ref), l_GuiService_0 (copy), v47 (ref), v65 (ref), v68 (ref), v44 (ref), l_ContextActionService_0 (copy), v56 (ref), v49 (ref)
-    v72 = true;
-    l_GuiService_0:AddSelectionParent("BackpackSelection", v47);
-    if v65 >= 1 and v68 and not v44 then
-        v44 = true;
-        l_ContextActionService_0:BindAction("BackpackHotbarEquip", v56, false, Enum.KeyCode.ButtonL1, Enum.KeyCode.ButtonR1);
-    end;
-    if v49.Visible then
-        enableGamepadInventoryControl();
-    end;
-end;
-local function _(v286) --[[ Line: 1496 ]] --[[ Name: OnIconChanged ]]
-    -- upvalues: l_StarterGui_0 (copy), v68 (ref), v47 (ref), v65 (ref), v44 (ref), l_ContextActionService_0 (copy), v56 (ref)
-    v286 = v286 and l_StarterGui_0:GetCore("TopbarEnabled");
-    v68 = v286;
-    v47.Visible = v286;
-    if v286 then
-        if v65 >= 1 and v68 and not v44 then
-            v44 = true;
-            l_ContextActionService_0:BindAction("BackpackHotbarEquip", v56, false, Enum.KeyCode.ButtonL1, Enum.KeyCode.ButtonR1);
-            return;
-        end;
-    else
-        disableGamepadInventoryControl();
-        v44 = false;
-        l_ContextActionService_0:UnbindAction("BackpackHotbarEquip");
-    end;
-end;
-local function v293(v288, v289) --[[ Line: 1520 ]] --[[ Name: MakeVRRoundButton ]]
-    local l_ImageButton_0 = Instance.new("ImageButton");
-    l_ImageButton_0.BackgroundTransparency = 1;
-    l_ImageButton_0.Name = v288;
-    l_ImageButton_0.Size = UDim2.new(0, 40, 0, 40);
-    l_ImageButton_0.Image = "rbxasset://textures/ui/Keyboard/close_button_background.png";
-    local l_ImageLabel_0 = Instance.new("ImageLabel");
-    l_ImageLabel_0.Name = "Icon";
-    l_ImageLabel_0.BackgroundTransparency = 1;
-    l_ImageLabel_0.Size = UDim2.new(0.5, 0, 0.5, 0);
-    l_ImageLabel_0.Position = UDim2.new(0.25, 0, 0.25, 0);
-    l_ImageLabel_0.Image = v289;
-    l_ImageLabel_0.Parent = l_ImageButton_0;
-    local l_ImageLabel_1 = Instance.new("ImageLabel");
-    l_ImageLabel_1.BackgroundTransparency = 1;
-    l_ImageLabel_1.Name = "Selection";
-    l_ImageLabel_1.Size = UDim2.new(0.9, 0, 0.9, 0);
-    l_ImageLabel_1.Position = UDim2.new(0.05, 0, 0.05, 0);
-    l_ImageLabel_1.Image = "rbxasset://textures/ui/Keyboard/close_button_selection.png";
-    l_ImageButton_0.SelectionImageObject = l_ImageLabel_1;
-    return l_ImageButton_0, l_ImageLabel_0, l_ImageLabel_1;
-end;
-v47 = Instance.new("Frame");
-v47.BackgroundTransparency = 1;
-v47.Name = "Backpack";
-v47.Size = UDim2.new(1, 0, 1, 0);
-v47.Visible = false;
-v47.Parent = l_ScreenGui_0;
-v48 = Instance.new("Frame");
-v48.BackgroundTransparency = 1;
-v48.Name = "Hotbar";
-v48.Size = UDim2.new(1, 0, 1, 0);
-v48.Parent = v47;
-for v294 = 1, v74 do
-    local v295 = v119(v48, v294);
-    v295.Frame.Visible = false;
-    if not v61 then
-        v61 = v295;
-    end;
-end;
-local l_ImageLabel_2 = Instance.new("ImageLabel");
-l_ImageLabel_2.BackgroundTransparency = 1;
-l_ImageLabel_2.Name = "LeftBumper";
-l_ImageLabel_2.Size = UDim2.new(0, 40, 0, 40);
-l_ImageLabel_2.Position = UDim2.new(0, -l_ImageLabel_2.Size.X.Offset, 0.5, -l_ImageLabel_2.Size.Y.Offset / 2);
-local l_ImageLabel_3 = Instance.new("ImageLabel");
-l_ImageLabel_3.BackgroundTransparency = 1;
-l_ImageLabel_3.Name = "RightBumper";
-l_ImageLabel_3.Size = UDim2.new(0, 40, 0, 40);
-l_ImageLabel_3.Position = UDim2.new(1, 0, 0.5, -l_ImageLabel_3.Size.Y.Offset / 2);
-v49 = Instance.new("Frame");
-v49.Name = "Inventory";
-v49.Size = UDim2.new(1, 0, 1, 0);
-v49.BackgroundTransparency = v15;
-v49.BackgroundColor3 = v17;
-v49.Active = true;
-v49.Visible = false;
-v49.Parent = v47;
-local l_UICorner_2 = Instance.new("UICorner");
-l_UICorner_2.Name = "Corner";
-l_UICorner_2.CornerRadius = v16;
-l_UICorner_2.Parent = v49;
-v50 = Instance.new("TextButton");
-v50.Name = "VRInventorySelector";
-v50.Position = UDim2.new(0, 0, 0, 0);
-v50.Size = UDim2.new(1, 0, 1, 0);
-v50.BackgroundTransparency = 1;
-v50.Text = "";
-v50.Parent = v49;
-local l_ImageLabel_4 = Instance.new("ImageLabel");
-l_ImageLabel_4.BackgroundTransparency = 1;
-l_ImageLabel_4.Name = "Selector";
-l_ImageLabel_4.Size = UDim2.new(1, 0, 1, 0);
-l_ImageLabel_4.Image = "rbxasset://textures/ui/Keyboard/key_selection_9slice.png";
-l_ImageLabel_4.ScaleType = Enum.ScaleType.Slice;
-l_ImageLabel_4.SliceCenter = Rect.new(12, 12, 52, 52);
-l_ImageLabel_4.Visible = false;
-v50.SelectionImageObject = l_ImageLabel_4;
-v50.MouseButton1Click:Connect(function() --[[ Line: 1617 ]]
-    vrMoveSlotToInventory();
-end);
-v51 = Instance.new("ScrollingFrame");
-v51.BackgroundTransparency = 1;
-v51.Name = "ScrollingFrame";
-v51.Size = UDim2.new(1, 0, 1, 0);
-v51.Selectable = false;
-v51.ScrollingDirection = Enum.ScrollingDirection.Y;
-v51.BorderSizePixel = 0;
-v51.ScrollBarThickness = 8;
-v51.ScrollBarImageColor3 = Color3.new(1, 1, 1);
-v51.VerticalScrollBarInset = Enum.ScrollBarInset.ScrollBar;
-v51.CanvasSize = UDim2.new(0, 0, 0, 0);
-v51.Parent = v49;
-v52 = Instance.new("Frame");
-v52.BackgroundTransparency = 1;
-v52.Name = "UIGridFrame";
-v52.Selectable = false;
-v52.Size = UDim2.new(1, -10, 1, 0);
-v52.Position = UDim2.new(0, 5, 0, 0);
-v52.Parent = v51;
-v53 = Instance.new("UIGridLayout");
-v53.SortOrder = Enum.SortOrder.LayoutOrder;
-v53.CellSize = UDim2.new(0, v37, 0, v37);
-v53.CellPadding = UDim2.new(0, 5, 0, 5);
-v53.Parent = v52;
-v54 = v293("ScrollUpButton", "rbxasset://textures/ui/Backpack/ScrollUpArrow.png");
-v54.Size = UDim2.new(0, 34, 0, 34);
-v54.Position = UDim2.new(0.5, -v54.Size.X.Offset / 2, 0, 43);
-v54.Icon.Position = v54.Icon.Position - UDim2.new(0, 0, 0, 2);
-v54.MouseButton1Click:Connect(function() --[[ Line: 1654 ]]
-    -- upvalues: v51 (ref), v37 (ref)
-    v51.CanvasPosition = Vector2.new(v51.CanvasPosition.X, (math.min(v51.CanvasSize.Y.Offset - v51.AbsoluteWindowSize.Y, (math.max(0, v51.CanvasPosition.Y - (v37 + 5))))));
-end);
-v55 = v293("ScrollDownButton", "rbxasset://textures/ui/Backpack/ScrollUpArrow.png");
-v55.Rotation = 180;
-v55.Icon.Position = v55.Icon.Position - UDim2.new(0, 0, 0, 2);
-v55.Size = UDim2.new(0, 34, 0, 34);
-v55.Position = UDim2.new(0.5, -v55.Size.X.Offset / 2, 1, -v55.Size.Y.Offset - 3);
-v55.MouseButton1Click:Connect(function() --[[ Line: 1671 ]]
-    -- upvalues: v51 (ref), v37 (ref)
-    v51.CanvasPosition = Vector2.new(v51.CanvasPosition.X, (math.min(v51.CanvasSize.Y.Offset - v51.AbsoluteWindowSize.Y, (math.max(0, v51.CanvasPosition.Y + (v37 + 5))))));
-end);
-v51.Changed:Connect(function(v300) --[[ Line: 1682 ]]
-    -- upvalues: v51 (ref), v54 (ref), v55 (ref)
-    if v300 == "AbsoluteWindowSize" or v300 == "CanvasPosition" or v300 == "CanvasSize" then
-        local v301 = v51.CanvasPosition.Y ~= 0;
-        local v302 = v51.CanvasPosition.Y < v51.CanvasSize.Y.Offset - v51.AbsoluteWindowSize.Y;
-        v54.Visible = v301;
-        v55.Visible = v302;
-    end;
-end);
-v98();
-local l_Frame_2 = Instance.new("Frame");
-l_Frame_2.Name = "GamepadHintsFrame";
-l_Frame_2.Size = UDim2.new(0, v48.Size.X.Offset, 0, v43 and 95 or 60);
-l_Frame_2.BackgroundTransparency = v15;
-l_Frame_2.BackgroundColor3 = v17;
-l_Frame_2.Visible = false;
-l_Frame_2.Parent = v47;
-local l_UIListLayout_0 = Instance.new("UIListLayout");
-l_UIListLayout_0.Name = "Layout";
-l_UIListLayout_0.Padding = UDim.new(0, 25);
-l_UIListLayout_0.FillDirection = Enum.FillDirection.Horizontal;
-l_UIListLayout_0.HorizontalAlignment = Enum.HorizontalAlignment.Center;
-l_UIListLayout_0.SortOrder = Enum.SortOrder.LayoutOrder;
-l_UIListLayout_0.Parent = l_Frame_2;
-local l_UICorner_3 = Instance.new("UICorner");
-l_UICorner_3.Name = "Corner";
-l_UICorner_3.CornerRadius = v16;
-l_UICorner_3.Parent = l_Frame_2;
-local function v313(v306, v307) --[[ Line: 1718 ]] --[[ Name: addGamepadHint ]]
-    -- upvalues: l_Frame_2 (copy), v43 (copy), v33 (copy)
-    local l_Frame_3 = Instance.new("Frame");
-    l_Frame_3.Name = "HintFrame";
-    l_Frame_3.AutomaticSize = Enum.AutomaticSize.XY;
-    l_Frame_3.BackgroundTransparency = 1;
-    l_Frame_3.Parent = l_Frame_2;
-    local l_UIListLayout_1 = Instance.new("UIListLayout");
-    l_UIListLayout_1.Name = "Layout";
-    l_UIListLayout_1.Padding = v43 and UDim.new(0, 20) or UDim.new(0, 12);
-    l_UIListLayout_1.FillDirection = Enum.FillDirection.Horizontal;
-    l_UIListLayout_1.SortOrder = Enum.SortOrder.LayoutOrder;
-    l_UIListLayout_1.VerticalAlignment = Enum.VerticalAlignment.Center;
-    l_UIListLayout_1.Parent = l_Frame_3;
-    local l_ImageLabel_5 = Instance.new("ImageLabel");
-    l_ImageLabel_5.Name = "HintImage";
-    l_ImageLabel_5.Size = v43 and UDim2.new(0, 60, 0, 60) or UDim2.new(0, 30, 0, 30);
-    l_ImageLabel_5.BackgroundTransparency = 1;
-    l_ImageLabel_5.Image = v306;
-    l_ImageLabel_5.Parent = l_Frame_3;
-    local l_TextLabel_0 = Instance.new("TextLabel");
-    l_TextLabel_0.Name = "HintText";
-    l_TextLabel_0.AutomaticSize = Enum.AutomaticSize.XY;
-    l_TextLabel_0.FontFace = Font.new(v33.Family, Enum.FontWeight.Medium, Enum.FontStyle.Normal);
-    l_TextLabel_0.TextSize = v43 and 32 or 19;
-    l_TextLabel_0.BackgroundTransparency = 1;
-    l_TextLabel_0.Text = v307;
-    l_TextLabel_0.TextColor3 = Color3.new(1, 1, 1);
-    l_TextLabel_0.TextXAlignment = Enum.TextXAlignment.Left;
-    l_TextLabel_0.TextYAlignment = Enum.TextYAlignment.Center;
-    l_TextLabel_0.TextWrapped = true;
-    l_TextLabel_0.Parent = l_Frame_3;
-    local l_UITextSizeConstraint_0 = Instance.new("UITextSizeConstraint");
-    l_UITextSizeConstraint_0.MaxTextSize = l_TextLabel_0.TextSize;
-    l_UITextSizeConstraint_0.Parent = l_TextLabel_0;
-end;
-v313(l_UserInputService_0:GetImageForKeyCode(Enum.KeyCode.ButtonX), "Remove From Hotbar");
-v313(l_UserInputService_0:GetImageForKeyCode(Enum.KeyCode.ButtonA), "Select/Swap");
-v313(l_UserInputService_0:GetImageForKeyCode(Enum.KeyCode.ButtonB), "Close Backpack");
-local function v322() --[[ Line: 1762 ]] --[[ Name: resizeGamepadHintsFrame ]]
-    -- upvalues: l_Frame_2 (copy), v48 (ref), v43 (copy), v49 (ref)
-    l_Frame_2.Size = UDim2.new(v48.Size.X.Scale, v48.Size.X.Offset, 0, v43 and 95 or 60);
-    l_Frame_2.Position = UDim2.new(v48.Position.X.Scale, v48.Position.X.Offset, v49.Position.Y.Scale, v49.Position.Y.Offset - l_Frame_2.Size.Y.Offset - 5);
-    local v314 = 0;
-    local l_l_Frame_2_Children_0 = l_Frame_2:GetChildren();
-    local v316 = {};
-    for _, v318 in pairs(l_l_Frame_2_Children_0) do
-        if v318:IsA("GuiObject") then
-            table.insert(v316, v318);
-        end;
-    end;
-    for v319 = 1, #v316 do
-        if v316[v319]:IsA("GuiObject") then
-            v316[v319].Size = UDim2.new(1, 0, 1, -5);
-            v316[v319].Position = UDim2.new(0, 0, 0, 0);
-            v314 = v314 + (v316[v319].HintText.Position.X.Offset + v316[v319].HintText.TextBounds.X);
-        end;
-    end;
-    local v320 = (l_Frame_2.AbsoluteSize.X - v314) / (#v316 - 1);
-    for v321 = 1, #v316 do
-        v316[v321].Position = v321 == 1 and UDim2.new(0, 0, 0, 0) or UDim2.new(0, v316[v321 - 1].Position.X.Offset + v316[v321 - 1].Size.X.Offset + v320, 0, 0);
-        v316[v321].Size = UDim2.new(0, v316[v321].HintText.Position.X.Offset + v316[v321].HintText.TextBounds.X, 1, -5);
-    end;
-end;
-local l_Frame_4 = Instance.new("Frame");
-l_Frame_4.Name = "Search";
-l_Frame_4.BackgroundColor3 = v29;
-l_Frame_4.BackgroundTransparency = v30;
-l_Frame_4.Size = UDim2.new(0, 190, 0, 30);
-l_Frame_4.Position = UDim2.new(1, -l_Frame_4.Size.X.Offset - 5, 0, 5);
-l_Frame_4.Parent = v49;
-local l_UICorner_4 = Instance.new("UICorner");
-l_UICorner_4.Name = "Corner";
-l_UICorner_4.CornerRadius = v32;
-l_UICorner_4.Parent = l_Frame_4;
-local l_UIStroke_0 = Instance.new("UIStroke");
-l_UIStroke_0.Name = "Border";
-l_UIStroke_0.Color = v31;
-l_UIStroke_0.Thickness = 1;
-l_UIStroke_0.Transparency = 0.8;
-l_UIStroke_0.Parent = l_Frame_4;
-local l_TextBox_0 = Instance.new("TextBox");
-l_TextBox_0.BackgroundTransparency = 1;
-l_TextBox_0.Name = "TextBox";
-l_TextBox_0.Text = "";
-l_TextBox_0.TextColor3 = v26;
-l_TextBox_0.TextStrokeTransparency = v27;
-l_TextBox_0.TextStrokeColor3 = v28;
-l_TextBox_0.FontFace = Font.new(v33.Family, Enum.FontWeight.Medium, Enum.FontStyle.Normal);
-l_TextBox_0.PlaceholderText = "Search";
-l_TextBox_0.TextColor3 = v26;
-l_TextBox_0.TextTransparency = v27;
-l_TextBox_0.TextStrokeColor3 = v28;
-l_TextBox_0.ClearTextOnFocus = false;
-l_TextBox_0.TextTruncate = Enum.TextTruncate.AtEnd;
-l_TextBox_0.TextSize = v34;
-l_TextBox_0.TextXAlignment = Enum.TextXAlignment.Left;
-l_TextBox_0.TextYAlignment = Enum.TextYAlignment.Center;
-l_TextBox_0.Size = UDim2.new(0, 154, 0, 14);
-l_TextBox_0.AnchorPoint = Vector2.new(0, 0.5);
-l_TextBox_0.Position = UDim2.new(0, 8, 0.5, 0);
-l_TextBox_0.ZIndex = 2;
-l_TextBox_0.Parent = l_Frame_4;
-local l_TextButton_0 = Instance.new("TextButton");
-l_TextButton_0.Name = "X";
-l_TextButton_0.Text = "";
-l_TextButton_0.Size = UDim2.new(0, 30, 0, 30);
-l_TextButton_0.Position = UDim2.new(1, -l_TextButton_0.Size.X.Offset, 0.5, -l_TextButton_0.Size.Y.Offset / 2);
-l_TextButton_0.ZIndex = 4;
-l_TextButton_0.Visible = false;
-l_TextButton_0.BackgroundTransparency = 1;
-l_TextButton_0.Parent = l_Frame_4;
-local l_ImageButton_1 = Instance.new("ImageButton");
-l_ImageButton_1.Name = "X";
-l_ImageButton_1.Image = "rbxasset://textures/ui/InspectMenu/x.png";
-l_ImageButton_1.BackgroundTransparency = 1;
-l_ImageButton_1.Size = UDim2.new(0, l_Frame_4.Size.Y.Offset - 20, 0, l_Frame_4.Size.Y.Offset - 20);
-l_ImageButton_1.AnchorPoint = Vector2.new(0.5, 0.5);
-l_ImageButton_1.Position = UDim2.new(0.5, 0, 0.5, 0);
-l_ImageButton_1.ZIndex = 1;
-l_ImageButton_1.BorderSizePixel = 0;
-l_ImageButton_1.Parent = l_TextButton_0;
-local function v340() --[[ Line: 1899 ]] --[[ Name: search ]]
-    -- upvalues: l_TextBox_0 (copy), v74 (copy), v60 (copy), v49 (ref), v70 (ref), v52 (ref), v51 (ref), v94 (copy), l_TextButton_0 (copy)
-    local v329 = {};
-    for v330 in l_TextBox_0.Text:gmatch("%S+") do
-        v329[v330:lower()] = true;
-    end;
-    local v331 = {};
-    for v332 = v74 + 1, #v60 do
-        local v333 = v60[v332];
-        table.insert(v331, {
-            v333, 
-            (v333:CheckTerms(v329))
-        });
-        v333.Frame.Visible = false;
-        v333.Frame.Parent = v49;
-    end;
-    table.sort(v331, function(v334, v335) --[[ Line: 1914 ]]
-        return v334[2] > v335[2];
-    end);
-    v70 = true;
-    local v336 = 0;
-    for _, v338 in ipairs(v331) do
-        local v339 = v338[1];
-        if v338[2] > 0 then
-            v339.Frame.Visible = true;
-            v339.Frame.Parent = v52;
-            v339.Frame.LayoutOrder = v74 + v336;
-            v336 = v336 + 1;
-        end;
-    end;
-    v51.CanvasPosition = Vector2.new(0, 0);
-    v94();
-    l_TextButton_0.ZIndex = 3;
-end;
-local function v343() --[[ Line: 1936 ]] --[[ Name: clearResults ]]
-    -- upvalues: l_TextButton_0 (copy), v70 (ref), v74 (copy), v60 (copy), v52 (ref), v94 (copy)
-    if l_TextButton_0.ZIndex > 0 then
-        v70 = false;
-        for v341 = v74 + 1, #v60 do
-            local v342 = v60[v341];
-            v342.Frame.LayoutOrder = v342.Index;
-            v342.Frame.Parent = v52;
-            v342.Frame.Visible = true;
-        end;
-        l_TextButton_0.ZIndex = 0;
-    end;
-    v94();
-end;
-local function v344() --[[ Line: 1950 ]] --[[ Name: reset ]]
-    -- upvalues: v343 (copy), l_TextBox_0 (copy)
-    v343();
-    l_TextBox_0.Text = "";
-end;
-local function v349(v345) --[[ Line: 1955 ]] --[[ Name: onChanged ]]
-    -- upvalues: l_TextBox_0 (copy), v27 (copy), v343 (copy), v340 (copy), l_TextButton_0 (copy)
-    if v345 == "Text" then
-        local l_Text_0 = l_TextBox_0.Text;
-        if l_Text_0 == "" then
-            l_TextBox_0.TextTransparency = v27;
-            v343();
-        elseif l_Text_0 ~= "" then
-            l_TextBox_0.TextTransparency = 0;
-            v340();
-        end;
-        local l_l_TextButton_0_0 = l_TextButton_0;
-        local v348 = false;
-        if l_Text_0 ~= "" then
-            v348 = l_Text_0 ~= "";
-        end;
-        l_l_TextButton_0_0.Visible = v348;
-    end;
-end;
-local function v351(v350) --[[ Line: 1969 ]] --[[ Name: focusLost ]]
-    -- upvalues: v340 (copy)
-    if v350 then
-        v340();
-    end;
-end;
-l_TextButton_0.MouseButton1Click:Connect(v344);
-l_TextBox_0.Changed:Connect(v349);
-l_TextBox_0.FocusLost:Connect(v351);
-v9.StateChanged.Event:Connect(function(v352) --[[ Line: 1980 ]]
-    -- upvalues: v343 (copy), l_TextBox_0 (copy)
-    if not v352 then
-        v343();
-        l_TextBox_0.Text = "";
-    end;
-end);
-v63[Enum.KeyCode.Escape.Value] = function(v353) --[[ Line: 1988 ]]
-    -- upvalues: v343 (copy), l_TextBox_0 (copy)
-    if v353 then
-        v343();
-        l_TextBox_0.Text = "";
-    end;
-end;
-l_UserInputService_0.LastInputTypeChanged:Connect(function(v354) --[[ Line: 1993 ]] --[[ Name: detectGamepad ]]
-    -- upvalues: l_UserInputService_0 (copy), l_Frame_4 (copy)
-    if v354 == Enum.UserInputType.Gamepad1 and not l_UserInputService_0.VREnabled then
-        l_Frame_4.Visible = false;
-        return;
-    else
-        l_Frame_4.Visible = true;
-        return;
-    end;
-end);
-l_GuiService_0.MenuOpened:Connect(function() --[[ Line: 2004 ]]
-    -- upvalues: l_ScreenGui_0 (copy), v41 (copy)
-    l_ScreenGui_0.Enabled = false;
-    v41:setEnabled(false);
-end);
-l_GuiService_0.MenuClosed:Connect(function() --[[ Line: 2010 ]]
-    -- upvalues: l_ScreenGui_0 (copy), v41 (copy)
-    l_ScreenGui_0.Enabled = true;
-    v41:setEnabled(true);
-end);
-l_UICorner_4 = function(_, v356, _) --[[ Line: 2017 ]]
-    -- upvalues: l_GuiService_0 (copy), v74 (copy), v60 (copy)
-    if v356 ~= Enum.UserInputState.Begin then
-        return;
-    elseif not l_GuiService_0.SelectedObject then
-        return;
-    else
-        for v358 = 1, v74 do
-            if v60[v358].Frame == l_GuiService_0.SelectedObject and v60[v358].Tool then
-                v60[v358]:MoveToInventory();
-                return;
-            end;
-        end;
-        return;
-    end;
-end;
-local l_l_UICorner_4_0 = l_UICorner_4 --[[ copy: 117 -> 127 ]];
-l_UIStroke_0 = function() --[[ Line: 2033 ]] --[[ Name: openClose ]]
-    -- upvalues: v64 (copy), v49 (ref), v91 (copy), v48 (ref), v74 (copy), v60 (copy), v72 (ref), v39 (copy), l_UserInputService_0 (copy), v322 (copy), l_Frame_2 (copy), l_ContextActionService_0 (copy), l_l_UICorner_4_0 (copy), v9 (copy)
-    if not next(v64) then
-        v49.Visible = not v49.Visible;
-        local l_Visible_2 = v49.Visible;
-        v91();
-        v48.Active = not v48.Active;
-        for v361 = 1, v74 do
-            v60[v361]:SetClickability(not l_Visible_2);
-        end;
-    end;
-    if v49.Visible then
-        if v72 then
-            if v39[l_UserInputService_0:GetLastInputType()] then
-                v322();
-                l_Frame_2.Visible = not l_UserInputService_0.VREnabled;
-            end;
-            enableGamepadInventoryControl();
-        end;
-    else
-        if v72 then
-            l_Frame_2.Visible = false;
-        end;
-        disableGamepadInventoryControl();
-    end;
-    if v49.Visible then
-        l_ContextActionService_0:BindAction("BackpackRemoveSlot", l_l_UICorner_4_0, false, Enum.KeyCode.ButtonX);
-    else
-        l_ContextActionService_0:UnbindAction("BackpackRemoveSlot");
-    end;
-    v9.IsOpen = v49.Visible;
-    v9.StateChanged:Fire(v49.Visible);
-end;
-l_StarterGui_0:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false);
-v9.OpenClose = l_UIStroke_0;
-while not l_LocalPlayer_0 do
-    task.wait();
-    l_LocalPlayer_0 = l_Players_0.LocalPlayer;
-end;
-l_LocalPlayer_0.CharacterAdded:Connect(v243);
-if l_LocalPlayer_0.Character then
-    v243(l_LocalPlayer_0.Character);
-end;
-l_UserInputService_0.InputBegan:Connect(v249);
-l_UserInputService_0.TextBoxFocused:Connect(function() --[[ Line: 2096 ]]
-    -- upvalues: v69 (ref)
-    v69 = true;
-end);
-l_UserInputService_0.TextBoxFocusReleased:Connect(function() --[[ Line: 2099 ]]
-    -- upvalues: v69 (ref)
-    v69 = false;
-end);
-v63[l_Value_0] = function() --[[ Line: 2104 ]]
-    -- upvalues: v66 (ref), l_Humanoid_0 (ref), v62 (copy)
-    if v66 and l_Humanoid_0 then
-        l_Humanoid_0:UnequipTools();
-        if v66 then
-            v66:ToggleSelect();
-            v62[v66]:UpdateEquipView();
-            v66 = nil;
-        end;
-    end;
-end;
-l_UserInputService_0.LastInputTypeChanged:Connect(v258);
-v258();
-if l_UserInputService_0:GetGamepadConnected(Enum.UserInputType.Gamepad1) then
-    gamepadConnected();
-end;
-l_UserInputService_0.GamepadConnected:Connect(function(v362) --[[ Line: 2118 ]]
-    if v362 == Enum.UserInputType.Gamepad1 then
-        gamepadConnected();
-    end;
-end);
-l_UserInputService_0.GamepadDisconnected:Connect(function(v363) --[[ Line: 2123 ]]
-    if v363 == Enum.UserInputType.Gamepad1 then
-        gamepadDisconnected();
-    end;
-end);
-v9.SetBackpackEnabled = function(_, v365) --[[ Line: 2131 ]] --[[ Name: SetBackpackEnabled ]]
-    -- upvalues: v40 (ref)
-    v40 = v365;
-end;
-v9.IsOpened = function(_) --[[ Line: 2136 ]] --[[ Name: IsOpened ]]
-    -- upvalues: v9 (copy)
-    return v9.IsOpen;
-end;
-v9.GetBackpackEnabled = function(_) --[[ Line: 2141 ]] --[[ Name: GetBackpackEnabled ]]
-    -- upvalues: v40 (ref)
-    return v40;
-end;
-v9.GetStateChangedEvent = function(_) --[[ Line: 2146 ]] --[[ Name: GetStateChangedEvent ]]
-    -- upvalues: v9 (copy)
-    return v9.StateChanged;
-end;
-l_RunService_0.Heartbeat:Connect(function() --[[ Line: 2151 ]]
-    -- upvalues: v40 (ref), l_StarterGui_0 (copy), v68 (ref), v47 (ref), v65 (ref), v44 (ref), l_ContextActionService_0 (copy), v56 (ref)
-    local v369 = v40 and l_StarterGui_0:GetCore("TopbarEnabled");
-    v68 = v369;
-    v47.Visible = v369;
-    if v369 then
-        if v65 >= 1 and v68 and not v44 then
-            v44 = true;
-            l_ContextActionService_0:BindAction("BackpackHotbarEquip", v56, false, Enum.KeyCode.ButtonL1, Enum.KeyCode.ButtonR1);
-            return;
-        end;
-    else
-        disableGamepadInventoryControl();
-        v44 = false;
-        l_ContextActionService_0:UnbindAction("BackpackHotbarEquip");
-    end;
-end);
-l_UICorner_4 = function() --[[ Line: 2156 ]] --[[ Name: OnPreferredTransparencyChanged ]]
-    -- upvalues: l_GuiService_0 (copy), v15 (ref), v14 (copy), v49 (ref), v20 (ref), v19 (copy), v60 (copy), v30 (ref), l_Frame_4 (copy)
-    local l_PreferredTransparency_0 = l_GuiService_0.PreferredTransparency;
-    v15 = v14 * l_PreferredTransparency_0;
-    v49.BackgroundTransparency = v15;
-    v20 = v19 * l_PreferredTransparency_0;
-    for _, v372 in ipairs(v60) do
-        v372.Frame.BackgroundTransparency = v20;
-    end;
-    v30 = l_PreferredTransparency_0 * 0.2;
-    l_Frame_4.BackgroundTransparency = v30;
-end;
-l_GuiService_0:GetPropertyChangedSignal("PreferredTransparency"):Connect(l_UICorner_4);
-return v9;
+-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+local ContextActionService_upvr = game:GetService("ContextActionService")
+local UserInputService_upvr = game:GetService("UserInputService")
+local StarterGui_upvr = game:GetService("StarterGui")
+local GuiService_upvr = game:GetService("GuiService")
+local VRService_upvr = game:GetService("VRService")
+local Players = game:GetService("Players")
+local module_upvr = {
+	OpenClose = nil;
+	IsOpen = false;
+	StateChanged = Instance.new("BindableEvent");
+	ModuleName = "Backpack";
+	KeepVRTopbarOpen = true;
+	VRIsExclusive = true;
+	VRClosesNonExclusive = true;
+	BackpackEmpty = Instance.new("BindableEvent");
+}
+module_upvr.BackpackEmpty.Name = "BackpackEmpty"
+module_upvr.BackpackItemAdded = Instance.new("BindableEvent")
+module_upvr.BackpackItemAdded.Name = "BackpackAdded"
+module_upvr.BackpackItemRemoved = Instance.new("BindableEvent")
+module_upvr.BackpackItemRemoved.Name = "BackpackRemoved"
+local script = script
+local var13 = GuiService_upvr.PreferredTransparency or 1
+local var14_upvr = script:GetAttribute("BackgroundTransparency") or 0.3
+local var15_upvw = var14_upvr * var13
+local var16_upvw
+if not script:GetAttribute("CornerRadius") then
+	local udim = UDim.new(0, 8)
+end
+local BackgroundColor3_upvr_2 = script:GetAttribute("BackgroundColor3")
+if not BackgroundColor3_upvr_2 then
+	BackgroundColor3_upvr_2 = Color3.new(0.09803921568627451, 0.10588235294117647, 0.11372549019607843)
+end
+local EquipBorderColor3_upvr = script:GetAttribute("EquipBorderColor3")
+if not EquipBorderColor3_upvr then
+	EquipBorderColor3_upvr = Color3.new(0, 0.6352941176470588, 1)
+end
+local var20_upvr = script:GetAttribute("BackgroundTransparency") or 0.3
+local var21_upvw = var20_upvr * var13
+local CornerRadius_upvr = script:GetAttribute("CornerRadius")
+if not CornerRadius_upvr then
+	CornerRadius_upvr = UDim.new(0, 8)
+end
+local var23_upvr = CornerRadius_upvr - UDim.new(0, 5)
+if not var23_upvr then
+	var23_upvr = UDim.new(0, 3)
+end
+local BackgroundColor3_upvr = script:GetAttribute("BackgroundColor3")
+if not BackgroundColor3_upvr then
+	BackgroundColor3_upvr = Color3.new(0.09803921568627451, 0.10588235294117647, 0.11372549019607843)
+end
+local TextColor3_upvr = script:GetAttribute("TextColor3")
+if not TextColor3_upvr then
+	TextColor3_upvr = Color3.new(1, 1, 1)
+end
+local var26_upvr = script:GetAttribute("TextStrokeTransparency") or 0.5
+local TextStrokeColor3_upvr = script:GetAttribute("TextStrokeColor3")
+if not TextStrokeColor3_upvr then
+	TextStrokeColor3_upvr = Color3.new(0, 0, 0)
+end
+local var28_upvw = var13 * 0.2
+local var29 = CornerRadius_upvr - UDim.new(0, 5)
+if not var29 then
+	var29 = UDim.new(0, 3)
+end
+local FontFace_upvr = script:GetAttribute("FontFace")
+if not FontFace_upvr then
+	FontFace_upvr = Font.new("rbxasset://fonts/families/BuilderSans.json")
+end
+local var31_upvw = script:GetAttribute("TextSize") or 16
+local Value_upvr = Enum.KeyCode.Backspace.Value
+local var33_upvw = 60
+local tbl_4_upvr = {
+	[Enum.UserInputType.MouseButton1] = true;
+	[Enum.UserInputType.MouseButton2] = true;
+	[Enum.UserInputType.MouseButton3] = true;
+	[Enum.UserInputType.MouseMovement] = true;
+	[Enum.UserInputType.MouseWheel] = true;
+}
+local tbl_3_upvr = {
+	[Enum.UserInputType.Gamepad1] = true;
+	[Enum.UserInputType.Gamepad2] = true;
+	[Enum.UserInputType.Gamepad3] = true;
+	[Enum.UserInputType.Gamepad4] = true;
+	[Enum.UserInputType.Gamepad5] = true;
+	[Enum.UserInputType.Gamepad6] = true;
+	[Enum.UserInputType.Gamepad7] = true;
+	[Enum.UserInputType.Gamepad8] = true;
+}
+local var36_upvw = true
+local any_setOrder_result1_upvr = require(script.Packages:WaitForChild("topbarplus")).new():setName("Inventory"):setImage("rbxasset://textures/ui/TopBar/inventoryOn.png", "Selected"):setImage("rbxasset://textures/ui/TopBar/inventoryOff.png", "Deselected"):setImageScale(1):setCaption("Inventory"):bindToggleKey(Enum.KeyCode.Backquote):autoDeselect(false):setOrder(-1)
+any_setOrder_result1_upvr.toggled:Connect(function() -- Line 170
+	--[[ Upvalues[2]:
+		[1]: GuiService_upvr (readonly)
+		[2]: module_upvr (readonly)
+	]]
+	if not GuiService_upvr.MenuIsOpen then
+		module_upvr.OpenClose()
+	end
+end)
+local ScreenGui_upvr = Instance.new("ScreenGui")
+ScreenGui_upvr.DisplayOrder = 120
+ScreenGui_upvr.IgnoreGuiInset = true
+ScreenGui_upvr.ResetOnSpawn = false
+ScreenGui_upvr.Name = "BackpackGui"
+ScreenGui_upvr.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+local any_IsTenFootInterface_result1_upvr = GuiService_upvr:IsTenFootInterface()
+if any_IsTenFootInterface_result1_upvr then
+	var33_upvw = 100
+	var31_upvw = 24
+end
+local var41_upvw = false
+local TouchEnabled = UserInputService_upvr.TouchEnabled
+if TouchEnabled then
+	if workspace.CurrentCamera.ViewportSize.X >= 1024 then
+		TouchEnabled = false
+	else
+		TouchEnabled = true
+	end
+end
+local LocalPlayer_upvw = Players.LocalPlayer
+local var44_upvw
+local var45_upvw
+local var46_upvw
+local var47_upvw
+local var48_upvw
+local var49_upvw
+var16_upvw = LocalPlayer_upvw.Character
+if not var16_upvw then
+	var16_upvw = LocalPlayer_upvw.CharacterAdded:Wait()
+end
+local Humanoid_upvw = var16_upvw:WaitForChild("Humanoid")
+local Backpack_upvw = LocalPlayer_upvw:WaitForChild("Backpack")
+local tbl_5_upvr = {}
+local var53_upvw
+local tbl_2_upvr = {}
+local tbl_10_upvr = {}
+local tbl_9_upvr = {}
+local var57_upvw = 0
+local var58_upvw
+local var59_upvw = false
+local var60_upvw = false
+local var61_upvw = false
+local var62_upvw = false
+local VREnabled_upvr = VRService_upvr.VREnabled
+if VREnabled_upvr then
+	-- KONSTANTWARNING: GOTO [502] #372
+end
+if TouchEnabled then
+	local _ = 6
+else
+end
+if VREnabled_upvr then
+elseif TouchEnabled then
+else
+end
+local var65_upvw
+local function _(arg1) -- Line 233, Named "EvaluateBackpackPanelVisibility"
+	--[[ Upvalues[3]:
+		[1]: any_setOrder_result1_upvr (readonly)
+		[2]: var36_upvw (read and write)
+		[3]: VRService_upvr (readonly)
+	]]
+	local var68 = arg1
+	if var68 then
+		var68 = any_setOrder_result1_upvr.enabled
+		if var68 then
+			var68 = var36_upvw
+			if var68 then
+				var68 = VRService_upvr.VREnabled
+			end
+		end
+	end
+	return var68
+end
+local function _() -- Line 237, Named "ShowVRBackpackPopup"
+end
+local var69_upvr = 10
+local function _() -- Line 243, Named "FindLowestEmpty"
+	--[[ Upvalues[2]:
+		[1]: var69_upvr (readonly)
+		[2]: tbl_5_upvr (readonly)
+	]]
+	for i = 1, var69_upvr do
+		local var71 = tbl_5_upvr[i]
+		if not var71.Tool then
+			return var71
+		end
+	end
+	return nil
+end
+function module_upvr.IsInventoryEmpty() -- Line 253, Named "isInventoryEmpty"
+	--[[ Upvalues[2]:
+		[1]: var69_upvr (readonly)
+		[2]: tbl_5_upvr (readonly)
+	]]
+	for i_2 = var69_upvr + 1, #tbl_5_upvr do
+		local var73 = tbl_5_upvr[i_2]
+		if var73 and var73.Tool then
+			return false
+		end
+	end
+	return true
+end
+local function _() -- Line 265, Named "UseGazeSelection"
+	return false
+end
+local function AdjustHotbarFrames_upvr() -- Line 269, Named "AdjustHotbarFrames"
+	--[[ Upvalues[4]:
+		[1]: var46_upvw (read and write)
+		[2]: var69_upvr (readonly)
+		[3]: var57_upvw (read and write)
+		[4]: tbl_5_upvr (readonly)
+	]]
+	local Visible = var46_upvw.Visible
+	local var77
+	local function INLINED() -- Internal function, doesn't exist in bytecode
+		var77 = var69_upvr
+		return var77
+	end
+	if not Visible or not INLINED() then
+		var77 = var57_upvw
+	end
+	for i_3 = 1, var69_upvr do
+		local var78 = tbl_5_upvr[i_3]
+		if var78.Tool or Visible then
+			var78:Readjust(0 + 1, var77)
+			var78.Frame.Visible = true
+		else
+			var78.Frame.Visible = false
+		end
+	end
+end
+local function UpdateScrollingFrameCanvasSize_upvr() -- Line 286, Named "UpdateScrollingFrameCanvasSize"
+	--[[ Upvalues[3]:
+		[1]: var48_upvw (read and write)
+		[2]: var33_upvw (read and write)
+		[3]: var49_upvw (read and write)
+	]]
+	var48_upvw.CanvasSize = UDim2.new(0, 0, 0, math.ceil((#var49_upvw:GetChildren() - 1) / math.floor(var48_upvw.AbsoluteSize.X / (var33_upvw + 5))) * (var33_upvw + 5) + 5)
+end
+local function AdjustInventoryFrames_upvr() -- Line 293, Named "AdjustInventoryFrames"
+	--[[ Upvalues[3]:
+		[1]: var69_upvr (readonly)
+		[2]: tbl_5_upvr (readonly)
+		[3]: UpdateScrollingFrameCanvasSize_upvr (readonly)
+	]]
+	for i_4 = var69_upvr + 1, #tbl_5_upvr do
+		local var81 = tbl_5_upvr[i_4]
+		local Index = var81.Index
+		var81.Frame.LayoutOrder = Index
+		if var81.Tool == nil then
+			Index = false
+		else
+			Index = true
+		end
+		var81.Frame.Visible = Index
+	end
+	UpdateScrollingFrameCanvasSize_upvr()
+end
+local const_number_upvr = 4
+local function _(arg1, arg2, arg3) -- Line 336, Named "Clamp"
+	return math.min(arg2, math.max(arg1, arg3))
+end
+local function _(arg1, arg2, arg3) -- Line 340, Named "CheckBounds"
+	local AbsolutePosition = arg1.AbsolutePosition
+	local AbsoluteSize_4 = arg1.AbsoluteSize
+	local var90 = false
+	if AbsolutePosition.X < arg2 then
+		var90 = false
+		if arg2 <= AbsolutePosition.X + AbsoluteSize_4.X then
+			var90 = false
+			if AbsolutePosition.Y < arg3 then
+				if arg3 > AbsolutePosition.Y + AbsoluteSize_4.Y then
+					var90 = false
+				else
+					var90 = true
+				end
+			end
+		end
+	end
+	return var90
+end
+local function _(arg1, arg2) -- Line 346, Named "GetOffset"
+	return (arg1.AbsolutePosition + arg1.AbsoluteSize / 2 - arg2).Magnitude
+end
+local function _() -- Line 351, Named "DisableActiveHopper"
+	--[[ Upvalues[2]:
+		[1]: var58_upvw (read and write)
+		[2]: tbl_2_upvr (readonly)
+	]]
+	var58_upvw:ToggleSelect()
+	tbl_2_upvr[var58_upvw]:UpdateEquipView()
+	var58_upvw = nil
+end
+local function _() -- Line 357, Named "UnequipAllTools"
+	--[[ Upvalues[3]:
+		[1]: Humanoid_upvw (read and write)
+		[2]: var58_upvw (read and write)
+		[3]: tbl_2_upvr (readonly)
+	]]
+	if Humanoid_upvw then
+		Humanoid_upvw:UnequipTools()
+		if var58_upvw then
+			var58_upvw:ToggleSelect()
+			tbl_2_upvr[var58_upvw]:UpdateEquipView()
+			var58_upvw = nil
+		end
+	end
+end
+local function _(arg1) -- Line 366, Named "EquipNewTool"
+	--[[ Upvalues[3]:
+		[1]: Humanoid_upvw (read and write)
+		[2]: var58_upvw (read and write)
+		[3]: tbl_2_upvr (readonly)
+	]]
+	if Humanoid_upvw then
+		Humanoid_upvw:UnequipTools()
+		if var58_upvw then
+			var58_upvw:ToggleSelect()
+			tbl_2_upvr[var58_upvw]:UpdateEquipView()
+			var58_upvw = nil
+		end
+	end
+	Humanoid_upvw:EquipTool(arg1)
+end
+local function IsEquipped(arg1) -- Line 372
+	--[[ Upvalues[1]:
+		[1]: var16_upvw (read and write)
+	]]
+	local var91 = arg1
+	if var91 then
+		if arg1.Parent ~= var16_upvw then
+			var91 = false
+		else
+			var91 = true
+		end
+	end
+	return var91
+end
+local var335_upvw
+local var93_upvr = script:GetAttribute("EquipBorderSizePixel") or 5
+local var94_upvr = not script:GetAttribute("OutlineEquipBorder") or false
+local Color3_new_result1_upvr = Color3.new(1, 1, 1)
+local InsetIconPadding_upvr = script:GetAttribute("InsetIconPadding")
+local Value_upvr_2 = Enum.KeyCode.Zero.Value
+local function MakeSlot_upvr(arg1, arg2) -- Line 377, Named "MakeSlot"
+	--[[ Upvalues[42]:
+		[1]: tbl_5_upvr (readonly)
+		[2]: var21_upvw (read and write)
+		[3]: var45_upvw (read and write)
+		[4]: var33_upvw (read and write)
+		[5]: var69_upvr (readonly)
+		[6]: var46_upvw (read and write)
+		[7]: UserInputService_upvr (readonly)
+		[8]: var57_upvw (read and write)
+		[9]: var59_upvw (read and write)
+		[10]: var41_upvw (read and write)
+		[11]: ContextActionService_upvr (readonly)
+		[12]: var335_upvw (read and write)
+		[13]: tbl_2_upvr (readonly)
+		[14]: var53_upvw (read and write)
+		[15]: var16_upvw (read and write)
+		[16]: var65_upvw (read and write)
+		[17]: var93_upvr (readonly)
+		[18]: EquipBorderColor3_upvr (readonly)
+		[19]: var94_upvr (readonly)
+		[20]: UpdateScrollingFrameCanvasSize_upvr (readonly)
+		[21]: Humanoid_upvw (read and write)
+		[22]: var58_upvw (read and write)
+		[23]: Backpack_upvw (read and write)
+		[24]: BackgroundColor3_upvr_2 (readonly)
+		[25]: Color3_new_result1_upvr (readonly)
+		[26]: CornerRadius_upvr (readonly)
+		[27]: InsetIconPadding_upvr (readonly)
+		[28]: TextColor3_upvr (readonly)
+		[29]: var26_upvr (readonly)
+		[30]: TextStrokeColor3_upvr (readonly)
+		[31]: FontFace_upvr (readonly)
+		[32]: var31_upvw (read and write)
+		[33]: BackgroundColor3_upvr (readonly)
+		[34]: var23_upvr (readonly)
+		[35]: MakeSlot_upvr (readonly)
+		[36]: var49_upvw (read and write)
+		[37]: var61_upvw (read and write)
+		[38]: tbl_10_upvr (readonly)
+		[39]: Value_upvr_2 (readonly)
+		[40]: tbl_9_upvr (readonly)
+		[41]: any_setOrder_result1_upvr (readonly)
+		[42]: var48_upvw (read and write)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local var193 = arg2
+	if not var193 then
+		var193 = #tbl_5_upvr + 1
+	end
+	local module_upvr_3 = {
+		Tool = nil;
+		Index = var193;
+		Frame = nil;
+	}
+	local var195_upvw
+	local var196_upvw
+	local var197_upvw
+	local var198_upvw
+	local var199_upvw
+	local var200_upvw
+	local function _() -- Line 402, Named "UpdateSlotFading"
+		--[[ Upvalues[2]:
+			[1]: var195_upvw (read and write)
+			[2]: var21_upvw (copied, read and write)
+		]]
+		local var201
+		var195_upvw.SelectionImageObject = var201
+		if var195_upvw.Draggable then
+			var201 = 0
+		else
+			var201 = var21_upvw
+		end
+		var195_upvw.BackgroundTransparency = var201
+	end
+	function module_upvr_3.Readjust(arg1_20, arg2_11, arg3) -- Line 408
+		--[[ Upvalues[3]:
+			[1]: var45_upvw (copied, read and write)
+			[2]: var33_upvw (copied, read and write)
+			[3]: var195_upvw (read and write)
+		]]
+		var195_upvw.Position = UDim2.new(0, var45_upvw.Size.X.Offset / 2 - var33_upvw / 2 + (var33_upvw + 5) * ((arg2_11) - (arg3 / 2 + 0.5)), 0, 5)
+	end
+	function module_upvr_3.Fill(arg1_21, arg2_12) -- Line 418
+		--[[ Upvalues[16]:
+			[1]: var197_upvw (read and write)
+			[2]: var198_upvw (read and write)
+			[3]: var200_upvw (read and write)
+			[4]: var199_upvw (read and write)
+			[5]: var69_upvr (copied, readonly)
+			[6]: var46_upvw (copied, read and write)
+			[7]: UserInputService_upvr (copied, readonly)
+			[8]: var195_upvw (read and write)
+			[9]: var57_upvw (copied, read and write)
+			[10]: var59_upvw (copied, read and write)
+			[11]: var41_upvw (copied, read and write)
+			[12]: ContextActionService_upvr (copied, readonly)
+			[13]: var335_upvw (copied, read and write)
+			[14]: tbl_2_upvr (copied, readonly)
+			[15]: var53_upvw (copied, read and write)
+			[16]: tbl_5_upvr (copied, readonly)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 37 start (CF ANALYSIS FAILED)
+		if not arg2_12 then
+			return arg1_21:Clear()
+		end
+		arg1_21.Tool = arg2_12
+		local function assignToolData_upvr() -- Line 427, Named "assignToolData"
+			--[[ Upvalues[4]:
+				[1]: arg2_12 (readonly)
+				[2]: var197_upvw (copied, read and write)
+				[3]: var198_upvw (copied, read and write)
+				[4]: var200_upvw (copied, read and write)
+			]]
+			local TextureId = arg2_12.TextureId
+			var197_upvw.Image = TextureId
+			if TextureId ~= "" then
+				var198_upvw.Visible = false
+			else
+				var198_upvw.Visible = true
+			end
+			var198_upvw.Text = arg2_12.Name
+			if var200_upvw and arg2_12:IsA("Tool") then
+				var200_upvw.Text = arg2_12.ToolTip
+				var200_upvw.Size = UDim2.new(0, 0, 0, 16)
+				var200_upvw.Position = UDim2.new(0.5, 0, 0, -5)
+			end
+		end
+		assignToolData_upvr()
+		if var199_upvw then
+			var199_upvw:Disconnect()
+			var199_upvw = nil
+		end
+		local any_Connect_result1_3 = arg2_12.Changed:Connect(function(arg1_22) -- Line 456
+			--[[ Upvalues[1]:
+				[1]: assignToolData_upvr (readonly)
+			]]
+			-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+			-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+			-- KONSTANTERROR: [2] 2. Error Block 2 start (CF ANALYSIS FAILED)
+			-- KONSTANTERROR: [2] 2. Error Block 2 end (CF ANALYSIS FAILED)
+			-- KONSTANTERROR: [6] 4. Error Block 7 start (CF ANALYSIS FAILED)
+			assignToolData_upvr()
+			-- KONSTANTERROR: [6] 4. Error Block 7 end (CF ANALYSIS FAILED)
+		end)
+		var199_upvw = any_Connect_result1_3
+		if arg1_21.Index > var69_upvr then
+			any_Connect_result1_3 = false
+		else
+			any_Connect_result1_3 = true
+		end
+		if not any_Connect_result1_3 or var46_upvw.Visible then
+			if not UserInputService_upvr.VREnabled then
+				var195_upvw.Draggable = true
+			end
+		end
+		arg1_21:UpdateEquipView()
+		if any_Connect_result1_3 then
+			var57_upvw += 1
+			if var59_upvw and 1 <= var57_upvw and not var41_upvw then
+				var41_upvw = true
+				ContextActionService_upvr:BindAction("BackpackHotbarEquip", var335_upvw, false, Enum.KeyCode.ButtonL1, Enum.KeyCode.ButtonR1)
+			end
+		end
+		tbl_2_upvr[arg2_12] = arg1_21
+		local _ = 1
+		-- KONSTANTERROR: [0] 1. Error Block 37 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [91] 76. Error Block 22 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [91] 76. Error Block 22 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [84] 70. Error Block 33 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if not Enum.KeyCode.ButtonL1 then
+			-- KONSTANTWARNING: GOTO [93] #78
+		end
+		-- KONSTANTERROR: [84] 70. Error Block 33 end (CF ANALYSIS FAILED)
+	end
+	function module_upvr_3.Clear(arg1_23) -- Line 492
+		--[[ Upvalues[12]:
+			[1]: var199_upvw (read and write)
+			[2]: var197_upvw (read and write)
+			[3]: var198_upvw (read and write)
+			[4]: var200_upvw (read and write)
+			[5]: var195_upvw (read and write)
+			[6]: var69_upvr (copied, readonly)
+			[7]: var57_upvw (copied, read and write)
+			[8]: var41_upvw (copied, read and write)
+			[9]: ContextActionService_upvr (copied, readonly)
+			[10]: tbl_2_upvr (copied, readonly)
+			[11]: var53_upvw (copied, read and write)
+			[12]: tbl_5_upvr (copied, readonly)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 21 start (CF ANALYSIS FAILED)
+		if not arg1_23.Tool then return end
+		if var199_upvw then
+			var199_upvw:Disconnect()
+			var199_upvw = nil
+		end
+		var197_upvw.Image = ""
+		var198_upvw.Text = ""
+		if var200_upvw then
+			var200_upvw.Text = ""
+			var200_upvw.Visible = false
+		end
+		var195_upvw.Draggable = false
+		arg1_23:UpdateEquipView(true)
+		if arg1_23.Index <= var69_upvr then
+			var57_upvw -= 1
+			if var57_upvw < 1 then
+				var41_upvw = false
+				ContextActionService_upvr:UnbindAction("BackpackHotbarEquip")
+			end
+		end
+		tbl_2_upvr[arg1_23.Tool] = nil
+		arg1_23.Tool = nil
+		local _ = 1
+		-- KONSTANTERROR: [0] 1. Error Block 21 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [76] 62. Error Block 13 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [76] 62. Error Block 13 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [69] 56. Error Block 23 start (CF ANALYSIS FAILED)
+		-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [76.6]
+		if not nil then
+			-- KONSTANTWARNING: GOTO [78] #64
+		end
+		-- KONSTANTERROR: [69] 56. Error Block 23 end (CF ANALYSIS FAILED)
+	end
+	local var207_upvw
+	function module_upvr_3.UpdateEquipView(arg1_24, arg2_13) -- Line 527
+		--[[ Upvalues[10]:
+			[1]: var16_upvw (copied, read and write)
+			[2]: var65_upvw (copied, read and write)
+			[3]: module_upvr_3 (readonly)
+			[4]: var207_upvw (read and write)
+			[5]: var93_upvr (copied, readonly)
+			[6]: EquipBorderColor3_upvr (copied, readonly)
+			[7]: var94_upvr (copied, readonly)
+			[8]: var197_upvw (read and write)
+			[9]: var195_upvw (read and write)
+			[10]: var21_upvw (copied, read and write)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [2] 3. Error Block 33 start (CF ANALYSIS FAILED)
+		local Tool_13 = arg1_24.Tool
+		local var209 = Tool_13
+		if var209 then
+			if Tool_13.Parent ~= var16_upvw then
+				var209 = false
+			else
+				var209 = true
+			end
+		end
+		if var209 then
+			var65_upvw = module_upvr_3
+			if not var207_upvw then
+				var207_upvw = Instance.new("UIStroke")
+				var207_upvw.Name = "Border"
+				var207_upvw.Thickness = var93_upvr
+				var207_upvw.Color = EquipBorderColor3_upvr
+				var207_upvw.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+			end
+			if var94_upvr == true then
+				var207_upvw.Parent = var197_upvw
+			else
+				var207_upvw.Parent = var195_upvw
+			end
+		else
+			-- KONSTANTERROR: [53] 42. Error Block 30 start (CF ANALYSIS FAILED)
+			if var207_upvw then
+				var207_upvw.Parent = nil
+			end
+			-- KONSTANTERROR: [53] 42. Error Block 30 end (CF ANALYSIS FAILED)
+		end
+		local var210
+		var195_upvw.SelectionImageObject = var210
+		if var195_upvw.Draggable then
+			var210 = 0
+		else
+			var210 = var21_upvw
+		end
+		var195_upvw.BackgroundTransparency = var210
+		-- KONSTANTERROR: [2] 3. Error Block 33 end (CF ANALYSIS FAILED)
+	end
+	function module_upvr_3.IsEquipped(arg1_25) -- Line 551
+		--[[ Upvalues[1]:
+			[1]: var16_upvw (copied, read and write)
+		]]
+		local Tool = arg1_25.Tool
+		local var212 = Tool
+		if var212 then
+			if Tool.Parent ~= var16_upvw then
+				var212 = false
+			else
+				var212 = true
+			end
+		end
+		return var212
+	end
+	function module_upvr_3.Delete(arg1_26) -- Line 555
+		--[[ Upvalues[3]:
+			[1]: var195_upvw (read and write)
+			[2]: tbl_5_upvr (copied, readonly)
+			[3]: UpdateScrollingFrameCanvasSize_upvr (copied, readonly)
+		]]
+		var195_upvw:Destroy()
+		table.remove(tbl_5_upvr, arg1_26.Index)
+		for i_5 = arg1_26.Index, #tbl_5_upvr do
+			tbl_5_upvr[i_5]:SlideBack()
+		end
+		UpdateScrollingFrameCanvasSize_upvr()
+	end
+	function module_upvr_3.Swap(arg1_27, arg2_14) -- Line 568
+		local Tool_6 = arg1_27.Tool
+		local Tool_3 = arg2_14.Tool
+		arg1_27:Clear()
+		if Tool_3 then
+			arg2_14:Clear()
+			arg1_27:Fill(Tool_3)
+		end
+		if Tool_6 then
+			arg2_14:Fill(Tool_6)
+		else
+			arg2_14:Clear()
+		end
+	end
+	function module_upvr_3.SlideBack(arg1_28) -- Line 582
+		--[[ Upvalues[1]:
+			[1]: var195_upvw (read and write)
+		]]
+		arg1_28.Index -= 1
+		var195_upvw.Name = arg1_28.Index
+		var195_upvw.LayoutOrder = arg1_28.Index
+	end
+	local var216_upvw
+	function module_upvr_3.TurnNumber(arg1_29, arg2_15) -- Line 588
+		--[[ Upvalues[1]:
+			[1]: var216_upvw (read and write)
+		]]
+		if var216_upvw then
+			var216_upvw.Visible = arg2_15
+		end
+	end
+	function module_upvr_3.SetClickability(arg1_30, arg2_16) -- Line 594
+		--[[ Upvalues[3]:
+			[1]: UserInputService_upvr (copied, readonly)
+			[2]: var195_upvw (read and write)
+			[3]: var21_upvw (copied, read and write)
+		]]
+		if arg1_30.Tool then
+			if UserInputService_upvr.VREnabled then
+				var195_upvw.Draggable = false
+			else
+				var195_upvw.Draggable = not arg2_16
+			end
+			local var217
+			var195_upvw.SelectionImageObject = var217
+			if var195_upvw.Draggable then
+				var217 = 0
+			else
+				var217 = var21_upvw
+			end
+			var195_upvw.BackgroundTransparency = var217
+		end
+	end
+	function module_upvr_3.CheckTerms(arg1_31, arg2_17) -- Line 605
+		--[[ Upvalues[2]:
+			[1]: var198_upvw (read and write)
+			[2]: var200_upvw (read and write)
+		]]
+		local var220_upvw = 0
+		local function _(arg1_32, arg2_18) -- Line 607, Named "checkEm"
+			--[[ Upvalues[1]:
+				[1]: var220_upvw (read and write)
+			]]
+			local _, any_gsub_result2_4 = arg1_32:lower():gsub(arg2_18, "")
+			var220_upvw += any_gsub_result2_4
+		end
+		if arg1_31.Tool then
+			for i_6 in pairs(arg2_17) do
+				local _, any_gsub_result2_2 = var198_upvw.Text:lower():gsub(i_6, "")
+				var220_upvw += any_gsub_result2_2
+				local var229
+				if var229 then
+					local function INLINED_4() -- Internal function, doesn't exist in bytecode
+						var229 = var200_upvw.Text
+						return var229
+					end
+					if not var200_upvw or not INLINED_4() then
+						var229 = ""
+					end
+					local _, any_gsub_result2_3 = var229:lower():gsub(i_6, "")
+					var220_upvw += any_gsub_result2_3
+				end
+			end
+		end
+		return var220_upvw
+	end
+	function module_upvr_3.Select(arg1_33) -- Line 625
+		--[[ Upvalues[6]:
+			[1]: module_upvr_3 (readonly)
+			[2]: var16_upvw (copied, read and write)
+			[3]: Humanoid_upvw (copied, read and write)
+			[4]: var58_upvw (copied, read and write)
+			[5]: tbl_2_upvr (copied, readonly)
+			[6]: Backpack_upvw (copied, read and write)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+		local Tool_8 = module_upvr_3.Tool
+		-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [14] 12. Error Block 7 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [14] 12. Error Block 7 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [16] 14. Error Block 8 start (CF ANALYSIS FAILED)
+		Humanoid_upvw:UnequipTools()
+		-- KONSTANTERROR: [16] 14. Error Block 8 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [35] 30. Error Block 19 start (CF ANALYSIS FAILED)
+		if Tool_8.Parent == Backpack_upvw then
+			if Humanoid_upvw then
+				Humanoid_upvw:UnequipTools()
+				if var58_upvw then
+					var58_upvw:ToggleSelect()
+					tbl_2_upvr[var58_upvw]:UpdateEquipView()
+					var58_upvw = nil
+				end
+			end
+			Humanoid_upvw:EquipTool(Tool_8)
+		end
+		-- KONSTANTERROR: [35] 30. Error Block 19 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [65] 54. Error Block 15 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [65] 54. Error Block 15 end (CF ANALYSIS FAILED)
+	end
+	var195_upvw = Instance.new("TextButton")
+	local var233_upvw = var195_upvw
+	var233_upvw.Name = tostring(var193)
+	var233_upvw.BackgroundColor3 = BackgroundColor3_upvr_2
+	var233_upvw.BorderColor3 = Color3_new_result1_upvr
+	var233_upvw.Text = ""
+	var233_upvw.BorderSizePixel = 0
+	var233_upvw.Size = UDim2.new(0, var33_upvw, 0, var33_upvw)
+	var233_upvw.Active = true
+	var233_upvw.Draggable = false
+	var233_upvw.BackgroundTransparency = var21_upvw
+	var233_upvw.MouseButton1Click:Connect(function() -- Line 648
+		--[[ Upvalues[1]:
+			[1]: module_upvr_3 (readonly)
+		]]
+		changeSlot(module_upvr_3)
+	end)
+	local UICorner_5 = Instance.new("UICorner")
+	UICorner_5.Name = "Corner"
+	UICorner_5.CornerRadius = CornerRadius_upvr
+	UICorner_5.Parent = var233_upvw
+	module_upvr_3.Frame = var233_upvw
+	local Frame_5 = Instance.new("Frame")
+	Frame_5.Name = "SelectionObjectClipper"
+	Frame_5.BackgroundTransparency = 1
+	Frame_5.Visible = false
+	Frame_5.Parent = var233_upvw
+	local ImageLabel_3 = Instance.new("ImageLabel")
+	ImageLabel_3.Name = "Selector"
+	ImageLabel_3.BackgroundTransparency = 1
+	ImageLabel_3.Size = UDim2.new(1, 0, 1, 0)
+	ImageLabel_3.Image = "rbxasset://textures/ui/Keyboard/key_selection_9slice.png"
+	ImageLabel_3.ScaleType = Enum.ScaleType.Slice
+	ImageLabel_3.SliceCenter = Rect.new(12, 12, 52, 52)
+	ImageLabel_3.Parent = Frame_5
+	var197_upvw = Instance.new("ImageLabel")
+	local var238_upvw = var197_upvw
+	var238_upvw.BackgroundTransparency = 1
+	var238_upvw.Name = "Icon"
+	var238_upvw.Size = UDim2.new(1, 0, 1, 0)
+	var238_upvw.Position = UDim2.new(0.5, 0, 0.5, 0)
+	var238_upvw.AnchorPoint = Vector2.new(0.5, 0.5)
+	if InsetIconPadding_upvr == true then
+		var238_upvw.Size = UDim2.new(1, -var93_upvr * 2, 1, -var93_upvr * 2)
+	else
+		var238_upvw.Size = UDim2.new(1, 0, 1, 0)
+	end
+	var238_upvw.Parent = var233_upvw
+	local UICorner = Instance.new("UICorner")
+	UICorner.Name = "Corner"
+	if InsetIconPadding_upvr == true then
+		UICorner.CornerRadius = CornerRadius_upvr - UDim.new(0, var93_upvr)
+	else
+		UICorner.CornerRadius = CornerRadius_upvr
+	end
+	UICorner.Parent = var238_upvw
+	var198_upvw = Instance.new("TextLabel")
+	local var240_upvw = var198_upvw
+	var240_upvw.BackgroundTransparency = 1
+	var240_upvw.Name = "ToolName"
+	var240_upvw.Text = ""
+	var240_upvw.TextColor3 = TextColor3_upvr
+	var240_upvw.TextStrokeTransparency = var26_upvr
+	var240_upvw.TextStrokeColor3 = TextStrokeColor3_upvr
+	var240_upvw.FontFace = Font.new(FontFace_upvr.Family, Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+	var240_upvw.TextSize = var31_upvw
+	var240_upvw.Size = UDim2.new(1, -var93_upvr * 2, 1, -var93_upvr * 2)
+	var240_upvw.Position = UDim2.new(0.5, 0, 0.5, 0)
+	var240_upvw.AnchorPoint = Vector2.new(0.5, 0.5)
+	var240_upvw.TextWrapped = true
+	var240_upvw.TextTruncate = Enum.TextTruncate.None
+	var240_upvw.Parent = var233_upvw
+	module_upvr_3.Frame.LayoutOrder = module_upvr_3.Index
+	local var241
+	local function INLINED_5() -- Internal function, doesn't exist in bytecode
+		function module_upvr_3.MoveToInventory(arg1_34) -- Line 756
+			--[[ Upvalues[10]:
+				[1]: module_upvr_3 (readonly)
+				[2]: var69_upvr (copied, readonly)
+				[3]: MakeSlot_upvr (copied, readonly)
+				[4]: var49_upvw (copied, read and write)
+				[5]: var16_upvw (copied, read and write)
+				[6]: Humanoid_upvw (copied, read and write)
+				[7]: var58_upvw (copied, read and write)
+				[8]: tbl_2_upvr (copied, readonly)
+				[9]: var61_upvw (copied, read and write)
+				[10]: var46_upvw (copied, read and write)
+			]]
+			if module_upvr_3.Index <= var69_upvr then
+				local Tool_10 = module_upvr_3.Tool
+				arg1_34:Clear()
+				local MakeSlot_upvr_result1_5 = MakeSlot_upvr(var49_upvw)
+				MakeSlot_upvr_result1_5:Fill(Tool_10)
+				local var249 = Tool_10
+				if var249 then
+					if Tool_10.Parent ~= var16_upvw then
+						var249 = false
+					else
+						var249 = true
+					end
+				end
+				if var249 then
+					if Humanoid_upvw then
+						Humanoid_upvw:UnequipTools()
+						if var58_upvw then
+							var58_upvw:ToggleSelect()
+							tbl_2_upvr[var58_upvw]:UpdateEquipView()
+							var58_upvw = nil
+						end
+					end
+				end
+				if var61_upvw then
+					MakeSlot_upvr_result1_5.Frame.Visible = false
+					MakeSlot_upvr_result1_5.Parent = var46_upvw
+				end
+			end
+		end
+		var233_upvw.MouseLeave:Connect(function() -- Line 752
+			--[[ Upvalues[1]:
+				[1]: var242_upvw (read and write)
+			]]
+			var242_upvw.Visible = false
+		end)
+		var233_upvw.MouseEnter:Connect(function() -- Line 747
+			--[[ Upvalues[1]:
+				[1]: var242_upvw (read and write)
+			]]
+			if var242_upvw.Text ~= "" then
+				var242_upvw.Visible = true
+			end
+		end)
+		UIPadding.Parent = var242_upvw
+		UIPadding.PaddingBottom = UDim.new(0, 4)
+		UIPadding.PaddingTop = UDim.new(0, 4)
+		UIPadding.PaddingRight = UDim.new(0, 4)
+		UIPadding.PaddingLeft = UDim.new(0, 4)
+		local UIPadding = Instance.new("UIPadding")
+		UICorner_9.Parent = var242_upvw
+		UICorner_9.CornerRadius = var23_upvr
+		UICorner_9.Name = "Corner"
+		local UICorner_9 = Instance.new("UICorner")
+		var242_upvw.Parent = var233_upvw
+		var242_upvw.AutomaticSize = Enum.AutomaticSize.X
+		var242_upvw.Visible = false
+		var242_upvw.BorderSizePixel = 0
+		var242_upvw.AnchorPoint = Vector2.new(0.5, 1)
+		var242_upvw.BackgroundTransparency = var21_upvw
+		var242_upvw.BackgroundColor3 = BackgroundColor3_upvr
+		var242_upvw.TextYAlignment = Enum.TextYAlignment.Center
+		var242_upvw.TextWrapped = false
+		var242_upvw.ZIndex = 2
+		var242_upvw.TextSize = var31_upvw
+		var242_upvw.FontFace = Font.new(FontFace_upvr.Family, Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+		var242_upvw.TextStrokeColor3 = TextStrokeColor3_upvr
+		var242_upvw.TextStrokeTransparency = var26_upvr
+		var242_upvw.TextColor3 = TextColor3_upvr
+		var242_upvw.Size = UDim2.new(1, 0, 1, 0)
+		var242_upvw.Text = ""
+		var242_upvw.Name = "ToolTip"
+		local var242_upvw = var200_upvw
+		var200_upvw = Instance.new("TextLabel")
+		return var193 < 10
+	end
+	if var193 <= var69_upvr and (INLINED_5() or var193 == var69_upvr) then
+		if var193 >= 10 or not var193 then
+			local var250 = 0
+		end
+		var216_upvw = Instance.new("TextLabel")
+		local var251_upvw = var216_upvw
+		var251_upvw.BackgroundTransparency = 1
+		var251_upvw.Name = "Number"
+		var251_upvw.TextColor3 = TextColor3_upvr
+		var251_upvw.TextStrokeTransparency = var26_upvr
+		var251_upvw.TextStrokeColor3 = TextStrokeColor3_upvr
+		var251_upvw.TextSize = var31_upvw
+		var251_upvw.Text = tostring(var250)
+		var251_upvw.FontFace = Font.new(FontFace_upvr.Family, Enum.FontWeight.Heavy, Enum.FontStyle.Normal)
+		var251_upvw.Size = UDim2.new(0.4, 0, 0.4, 0)
+		var251_upvw.Visible = false
+		var251_upvw.Parent = var233_upvw
+		tbl_10_upvr[Value_upvr_2 + var250] = module_upvr_3.Select
+	end
+	local Position_upvw = var233_upvw.Position
+	local var253_upvw
+	var233_upvw.DragBegin:Connect(function(arg1_35) -- Line 797
+		--[[ Upvalues[11]:
+			[1]: tbl_9_upvr (copied, readonly)
+			[2]: var233_upvw (read and write)
+			[3]: Position_upvw (read and write)
+			[4]: any_setOrder_result1_upvr (copied, readonly)
+			[5]: var238_upvw (read and write)
+			[6]: var240_upvw (read and write)
+			[7]: var251_upvw (read and write)
+			[8]: var253_upvw (read and write)
+			[9]: var49_upvw (copied, read and write)
+			[10]: var46_upvw (copied, read and write)
+			[11]: var196_upvw (read and write)
+		]]
+		tbl_9_upvr[var233_upvw] = true
+		Position_upvw = arg1_35
+		var233_upvw.BorderSizePixel = 2
+		any_setOrder_result1_upvr:lock()
+		var233_upvw.ZIndex = 2
+		var238_upvw.ZIndex = 2
+		var240_upvw.ZIndex = 2
+		var233_upvw.Parent.ZIndex = 2
+		if var251_upvw then
+			var251_upvw.ZIndex = 2
+		end
+		var253_upvw = var233_upvw.Parent
+		if var253_upvw == var49_upvw then
+			var233_upvw.Parent = var46_upvw
+			var233_upvw.Position = UDim2.new(0, var233_upvw.AbsolutePosition.X - var46_upvw.AbsolutePosition.X, 0, var233_upvw.AbsolutePosition.Y - var46_upvw.AbsolutePosition.Y)
+			var196_upvw = Instance.new("Frame")
+			var196_upvw.Name = "FakeSlot"
+			var196_upvw.LayoutOrder = var233_upvw.LayoutOrder
+			var196_upvw.Size = var233_upvw.Size
+			var196_upvw.BackgroundTransparency = 1
+			var196_upvw.Parent = var49_upvw
+		end
+	end)
+	local const_number_upvw = 0
+	var233_upvw.DragStopped:Connect(function(arg1_36, arg2_19) -- Line 840
+		--[[ Upvalues[21]:
+			[1]: var196_upvw (read and write)
+			[2]: var233_upvw (read and write)
+			[3]: Position_upvw (read and write)
+			[4]: var253_upvw (read and write)
+			[5]: any_setOrder_result1_upvr (copied, readonly)
+			[6]: var238_upvw (read and write)
+			[7]: var240_upvw (read and write)
+			[8]: var251_upvw (read and write)
+			[9]: tbl_9_upvr (copied, readonly)
+			[10]: module_upvr_3 (readonly)
+			[11]: var46_upvw (copied, read and write)
+			[12]: var69_upvr (copied, readonly)
+			[13]: const_number_upvw (read and write)
+			[14]: var53_upvw (copied, read and write)
+			[15]: var45_upvw (copied, read and write)
+			[16]: tbl_5_upvr (copied, readonly)
+			[17]: var16_upvw (copied, read and write)
+			[18]: Humanoid_upvw (copied, read and write)
+			[19]: var58_upvw (copied, read and write)
+			[20]: tbl_2_upvr (copied, readonly)
+			[21]: var61_upvw (copied, read and write)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [2] 3. Error Block 2 start (CF ANALYSIS FAILED)
+		var196_upvw:Destroy()
+		-- KONSTANTERROR: [2] 3. Error Block 2 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [6] 6. Error Block 3 start (CF ANALYSIS FAILED)
+		var233_upvw.Position = Position_upvw
+		var233_upvw.Parent = var253_upvw
+		var233_upvw.BorderSizePixel = 0
+		any_setOrder_result1_upvr:unlock()
+		var233_upvw.ZIndex = 1
+		var238_upvw.ZIndex = 1
+		var240_upvw.ZIndex = 1
+		var253_upvw.ZIndex = 1
+		-- KONSTANTERROR: [6] 6. Error Block 3 end (CF ANALYSIS FAILED)
+	end)
+	var233_upvw.Parent = arg1
+	tbl_5_upvr[var193] = module_upvr_3
+	if var69_upvr < var193 then
+		UpdateScrollingFrameCanvasSize_upvr()
+		if var46_upvw.Visible and not var61_upvw then
+			var48_upvw.CanvasPosition = Vector2.new(0, math.max(0, var48_upvw.CanvasSize.Y.Offset - var48_upvw.AbsoluteSize.Y))
+		end
+	end
+	return module_upvr_3
+end
+local var257_upvw = false
+local function OnChildAdded_upvr(arg1) -- Line 950, Named "OnChildAdded"
+	--[[ Upvalues[15]:
+		[1]: var16_upvw (read and write)
+		[2]: Humanoid_upvw (read and write)
+		[3]: var58_upvw (read and write)
+		[4]: tbl_2_upvr (readonly)
+		[5]: var257_upvw (read and write)
+		[6]: LocalPlayer_upvw (read and write)
+		[7]: var53_upvw (read and write)
+		[8]: MakeSlot_upvr (readonly)
+		[9]: var49_upvw (read and write)
+		[10]: tbl_5_upvr (readonly)
+		[11]: Backpack_upvw (read and write)
+		[12]: AdjustHotbarFrames_upvr (readonly)
+		[13]: var69_upvr (readonly)
+		[14]: var46_upvw (read and write)
+		[15]: module_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	if not arg1:IsA("Tool") and not arg1:IsA("HopperBin") then
+		if arg1:IsA("Humanoid") and arg1.Parent == var16_upvw then
+			Humanoid_upvw = arg1
+		end
+	else
+		if arg1.Parent ~= var16_upvw then
+		end
+		if var58_upvw and arg1.Parent == var16_upvw then
+			var58_upvw:ToggleSelect()
+			tbl_2_upvr[var58_upvw]:UpdateEquipView()
+			var58_upvw = nil
+		end
+		if not var257_upvw and arg1.Parent == var16_upvw and not tbl_2_upvr[arg1] then
+			local StarterGear = LocalPlayer_upvw:FindFirstChild("StarterGear")
+			if StarterGear and StarterGear:FindFirstChild(arg1.Name) then
+				var257_upvw = true
+				local var285 = var53_upvw
+				if not var285 then
+					var285 = MakeSlot_upvr(var49_upvw)
+				end
+				for i_23 = var285.Index, 1, -1 do
+					local var286 = i_23 - 1
+					if 0 < var286 then
+						tbl_5_upvr[var286]:Swap(tbl_5_upvr[i_23])
+					else
+						tbl_5_upvr[i_23]:Fill(arg1)
+					end
+				end
+				for _, v_7 in pairs(var16_upvw:GetChildren()) do
+					if v_7:IsA("Tool") and v_7 ~= arg1 then
+						v_7.Parent = Backpack_upvw
+					end
+				end
+				AdjustHotbarFrames_upvr()
+				return
+			end
+		end
+		if tbl_2_upvr[arg1] then
+			tbl_2_upvr[arg1]:UpdateEquipView()
+		else
+			local var290 = var53_upvw
+			if not var290 then
+			end
+			local MakeSlot_upvr_result1 = MakeSlot_upvr(var49_upvw)
+			MakeSlot_upvr_result1:Fill(arg1)
+			if MakeSlot_upvr_result1.Index <= var69_upvr then
+				if not var46_upvw.Visible then
+					AdjustHotbarFrames_upvr()
+				end
+			end
+			if arg1:IsA("HopperBin") then
+				if arg1.Active then
+					if Humanoid_upvw then
+						Humanoid_upvw:UnequipTools()
+						if var58_upvw then
+							var58_upvw:ToggleSelect()
+							tbl_2_upvr[var58_upvw]:UpdateEquipView()
+							var58_upvw = nil
+						end
+					end
+					var58_upvw = arg1
+				end
+			end
+		end
+		module_upvr.BackpackItemAdded:Fire()
+	end
+end
+local function OnChildRemoved_upvr(arg1) -- Line 1017, Named "OnChildRemoved"
+	--[[ Upvalues[9]:
+		[1]: var16_upvw (read and write)
+		[2]: Backpack_upvw (read and write)
+		[3]: tbl_2_upvr (readonly)
+		[4]: var69_upvr (readonly)
+		[5]: var46_upvw (read and write)
+		[6]: AdjustHotbarFrames_upvr (readonly)
+		[7]: var58_upvw (read and write)
+		[8]: module_upvr (readonly)
+		[9]: tbl_5_upvr (readonly)
+	]]
+	if not arg1:IsA("Tool") and not arg1:IsA("HopperBin") then
+	else
+		local Parent = arg1.Parent
+		if Parent == var16_upvw or Parent == Backpack_upvw then return end
+		local var297 = tbl_2_upvr[arg1]
+		if var297 then
+			var297:Clear()
+			if var69_upvr < var297.Index then
+				var297:Delete()
+			elseif not var46_upvw.Visible then
+				AdjustHotbarFrames_upvr()
+			end
+		end
+		if arg1 == var58_upvw then
+			var58_upvw = nil
+		end
+		module_upvr.BackpackItemRemoved:Fire()
+		for i_25 = var69_upvr + 1, #tbl_5_upvr do
+			local var298 = tbl_5_upvr[i_25]
+			if var298 then
+				if var298.Tool then
+					-- KONSTANTWARNING: GOTO [68] #55
+				end
+			end
+		end
+		if true then
+			module_upvr.BackpackEmpty:Fire()
+		end
+	end
+end
+local tbl_6_upvw = {}
+local function OnCharacterAdded(arg1) -- Line 1051
+	--[[ Upvalues[10]:
+		[1]: tbl_5_upvr (readonly)
+		[2]: var69_upvr (readonly)
+		[3]: var58_upvw (read and write)
+		[4]: tbl_6_upvw (read and write)
+		[5]: var16_upvw (read and write)
+		[6]: OnChildRemoved_upvr (readonly)
+		[7]: OnChildAdded_upvr (readonly)
+		[8]: Backpack_upvw (read and write)
+		[9]: LocalPlayer_upvw (read and write)
+		[10]: AdjustHotbarFrames_upvr (readonly)
+	]]
+	for i_7 = #tbl_5_upvr, 1, -1 do
+		local var307 = tbl_5_upvr[i_7]
+		if var307.Tool then
+			var307:Clear()
+		end
+		if var69_upvr < i_7 then
+			var307:Delete()
+		end
+	end
+	var58_upvw = nil
+	for _, v in pairs(tbl_6_upvw) do
+		v:Disconnect()
+	end
+	tbl_6_upvw = {}
+	var16_upvw = arg1
+	table.insert(tbl_6_upvw, arg1.ChildRemoved:Connect(OnChildRemoved_upvr))
+	table.insert(tbl_6_upvw, arg1.ChildAdded:Connect(OnChildAdded_upvr))
+	for _, v_2 in pairs(arg1:GetChildren()) do
+		OnChildAdded_upvr(v_2)
+	end
+	Backpack_upvw = LocalPlayer_upvw:WaitForChild("Backpack")
+	table.insert(tbl_6_upvw, Backpack_upvw.ChildRemoved:Connect(OnChildRemoved_upvr))
+	table.insert(tbl_6_upvw, Backpack_upvw.ChildAdded:Connect(OnChildAdded_upvr))
+	for _, v_3 in pairs(Backpack_upvw:GetChildren()) do
+		OnChildAdded_upvr(v_3)
+	end
+	AdjustHotbarFrames_upvr()
+end
+local TextChatService_upvr = game:GetService("TextChatService")
+local function OnUISChanged() -- Line 1116
+	--[[ Upvalues[5]:
+		[1]: UserInputService_upvr (readonly)
+		[2]: var69_upvr (readonly)
+		[3]: tbl_5_upvr (readonly)
+		[4]: tbl_4_upvr (readonly)
+		[5]: tbl_3_upvr (readonly)
+	]]
+	if UserInputService_upvr:GetLastInputType() == Enum.UserInputType.Touch then
+		for i_11 = 1, var69_upvr do
+			tbl_5_upvr[i_11]:TurnNumber(false)
+		end
+	else
+		if UserInputService_upvr:GetLastInputType() == Enum.UserInputType.Keyboard then
+			for i_26 = 1, var69_upvr do
+				tbl_5_upvr[i_26]:TurnNumber(true)
+			end
+			return
+		end
+		for _, v_8 in pairs(tbl_4_upvr) do
+			if UserInputService_upvr:GetLastInputType() == v_8 then
+				for i_28 = 1, var69_upvr do
+					tbl_5_upvr[i_28]:TurnNumber(true)
+				end
+				return
+			end
+		end
+		for _, v_9 in pairs(tbl_3_upvr) do
+			if UserInputService_upvr:GetLastInputType() == v_9 then
+				for i_30 = 1, var69_upvr do
+					tbl_5_upvr[i_30]:TurnNumber(false)
+				end
+				return
+			end
+		end
+	end
+end
+local function var334_upvr() -- Line 1157
+end
+function unbindAllGamepadEquipActions() -- Line 1160
+	--[[ Upvalues[1]:
+		[1]: ContextActionService_upvr (readonly)
+	]]
+	ContextActionService_upvr:UnbindAction("BackpackHasGamepadFocus")
+	ContextActionService_upvr:UnbindAction("BackpackCloseInventory")
+end
+function var335_upvw(arg1, arg2, arg3) -- Line 1236
+	--[[ Upvalues[8]:
+		[1]: var337_upvw (read and write)
+		[2]: var338_upvw (read and write)
+		[3]: Humanoid_upvw (read and write)
+		[4]: var58_upvw (read and write)
+		[5]: tbl_2_upvr (readonly)
+		[6]: var69_upvr (readonly)
+		[7]: tbl_5_upvr (readonly)
+		[8]: var65_upvw (read and write)
+	]]
+	if arg2 ~= Enum.UserInputState.Begin then
+	else
+		if var337_upvw then
+			if var337_upvw.KeyCode == Enum.KeyCode.ButtonR1 and arg3.KeyCode == Enum.KeyCode.ButtonL1 or var337_upvw.KeyCode == Enum.KeyCode.ButtonL1 and arg3.KeyCode == Enum.KeyCode.ButtonR1 or os.clock() - var338_upvw <= 0.06 then
+				if Humanoid_upvw then
+					Humanoid_upvw:UnequipTools()
+					if var58_upvw then
+						var58_upvw:ToggleSelect()
+						tbl_2_upvr[var58_upvw]:UpdateEquipView()
+						var58_upvw = nil
+					end
+				end
+				var337_upvw = arg3
+				var338_upvw = os.clock()
+				return
+			end
+		end
+		var337_upvw = arg3
+		var338_upvw = os.clock()
+		task.delay(0.06, function() -- Line 1264
+			--[[ Upvalues[8]:
+				[1]: var337_upvw (copied, read and write)
+				[2]: arg3 (readonly)
+				[3]: var69_upvr (copied, readonly)
+				[4]: tbl_5_upvr (copied, readonly)
+				[5]: Humanoid_upvw (copied, read and write)
+				[6]: var58_upvw (copied, read and write)
+				[7]: tbl_2_upvr (copied, readonly)
+				[8]: var65_upvw (copied, read and write)
+			]]
+			-- KONSTANTERROR: [0] 1. Error Block 68 start (CF ANALYSIS FAILED)
+			if var337_upvw ~= arg3 then return end
+			if arg3.KeyCode == Enum.KeyCode.ButtonL1 then
+			else
+			end
+			local _ = 1
+			-- KONSTANTERROR: [0] 1. Error Block 68 end (CF ANALYSIS FAILED)
+			-- KONSTANTERROR: [91] 77. Error Block 30 start (CF ANALYSIS FAILED)
+			-- KONSTANTERROR: [91] 77. Error Block 30 end (CF ANALYSIS FAILED)
+			-- KONSTANTERROR: [20] 17. Error Block 8 start (CF ANALYSIS FAILED)
+			-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [91.5]
+			-- KONSTANTERROR: [20] 17. Error Block 8 end (CF ANALYSIS FAILED)
+		end)
+	end
+end
+local var337_upvw
+local var338_upvw
+local var336_upvw = var335_upvw
+function getGamepadSwapSlot() -- Line 1331
+	--[[ Upvalues[1]:
+		[1]: tbl_5_upvr (readonly)
+	]]
+	for i_12 = 1, #tbl_5_upvr do
+		if 0 < tbl_5_upvr[i_12].Frame.BorderSizePixel then
+			return tbl_5_upvr[i_12]
+		end
+	end
+end
+function changeSlot(arg1) -- Line 1341
+	--[[ Upvalues[5]:
+		[1]: VRService_upvr (readonly)
+		[2]: var46_upvw (read and write)
+		[3]: GuiService_upvr (readonly)
+		[4]: var47_upvw (read and write)
+		[5]: var69_upvr (readonly)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [5] 5. Error Block 2 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [5] 5. Error Block 2 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [8] 7. Error Block 3 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [8] 7. Error Block 3 end (CF ANALYSIS FAILED)
+end
+function vrMoveSlotToInventory() -- Line 1397
+	--[[ Upvalues[2]:
+		[1]: VRService_upvr (readonly)
+		[2]: var47_upvw (read and write)
+	]]
+	if not VRService_upvr.VREnabled then
+	else
+		local getGamepadSwapSlot_result1 = getGamepadSwapSlot()
+		if getGamepadSwapSlot_result1 and getGamepadSwapSlot_result1.Tool then
+			getGamepadSwapSlot_result1.Frame.BorderSizePixel = 0
+			getGamepadSwapSlot_result1:MoveToInventory()
+			var47_upvw.SelectionImageObject.Visible = false
+		end
+	end
+end
+function enableGamepadInventoryControl() -- Line 1410
+	--[[ Upvalues[6]:
+		[1]: var46_upvw (read and write)
+		[2]: any_setOrder_result1_upvr (readonly)
+		[3]: ContextActionService_upvr (readonly)
+		[4]: var334_upvr (readonly)
+		[5]: GuiService_upvr (readonly)
+		[6]: var45_upvw (read and write)
+	]]
+	ContextActionService_upvr:BindAction("BackpackHasGamepadFocus", var334_upvr, false, Enum.UserInputType.Gamepad1)
+	ContextActionService_upvr:BindAction("BackpackCloseInventory", function() -- Line 1411
+		--[[ Upvalues[2]:
+			[1]: var46_upvw (copied, read and write)
+			[2]: any_setOrder_result1_upvr (copied, readonly)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [8] 7. Error Block 3 start (CF ANALYSIS FAILED)
+		-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [8.1]
+		nil.Frame.BorderSizePixel = 0
+		do
+			return
+		end
+		do
+			return
+		end
+		-- KONSTANTERROR: [8] 7. Error Block 3 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [15] 12. Error Block 7 start (CF ANALYSIS FAILED)
+		if var46_upvw.Visible then
+			any_setOrder_result1_upvr:deselect()
+		end
+		-- KONSTANTERROR: [15] 12. Error Block 7 end (CF ANALYSIS FAILED)
+	end, false, Enum.KeyCode.ButtonB, Enum.KeyCode.ButtonStart)
+	if not false then
+		GuiService_upvr.SelectedObject = var45_upvw:FindFirstChild('1')
+	end
+end
+function disableGamepadInventoryControl() -- Line 1444
+	--[[ Upvalues[4]:
+		[1]: var69_upvr (readonly)
+		[2]: tbl_5_upvr (readonly)
+		[3]: GuiService_upvr (readonly)
+		[4]: var44_upvw (read and write)
+	]]
+	unbindAllGamepadEquipActions()
+	for i_13 = 1, var69_upvr do
+		local var349 = tbl_5_upvr[i_13]
+		if var349 and var349.Frame then
+			var349.Frame.BorderSizePixel = 0
+		end
+	end
+	if GuiService_upvr.SelectedObject then
+		i_13 = var44_upvw
+		if GuiService_upvr.SelectedObject:IsDescendantOf(i_13) then
+			GuiService_upvr.SelectedObject = nil
+		end
+	end
+end
+local function _() -- Line 1459, Named "bindBackpackHotbarAction"
+	--[[ Upvalues[4]:
+		[1]: var59_upvw (read and write)
+		[2]: var41_upvw (read and write)
+		[3]: ContextActionService_upvr (readonly)
+		[4]: var336_upvw (read and write)
+	]]
+	if var59_upvw then
+		if not var41_upvw then
+			var41_upvw = true
+			ContextActionService_upvr:BindAction("BackpackHotbarEquip", var336_upvw, false, Enum.KeyCode.ButtonL1, Enum.KeyCode.ButtonR1)
+		end
+	end
+end
+local function _() -- Line 1472, Named "unbindBackpackHotbarAction"
+	--[[ Upvalues[2]:
+		[1]: var41_upvw (read and write)
+		[2]: ContextActionService_upvr (readonly)
+	]]
+	disableGamepadInventoryControl()
+	var41_upvw = false
+	ContextActionService_upvr:UnbindAction("BackpackHotbarEquip")
+end
+function gamepadDisconnected() -- Line 1478
+	--[[ Upvalues[1]:
+		[1]: var62_upvw (read and write)
+	]]
+	var62_upvw = false
+	disableGamepadInventoryControl()
+end
+function gamepadConnected() -- Line 1483
+	--[[ Upvalues[9]:
+		[1]: var62_upvw (read and write)
+		[2]: GuiService_upvr (readonly)
+		[3]: var44_upvw (read and write)
+		[4]: var57_upvw (read and write)
+		[5]: var59_upvw (read and write)
+		[6]: var41_upvw (read and write)
+		[7]: ContextActionService_upvr (readonly)
+		[8]: var336_upvw (read and write)
+		[9]: var46_upvw (read and write)
+	]]
+	var62_upvw = true
+	GuiService_upvr:AddSelectionParent("BackpackSelection", var44_upvw)
+	if 1 <= var57_upvw then
+		if var59_upvw and not var41_upvw then
+			var41_upvw = true
+			ContextActionService_upvr:BindAction("BackpackHotbarEquip", var336_upvw, false, Enum.KeyCode.ButtonL1, Enum.KeyCode.ButtonR1)
+		end
+	end
+	if var46_upvw.Visible then
+		enableGamepadInventoryControl()
+	end
+end
+local function _(arg1) -- Line 1496, Named "OnIconChanged"
+	--[[ Upvalues[7]:
+		[1]: StarterGui_upvr (readonly)
+		[2]: var59_upvw (read and write)
+		[3]: var44_upvw (read and write)
+		[4]: var57_upvw (read and write)
+		[5]: var41_upvw (read and write)
+		[6]: ContextActionService_upvr (readonly)
+		[7]: var336_upvw (read and write)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [2] 3. Error Block 2 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [2] 3. Error Block 2 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [7] 7. Error Block 3 start (CF ANALYSIS FAILED)
+	local any_GetCore_result1_2 = StarterGui_upvr:GetCore("TopbarEnabled")
+	var59_upvw = any_GetCore_result1_2
+	var44_upvw.Visible = any_GetCore_result1_2
+	-- KONSTANTERROR: [7] 7. Error Block 3 end (CF ANALYSIS FAILED)
+end
+local function MakeVRRoundButton(arg1, arg2) -- Line 1520
+	local ImageButton_2 = Instance.new("ImageButton")
+	ImageButton_2.BackgroundTransparency = 1
+	ImageButton_2.Name = arg1
+	ImageButton_2.Size = UDim2.new(0, 40, 0, 40)
+	ImageButton_2.Image = "rbxasset://textures/ui/Keyboard/close_button_background.png"
+	local ImageLabel_4 = Instance.new("ImageLabel")
+	ImageLabel_4.Name = "Icon"
+	ImageLabel_4.BackgroundTransparency = 1
+	ImageLabel_4.Size = UDim2.new(0.5, 0, 0.5, 0)
+	ImageLabel_4.Position = UDim2.new(0.25, 0, 0.25, 0)
+	ImageLabel_4.Image = arg2
+	ImageLabel_4.Parent = ImageButton_2
+	local ImageLabel_7 = Instance.new("ImageLabel")
+	ImageLabel_7.BackgroundTransparency = 1
+	ImageLabel_7.Name = "Selection"
+	ImageLabel_7.Size = UDim2.new(0.9, 0, 0.9, 0)
+	ImageLabel_7.Position = UDim2.new(0.05, 0, 0.05, 0)
+	ImageLabel_7.Image = "rbxasset://textures/ui/Keyboard/close_button_selection.png"
+	ImageButton_2.SelectionImageObject = ImageLabel_7
+	return ImageButton_2, ImageLabel_4, ImageLabel_7
+end
+var44_upvw = Instance.new("Frame")
+local var354_upvw = var44_upvw
+var354_upvw.BackgroundTransparency = 1
+var354_upvw.Name = "Backpack"
+var354_upvw.Size = UDim2.new(1, 0, 1, 0)
+var354_upvw.Visible = false
+var354_upvw.Parent = ScreenGui_upvr
+var45_upvw = Instance.new("Frame")
+local var355_upvw = var45_upvw
+var355_upvw.BackgroundTransparency = 1
+var355_upvw.Name = "Hotbar"
+var355_upvw.Size = UDim2.new(1, 0, 1, 0)
+var355_upvw.Parent = var354_upvw
+for i_14 = 1, var69_upvr do
+	local MakeSlot_upvr_result1_3 = MakeSlot_upvr(var355_upvw, i_14)
+	MakeSlot_upvr_result1_3.Frame.Visible = false
+	if not var53_upvw then
+		var53_upvw = MakeSlot_upvr_result1_3
+	end
+end
+local ImageLabel_5 = Instance.new("ImageLabel")
+ImageLabel_5.BackgroundTransparency = 1
+ImageLabel_5.Name = "LeftBumper"
+ImageLabel_5.Size = UDim2.new(0, 40, 0, 40)
+ImageLabel_5.Position = UDim2.new(0, -ImageLabel_5.Size.X.Offset, 0.5, -ImageLabel_5.Size.Y.Offset / 2)
+local ImageLabel = Instance.new("ImageLabel")
+ImageLabel.BackgroundTransparency = 1
+ImageLabel.Name = "RightBumper"
+ImageLabel.Size = UDim2.new(0, 40, 0, 40)
+ImageLabel.Position = UDim2.new(1, 0, 0.5, -ImageLabel.Size.Y.Offset / 2)
+var46_upvw = Instance.new("Frame")
+local var359_upvw = var46_upvw
+var359_upvw.Name = "Inventory"
+var359_upvw.Size = UDim2.new(1, 0, 1, 0)
+var359_upvw.BackgroundTransparency = var15_upvw
+var359_upvw.BackgroundColor3 = BackgroundColor3_upvr_2
+var359_upvw.Active = true
+var359_upvw.Visible = false
+var359_upvw.Parent = var354_upvw
+local UICorner_2 = Instance.new("UICorner")
+UICorner_2.Name = "Corner"
+UICorner_2.CornerRadius = udim
+UICorner_2.Parent = var359_upvw
+var47_upvw = Instance.new("TextButton")
+local var361 = var47_upvw
+var361.Name = "VRInventorySelector"
+var361.Position = UDim2.new(0, 0, 0, 0)
+var361.Size = UDim2.new(1, 0, 1, 0)
+var361.BackgroundTransparency = 1
+var361.Text = ""
+var361.Parent = var359_upvw
+local ImageLabel_6 = Instance.new("ImageLabel")
+ImageLabel_6.BackgroundTransparency = 1
+ImageLabel_6.Name = "Selector"
+ImageLabel_6.Size = UDim2.new(1, 0, 1, 0)
+ImageLabel_6.Image = "rbxasset://textures/ui/Keyboard/key_selection_9slice.png"
+ImageLabel_6.ScaleType = Enum.ScaleType.Slice
+ImageLabel_6.SliceCenter = Rect.new(12, 12, 52, 52)
+ImageLabel_6.Visible = false
+var361.SelectionImageObject = ImageLabel_6
+var361.MouseButton1Click:Connect(function() -- Line 1617
+	vrMoveSlotToInventory()
+end)
+var48_upvw = Instance.new("ScrollingFrame")
+local var364_upvw = var48_upvw
+var364_upvw.BackgroundTransparency = 1
+var364_upvw.Name = "ScrollingFrame"
+var364_upvw.Size = UDim2.new(1, 0, 1, 0)
+var364_upvw.Selectable = false
+var364_upvw.ScrollingDirection = Enum.ScrollingDirection.Y
+var364_upvw.BorderSizePixel = 0
+var364_upvw.ScrollBarThickness = 8
+var364_upvw.ScrollBarImageColor3 = Color3.new(1, 1, 1)
+var364_upvw.VerticalScrollBarInset = Enum.ScrollBarInset.ScrollBar
+var364_upvw.CanvasSize = UDim2.new(0, 0, 0, 0)
+var364_upvw.Parent = var359_upvw
+var49_upvw = Instance.new("Frame")
+local var365_upvw = var49_upvw
+var365_upvw.BackgroundTransparency = 1
+var365_upvw.Name = "UIGridFrame"
+var365_upvw.Selectable = false
+var365_upvw.Size = UDim2.new(1, -10, 1, 0)
+var365_upvw.Position = UDim2.new(0, 5, 0, 0)
+var365_upvw.Parent = var364_upvw
+local UIGridLayout = Instance.new("UIGridLayout")
+UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIGridLayout.CellSize = UDim2.new(0, var33_upvw, 0, var33_upvw)
+UIGridLayout.CellPadding = UDim2.new(0, 5, 0, 5)
+UIGridLayout.Parent = var365_upvw
+local MakeVRRoundButton_result1_upvw = MakeVRRoundButton("ScrollUpButton", "rbxasset://textures/ui/Backpack/ScrollUpArrow.png")
+MakeVRRoundButton_result1_upvw.Size = UDim2.new(0, 34, 0, 34)
+MakeVRRoundButton_result1_upvw.Position = UDim2.new(0.5, -MakeVRRoundButton_result1_upvw.Size.X.Offset / 2, 0, 43)
+MakeVRRoundButton_result1_upvw.Icon.Position = MakeVRRoundButton_result1_upvw.Icon.Position - UDim2.new(0, 0, 0, 2)
+MakeVRRoundButton_result1_upvw.MouseButton1Click:Connect(function() -- Line 1654
+	--[[ Upvalues[2]:
+		[1]: var364_upvw (read and write)
+		[2]: var33_upvw (read and write)
+	]]
+	var364_upvw.CanvasPosition = Vector2.new(var364_upvw.CanvasPosition.X, math.min(var364_upvw.CanvasSize.Y.Offset - var364_upvw.AbsoluteWindowSize.Y, math.max(0, (var364_upvw.CanvasPosition.Y) - (var33_upvw + 5))))
+end)
+local MakeVRRoundButton_result1_upvw_2 = MakeVRRoundButton("ScrollDownButton", "rbxasset://textures/ui/Backpack/ScrollUpArrow.png")
+MakeVRRoundButton_result1_upvw_2.Rotation = 180
+MakeVRRoundButton_result1_upvw_2.Icon.Position = MakeVRRoundButton_result1_upvw_2.Icon.Position - UDim2.new(0, 0, 0, 2)
+MakeVRRoundButton_result1_upvw_2.Size = UDim2.new(0, 34, 0, 34)
+MakeVRRoundButton_result1_upvw_2.Position = UDim2.new(0.5, -MakeVRRoundButton_result1_upvw_2.Size.X.Offset / 2, 1, -MakeVRRoundButton_result1_upvw_2.Size.Y.Offset - 3)
+MakeVRRoundButton_result1_upvw_2.MouseButton1Click:Connect(function() -- Line 1671
+	--[[ Upvalues[2]:
+		[1]: var364_upvw (read and write)
+		[2]: var33_upvw (read and write)
+	]]
+	var364_upvw.CanvasPosition = Vector2.new(var364_upvw.CanvasPosition.X, math.min(var364_upvw.CanvasSize.Y.Offset - var364_upvw.AbsoluteWindowSize.Y, math.max(0, (var364_upvw.CanvasPosition.Y) + (var33_upvw + 5))))
+end)
+var364_upvw.Changed:Connect(function(arg1) -- Line 1682
+	--[[ Upvalues[3]:
+		[1]: var364_upvw (read and write)
+		[2]: MakeVRRoundButton_result1_upvw (read and write)
+		[3]: MakeVRRoundButton_result1_upvw_2 (read and write)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [2] 2. Error Block 2 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [2] 2. Error Block 2 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [4] 3. Error Block 3 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [4] 3. Error Block 3 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [6] 4. Error Block 18 start (CF ANALYSIS FAILED)
+	if var364_upvw.CanvasPosition.Y == 0 then
+		-- KONSTANTWARNING: GOTO [15] #10
+	end
+	-- KONSTANTERROR: [6] 4. Error Block 18 end (CF ANALYSIS FAILED)
+end)
+;(function() -- Line 302, Named "UpdateBackpackLayout"
+	--[[ Upvalues[9]:
+		[1]: var45_upvw (read and write)
+		[2]: var69_upvr (readonly)
+		[3]: var33_upvw (read and write)
+		[4]: var46_upvw (read and write)
+		[5]: const_number_upvr (readonly)
+		[6]: VREnabled_upvr (readonly)
+		[7]: var48_upvw (read and write)
+		[8]: AdjustHotbarFrames_upvr (readonly)
+		[9]: AdjustInventoryFrames_upvr (readonly)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 20 start (CF ANALYSIS FAILED)
+	var45_upvw.Size = UDim2.new(0, var69_upvr * (var33_upvw + 5) + 5, 0, var33_upvw + 5 + 5)
+	var45_upvw.Position = UDim2.new(0.5, -var45_upvw.Size.X.Offset / 2, 1, -var45_upvw.Size.Y.Offset)
+	local var84 = var45_upvw.Size.Y.Offset * const_number_upvr
+	if VREnabled_upvr then
+		var84 = 80
+	else
+		var84 = 0
+	end
+	var46_upvw.Size = UDim2.new(0, var45_upvw.Size.X.Offset, 0, var84 + 40 + var84)
+	var84 = var46_upvw.Size
+	var84 = var45_upvw.Position.Y
+	var84 = var46_upvw.Size.Y.Offset
+	var46_upvw.Position = UDim2.new(0.5, -var84.X.Offset / 2, 1, var84.Offset - var84)
+	var84 = VREnabled_upvr
+	if var84 then
+		-- KONSTANTWARNING: GOTO [118] #88
+	end
+	-- KONSTANTERROR: [0] 1. Error Block 20 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [117] 87. Error Block 22 start (CF ANALYSIS FAILED)
+	var48_upvw.Size = UDim2.new(1, var48_upvw.ScrollBarThickness + 1, 1, -40 - 0)
+	if VREnabled_upvr then
+		var84 = 40
+	else
+		var84 = 0
+	end
+	var48_upvw.Position = UDim2.new(0, 0, 0, 40 + var84)
+	AdjustHotbarFrames_upvr()
+	AdjustInventoryFrames_upvr()
+	-- KONSTANTERROR: [117] 87. Error Block 22 end (CF ANALYSIS FAILED)
+end)()
+local Frame_4_upvr = Instance.new("Frame")
+Frame_4_upvr.Name = "GamepadHintsFrame"
+if any_IsTenFootInterface_result1_upvr then
+else
+end
+Frame_4_upvr.Size = UDim2.new(0, var355_upvw.Size.X.Offset, 0, 60)
+Frame_4_upvr.BackgroundTransparency = var15_upvw
+Frame_4_upvr.BackgroundColor3 = BackgroundColor3_upvr_2
+Frame_4_upvr.Visible = false
+Frame_4_upvr.Parent = var354_upvw
+local UIListLayout_2 = Instance.new("UIListLayout")
+UIListLayout_2.Name = "Layout"
+UIListLayout_2.Padding = UDim.new(0, 25)
+UIListLayout_2.FillDirection = Enum.FillDirection.Horizontal
+UIListLayout_2.HorizontalAlignment = Enum.HorizontalAlignment.Center
+UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout_2.Parent = Frame_4_upvr
+local UICorner_6 = Instance.new("UICorner")
+UICorner_6.Name = "Corner"
+UICorner_6.CornerRadius = udim
+UICorner_6.Parent = Frame_4_upvr
+local function addGamepadHint(arg1, arg2) -- Line 1718
+	--[[ Upvalues[3]:
+		[1]: Frame_4_upvr (readonly)
+		[2]: any_IsTenFootInterface_result1_upvr (readonly)
+		[3]: FontFace_upvr (readonly)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+	local Frame_3 = Instance.new("Frame")
+	Frame_3.Name = "HintFrame"
+	Frame_3.AutomaticSize = Enum.AutomaticSize.XY
+	Frame_3.BackgroundTransparency = 1
+	Frame_3.Parent = Frame_4_upvr
+	local UIListLayout = Instance.new("UIListLayout")
+	UIListLayout.Name = "Layout"
+	local var377
+	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [26] 19. Error Block 20 start (CF ANALYSIS FAILED)
+	var377 = 0
+	local udim_2 = UDim.new(var377, 20)
+	if not udim_2 then
+		-- KONSTANTERROR: [32] 24. Error Block 16 start (CF ANALYSIS FAILED)
+		udim_2 = UDim.new
+		var377 = 0
+		udim_2 = udim_2(var377, 12)
+		-- KONSTANTERROR: [32] 24. Error Block 16 end (CF ANALYSIS FAILED)
+	end
+	UIListLayout.Padding = udim_2
+	UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	UIListLayout.Parent = Frame_3
+	var377 = "ImageLabel"
+	local any = Instance.new(var377)
+	var377 = "HintImage"
+	any.Name = var377
+	local function INLINED_7() -- Internal function, doesn't exist in bytecode
+		var377 = UDim2.new(0, 60, 0, 60)
+		return var377
+	end
+	if not any_IsTenFootInterface_result1_upvr or not INLINED_7() then
+		var377 = UDim2.new(0, 30, 0, 30)
+	end
+	any.Size = var377
+	var377 = 1
+	any.BackgroundTransparency = var377
+	any.Image = arg1
+	any.Parent = Frame_3
+	var377 = Instance.new("TextLabel")
+	var377.Name = "HintText"
+	var377.AutomaticSize = Enum.AutomaticSize.XY
+	local Font_new_result1 = Font.new(FontFace_upvr.Family, Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+	var377.FontFace = Font_new_result1
+	if any_IsTenFootInterface_result1_upvr then
+		Font_new_result1 = 32
+	else
+		Font_new_result1 = 19
+	end
+	var377.TextSize = Font_new_result1
+	var377.BackgroundTransparency = 1
+	var377.Text = arg2
+	var377.TextColor3 = Color3.new(1, 1, 1)
+	var377.TextXAlignment = Enum.TextXAlignment.Left
+	var377.TextYAlignment = Enum.TextYAlignment.Center
+	var377.TextWrapped = true
+	var377.Parent = Frame_3
+	local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+	UITextSizeConstraint.MaxTextSize = var377.TextSize
+	UITextSizeConstraint.Parent = var377
+	-- KONSTANTERROR: [26] 19. Error Block 20 end (CF ANALYSIS FAILED)
+end
+addGamepadHint(UserInputService_upvr:GetImageForKeyCode(Enum.KeyCode.ButtonX), "Remove From Hotbar")
+addGamepadHint(UserInputService_upvr:GetImageForKeyCode(Enum.KeyCode.ButtonA), "Select/Swap")
+addGamepadHint(UserInputService_upvr:GetImageForKeyCode(Enum.KeyCode.ButtonB), "Close Backpack")
+local function resizeGamepadHintsFrame_upvr() -- Line 1762, Named "resizeGamepadHintsFrame"
+	--[[ Upvalues[4]:
+		[1]: Frame_4_upvr (readonly)
+		[2]: var355_upvw (read and write)
+		[3]: any_IsTenFootInterface_result1_upvr (readonly)
+		[4]: var359_upvw (read and write)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 34 start (CF ANALYSIS FAILED)
+	local Size = var355_upvw.Size
+	local var389
+	if any_IsTenFootInterface_result1_upvr then
+		Size = 95
+	else
+		Size = 60
+	end
+	var389.Size = UDim2.new(var355_upvw.Size.X.Scale, Size.X.Offset, 0, Size)
+	var389 = Frame_4_upvr
+	var389.Position = UDim2.new(var355_upvw.Position.X.Scale, var355_upvw.Position.X.Offset, var359_upvw.Position.Y.Scale, var359_upvw.Position.Y.Offset - Frame_4_upvr.Size.Y.Offset - 5)
+	var389 = 0
+	local tbl = {}
+	for i_15, v_4 in pairs(Frame_4_upvr:GetChildren()) do
+		if v_4:IsA("GuiObject") then
+			table.insert(tbl, v_4)
+		end
+	end
+	for i_16 = 1, #tbl do
+		i_15 = tbl[i_16]:IsA("GuiObject")
+		if i_15 then
+			i_15 = tbl[i_16]
+			v_4 = UDim2.new(1, 0, 1, -5)
+			i_15.Size = v_4
+			i_15 = tbl[i_16]
+			v_4 = UDim2.new(0, 0, 0, 0)
+			i_15.Position = v_4
+			v_4 = tbl[i_16].HintText.Position.X.Offset
+			i_15 = v_4 + tbl[i_16].HintText.TextBounds.X
+			var389 += i_15
+		end
+	end
+	local var394 = 1
+	if var394 == 1 then
+		local udim2 = UDim2.new(0, 0, 0, 0)
+		if not udim2 then
+			-- KONSTANTERROR: [168] 121. Error Block 24 start (CF ANALYSIS FAILED)
+			udim2 = UDim2.new
+			local var396 = udim2
+			var396 = var396(0, tbl[var394 - 1].Position.X.Offset + tbl[var394 - 1].Size.X.Offset + (Frame_4_upvr.AbsoluteSize.X - var389) / (#tbl - 1), 0, 0)
+			-- KONSTANTERROR: [168] 121. Error Block 24 end (CF ANALYSIS FAILED)
+		end
+		tbl[var394].Position = var396
+		tbl[var394].Size = UDim2.new(0, tbl[var394].HintText.Position.X.Offset + tbl[var394].HintText.TextBounds.X, 1, -5)
+		-- KONSTANTWARNING: GOTO [157] #112
+	end
+	-- KONSTANTERROR: [0] 1. Error Block 34 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [168] 121. Error Block 24 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [168] 121. Error Block 24 end (CF ANALYSIS FAILED)
+end
+local Frame_6_upvr = Instance.new("Frame")
+Frame_6_upvr.Name = "Search"
+Frame_6_upvr.BackgroundColor3 = Color3.new(0.09803921568627451, 0.10588235294117647, 0.11372549019607843)
+Frame_6_upvr.BackgroundTransparency = var28_upvw
+Frame_6_upvr.Size = UDim2.new(0, 190, 0, 30)
+Frame_6_upvr.Position = UDim2.new(1, -Frame_6_upvr.Size.X.Offset - 5, 0, 5)
+Frame_6_upvr.Parent = var359_upvw
+local UICorner_3 = Instance.new("UICorner")
+UICorner_3.Name = "Corner"
+UICorner_3.CornerRadius = var29
+UICorner_3.Parent = Frame_6_upvr
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Name = "Border"
+UIStroke.Color = Color3.new(1, 1, 1)
+UIStroke.Thickness = 1
+UIStroke.Transparency = 0.8
+UIStroke.Parent = Frame_6_upvr
+local TextBox_upvr = Instance.new("TextBox")
+TextBox_upvr.BackgroundTransparency = 1
+TextBox_upvr.Name = "TextBox"
+TextBox_upvr.Text = ""
+TextBox_upvr.TextColor3 = TextColor3_upvr
+TextBox_upvr.TextStrokeTransparency = var26_upvr
+TextBox_upvr.TextStrokeColor3 = TextStrokeColor3_upvr
+TextBox_upvr.FontFace = Font.new(FontFace_upvr.Family, Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+TextBox_upvr.PlaceholderText = "Search"
+TextBox_upvr.TextColor3 = TextColor3_upvr
+TextBox_upvr.TextTransparency = var26_upvr
+TextBox_upvr.TextStrokeColor3 = TextStrokeColor3_upvr
+TextBox_upvr.ClearTextOnFocus = false
+TextBox_upvr.TextTruncate = Enum.TextTruncate.AtEnd
+TextBox_upvr.TextSize = var31_upvw
+TextBox_upvr.TextXAlignment = Enum.TextXAlignment.Left
+TextBox_upvr.TextYAlignment = Enum.TextYAlignment.Center
+TextBox_upvr.Size = UDim2.new(0, 154, 0, 14)
+TextBox_upvr.AnchorPoint = Vector2.new(0, 0.5)
+TextBox_upvr.Position = UDim2.new(0, 8, 0.5, 0)
+TextBox_upvr.ZIndex = 2
+TextBox_upvr.Parent = Frame_6_upvr
+local TextButton_upvr = Instance.new("TextButton")
+TextButton_upvr.Name = 'X'
+TextButton_upvr.Text = ""
+TextButton_upvr.Size = UDim2.new(0, 30, 0, 30)
+TextButton_upvr.Position = UDim2.new(1, -TextButton_upvr.Size.X.Offset, 0.5, -TextButton_upvr.Size.Y.Offset / 2)
+TextButton_upvr.ZIndex = 4
+TextButton_upvr.Visible = false
+TextButton_upvr.BackgroundTransparency = 1
+TextButton_upvr.Parent = Frame_6_upvr
+local ImageButton = Instance.new("ImageButton")
+ImageButton.Name = 'X'
+ImageButton.Image = "rbxasset://textures/ui/InspectMenu/x.png"
+ImageButton.BackgroundTransparency = 1
+ImageButton.Size = UDim2.new(0, Frame_6_upvr.Size.Y.Offset - 20, 0, Frame_6_upvr.Size.Y.Offset - 20)
+ImageButton.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageButton.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageButton.ZIndex = 1
+ImageButton.BorderSizePixel = 0
+ImageButton.Parent = TextButton_upvr
+local function search_upvr() -- Line 1899, Named "search"
+	--[[ Upvalues[9]:
+		[1]: TextBox_upvr (readonly)
+		[2]: var69_upvr (readonly)
+		[3]: tbl_5_upvr (readonly)
+		[4]: var359_upvw (read and write)
+		[5]: var61_upvw (read and write)
+		[6]: var365_upvw (read and write)
+		[7]: var364_upvw (read and write)
+		[8]: UpdateScrollingFrameCanvasSize_upvr (readonly)
+		[9]: TextButton_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local tbl_8 = {}
+	for i_17 in TextBox_upvr.Text:gmatch("%S+") do
+		tbl_8[i_17:lower()] = true
+	end
+	for i_18 = var69_upvr + 1, #tbl_5_upvr do
+		local var431 = tbl_5_upvr[i_18]
+		table.insert({}, {var431, var431:CheckTerms(tbl_8)})
+		var431.Frame.Visible = false
+		var431.Frame.Parent = var359_upvw
+		local var433
+	end
+	table.sort(var433, function(arg1, arg2) -- Line 1914
+		local var435
+		if arg2[2] >= arg1[2] then
+			var435 = false
+		else
+			var435 = true
+		end
+		return var435
+	end)
+	var61_upvw = true
+	for _, v_5 in ipairs(var433) do
+		local _1 = v_5[1]
+		if 0 < v_5[2] then
+			_1.Frame.Visible = true
+			_1.Frame.Parent = var365_upvw
+			_1.Frame.LayoutOrder = var69_upvr + 0
+		end
+	end
+	var364_upvw.CanvasPosition = Vector2.new(0, 0)
+	UpdateScrollingFrameCanvasSize_upvr()
+	TextButton_upvr.ZIndex = 3
+end
+local function clearResults_upvr() -- Line 1936, Named "clearResults"
+	--[[ Upvalues[6]:
+		[1]: TextButton_upvr (readonly)
+		[2]: var61_upvw (read and write)
+		[3]: var69_upvr (readonly)
+		[4]: tbl_5_upvr (readonly)
+		[5]: var365_upvw (read and write)
+		[6]: UpdateScrollingFrameCanvasSize_upvr (readonly)
+	]]
+	if 0 < TextButton_upvr.ZIndex then
+		var61_upvw = false
+		for i_20 = var69_upvr + 1, #tbl_5_upvr do
+			local var442 = tbl_5_upvr[i_20]
+			var442.Frame.LayoutOrder = var442.Index
+			var442.Frame.Parent = var365_upvw
+			var442.Frame.Visible = true
+		end
+		TextButton_upvr.ZIndex = 0
+	end
+	UpdateScrollingFrameCanvasSize_upvr()
+end
+TextButton_upvr.MouseButton1Click:Connect(function() -- Line 1950, Named "reset"
+	--[[ Upvalues[2]:
+		[1]: clearResults_upvr (readonly)
+		[2]: TextBox_upvr (readonly)
+	]]
+	clearResults_upvr()
+	TextBox_upvr.Text = ""
+end)
+TextBox_upvr.Changed:Connect(function(arg1) -- Line 1955, Named "onChanged"
+	--[[ Upvalues[5]:
+		[1]: TextBox_upvr (readonly)
+		[2]: var26_upvr (readonly)
+		[3]: clearResults_upvr (readonly)
+		[4]: search_upvr (readonly)
+		[5]: TextButton_upvr (readonly)
+	]]
+	if arg1 == "Text" then
+		local Text = TextBox_upvr.Text
+		if Text == "" then
+			TextBox_upvr.TextTransparency = var26_upvr
+			clearResults_upvr()
+		elseif Text ~= "" then
+			TextBox_upvr.TextTransparency = 0
+			search_upvr()
+		end
+		local var444 = false
+		if Text ~= "" then
+			if Text == "" then
+				var444 = false
+			else
+				var444 = true
+			end
+		end
+		TextButton_upvr.Visible = var444
+	end
+end)
+TextBox_upvr.FocusLost:Connect(function(arg1) -- Line 1969, Named "focusLost"
+	--[[ Upvalues[1]:
+		[1]: search_upvr (readonly)
+	]]
+	if arg1 then
+		search_upvr()
+	end
+end)
+module_upvr.StateChanged.Event:Connect(function(arg1) -- Line 1980
+	--[[ Upvalues[2]:
+		[1]: clearResults_upvr (readonly)
+		[2]: TextBox_upvr (readonly)
+	]]
+	if not arg1 then
+		clearResults_upvr()
+		TextBox_upvr.Text = ""
+	end
+end)
+tbl_10_upvr[Enum.KeyCode.Escape.Value] = function(arg1) -- Line 1988
+	--[[ Upvalues[2]:
+		[1]: clearResults_upvr (readonly)
+		[2]: TextBox_upvr (readonly)
+	]]
+	if arg1 then
+		clearResults_upvr()
+		TextBox_upvr.Text = ""
+	end
+end
+UserInputService_upvr.LastInputTypeChanged:Connect(function(arg1) -- Line 1993, Named "detectGamepad"
+	--[[ Upvalues[2]:
+		[1]: UserInputService_upvr (readonly)
+		[2]: Frame_6_upvr (readonly)
+	]]
+	if arg1 == Enum.UserInputType.Gamepad1 then
+		if not UserInputService_upvr.VREnabled then
+			Frame_6_upvr.Visible = false
+			return
+		end
+	end
+	Frame_6_upvr.Visible = true
+end)
+function TextBox_upvr() -- Line 2004
+	--[[ Upvalues[2]:
+		[1]: ScreenGui_upvr (readonly)
+		[2]: any_setOrder_result1_upvr (readonly)
+	]]
+	ScreenGui_upvr.Enabled = false
+	any_setOrder_result1_upvr:setEnabled(false)
+end
+GuiService_upvr.MenuOpened:Connect(TextBox_upvr)
+function TextBox_upvr() -- Line 2010
+	--[[ Upvalues[2]:
+		[1]: ScreenGui_upvr (readonly)
+		[2]: any_setOrder_result1_upvr (readonly)
+	]]
+	ScreenGui_upvr.Enabled = true
+	any_setOrder_result1_upvr:setEnabled(true)
+end
+GuiService_upvr.MenuClosed:Connect(TextBox_upvr)
+local function OnPreferredTransparencyChanged_upvr(arg1, arg2, arg3) -- Line 2017
+	--[[ Upvalues[3]:
+		[1]: GuiService_upvr (readonly)
+		[2]: var69_upvr (readonly)
+		[3]: tbl_5_upvr (readonly)
+	]]
+	if arg2 ~= Enum.UserInputState.Begin then
+	else
+		if not GuiService_upvr.SelectedObject then return end
+		for i_31 = 1, var69_upvr do
+			if tbl_5_upvr[i_31].Frame == GuiService_upvr.SelectedObject and tbl_5_upvr[i_31].Tool then
+				tbl_5_upvr[i_31]:MoveToInventory()
+				return
+			end
+		end
+	end
+end
+search_upvr = false
+TextBox_upvr = StarterGui_upvr:SetCoreGuiEnabled
+TextBox_upvr(Enum.CoreGuiType.Backpack, search_upvr)
+function module_upvr.OpenClose() -- Line 2033, Named "openClose"
+	--[[ Upvalues[14]:
+		[1]: tbl_9_upvr (readonly)
+		[2]: var359_upvw (read and write)
+		[3]: AdjustHotbarFrames_upvr (readonly)
+		[4]: var355_upvw (read and write)
+		[5]: var69_upvr (readonly)
+		[6]: tbl_5_upvr (readonly)
+		[7]: var62_upvw (read and write)
+		[8]: tbl_3_upvr (readonly)
+		[9]: UserInputService_upvr (readonly)
+		[10]: resizeGamepadHintsFrame_upvr (readonly)
+		[11]: Frame_4_upvr (readonly)
+		[12]: ContextActionService_upvr (readonly)
+		[13]: OnPreferredTransparencyChanged_upvr (readonly)
+		[14]: module_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	if not next(tbl_9_upvr) then
+		var359_upvw.Visible = not var359_upvw.Visible
+		AdjustHotbarFrames_upvr()
+		var355_upvw.Active = not var355_upvw.Active
+		for i_21 = 1, var69_upvr do
+			tbl_5_upvr[i_21]:SetClickability(not var359_upvw.Visible)
+			local _
+		end
+	end
+	if var359_upvw.Visible then
+		if var62_upvw then
+			if tbl_3_upvr[UserInputService_upvr:GetLastInputType()] then
+				resizeGamepadHintsFrame_upvr()
+				i_21 = UserInputService_upvr
+				Frame_4_upvr.Visible = not i_21.VREnabled
+			end
+			enableGamepadInventoryControl()
+			-- KONSTANTWARNING: GOTO [70] #57
+		end
+	else
+		if var62_upvw then
+			Frame_4_upvr.Visible = false
+		end
+		disableGamepadInventoryControl()
+	end
+	if var359_upvw.Visible then
+		ContextActionService_upvr:BindAction("BackpackRemoveSlot", OnPreferredTransparencyChanged_upvr, false, Enum.KeyCode.ButtonX)
+	else
+		ContextActionService_upvr:UnbindAction("BackpackRemoveSlot")
+	end
+	module_upvr.IsOpen = var359_upvw.Visible
+	module_upvr.StateChanged:Fire(var359_upvw.Visible)
+end
+while not LocalPlayer_upvw do
+	OnPreferredTransparencyChanged_upvr = task.wait
+	OnPreferredTransparencyChanged_upvr()
+	LocalPlayer_upvw = Players.LocalPlayer
+end
+OnPreferredTransparencyChanged_upvr = LocalPlayer_upvw.CharacterAdded
+TextBox_upvr = OnCharacterAdded
+OnPreferredTransparencyChanged_upvr = OnPreferredTransparencyChanged_upvr:Connect
+OnPreferredTransparencyChanged_upvr(TextBox_upvr)
+OnPreferredTransparencyChanged_upvr = LocalPlayer_upvw.Character
+if OnPreferredTransparencyChanged_upvr then
+	OnPreferredTransparencyChanged_upvr = OnCharacterAdded
+	OnPreferredTransparencyChanged_upvr(LocalPlayer_upvw.Character)
+end
+OnPreferredTransparencyChanged_upvr = UserInputService_upvr.InputBegan
+function TextBox_upvr(arg1, arg2) -- Line 1090, Named "OnInputBegan"
+	--[[ Upvalues[7]:
+		[1]: TextChatService_upvr (readonly)
+		[2]: var60_upvw (read and write)
+		[3]: var59_upvw (read and write)
+		[4]: Value_upvr (readonly)
+		[5]: tbl_10_upvr (readonly)
+		[6]: var46_upvw (read and write)
+		[7]: any_setOrder_result1_upvr (readonly)
+	]]
+	local function INLINED_6() -- Internal function, doesn't exist in bytecode
+		local var318 = tbl_10_upvr[arg1.KeyCode.Value]
+		return var318
+	end
+	if arg1.UserInputType == Enum.UserInputType.Keyboard and not var60_upvw and not TextChatService_upvr:FindFirstChildOfClass("ChatInputBarConfiguration").IsFocused and (var59_upvw or arg1.KeyCode.Value == Value_upvr) or INLINED_6() then
+		var318(arg2)
+	end
+	local UserInputType = arg1.UserInputType
+	if not arg2 and (UserInputType == Enum.UserInputType.MouseButton1 or UserInputType == Enum.UserInputType.Touch) then
+		if var46_upvw.Visible then
+			any_setOrder_result1_upvr:deselect()
+		end
+	end
+end
+OnPreferredTransparencyChanged_upvr = OnPreferredTransparencyChanged_upvr:Connect
+OnPreferredTransparencyChanged_upvr(TextBox_upvr)
+OnPreferredTransparencyChanged_upvr = UserInputService_upvr.TextBoxFocused
+function TextBox_upvr() -- Line 2096
+	--[[ Upvalues[1]:
+		[1]: var60_upvw (read and write)
+	]]
+	var60_upvw = true
+end
+OnPreferredTransparencyChanged_upvr = OnPreferredTransparencyChanged_upvr:Connect
+OnPreferredTransparencyChanged_upvr(TextBox_upvr)
+OnPreferredTransparencyChanged_upvr = UserInputService_upvr.TextBoxFocusReleased
+function TextBox_upvr() -- Line 2099
+	--[[ Upvalues[1]:
+		[1]: var60_upvw (read and write)
+	]]
+	var60_upvw = false
+end
+OnPreferredTransparencyChanged_upvr = OnPreferredTransparencyChanged_upvr:Connect
+OnPreferredTransparencyChanged_upvr(TextBox_upvr)
+function OnPreferredTransparencyChanged_upvr() -- Line 2104
+	--[[ Upvalues[3]:
+		[1]: var58_upvw (read and write)
+		[2]: Humanoid_upvw (read and write)
+		[3]: tbl_2_upvr (readonly)
+	]]
+	if var58_upvw then
+		if Humanoid_upvw then
+			Humanoid_upvw:UnequipTools()
+			if var58_upvw then
+				var58_upvw:ToggleSelect()
+				tbl_2_upvr[var58_upvw]:UpdateEquipView()
+				var58_upvw = nil
+			end
+		end
+	end
+end
+tbl_10_upvr[Value_upvr] = OnPreferredTransparencyChanged_upvr
+OnPreferredTransparencyChanged_upvr = UserInputService_upvr.LastInputTypeChanged
+TextBox_upvr = OnUISChanged
+OnPreferredTransparencyChanged_upvr = OnPreferredTransparencyChanged_upvr:Connect
+OnPreferredTransparencyChanged_upvr(TextBox_upvr)
+OnPreferredTransparencyChanged_upvr = OnUISChanged
+OnPreferredTransparencyChanged_upvr()
+TextBox_upvr = Enum.UserInputType.Gamepad1
+OnPreferredTransparencyChanged_upvr = UserInputService_upvr:GetGamepadConnected(TextBox_upvr)
+if OnPreferredTransparencyChanged_upvr then
+	OnPreferredTransparencyChanged_upvr = gamepadConnected
+	OnPreferredTransparencyChanged_upvr()
+end
+OnPreferredTransparencyChanged_upvr = UserInputService_upvr.GamepadConnected
+function TextBox_upvr(arg1) -- Line 2118
+	if arg1 == Enum.UserInputType.Gamepad1 then
+		gamepadConnected()
+	end
+end
+OnPreferredTransparencyChanged_upvr = OnPreferredTransparencyChanged_upvr:Connect
+OnPreferredTransparencyChanged_upvr(TextBox_upvr)
+OnPreferredTransparencyChanged_upvr = UserInputService_upvr.GamepadDisconnected
+function TextBox_upvr(arg1) -- Line 2123
+	if arg1 == Enum.UserInputType.Gamepad1 then
+		gamepadDisconnected()
+	end
+end
+OnPreferredTransparencyChanged_upvr = OnPreferredTransparencyChanged_upvr:Connect
+OnPreferredTransparencyChanged_upvr(TextBox_upvr)
+function OnPreferredTransparencyChanged_upvr(arg1, arg2) -- Line 2131, Named "SetBackpackEnabled"
+	--[[ Upvalues[1]:
+		[1]: var36_upvw (read and write)
+	]]
+	var36_upvw = arg2
+end
+module_upvr.SetBackpackEnabled = OnPreferredTransparencyChanged_upvr
+function OnPreferredTransparencyChanged_upvr(arg1) -- Line 2136, Named "IsOpened"
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	return module_upvr.IsOpen
+end
+module_upvr.IsOpened = OnPreferredTransparencyChanged_upvr
+function OnPreferredTransparencyChanged_upvr(arg1) -- Line 2141, Named "GetBackpackEnabled"
+	--[[ Upvalues[1]:
+		[1]: var36_upvw (read and write)
+	]]
+	return var36_upvw
+end
+module_upvr.GetBackpackEnabled = OnPreferredTransparencyChanged_upvr
+function OnPreferredTransparencyChanged_upvr(arg1) -- Line 2146, Named "GetStateChangedEvent"
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	return module_upvr.StateChanged
+end
+module_upvr.GetStateChangedEvent = OnPreferredTransparencyChanged_upvr
+OnPreferredTransparencyChanged_upvr = game:GetService("RunService").Heartbeat
+function TextBox_upvr() -- Line 2151
+	--[[ Upvalues[8]:
+		[1]: var36_upvw (read and write)
+		[2]: StarterGui_upvr (readonly)
+		[3]: var59_upvw (read and write)
+		[4]: var354_upvw (read and write)
+		[5]: var57_upvw (read and write)
+		[6]: var41_upvw (read and write)
+		[7]: ContextActionService_upvr (readonly)
+		[8]: var336_upvw (read and write)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [3] 4. Error Block 2 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [3] 4. Error Block 2 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [8] 8. Error Block 3 start (CF ANALYSIS FAILED)
+	local any_GetCore_result1 = StarterGui_upvr:GetCore("TopbarEnabled")
+	var59_upvw = any_GetCore_result1
+	var354_upvw.Visible = any_GetCore_result1
+	-- KONSTANTERROR: [8] 8. Error Block 3 end (CF ANALYSIS FAILED)
+end
+OnPreferredTransparencyChanged_upvr = OnPreferredTransparencyChanged_upvr:Connect
+OnPreferredTransparencyChanged_upvr(TextBox_upvr)
+function OnPreferredTransparencyChanged_upvr() -- Line 2156, Named "OnPreferredTransparencyChanged"
+	--[[ Upvalues[9]:
+		[1]: GuiService_upvr (readonly)
+		[2]: var15_upvw (read and write)
+		[3]: var14_upvr (readonly)
+		[4]: var359_upvw (read and write)
+		[5]: var21_upvw (read and write)
+		[6]: var20_upvr (readonly)
+		[7]: tbl_5_upvr (readonly)
+		[8]: var28_upvw (read and write)
+		[9]: Frame_6_upvr (readonly)
+	]]
+	local PreferredTransparency = GuiService_upvr.PreferredTransparency
+	var15_upvw = var14_upvr * PreferredTransparency
+	var359_upvw.BackgroundTransparency = var15_upvw
+	var21_upvw = var20_upvr * PreferredTransparency
+	for _, v_6 in ipairs(tbl_5_upvr) do
+		v_6.Frame.BackgroundTransparency = var21_upvw
+	end
+	var28_upvw = PreferredTransparency * 0.2
+	Frame_6_upvr.BackgroundTransparency = var28_upvw
+end
+TextButton_upvr = "PreferredTransparency"
+TextButton_upvr = OnPreferredTransparencyChanged_upvr
+GuiService_upvr:GetPropertyChangedSignal(TextButton_upvr):Connect(TextButton_upvr)
+return module_upvr

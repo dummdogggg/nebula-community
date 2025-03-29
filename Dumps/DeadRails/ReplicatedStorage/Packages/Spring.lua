@@ -1,153 +1,182 @@
 --[[
     Script: ReplicatedStorage.Packages.Spring
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
---!native
-local v0 = {
-    _type = "Spring"
-};
-v0.new = function(v1, v2, v3, v4) --[[ Line: 108 ]] --[[ Name: new ]]
-    -- upvalues: v0 (copy)
-    local v5 = v2 or 1;
-    local v6 = v3 or 1;
-    local v7 = v4 or os.clock;
-    return (setmetatable({
-        _clock = v7, 
-        _time = v7(), 
-        _position = v1, 
-        _velocity = v1 * 0, 
-        _target = v1, 
-        _damping = v5, 
-        _speed = v6, 
-        _initial = v1
-    }, v0));
-end;
-v0.Reset = function(v8, v9) --[[ Line: 132 ]] --[[ Name: Reset ]]
-    local v10 = v8._clock();
-    local v11 = v9 or v8._initial;
-    v8._position = v11;
-    v8._target = v11;
-    v8._velocity = 0 * v11;
-    v8._time = v10;
-end;
-v0.Impulse = function(v12, v13) --[[ Line: 148 ]] --[[ Name: Impulse ]]
-    v12.Velocity = v12.Velocity + v13;
-end;
-local function v36(v14, v15) --[[ Line: 152 ]] --[[ Name: _positionVelocity ]]
-    local l__position_0 = v14._position;
-    local l__velocity_0 = v14._velocity;
-    local l__target_0 = v14._target;
-    local l__damping_0 = v14._damping;
-    local l__speed_0 = v14._speed;
-    local v21 = l__speed_0 * (v15 - v14._time);
-    local v22 = l__damping_0 * l__damping_0;
-    local v23 = nil;
-    local v24 = nil;
-    local v25 = nil;
-    if v22 < 1 then
-        v23 = math.sqrt(1 - v22);
-        local v26 = math.exp(-l__damping_0 * v21) / v23;
-        v25 = v26 * math.cos(v23 * v21);
-        v24 = v26 * math.sin(v23 * v21);
-    elseif v22 == 1 then
-        v23 = 1;
-        local v27 = math.exp(-l__damping_0 * v21) / v23;
-        v25 = v27;
-        v24 = v27 * v21;
-    else
-        v23 = math.sqrt(v22 - 1);
-        local v28 = 2 * v23;
-        local v29 = math.exp((-l__damping_0 + v23) * v21) / v28;
-        local v30 = math.exp((-l__damping_0 - v23) * v21) / v28;
-        v25 = v29 + v30;
-        v24 = v29 - v30;
-    end;
-    local v31 = 1 - (v23 * v25 + l__damping_0 * v24);
-    local v32 = v24 / l__speed_0;
-    local v33 = l__speed_0 * v24;
-    local v34 = v23 * v25 - l__damping_0 * v24;
-    local v35 = l__target_0 - l__position_0;
-    return l__position_0 + v35 * v31 + l__velocity_0 * v32, v35 * v33 + l__velocity_0 * v34;
-end;
-v0.TimeSkip = function(v37, v38) --[[ Line: 196 ]] --[[ Name: TimeSkip ]]
-    -- upvalues: v36 (copy)
-    local v39 = v37._clock();
-    local v40, v41 = v36(v37, v39 + v38);
-    v37._position = v40;
-    v37._velocity = v41;
-    v37._time = v39;
-end;
-v0.__index = function(v42, v43) --[[ Line: 204 ]] --[[ Name: __index ]]
-    -- upvalues: v0 (copy), v36 (copy)
-    if v0[v43] then
-        return v0[v43];
-    elseif v43 == "Position" or v43 == "p" then
-        local v44, _ = v36(v42, v42._clock());
-        return v44;
-    elseif v43 == "Velocity" or v43 == "v" then
-        local _, v47 = v36(v42, v42._clock());
-        return v47;
-    elseif v43 == "Target" or v43 == "t" then
-        return v42._target;
-    elseif v43 == "Damping" or v43 == "d" then
-        return v42._damping;
-    elseif v43 == "Speed" or v43 == "s" then
-        return v42._speed;
-    elseif v43 == "Clock" then
-        return v42._clock;
-    else
-        error(string.format("%q is not a valid member of Spring.", (tostring(v43))), 2);
-        return;
-    end;
-end;
-v0.__newindex = function(v48, v49, v50) --[[ Line: 224 ]] --[[ Name: __newindex ]]
-    -- upvalues: v36 (copy)
-    local v51 = v48._clock();
-    if v49 == "Position" or v49 == "p" then
-        local _, v53 = v36(v48, v51);
-        v48._position = v50;
-        v48._velocity = v53;
-        v48._time = v51;
-        return;
-    elseif v49 == "Velocity" or v49 == "v" then
-        local v54, _ = v36(v48, v51);
-        v48._position = v54;
-        v48._velocity = v50;
-        v48._time = v51;
-        return;
-    elseif v49 == "Target" or v49 == "t" then
-        local v56, v57 = v36(v48, v51);
-        v48._position = v56;
-        v48._velocity = v57;
-        v48._target = v50;
-        v48._time = v51;
-        return;
-    elseif v49 == "Damping" or v49 == "d" then
-        local v58, v59 = v36(v48, v51);
-        v48._position = v58;
-        v48._velocity = v59;
-        v48._damping = v50;
-        v48._time = v51;
-        return;
-    elseif v49 == "Speed" or v49 == "s" then
-        local v60, v61 = v36(v48, v51);
-        v48._position = v60;
-        v48._velocity = v61;
-        v48._speed = v50 < 0 and 0 or v50;
-        v48._time = v51;
-        return;
-    elseif v49 == "Clock" then
-        local v62, v63 = v36(v48, v51);
-        v48._position = v62;
-        v48._velocity = v63;
-        v48._clock = v50;
-        v48._time = v50();
-        return;
-    else
-        error(string.format("%q is not a valid member of Spring.", (tostring(v49))), 2);
-        return;
-    end;
-end;
-return v0;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:49:25
+-- Luau version 6, Types version 3
+-- Time taken: 0.003646 seconds
+
+local module_2_upvr = {
+	_type = "Spring";
+}
+function module_2_upvr.new(arg1, arg2, arg3, arg4) -- Line 108
+	--[[ Upvalues[1]:
+		[1]: module_2_upvr (readonly)
+	]]
+	local var2 = arg4
+	if not var2 then
+		var2 = os.clock
+	end
+	local module = {
+		_clock = var2;
+		_time = var2();
+	}
+	module._position = arg1
+	module._velocity = arg1 * 0
+	module._target = arg1
+	module._damping = arg2 or 1
+	module._speed = arg3 or 1
+	module._initial = arg1
+	return setmetatable(module, module_2_upvr)
+end
+function module_2_upvr.Reset(arg1, arg2) -- Line 132
+	local var4 = arg2
+	if not var4 then
+		var4 = arg1._initial
+	end
+	arg1._position = var4
+	arg1._target = var4
+	arg1._velocity = 0 * var4
+	arg1._time = arg1._clock()
+end
+function module_2_upvr.Impulse(arg1, arg2) -- Line 148
+	arg1.Velocity += arg2
+end
+local function _positionVelocity_upvr(arg1, arg2) -- Line 152, Named "_positionVelocity"
+	local _position = arg1._position
+	local _velocity = arg1._velocity
+	local _damping = arg1._damping
+	local _speed = arg1._speed
+	local var9 = _speed * (arg2 - arg1._time)
+	local var10 = _damping * _damping
+	local var11
+	local var12
+	if var10 < 1 then
+		local squareroot_2 = math.sqrt(1 - var10)
+		local var14 = math.exp(-_damping * var9) / squareroot_2
+		var12 = var14 * math.cos(squareroot_2 * var9)
+		var11 = var14 * math.sin(squareroot_2 * var9)
+	elseif var10 == 1 then
+		local var15 = math.exp(-_damping * var9) / 1
+		var12 = var15
+		var11 = var15 * var9
+	else
+		local squareroot = math.sqrt(var10 - 1)
+		local var17 = 2 * squareroot
+		local var18 = math.exp((-_damping + squareroot) * var9) / var17
+		local var19 = math.exp((-_damping - squareroot) * var9) / var17
+		var12 = var18 + var19
+		var11 = var18 - var19
+	end
+	local var20 = arg1._target - _position
+	return _position + var20 * ((1) - (squareroot * var12 + _damping * var11)) + (_velocity) * (var11 / _speed), (var20) * (_speed * var11) + _velocity * (squareroot * var12 - _damping * var11)
+end
+function module_2_upvr.TimeSkip(arg1, arg2) -- Line 196
+	--[[ Upvalues[1]:
+		[1]: _positionVelocity_upvr (readonly)
+	]]
+	local any__clock_result1_2 = arg1._clock()
+	local _positionVelocity_result1_3, _positionVelocity_result2_6 = _positionVelocity_upvr(arg1, any__clock_result1_2 + arg2)
+	arg1._position = _positionVelocity_result1_3
+	arg1._velocity = _positionVelocity_result2_6
+	arg1._time = any__clock_result1_2
+end
+function module_2_upvr.__index(arg1, arg2) -- Line 204
+	--[[ Upvalues[2]:
+		[1]: module_2_upvr (readonly)
+		[2]: _positionVelocity_upvr (readonly)
+	]]
+	if module_2_upvr[arg2] then
+		return module_2_upvr[arg2]
+	end
+	if arg2 == "Position" or arg2 == 'p' then
+		local _positionVelocity_result1_7, _positionVelocity_upvr_result2 = _positionVelocity_upvr(arg1, arg1._clock())
+		return _positionVelocity_result1_7
+	end
+	if arg2 == "Velocity" or arg2 == 'v' then
+		local _, _positionVelocity_result2_2 = _positionVelocity_upvr(arg1, arg1._clock())
+		return _positionVelocity_result2_2
+	end
+	if arg2 == "Target" or arg2 == 't' then
+		return arg1._target
+	end
+	if arg2 == "Damping" or arg2 == 'd' then
+		return arg1._damping
+	end
+	if arg2 == "Speed" or arg2 == 's' then
+		return arg1._speed
+	end
+	if arg2 == "Clock" then
+		return arg1._clock
+	end
+	error(string.format("%q is not a valid member of Spring.", tostring(arg2)), 2)
+end
+function module_2_upvr.__newindex(arg1, arg2, arg3) -- Line 224
+	--[[ Upvalues[1]:
+		[1]: _positionVelocity_upvr (readonly)
+	]]
+	local any__clock_result1 = arg1._clock()
+	if arg2 == "Position" or arg2 == 'p' then
+		local _, _positionVelocity_result2_7 = _positionVelocity_upvr(arg1, any__clock_result1)
+		arg1._position = arg3
+		arg1._velocity = _positionVelocity_result2_7
+		arg1._time = any__clock_result1
+	else
+		if arg2 == "Velocity" or arg2 == 'v' then
+			local _positionVelocity_result1_6, _ = _positionVelocity_upvr(arg1, any__clock_result1)
+			arg1._position = _positionVelocity_result1_6
+			arg1._velocity = arg3
+			arg1._time = any__clock_result1
+			return
+		end
+		if arg2 == "Target" or arg2 == 't' then
+			local _positionVelocity_result1, _positionVelocity_result2 = _positionVelocity_upvr(arg1, any__clock_result1)
+			arg1._position = _positionVelocity_result1
+			arg1._velocity = _positionVelocity_result2
+			arg1._target = arg3
+			arg1._time = any__clock_result1
+			return
+		end
+		if arg2 == "Damping" or arg2 == 'd' then
+			local _positionVelocity_result1_5, _positionVelocity_result2_5 = _positionVelocity_upvr(arg1, any__clock_result1)
+			arg1._position = _positionVelocity_result1_5
+			arg1._velocity = _positionVelocity_result2_5
+			arg1._damping = arg3
+			arg1._time = any__clock_result1
+			do
+				return
+			end
+			local var37
+		end
+		if arg2 == "Speed" or arg2 == 's' then
+			var37 = any__clock_result1
+			local _positionVelocity_result1_4, _positionVelocity_result2_4 = _positionVelocity_upvr(arg1, var37)
+			arg1._position = _positionVelocity_result1_4
+			arg1._velocity = _positionVelocity_result2_4
+			if arg3 < 0 then
+				var37 = 0
+			else
+				var37 = arg3
+			end
+			arg1._speed = var37
+			arg1._time = any__clock_result1
+			return
+		end
+		if arg2 == "Clock" then
+			var37 = any__clock_result1
+			local _positionVelocity_result1_2, _positionVelocity_result2_3 = _positionVelocity_upvr(arg1, var37)
+			arg1._position = _positionVelocity_result1_2
+			arg1._velocity = _positionVelocity_result2_3
+			arg1._clock = arg3
+			var37 = arg3()
+			arg1._time = var37
+			return
+		end
+		error(string.format("%q is not a valid member of Spring.", tostring(arg2)), 2)
+	end
+end
+return module_2_upvr

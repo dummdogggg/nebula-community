@@ -1,68 +1,107 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.centau_vide@0.3.1.vide.context
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:49:05
+-- Luau version 6, Types version 3
+-- Time taken: 0.001901 seconds
+
 if not game then
-    script = require("test/relative-string");
-end;
-local v0 = require(script.Parent.throw);
-local v1 = require(script.Parent.graph);
-local l_create_node_0 = v1.create_node;
-local l_get_scope_0 = v1.get_scope;
-local l_push_scope_0 = v1.push_scope;
-local l_pop_scope_0 = v1.pop_scope;
-local l_set_context_0 = v1.set_context;
-local v7 = newproxy();
-local v8 = 0;
-return function(...) --[[ Line: 17 ]] --[[ Name: context ]]
-    -- upvalues: v8 (ref), l_get_scope_0 (copy), v7 (copy), v0 (copy), l_create_node_0 (copy), l_set_context_0 (copy), l_push_scope_0 (copy), l_pop_scope_0 (copy)
-    v8 = v8 + 1;
-    local l_v8_0 = v8;
-    local v10 = select("#", ...) > 0;
-    local v11 = ...;
-    return function(...) --[[ Line: 24 ]]
-        -- upvalues: l_get_scope_0 (ref), l_v8_0 (copy), v7 (ref), v10 (copy), v11 (copy), v0 (ref), l_create_node_0 (ref), l_set_context_0 (ref), l_push_scope_0 (ref), l_pop_scope_0 (ref)
-        local v12 = l_get_scope_0();
-        if select("#", ...) == 0 then
-            while true do
-                if v12 then
-                    local l_context_0 = v12.context;
-                    if not l_context_0 then
-                        v12 = v12.owner;
-                    else
-                        local v14 = l_context_0[l_v8_0];
-                        if v14 == nil then
-                            v12 = v12.owner;
-                        elseif v14 ~= v7 then
-                            return v14;
-                        else
-                            return nil;
-                        end;
-                    end;
-                elseif v10 ~= nil then
-                    return v11;
-                else
-                    v0("attempt to get context when no context is set and no default context is set");
-                    return nil;
-                end;
-            end;
-        elseif not v12 then
-            return v0("attempt to set context outside of a vide scope");
-        else
-            local v15, v16 = ...;
-            local v17 = l_create_node_0(v12, false, false);
-            l_set_context_0(v17, l_v8_0, if v15 == nil then v7 else v15);
-            l_push_scope_0(v17);
-            local v19, v20 = xpcall(v16, function(v18) --[[ Line: 61 ]] --[[ Name: efn ]]
-                return debug.traceback(v18, 3);
-            end);
-            l_pop_scope_0();
-            if not v19 then
-                v0((("error while running context:\n\n%*"):format(v20)));
-            end;
-            return v20;
-        end;
-    end;
-end;
+	script = require("test/relative-string") -- Setting global
+end
+local graph = require(script.Parent.graph)
+local var2_upvw = 0
+local get_scope_upvr = graph.get_scope
+local newproxy_result1_upvr = newproxy()
+local throw_upvr = require(script.Parent.throw)
+local create_node_upvr = graph.create_node
+local set_context_upvr = graph.set_context
+local push_scope_upvr = graph.push_scope
+local pop_scope_upvr = graph.pop_scope
+return function(...) -- Line 17, Named "context"
+	--[[ Upvalues[8]:
+		[1]: var2_upvw (read and write)
+		[2]: get_scope_upvr (readonly)
+		[3]: newproxy_result1_upvr (readonly)
+		[4]: throw_upvr (readonly)
+		[5]: create_node_upvr (readonly)
+		[6]: set_context_upvr (readonly)
+		[7]: push_scope_upvr (readonly)
+		[8]: pop_scope_upvr (readonly)
+	]]
+	var2_upvw += 1
+	local var10_upvr
+	if 0 >= select('#', ...) then
+		var10_upvr = false
+	else
+		var10_upvr = true
+	end
+	local var12_upvr = ...
+	return function(...) -- Line 24
+		--[[ Upvalues[10]:
+			[1]: get_scope_upvr (copied, readonly)
+			[2]: var2_upvw (readonly)
+			[3]: newproxy_result1_upvr (copied, readonly)
+			[4]: var10_upvr (readonly)
+			[5]: var12_upvr (readonly)
+			[6]: throw_upvr (copied, readonly)
+			[7]: create_node_upvr (copied, readonly)
+			[8]: set_context_upvr (copied, readonly)
+			[9]: push_scope_upvr (copied, readonly)
+			[10]: pop_scope_upvr (copied, readonly)
+		]]
+		local var3_result1 = get_scope_upvr()
+		local efn
+		if select('#', ...) == 0 then
+			while var3_result1 do
+				local context = var3_result1.context
+				if not context then
+					var3_result1 = var3_result1.owner
+				else
+					local var16 = context[var2_upvw]
+					if var16 == nil then
+						var3_result1 = var3_result1.owner
+					else
+						if var16 ~= newproxy_result1_upvr then
+							return var16
+						end
+						return nil
+					end
+				end
+			end
+			if var10_upvr ~= nil then
+				return var12_upvr
+			end
+			throw_upvr("attempt to get context when no context is set and no default context is set")
+		else
+			if not var3_result1 then
+				return throw_upvr("attempt to set context outside of a vide scope")
+			end
+			local var17, var18 = ...
+			local var6_result1 = create_node_upvr(var3_result1, false, false)
+			if var17 == nil then
+				efn = newproxy_result1_upvr
+			else
+				efn = var17
+			end
+			set_context_upvr(var6_result1, var2_upvw, efn)
+			push_scope_upvr(var6_result1)
+			function efn(arg1) -- Line 61
+				return debug.traceback(arg1, 3)
+			end
+			local xpcall_result1, xpcall_result2 = xpcall(var18, efn)
+			efn = pop_scope_upvr
+			efn()
+			if not xpcall_result1 then
+				efn = throw_upvr
+				efn(`error while running context:\n\n{xpcall_result2}`)
+			end
+			return xpcall_result2
+		end
+		return nil
+	end
+end

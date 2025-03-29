@@ -1,38 +1,55 @@
 --[[
     Script: ReplicatedStorage.Client.LocalPlayerObjectsContainer
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local l_Players_0 = game:GetService("Players");
-local v2 = require(l_ReplicatedStorage_0.Packages.CharacterLoadedWrapper);
-local v3 = require(l_ReplicatedStorage_0.Shared.PlayerClassData);
-local v4 = require(l_ReplicatedStorage_0.Client.Controllers.PlayerDataController);
-local l_LocalPlayer_0 = l_Players_0.LocalPlayer;
-local v6 = {
-    _objects = {}
-};
-v6.registerLocalPlayer = function() --[[ Line: 28 ]] --[[ Name: registerLocalPlayer ]]
-    -- upvalues: v4 (copy), v6 (copy), v2 (copy), l_LocalPlayer_0 (copy), v3 (copy)
-    local l_Data_0 = v4.getPlayerDataReplica().Data;
-    v6._objects = {
-        _characterLoadedWrapper = v2.new(l_LocalPlayer_0), 
-        _playerClassData = v3.new(l_Data_0.currentClass, l_Data_0.classData)
-    };
-end;
-v6.waitForRegisteredAsync = function() --[[ Line: 37 ]] --[[ Name: waitForRegisteredAsync ]]
-    -- upvalues: v6 (copy)
-    while not next(v6._objects) do
-        task.wait();
-    end;
-end;
-v6.getCharacterLoadedWrapper = function() --[[ Line: 43 ]] --[[ Name: getCharacterLoadedWrapper ]]
-    -- upvalues: v6 (copy)
-    return v6._objects._characterLoadedWrapper;
-end;
-v6.getPlayerClassData = function() --[[ Line: 47 ]] --[[ Name: getPlayerClassData ]]
-    -- upvalues: v6 (copy)
-    return v6._objects._playerClassData;
-end;
-return v6;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:45:46
+-- Luau version 6, Types version 3
+-- Time taken: 0.001150 seconds
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local module_upvr = {
+	_objects = {};
+}
+local PlayerDataController_upvr = require(ReplicatedStorage.Client.Controllers.PlayerDataController)
+local CharacterLoadedWrapper_upvr = require(ReplicatedStorage.Packages.CharacterLoadedWrapper)
+local LocalPlayer_upvr = game:GetService("Players").LocalPlayer
+local PlayerClassData_upvr = require(ReplicatedStorage.Shared.PlayerClassData)
+function module_upvr.registerLocalPlayer() -- Line 28
+	--[[ Upvalues[5]:
+		[1]: PlayerDataController_upvr (readonly)
+		[2]: module_upvr (readonly)
+		[3]: CharacterLoadedWrapper_upvr (readonly)
+		[4]: LocalPlayer_upvr (readonly)
+		[5]: PlayerClassData_upvr (readonly)
+	]]
+	local Data = PlayerDataController_upvr.getPlayerDataReplica().Data
+	module_upvr._objects = {
+		_characterLoadedWrapper = CharacterLoadedWrapper_upvr.new(LocalPlayer_upvr);
+		_playerClassData = PlayerClassData_upvr.new(Data.currentClass, Data.classData);
+	}
+end
+function module_upvr.waitForRegisteredAsync() -- Line 37
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	while not next(module_upvr._objects) do
+		task.wait()
+	end
+end
+function module_upvr.getCharacterLoadedWrapper() -- Line 43
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	return module_upvr._objects._characterLoadedWrapper
+end
+function module_upvr.getPlayerClassData() -- Line 47
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	return module_upvr._objects._playerClassData
+end
+return module_upvr

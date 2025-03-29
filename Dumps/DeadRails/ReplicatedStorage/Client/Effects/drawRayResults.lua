@@ -1,19 +1,26 @@
 --[[
     Script: ReplicatedStorage.Client.Effects.drawRayResults
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_Shared_0 = game:GetService("ReplicatedStorage").Shared;
-local _ = require(l_Shared_0.Utils.castRays);
-local v2 = require("./bulletTrail");
-local v3 = require("./bulletImpact");
-return function(v4, v5, v6) --[[ Line: 9 ]] --[[ Name: drawRayResults ]]
-    -- upvalues: v2 (copy), v3 (copy)
-    for _, v8 in v6 do
-        v2(v5, v8.position);
-        if v8.instance then
-            v3(v4, v8);
-        end;
-    end;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:13
+-- Luau version 6, Types version 3
+-- Time taken: 0.000595 seconds
+
+local ._bulletTrail_upvr = require("./bulletTrail")
+local ._bulletImpact_upvr = require("./bulletImpact")
+return function(arg1, arg2, arg3) -- Line 9, Named "drawRayResults"
+	--[[ Upvalues[2]:
+		[1]: ._bulletTrail_upvr (readonly)
+		[2]: ._bulletImpact_upvr (readonly)
+	]]
+	for _, v in arg3 do
+		._bulletTrail_upvr(arg2, v.position)
+		if v.instance then
+			._bulletImpact_upvr(arg1, v)
+		end
+	end
+end

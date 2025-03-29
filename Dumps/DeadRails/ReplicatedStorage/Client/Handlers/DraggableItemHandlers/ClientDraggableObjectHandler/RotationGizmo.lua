@@ -1,105 +1,121 @@
 --[[
     Script: ReplicatedStorage.Client.Handlers.DraggableItemHandlers.ClientDraggableObjectHandler.RotationGizmo
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local l_RunService_0 = game:GetService("RunService");
-local v2 = require(l_ReplicatedStorage_0.Packages.Trove);
-local v3 = require(l_ReplicatedStorage_0.Packages.Spring);
-local l_tick_0 = tick;
-local l_Instance_0 = script:WaitForChild("Instance");
-local v6 = {};
-v6.__index = v6;
-v6.new = function(v7) --[[ Line: 31 ]] --[[ Name: new ]]
-    -- upvalues: l_RunService_0 (copy), v2 (copy), l_Instance_0 (copy), v3 (copy), l_tick_0 (copy), v6 (copy)
-    assert(l_RunService_0:IsClient(), "RotationGizmo can only be created on the client");
-    local v8 = v2.new();
-    local v9 = l_Instance_0:Clone();
-    local v10 = {
-        _trove = v8, 
-        _currentAxisSpring = v3.new(1, 1, 20, l_tick_0), 
-        _otherAxisSpring = v3.new(1, 1, 20, l_tick_0), 
-        _boundInstance = v7, 
-        _gizmoInstance = v9, 
-        _currentAxis = Enum.Axis.X, 
-        _destroyed = false
-    };
-    setmetatable(v10, v6);
-    local v11 = 0;
-    local l_v7_ExtentsSize_0 = v7:GetExtentsSize();
-    local l_X_0 = l_v7_ExtentsSize_0.X;
-    local l_Y_0 = l_v7_ExtentsSize_0.Y;
-    local l_Z_0 = l_v7_ExtentsSize_0.Z;
-    if v11 < l_X_0 then
-        v11 = l_X_0;
-    elseif v11 < l_Y_0 then
-        v11 = l_Y_0;
-    elseif v11 < l_Z_0 then
-        v11 = l_Z_0;
-    end;
-    local v16 = math.clamp(v11 * 1.4142135623730951 * 1.1, 1, 3) / 2;
-    v10._gizmoInstance.X.InnerRadius = v16 - 0.1;
-    v10._gizmoInstance.Y.InnerRadius = v16 - 0.1;
-    v10._gizmoInstance.Z.InnerRadius = v16 - 0.1;
-    v10._gizmoInstance.X.Radius = v16;
-    v10._gizmoInstance.Y.Radius = v16;
-    v10._gizmoInstance.Z.Radius = v16;
-    v8:Add(v9);
-    v8:Add(l_RunService_0.RenderStepped:Connect(function() --[[ Line: 75 ]]
-        -- upvalues: v10 (copy)
-        v10:update();
-    end));
-    v8:Add(v7.Destroying:Connect(function() --[[ Line: 79 ]]
-        -- upvalues: v10 (copy)
-        v10:destroy();
-    end));
-    return v10;
-end;
-v6.update = function(v17) --[[ Line: 86 ]] --[[ Name: update ]]
-    if v17._destroyed or not v17._boundInstance then
-        return;
-    else
-        local l_Pivot_0 = v17._boundInstance:GetPivot();
-        v17._gizmoInstance:PivotTo(l_Pivot_0);
-        for _, v20 in Enum.Axis:GetEnumItems() do
-            local l_FirstChild_0 = v17._gizmoInstance:FindFirstChild(v20.Name);
-            if l_FirstChild_0 then
-                l_FirstChild_0.Transparency = if v17._currentAxis == v20 then v17._currentAxisSpring.Position else v17._otherAxisSpring.Position;
-            end;
-        end;
-        return;
-    end;
-end;
-v6.setCurrentAxis = function(v22, v23) --[[ Line: 103 ]] --[[ Name: setCurrentAxis ]]
-    v22._currentAxis = v23;
-end;
-v6.setParent = function(v24, v25) --[[ Line: 107 ]] --[[ Name: setParent ]]
-    if v24._destroyed then
-        return;
-    else
-        v24._gizmoInstance.Parent = v25;
-        return;
-    end;
-end;
-v6.show = function(v26) --[[ Line: 115 ]] --[[ Name: show ]]
-    v26._currentAxisSpring.Target = 0.2;
-    v26._otherAxisSpring.Target = 0.8;
-end;
-v6.hide = function(v27) --[[ Line: 120 ]] --[[ Name: hide ]]
-    v27._currentAxisSpring.Target = 1;
-    v27._otherAxisSpring.Target = 1;
-end;
-v6.destroy = function(v28) --[[ Line: 125 ]] --[[ Name: destroy ]]
-    if v28._destroyed then
-        return;
-    else
-        v28._destroyed = true;
-        v28._trove:Destroy();
-        return;
-    end;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:35
+-- Luau version 6, Types version 3
+-- Time taken: 0.003110 seconds
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local tbl_upvr = {}
+tbl_upvr.__index = tbl_upvr
+local RunService_upvr = game:GetService("RunService")
+local Trove_upvr = require(ReplicatedStorage.Packages.Trove)
+local Instance_upvr = script:WaitForChild("Instance")
+local Spring_upvr = require(ReplicatedStorage.Packages.Spring)
+local tick_upvr = tick
+function tbl_upvr.new(arg1) -- Line 31
+	--[[ Upvalues[6]:
+		[1]: RunService_upvr (readonly)
+		[2]: Trove_upvr (readonly)
+		[3]: Instance_upvr (readonly)
+		[4]: Spring_upvr (readonly)
+		[5]: tick_upvr (readonly)
+		[6]: tbl_upvr (readonly)
+	]]
+	assert(RunService_upvr:IsClient(), "RotationGizmo can only be created on the client")
+	local any_new_result1 = Trove_upvr.new()
+	local clone = Instance_upvr:Clone()
+	local module_upvr = {
+		_trove = any_new_result1;
+		_currentAxisSpring = Spring_upvr.new(1, 1, 20, tick_upvr);
+		_otherAxisSpring = Spring_upvr.new(1, 1, 20, tick_upvr);
+	}
+	module_upvr._boundInstance = arg1
+	module_upvr._gizmoInstance = clone
+	module_upvr._currentAxis = Enum.Axis.X
+	module_upvr._destroyed = false
+	setmetatable(module_upvr, tbl_upvr)
+	local var11 = 0
+	local any_GetExtentsSize_result1 = arg1:GetExtentsSize()
+	local X = any_GetExtentsSize_result1.X
+	local Y = any_GetExtentsSize_result1.Y
+	local Z = any_GetExtentsSize_result1.Z
+	if var11 < X then
+		var11 = X
+	elseif var11 < Y then
+		var11 = Y
+	elseif var11 < Z then
+		var11 = Z
+	end
+	local var16 = math.clamp(var11 * 1.4142135623730951 * 1.1, 1, 3) / 2
+	module_upvr._gizmoInstance.X.InnerRadius = var16 - 0.1
+	module_upvr._gizmoInstance.Y.InnerRadius = var16 - 0.1
+	module_upvr._gizmoInstance.Z.InnerRadius = var16 - 0.1
+	module_upvr._gizmoInstance.X.Radius = var16
+	module_upvr._gizmoInstance.Y.Radius = var16
+	module_upvr._gizmoInstance.Z.Radius = var16
+	any_new_result1:Add(clone)
+	any_new_result1:Add(RunService_upvr.RenderStepped:Connect(function() -- Line 75
+		--[[ Upvalues[1]:
+			[1]: module_upvr (readonly)
+		]]
+		module_upvr:update()
+	end))
+	any_new_result1:Add(arg1.Destroying:Connect(function() -- Line 79
+		--[[ Upvalues[1]:
+			[1]: module_upvr (readonly)
+		]]
+		module_upvr:destroy()
+	end))
+	return module_upvr
+end
+function tbl_upvr.update(arg1) -- Line 86
+	if arg1._destroyed or not arg1._boundInstance then
+	else
+		arg1._gizmoInstance:PivotTo(arg1._boundInstance:GetPivot())
+		for _, v in Enum.Axis:GetEnumItems() do
+			local SOME = arg1._gizmoInstance:FindFirstChild(v.Name)
+			local var27
+			if SOME then
+				if arg1._currentAxis == v then
+					var27 = arg1._currentAxisSpring.Position
+				else
+					var27 = arg1._otherAxisSpring.Position
+				end
+				SOME.Transparency = var27
+			end
+		end
+	end
+end
+function tbl_upvr.setCurrentAxis(arg1, arg2) -- Line 103
+	arg1._currentAxis = arg2
+end
+function tbl_upvr.setParent(arg1, arg2) -- Line 107
+	if arg1._destroyed then
+	else
+		arg1._gizmoInstance.Parent = arg2
+	end
+end
+function tbl_upvr.show(arg1) -- Line 115
+	arg1._currentAxisSpring.Target = 0.2
+	arg1._otherAxisSpring.Target = 0.8
+end
+function tbl_upvr.hide(arg1) -- Line 120
+	arg1._currentAxisSpring.Target = 1
+	arg1._otherAxisSpring.Target = 1
+end
+function tbl_upvr.destroy(arg1) -- Line 125
+	if arg1._destroyed then
+	else
+		arg1._destroyed = true
+		arg1._trove:Destroy()
+	end
+end
 return {
-    new = v6.new
-};
+	new = tbl_upvr.new;
+}

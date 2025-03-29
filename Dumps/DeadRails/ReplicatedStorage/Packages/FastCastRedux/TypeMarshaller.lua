@@ -1,26 +1,31 @@
 --[[
     Script: ReplicatedStorage.Packages.FastCastRedux.TypeMarshaller
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_typeof_0 = typeof;
-return function(v1) --[[ Line: 5 ]] --[[ Name: typeof ]]
-    -- upvalues: l_typeof_0 (copy)
-    local v2 = l_typeof_0(v1);
-    if v2 ~= "table" then
-        return v2;
-    else
-        local v3 = getmetatable(v1);
-        if l_typeof_0(v3) ~= "table" then
-            return v2;
-        else
-            local l___type_0 = v3.__type;
-            if l___type_0 == nil then
-                return v2;
-            else
-                return l___type_0;
-            end;
-        end;
-    end;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:30
+-- Luau version 6, Types version 3
+-- Time taken: 0.000508 seconds
+
+local typeof_upvr = typeof
+return function(arg1) -- Line 5, Named "typeof"
+	--[[ Upvalues[1]:
+		[1]: typeof_upvr (readonly)
+	]]
+	local typeof_upvr_result1 = typeof_upvr(arg1)
+	if typeof_upvr_result1 ~= "table" then
+		return typeof_upvr_result1
+	end
+	local getmetatable_result1 = getmetatable(arg1)
+	if typeof_upvr(getmetatable_result1) ~= "table" then
+		return typeof_upvr_result1
+	end
+	local __type = getmetatable_result1.__type
+	if __type == nil then
+		return typeof_upvr_result1
+	end
+	return __type
+end

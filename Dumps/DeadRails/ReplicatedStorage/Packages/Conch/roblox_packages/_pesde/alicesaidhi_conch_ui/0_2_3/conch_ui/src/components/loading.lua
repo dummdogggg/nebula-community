@@ -1,81 +1,128 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.alicesaidhi+conch_ui.0.2.3.conch_ui.src.components.loading
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require("../theme");
-local v1 = require("../../roblox_packages/vide");
-local l_create_0 = v1.create;
-local l_source_0 = v1.source;
-local l_cleanup_0 = v1.cleanup;
-local l_read_0 = v1.read;
-local v6 = {
-    "-", 
-    "/", 
-    "|", 
-    "\\"
-};
-return function(v7) --[[ Line: 34 ]]
-    -- upvalues: l_source_0 (copy), l_cleanup_0 (copy), l_create_0 (copy), l_read_0 (copy), v6 (copy), v0 (copy)
-    local v8 = l_source_0(0);
-    local v9 = task.spawn(function() --[[ Line: 36 ]]
-        -- upvalues: v8 (copy)
-        while true do
-            v8(v8() + task.wait());
-        end;
-    end);
-    l_cleanup_0(function() --[[ Line: 42 ]]
-        -- upvalues: v9 (copy)
-        task.cancel(v9);
-    end);
-    return l_create_0("TextLabel")({
-        Size = function() --[[ Line: 45 ]] --[[ Name: Size ]]
-            -- upvalues: l_read_0 (ref), v7 (copy)
-            local v10 = l_read_0(v7.width);
-            local v11 = l_read_0(v7.height);
-            return UDim2.new(0, v10 or 0, 0, v11 or 0);
-        end, 
-        Position = function() --[[ Line: 49 ]] --[[ Name: Position ]]
-            -- upvalues: l_read_0 (ref), v7 (copy)
-            return UDim2.new(l_read_0(v7.xs) or 0, l_read_0(v7.x) or 0, l_read_0(v7.ys) or 0, l_read_0(v7.y) or 0);
-        end, 
-        AnchorPoint = v7.anchor and function() --[[ Line: 58 ]]
-            -- upvalues: l_read_0 (ref), v7 (copy)
-            return Vector2.new(l_read_0(v7.anchor)[1] or 0, l_read_0(v7.anchor)[2] or 0);
-        end or nil, 
-        AutomaticSize = v7.auto, 
-        LayoutOrder = v7.layout, 
-        BackgroundTransparency = 1, 
-        Text = function() --[[ Line: 70 ]] --[[ Name: Text ]]
-            -- upvalues: v6 (ref), v8 (copy), v7 (copy)
-            return (("%* - %*\ts"):format(v6[v8() * v7.speed // 1 % 4 + 1], v8() * 100 // 1 / 100));
-        end, 
-        TextSize = v7.text_size, 
-        TextColor3 = v7.color or function() --[[ Line: 74 ]]
-            -- upvalues: v7 (copy), l_read_0 (ref), v0 (ref)
-            local l_text_style_0 = v7.text_style;
-            if l_read_0(l_text_style_0) == "normal" then
-                return (v0.text());
-            elseif l_read_0(l_text_style_0) == "warn" then
-                return (v0.text_warn());
-            elseif l_read_0(l_text_style_0) == "error" then
-                return (v0.text_error());
-            elseif l_read_0(l_text_style_0) == "info" then
-                return (v0.text_info());
-            else
-                return (v0.text());
-            end;
-        end, 
-        FontFace = function() --[[ Line: 83 ]] --[[ Name: FontFace ]]
-            -- upvalues: v0 (ref), l_read_0 (ref), v7 (copy)
-            local v13 = v0.font();
-            local v14 = l_read_0(v7.weight) or Enum.FontWeight.Regular;
-            return Font.new(v13.Family, v14);
-        end, 
-        TextWrapped = v7.wrapped, 
-        TextXAlignment = v7.xalignment, 
-        BackgroundTransparency = 1; 
-        unpack(v7)
-    });
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:48:39
+-- Luau version 6, Types version 3
+-- Time taken: 0.002189 seconds
+
+local ._____roblox_packages_vide = require("../../roblox_packages/vide")
+local module_upvr = {'-', '/', '|', '\\'}
+local source_upvr = ._____roblox_packages_vide.source
+local cleanup_upvr = ._____roblox_packages_vide.cleanup
+local create_upvr = ._____roblox_packages_vide.create
+local read_upvr = ._____roblox_packages_vide.read
+local .__theme_upvr = require("../theme")
+return function(arg1) -- Line 34
+	--[[ Upvalues[6]:
+		[1]: source_upvr (readonly)
+		[2]: cleanup_upvr (readonly)
+		[3]: create_upvr (readonly)
+		[4]: read_upvr (readonly)
+		[5]: module_upvr (readonly)
+		[6]: .__theme_upvr (readonly)
+	]]
+	local source_upvr_result1_upvr = source_upvr(0)
+	local task_spawn_result1_upvr = task.spawn(function() -- Line 36
+		--[[ Upvalues[1]:
+			[1]: source_upvr_result1_upvr (readonly)
+		]]
+		while true do
+			source_upvr_result1_upvr(source_upvr_result1_upvr() + task.wait())
+		end
+	end)
+	cleanup_upvr(function() -- Line 42
+		--[[ Upvalues[1]:
+			[1]: task_spawn_result1_upvr (readonly)
+		]]
+		task.cancel(task_spawn_result1_upvr)
+	end)
+	local module = {}
+	local function Position() -- Line 45, Named "Size"
+		--[[ Upvalues[2]:
+			[1]: read_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+		]]
+		return UDim2.new(0, read_upvr(arg1.width) or 0, 0, read_upvr(arg1.height) or 0)
+	end
+	module.Size = Position
+	function Position() -- Line 49
+		--[[ Upvalues[2]:
+			[1]: read_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+		]]
+		return UDim2.new(read_upvr(arg1.xs) or 0, read_upvr(arg1.x) or 0, read_upvr(arg1.ys) or 0, read_upvr(arg1.y) or 0)
+	end
+	local var15 = Position
+	module.Position = var15
+	if arg1.anchor then
+		function var15() -- Line 58
+			--[[ Upvalues[2]:
+				[1]: read_upvr (copied, readonly)
+				[2]: arg1 (readonly)
+			]]
+			return Vector2.new(read_upvr(arg1.anchor)[1] or 0, read_upvr(arg1.anchor)[2] or 0)
+		end
+	else
+		var15 = nil
+	end
+	module.AnchorPoint = var15
+	module.AutomaticSize = arg1.auto
+	module.LayoutOrder = arg1.layout
+	module.BackgroundTransparency = 1
+	function module.Text() -- Line 70
+		--[[ Upvalues[3]:
+			[1]: module_upvr (copied, readonly)
+			[2]: source_upvr_result1_upvr (readonly)
+			[3]: arg1 (readonly)
+		]]
+		return `{module_upvr[source_upvr_result1_upvr() * arg1.speed // 1 % 4 + 1]} - {source_upvr_result1_upvr() * 100 // 1 / 100}\ts`
+	end
+	module.TextSize = arg1.text_size
+	local color = arg1.color
+	if not color then
+		function color() -- Line 74
+			--[[ Upvalues[3]:
+				[1]: arg1 (readonly)
+				[2]: read_upvr (copied, readonly)
+				[3]: .__theme_upvr (copied, readonly)
+			]]
+			local text_style = arg1.text_style
+			if read_upvr(text_style) == "normal" then
+				return .__theme_upvr.text()
+			end
+			if read_upvr(text_style) == "warn" then
+				return .__theme_upvr.text_warn()
+			end
+			if read_upvr(text_style) == "error" then
+				return .__theme_upvr.text_error()
+			end
+			if read_upvr(text_style) == "info" then
+				return .__theme_upvr.text_info()
+			end
+			return .__theme_upvr.text()
+		end
+	end
+	module.TextColor3 = color
+	function module.FontFace() -- Line 83
+		--[[ Upvalues[3]:
+			[1]: .__theme_upvr (copied, readonly)
+			[2]: read_upvr (copied, readonly)
+			[3]: arg1 (readonly)
+		]]
+		local var7_result1 = read_upvr(arg1.weight)
+		if not var7_result1 then
+			var7_result1 = Enum.FontWeight.Regular
+		end
+		return Font.new(.__theme_upvr.font().Family, var7_result1)
+	end
+	module.TextWrapped = arg1.wrapped
+	module.TextXAlignment = arg1.xalignment
+	module.BackgroundTransparency = 1
+	module[1] = unpack(arg1)
+	return create_upvr("TextLabel")(module)
+end

@@ -1,14 +1,24 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.List.filterNot
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.filter);
-return function(v1, v2) --[[ Line: 17 ]] --[[ Name: filterNot ]]
-    -- upvalues: v0 (copy)
-    return v0(v1, function(v3, v4) --[[ Line: 18 ]]
-        -- upvalues: v2 (copy)
-        return not v2(v3, v4);
-    end);
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:24
+-- Luau version 6, Types version 3
+-- Time taken: 0.000410 seconds
+
+local filter_upvr = require(script.Parent.filter)
+return function(arg1, arg2) -- Line 17, Named "filterNot"
+	--[[ Upvalues[1]:
+		[1]: filter_upvr (readonly)
+	]]
+	return filter_upvr(arg1, function(arg1_2, arg2_2) -- Line 18
+		--[[ Upvalues[1]:
+			[1]: arg2 (readonly)
+		]]
+		return not arg2(arg1_2, arg2_2)
+	end)
+end

@@ -1,42 +1,53 @@
 --[[
     Script: ReplicatedStorage.Client.Handlers.UIHandlers.SelfReviveUIHandler
     Type: Script
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local l_Players_0 = game:GetService("Players");
-local l_Client_0 = l_ReplicatedStorage_0.Client;
-local v3 = require(l_Client_0.LocalPlayerObjectsContainer);
-local l_PlayerGui_0 = l_Players_0.LocalPlayer.PlayerGui;
-v3.waitForRegisteredAsync();
-local v5 = v3.getCharacterLoadedWrapper();
-local l_RevivePlayer_0 = l_ReplicatedStorage_0:WaitForChild("Remotes"):WaitForChild("RevivePlayer");
-local v7 = l_PlayerGui_0:WaitForChild("SelfRevive", 1e999);
-local v8 = nil;
-local function v9() --[[ Line: 19 ]] --[[ Name: onLocalCharacterLoaded ]]
-    -- upvalues: v7 (copy)
-    v7.Enabled = false;
-end;
-local function v11() --[[ Line: 23 ]] --[[ Name: onLocalCharacterDied ]]
-    -- upvalues: v8 (ref), v7 (copy)
-    if v8 then
-        task.cancel(v8);
-    end;
-    v8 = task.spawn(function() --[[ Line: 28 ]]
-        -- upvalues: v7 (ref), v8 (ref)
-        v7.Enabled = true;
-        for v10 = 14, 0, -1 do
-            v7.SelfRevive.Text = ("Self Revive (%*)"):format(v10);
-            task.wait(1);
-        end;
-        v7.Enabled = false;
-        v8 = nil;
-    end);
-end;
-v5.loaded:Connect(v9);
-v5.died:Connect(v11);
-v7.SelfRevive.Activated:Connect(function() --[[ Line: 44 ]]
-    -- upvalues: l_RevivePlayer_0 (copy)
-    l_RevivePlayer_0:FireServer();
-end);
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:46
+-- Luau version 6, Types version 3
+-- Time taken: 0.001019 seconds
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayerObjectsContainer = require(ReplicatedStorage.Client.LocalPlayerObjectsContainer)
+LocalPlayerObjectsContainer.waitForRegisteredAsync()
+local any_getCharacterLoadedWrapper_result1 = LocalPlayerObjectsContainer.getCharacterLoadedWrapper()
+local SelfRevive_upvr = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("SelfRevive", math.huge)
+local var5_upvw
+any_getCharacterLoadedWrapper_result1.loaded:Connect(function() -- Line 19, Named "onLocalCharacterLoaded"
+	--[[ Upvalues[1]:
+		[1]: SelfRevive_upvr (readonly)
+	]]
+	SelfRevive_upvr.Enabled = false
+end)
+any_getCharacterLoadedWrapper_result1.died:Connect(function() -- Line 23, Named "onLocalCharacterDied"
+	--[[ Upvalues[2]:
+		[1]: var5_upvw (read and write)
+		[2]: SelfRevive_upvr (readonly)
+	]]
+	if var5_upvw then
+		task.cancel(var5_upvw)
+	end
+	var5_upvw = task.spawn(function() -- Line 28
+		--[[ Upvalues[2]:
+			[1]: SelfRevive_upvr (copied, readonly)
+			[2]: var5_upvw (copied, read and write)
+		]]
+		SelfRevive_upvr.Enabled = true
+		for i = 14, 0, -1 do
+			SelfRevive_upvr.SelfRevive.Text = `Self Revive ({i})`
+			task.wait(1)
+		end
+		SelfRevive_upvr.Enabled = false
+		var5_upvw = nil
+	end)
+end)
+local RevivePlayer_upvr = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("RevivePlayer")
+SelfRevive_upvr.SelfRevive.Activated:Connect(function() -- Line 44
+	--[[ Upvalues[1]:
+		[1]: RevivePlayer_upvr (readonly)
+	]]
+	RevivePlayer_upvr:FireServer()
+end)

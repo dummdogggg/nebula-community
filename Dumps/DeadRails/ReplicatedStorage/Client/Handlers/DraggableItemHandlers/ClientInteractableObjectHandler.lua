@@ -1,70 +1,85 @@
 --[[
     Script: ReplicatedStorage.Client.Handlers.DraggableItemHandlers.ClientInteractableObjectHandler
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_RunService_0 = game:GetService("RunService");
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local l_Players_0 = game:GetService("Players");
-local v3 = require(l_ReplicatedStorage_0.Packages.Signal);
-local v4 = require(l_ReplicatedStorage_0.Shared.InteractableObjectValidation);
-local v5 = require(l_ReplicatedStorage_0.Shared.Utils.findFirstAncestorOfClassWithTag);
-local v6 = require(l_ReplicatedStorage_0.Shared.SharedConstants.CollectionServiceTag.InteractableObjectTags);
-local l_LocalPlayer_0 = l_Players_0.LocalPlayer;
-local l_CurrentCamera_0 = workspace.CurrentCamera;
-local l_ObjectHighlight_0 = script:FindFirstChild("ObjectHighlight");
-local function v13() --[[ Line: 22 ]] --[[ Name: raycastInFrontOfCamera ]]
-    -- upvalues: l_CurrentCamera_0 (copy), l_LocalPlayer_0 (copy)
-    local l_Position_0 = l_CurrentCamera_0.CFrame.Position;
-    local v11 = l_CurrentCamera_0.CFrame.LookVector * 10;
-    local v12 = RaycastParams.new();
-    v12.FilterType = Enum.RaycastFilterType.Exclude;
-    v12.FilterDescendantsInstances = {
-        l_LocalPlayer_0.Character
-    };
-    return workspace:Raycast(l_Position_0, v11, v12);
-end;
-local v14 = {
-    _hoveringObject = nil, 
-    OnHoveringObjectChanged = v3.new()
-};
-v14.start = function() --[[ Line: 38 ]] --[[ Name: start ]]
-    -- upvalues: l_RunService_0 (copy), v14 (copy)
-    l_RunService_0.RenderStepped:Connect(v14._updateHoveringObject);
-    v14.OnHoveringObjectChanged:Connect(v14._updateHighlight);
-    v14.OnHoveringObjectChanged:Connect(function() --[[ Line: 42 ]]
-        warn("changed!!");
-    end);
-end;
-v14.getHoveringInteractableObject = function() --[[ Line: 47 ]] --[[ Name: getHoveringInteractableObject ]]
-    -- upvalues: v14 (copy)
-    return v14._hoveringObject;
-end;
-v14._updateHighlight = function() --[[ Line: 51 ]] --[[ Name: _updateHighlight ]]
-    -- upvalues: v14 (copy), l_ObjectHighlight_0 (copy)
-    local l__hoveringObject_0 = v14._hoveringObject;
-    if l__hoveringObject_0 then
-        l_ObjectHighlight_0.Adornee = l__hoveringObject_0;
-        return;
-    else
-        l_ObjectHighlight_0.Adornee = nil;
-        return;
-    end;
-end;
-v14._updateHoveringObject = function() --[[ Line: 61 ]] --[[ Name: _updateHoveringObject ]]
-    -- upvalues: v13 (copy), v5 (copy), v6 (copy), v4 (copy), v14 (copy)
-    local v16 = v13();
-    local v17 = nil;
-    if v16 and v16.Instance then
-        local v18 = v5(v16.Instance, "Model", v6.InteractableObject);
-        if v18 and v4.isObject(v18) then
-            v17 = v18;
-        end;
-    end;
-    if v14._hoveringObject ~= v17 then
-        v14._hoveringObject = v17;
-        v14.OnHoveringObjectChanged:Fire(v17);
-    end;
-end;
-return v14;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:44
+-- Luau version 6, Types version 3
+-- Time taken: 0.002128 seconds
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CurrentCamera_upvr = workspace.CurrentCamera
+local LocalPlayer_upvr = game:GetService("Players").LocalPlayer
+local function raycastInFrontOfCamera_upvr() -- Line 22, Named "raycastInFrontOfCamera"
+	--[[ Upvalues[2]:
+		[1]: CurrentCamera_upvr (readonly)
+		[2]: LocalPlayer_upvr (readonly)
+	]]
+	local RaycastParams_new_result1 = RaycastParams.new()
+	RaycastParams_new_result1.FilterType = Enum.RaycastFilterType.Exclude
+	RaycastParams_new_result1.FilterDescendantsInstances = {LocalPlayer_upvr.Character}
+	return workspace:Raycast(CurrentCamera_upvr.CFrame.Position, CurrentCamera_upvr.CFrame.LookVector * 10, RaycastParams_new_result1)
+end
+local module_upvr = {
+	_hoveringObject = nil;
+	OnHoveringObjectChanged = require(ReplicatedStorage.Packages.Signal).new();
+}
+local RunService_upvr = game:GetService("RunService")
+function module_upvr.start() -- Line 38
+	--[[ Upvalues[2]:
+		[1]: RunService_upvr (readonly)
+		[2]: module_upvr (readonly)
+	]]
+	RunService_upvr.RenderStepped:Connect(module_upvr._updateHoveringObject)
+	module_upvr.OnHoveringObjectChanged:Connect(module_upvr._updateHighlight)
+	module_upvr.OnHoveringObjectChanged:Connect(function() -- Line 42
+		warn("changed!!")
+	end)
+end
+function module_upvr.getHoveringInteractableObject() -- Line 47
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	return module_upvr._hoveringObject
+end
+local ObjectHighlight_upvr = script:FindFirstChild("ObjectHighlight")
+function module_upvr._updateHighlight() -- Line 51
+	--[[ Upvalues[2]:
+		[1]: module_upvr (readonly)
+		[2]: ObjectHighlight_upvr (readonly)
+	]]
+	local _hoveringObject = module_upvr._hoveringObject
+	if _hoveringObject then
+		ObjectHighlight_upvr.Adornee = _hoveringObject
+	else
+		ObjectHighlight_upvr.Adornee = nil
+	end
+end
+local findFirstAncestorOfClassWithTag_upvr = require(ReplicatedStorage.Shared.Utils.findFirstAncestorOfClassWithTag)
+local InteractableObjectTags_upvr = require(ReplicatedStorage.Shared.SharedConstants.CollectionServiceTag.InteractableObjectTags)
+local InteractableObjectValidation_upvr = require(ReplicatedStorage.Shared.InteractableObjectValidation)
+function module_upvr._updateHoveringObject() -- Line 61
+	--[[ Upvalues[5]:
+		[1]: raycastInFrontOfCamera_upvr (readonly)
+		[2]: findFirstAncestorOfClassWithTag_upvr (readonly)
+		[3]: InteractableObjectTags_upvr (readonly)
+		[4]: InteractableObjectValidation_upvr (readonly)
+		[5]: module_upvr (readonly)
+	]]
+	local raycastInFrontOfCamera_upvr_result1_2 = raycastInFrontOfCamera_upvr()
+	local var18
+	if raycastInFrontOfCamera_upvr_result1_2 and raycastInFrontOfCamera_upvr_result1_2.Instance then
+		local findFirstAncestorOfClassWithTag_upvr_result1 = findFirstAncestorOfClassWithTag_upvr(raycastInFrontOfCamera_upvr_result1_2.Instance, "Model", InteractableObjectTags_upvr.InteractableObject)
+		if findFirstAncestorOfClassWithTag_upvr_result1 and InteractableObjectValidation_upvr.isObject(findFirstAncestorOfClassWithTag_upvr_result1) then
+			var18 = findFirstAncestorOfClassWithTag_upvr_result1
+		end
+	end
+	if module_upvr._hoveringObject ~= var18 then
+		module_upvr._hoveringObject = var18
+		module_upvr.OnHoveringObjectChanged:Fire(var18)
+	end
+end
+return module_upvr

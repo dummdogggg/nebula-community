@@ -1,23 +1,27 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.alicesaidhi+conch_ui.0.2.3.conch_ui.src.components.padding
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_create_0 = require("../../roblox_packages/vide").create;
-return function(v1) --[[ Line: 16 ]] --[[ Name: padding ]]
-    -- upvalues: l_create_0 (copy)
-    local v2 = v1.padding or 0;
-    local v3 = v1.x or v2;
-    local v4 = v1.y or v2;
-    local v5 = v1.left or v3;
-    local v6 = v1.right or v3;
-    local v7 = v1.top or v4;
-    local v8 = v1.bottom or v4;
-    return l_create_0("UIPadding")({
-        PaddingLeft = UDim.new(0, v5), 
-        PaddingRight = UDim.new(0, v6), 
-        PaddingTop = UDim.new(0, v7), 
-        PaddingBottom = UDim.new(0, v8)
-    });
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:48:40
+-- Luau version 6, Types version 3
+-- Time taken: 0.000617 seconds
+
+local create_upvr = require("../../roblox_packages/vide").create
+return function(arg1) -- Line 16, Named "padding"
+	--[[ Upvalues[1]:
+		[1]: create_upvr (readonly)
+	]]
+	local var2 = arg1.padding or 0
+	local var3 = arg1.x or var2
+	local var4 = arg1.y or var2
+	return create_upvr("UIPadding")({
+		PaddingLeft = UDim.new(0, arg1.left or var3);
+		PaddingRight = UDim.new(0, arg1.right or var3);
+		PaddingTop = UDim.new(0, arg1.top or var4);
+		PaddingBottom = UDim.new(0, arg1.bottom or var4);
+	})
+end

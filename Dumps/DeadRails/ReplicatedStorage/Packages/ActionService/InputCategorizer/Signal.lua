@@ -1,98 +1,121 @@
 --[[
     Script: ReplicatedStorage.Packages.ActionService.InputCategorizer.Signal
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = nil;
-local function v3(v1, ...) --[[ Line: 39 ]] --[[ Name: acquireRunnerThreadAndCallEventHandler ]]
-    -- upvalues: v0 (ref)
-    local l_v0_0 = v0;
-    v0 = nil;
-    v1(...);
-    v0 = l_v0_0;
-end;
-local function v4(...) --[[ Line: 50 ]] --[[ Name: runEventHandlerInFreeThread ]]
-    -- upvalues: v3 (copy)
-    v3(...);
-    while true do
-        v3(coroutine.yield());
-    end;
-end;
-local v5 = {};
-v5.__index = v5;
-v5.new = function(v6, v7) --[[ Line: 71 ]] --[[ Name: new ]]
-    -- upvalues: v5 (copy)
-    local v8 = {
-        _connected = true, 
-        _signal = v6, 
-        _fn = v7, 
-        _next = nil
-    };
-    setmetatable(v8, v5);
-    return v8;
-end;
-v5.Disconnect = function(v9) --[[ Line: 84 ]] --[[ Name: Disconnect ]]
-    assert(v9._connected, "Can't disconnect a connection twice.");
-    v9._connected = false;
-    if v9._signal._handlerListHead and v9._signal._handlerListHead == v9 then
-        v9._signal._handlerListHead = v9._next;
-        return;
-    else
-        local l__handlerListHead_0 = v9._signal._handlerListHead;
-        while l__handlerListHead_0 and l__handlerListHead_0._next ~= v9 do
-            l__handlerListHead_0 = l__handlerListHead_0._next;
-        end;
-        if l__handlerListHead_0 then
-            l__handlerListHead_0._next = v9._next;
-        end;
-        return;
-    end;
-end;
-local v11 = {};
-v11.__index = v11;
-v11.new = function() --[[ Line: 113 ]] --[[ Name: new ]]
-    -- upvalues: v11 (copy)
-    return (setmetatable({
-        _handlerListHead = nil
-    }, v11));
-end;
-v11.Connect = function(v12, v13) --[[ Line: 119 ]] --[[ Name: Connect ]]
-    -- upvalues: v5 (copy)
-    local v14 = v5.new(v12, v13);
-    if v12._handlerListHead then
-        v14._next = v12._handlerListHead;
-        v12._handlerListHead = v14;
-        return v14;
-    else
-        v12._handlerListHead = v14;
-        return v14;
-    end;
-end;
-v11.DisconnectAll = function(v15) --[[ Line: 133 ]] --[[ Name: DisconnectAll ]]
-    v15._handlerListHead = nil;
-end;
-v11.Fire = function(v16, ...) --[[ Line: 141 ]] --[[ Name: Fire ]]
-    -- upvalues: v0 (ref), v4 (copy)
-    local l__handlerListHead_1 = v16._handlerListHead;
-    while l__handlerListHead_1 do
-        if l__handlerListHead_1._connected then
-            if not v0 then
-                v0 = coroutine.create(v4);
-            end;
-            task.spawn(v0, l__handlerListHead_1._fn, ...);
-        end;
-        l__handlerListHead_1 = l__handlerListHead_1._next;
-    end;
-end;
-v11.Wait = function(v18) --[[ Line: 156 ]] --[[ Name: Wait ]]
-    local v19 = coroutine.running();
-    local v20 = nil;
-    v20 = v18:Connect(function(...) --[[ Line: 159 ]]
-        -- upvalues: v20 (ref), v19 (copy)
-        v20:Disconnect();
-        task.spawn(v19, ...);
-    end);
-    return coroutine.yield();
-end;
-return v11;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:22
+-- Luau version 6, Types version 3
+-- Time taken: 0.003460 seconds
+
+local var1_upvw
+local function acquireRunnerThreadAndCallEventHandler_upvr(arg1, ...) -- Line 39, Named "acquireRunnerThreadAndCallEventHandler"
+	--[[ Upvalues[1]:
+		[1]: var1_upvw (read and write)
+	]]
+	var1_upvw = nil
+	arg1(...)
+	var1_upvw = var1_upvw
+end
+local function runEventHandlerInFreeThread_upvr(...) -- Line 50, Named "runEventHandlerInFreeThread"
+	--[[ Upvalues[1]:
+		[1]: acquireRunnerThreadAndCallEventHandler_upvr (readonly)
+	]]
+	acquireRunnerThreadAndCallEventHandler_upvr(...)
+	while true do
+		acquireRunnerThreadAndCallEventHandler_upvr(coroutine.yield())
+	end
+end
+local tbl_upvr = {}
+tbl_upvr.__index = tbl_upvr
+local function new(arg1, arg2) -- Line 71
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	local module = {
+		_connected = true;
+	}
+	module._signal = arg1
+	module._fn = arg2
+	module._next = nil
+	setmetatable(module, tbl_upvr)
+	return module
+end
+tbl_upvr.new = new
+function tbl_upvr.Disconnect(arg1) -- Line 84
+	assert(arg1._connected, "Can't disconnect a connection twice.")
+	arg1._connected = false
+	local var5
+	if var5 then
+		var5 = arg1._signal._handlerListHead
+		if var5 == arg1 then
+			var5 = arg1._signal
+			var5._handlerListHead = arg1._next
+			return
+		end
+	end
+	var5 = arg1._signal._handlerListHead
+	while var5 and var5._next ~= arg1 do
+		var5 = var5._next
+	end
+	if var5 then
+		var5._next = arg1._next
+	end
+end
+local module_2_upvr = {}
+module_2_upvr.__index = module_2_upvr
+function module_2_upvr.new() -- Line 113
+	--[[ Upvalues[1]:
+		[1]: module_2_upvr (readonly)
+	]]
+	return setmetatable({
+		_handlerListHead = nil;
+	}, module_2_upvr)
+end
+function module_2_upvr.Connect(arg1, arg2) -- Line 119
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	local any_new_result1 = tbl_upvr.new(arg1, arg2)
+	if arg1._handlerListHead then
+		any_new_result1._next = arg1._handlerListHead
+		arg1._handlerListHead = any_new_result1
+		return any_new_result1
+	end
+	arg1._handlerListHead = any_new_result1
+	return any_new_result1
+end
+function module_2_upvr.DisconnectAll(arg1) -- Line 133
+	arg1._handlerListHead = nil
+end
+function module_2_upvr.Fire(arg1, ...) -- Line 141
+	--[[ Upvalues[2]:
+		[1]: var1_upvw (read and write)
+		[2]: runEventHandlerInFreeThread_upvr (readonly)
+	]]
+	local _handlerListHead = arg1._handlerListHead
+	while _handlerListHead do
+		if _handlerListHead._connected then
+			if not var1_upvw then
+				var1_upvw = coroutine.create(runEventHandlerInFreeThread_upvr)
+			end
+			task.spawn(var1_upvw, _handlerListHead._fn, ...)
+		end
+	end
+end
+function module_2_upvr.Wait(arg1) -- Line 156
+	local var11_upvw
+	local current_thread_upvr = coroutine.running()
+	var11_upvw = arg1:Connect(function(...) -- Line 159
+		--[[ Upvalues[2]:
+			[1]: var11_upvw (read and write)
+			[2]: current_thread_upvr (readonly)
+		]]
+		var11_upvw:Disconnect()
+		task.spawn(current_thread_upvr, ...)
+	end)
+	return coroutine.yield()
+end
+return module_2_upvr

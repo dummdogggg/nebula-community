@@ -1,1856 +1,1558 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.alicesaidhi+conch_ast.0.2.0.conch_ast.src.lib
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local _ = require("../roblox_packages/types");
-local function _(v1) --[[ Line: 8 ]] --[[ Name: char ]]
-    return (string.byte(v1));
-end;
-local function v405(v3, v4) --[[ Line: 13 ]] --[[ Name: parse ]]
-    local v5 = 0;
-    local v6 = 0;
-    local v7 = buffer.len(v3);
-    local function _() --[[ Line: 18 ]] --[[ Name: peek ]]
-        -- upvalues: v5 (ref), v7 (ref), v3 (ref)
-        if v5 == v7 then
-            return 0;
-        else
-            return (buffer.readu8(v3, v5));
-        end;
-    end;
-    local function _() --[[ Line: 23 ]] --[[ Name: bump ]]
-        -- upvalues: v5 (ref), v7 (ref)
-        v5 = math.min(v5 + 1, v7);
-    end;
-    local function _() --[[ Line: 25 ]] --[[ Name: bump_any ]]
-        -- upvalues: v5 (ref), v7 (ref), v3 (ref), v6 (ref)
-        if (v5 == v7 and 0 or buffer.readu8(v3, v5)) == 10 then
-            v6 = v6 + 1;
-        end;
-        v5 = math.min(v5 + 1, v7);
-        if v5 == v7 then
-            return 0;
-        else
-            return (buffer.readu8(v3, v5));
-        end;
-    end;
-    local function _(v11) --[[ Line: 34 ]] --[[ Name: eof ]]
-        -- upvalues: v5 (ref), v7 (ref)
-        if v7 <= v5 then
-            error(v11, 0);
-        end;
-        return false;
-    end;
-    local function _() --[[ Line: 39 ]] --[[ Name: bump_peek ]]
-        -- upvalues: v5 (ref), v7 (ref), v3 (ref)
-        v5 = math.min(v5 + 1, v7);
-        if v5 == v7 then
-            return 0;
-        else
-            return (buffer.readu8(v3, v5));
-        end;
-    end;
-    local function _(v14) --[[ Line: 44 ]] --[[ Name: is_whitespace ]]
-        local v15 = true;
-        if v14 ~= 32 then
-            v15 = true;
-            if v14 ~= 9 then
-                v15 = v14 == 13;
-            end;
-        end;
-        return v15;
-    end;
-    local function _(v17) --[[ Line: 48 ]] --[[ Name: is_digit ]]
-        local v18 = false;
-        if v17 >= 48 then
-            v18 = v17 <= 57;
-        end;
-        return v18;
-    end;
-    local function v21(v20) --[[ Line: 52 ]] --[[ Name: is_alpha ]]
-        return v20 >= 97 and v20 <= 122 or v20 >= 65 and v20 <= 90 or v20 == 64 or v20 == 95;
-    end;
-    local function v27() --[[ Line: 59 ]] --[[ Name: string_backslash ]]
-        -- upvalues: v5 (ref), v7 (ref), v3 (ref), v6 (ref)
-        local v22 = v5 == v7 and 0 or buffer.readu8(v3, v5);
-        if v22 == 13 then
-            v5 = math.min(v5 + 1, v7);
-            if (v5 == v7 and 0 or buffer.readu8(v3, v5)) == 10 then
-                v5 = math.min(v5 + 1, v7);
-                v6 = v6 + 1;
-                return;
-            end;
-        elseif v22 == 122 then
-            v5 = math.min(v5 + 1, v7);
-            while true do
-                local v23 = v5 == v7 and 0 or buffer.readu8(v3, v5);
-                local v24 = true;
-                if v23 ~= 32 then
-                    v24 = true;
-                    if v23 ~= 9 then
-                        v24 = v23 == 13;
-                    end;
-                end;
-                if v24 then
-                    if (v5 == v7 and 0 or buffer.readu8(v3, v5)) == 10 then
-                        v6 = v6 + 1;
-                    end;
-                    v5 = math.min(v5 + 1, v7);
-                    if v5 == v7 then
-                        v24 = 0;
-                    else
-                        v24 = buffer.readu8(v3, v5);
-                    end;
-                else
-                    break;
-                end;
-            end;
-        else
-            if (v5 == v7 and 0 or buffer.readu8(v3, v5)) == 10 then
-                v6 = v6 + 1;
-            end;
-            v5 = math.min(v5 + 1, v7);
-            if v5 == v7 then
-                local _ = 0;
-                return;
-            else
-                local _ = buffer.readu8(v3, v5);
-            end;
-        end;
-    end;
-    local function v30() --[[ Line: 80 ]] --[[ Name: quoted_string ]]
-        -- upvalues: v5 (ref), v7 (ref), v3 (ref), v27 (copy)
-        local v28 = v5 == v7 and 0 or buffer.readu8(v3, v5);
-        v5 = math.min(v5 + 1, v7);
-        local v29 = v5 == v7 and 0 or buffer.readu8(v3, v5);
-        while v29 ~= v28 do
-            if v7 <= v5 then
-                error("unterminated string", 0);
-            end;
-            if not false then
-                if v29 == 0 or v29 == 10 or v29 == 13 then
-                    has_error = true;
-                    return "error";
-                else
-                    if v29 == 92 then
-                        v5 = math.min(v5 + 1, v7);
-                        v27();
-                    else
-                        v5 = math.min(v5 + 1, v7);
-                    end;
-                    if v5 == v7 then
-                        v29 = 0;
-                    else
-                        v29 = buffer.readu8(v3, v5);
-                    end;
-                end;
-            else
-                break;
-            end;
-        end;
-        v5 = math.min(v5 + 1, v7);
-        return "string";
-    end;
-    local function v39() --[[ Line: 102 ]] --[[ Name: number ]]
-        -- upvalues: v5 (ref), v7 (ref), v3 (ref), v21 (copy)
-        local l_v5_0 = v5;
-        local v32 = 10;
-        local v33 = v5 == v7 and 0 or buffer.readu8(v3, v5);
-        if v33 == 48 then
-            v5 = math.min(v5 + 1, v7);
-            v33 = v5 == v7 and 0 or buffer.readu8(v3, v5);
-            if v33 == 120 or v33 == 88 then
-                v5 = math.min(v5 + 1, v7);
-                v33 = v5 == v7 and 0 or buffer.readu8(v3, v5);
-                v32 = 16;
-            elseif v33 == 98 or v33 == 66 then
-                v5 = math.min(v5 + 1, v7);
-                v33 = v5 == v7 and 0 or buffer.readu8(v3, v5);
-                v32 = 2;
-            end;
-        end;
-        while true do
-            local l_v33_0 = v33;
-            local v35 = false;
-            if l_v33_0 >= 48 then
-                v35 = l_v33_0 <= 57;
-            end;
-            if v35 or v33 == 46 or v33 == 95 then
-                v5 = math.min(v5 + 1, v7);
-                if v5 == v7 then
-                    v33 = 0;
-                else
-                    v33 = buffer.readu8(v3, v5);
-                end;
-            else
-                break;
-            end;
-        end;
-        if v33 == 101 or v33 == 69 then
-            v5 = math.min(v5 + 1, v7);
-            v33 = v5 == v7 and 0 or buffer.readu8(v3, v5);
-            if v33 == 43 or v33 == 45 then
-                v5 = math.min(v5 + 1, v7);
-                v33 = v5 == v7 and 0 or buffer.readu8(v3, v5);
-            end;
-        end;
-        while true do
-            local l_v33_1 = v33;
-            local v37 = false;
-            if l_v33_1 >= 48 then
-                v37 = l_v33_1 <= 57;
-            end;
-            if v37 or v21(v33) or v33 == 95 then
-                v5 = math.min(v5 + 1, v7);
-                if v5 == v7 then
-                    v33 = 0;
-                else
-                    v33 = buffer.readu8(v3, v5);
-                end;
-            else
-                break;
-            end;
-        end;
-        local v38 = nil;
-        v38 = if v32 == 10 then buffer.readstring(v3, l_v5_0, v5 - l_v5_0) else buffer.readstring(v3, l_v5_0 + 2, v5 - l_v5_0 - 2);
-        if tonumber(string.gsub(v38, "_", ""), v32) then
-            return "number";
-        else
-            has_error = true;
-            return "error";
-        end;
-    end;
-    local function v40() --[[ Line: 152 ]] --[[ Name: read_kind ]]
-        -- upvalues: v5 (ref), v7 (ref), v3 (ref), v6 (ref), v21 (copy), v39 (copy), v30 (copy), v40 (copy)
-        local v41 = v5 == v7 and 0 or buffer.readu8(v3, v5);
-        if v41 == 0 then
-            return "eof";
-        elseif v41 == 35 then
-            while v41 ~= 10 and v41 ~= 0 do
-                if (v5 == v7 and 0 or buffer.readu8(v3, v5)) == 10 then
-                    v6 = v6 + 1;
-                end;
-                v5 = math.min(v5 + 1, v7);
-                if v5 == v7 then
-                    local _ = 0;
-                else
-                    local _ = buffer.readu8(v3, v5);
-                end;
-            end;
-            return "comment";
-        else
-            local l_v41_0 = v41;
-            local v45 = true;
-            if l_v41_0 ~= 32 then
-                v45 = true;
-                if l_v41_0 ~= 9 then
-                    v45 = l_v41_0 == 13;
-                end;
-            end;
-            if v45 then
-                v5 = math.min(v5 + 1, v7);
-                return "whitespace";
-            elseif v21(v41) then
-                v45 = v5;
-                while true do
-                    v5 = math.min(v5 + 1, v7);
-                    v41 = v5 == v7 and 0 or buffer.readu8(v3, v5);
-                    if v21(v41) then
-                        continue;
-                    end;
-                    local l_v41_1 = v41;
-                    l_v41_0 = false;
-                    if l_v41_1 >= 48 then
-                        l_v41_0 = l_v41_1 <= 57;
-                    end;
-                    if not l_v41_0 and v41 ~= 45 then
-                        break;
-                    end;
-                end;
-                l_v41_0 = buffer.readstring(v3, v45, v5 - v45);
-                if l_v41_0 == "true" then
-                    return "true";
-                elseif l_v41_0 == "false" then
-                    return "false";
-                elseif l_v41_0 == "nil" then
-                    return "nil";
-                elseif l_v41_0 == "return" then
-                    return "return";
-                elseif l_v41_0 == "for" then
-                    return "for";
-                elseif l_v41_0 == "while" then
-                    return "while";
-                elseif l_v41_0 == "if" then
-                    return "if";
-                elseif l_v41_0 == "else" then
-                    return "else";
-                elseif l_v41_0 == "break" then
-                    return "break";
-                elseif l_v41_0 == "continue" then
-                    return "continue";
-                else
-                    return "identifier";
-                end;
-            else
-                l_v41_0 = v41;
-                v45 = false;
-                if l_v41_0 >= 48 then
-                    v45 = l_v41_0 <= 57;
-                end;
-                if v45 then
-                    return (v39());
-                elseif v41 == 34 then
-                    return (v30());
-                elseif v41 == 39 then
-                    return (v30());
-                elseif v41 == 46 then
-                    l_v41_0 = v5 == v7 and 0 or buffer.readu8(v3, v5);
-                    v45 = false;
-                    if l_v41_0 >= 48 then
-                        v45 = l_v41_0 <= 57;
-                    end;
-                    if v45 then
-                        v5 = v5 - 1;
-                        return (v39());
-                    else
-                        v5 = math.min(v5 + 1, v7);
-                        return ".";
-                    end;
-                elseif v41 == 61 then
-                    v5 = math.min(v5 + 1, v7);
-                    if (v5 == v7 and 0 or buffer.readu8(v3, v5)) == 61 then
-                        return "==";
-                    else
-                        return "=";
-                    end;
-                elseif v41 == 126 then
-                    v5 = math.min(v5 + 1, v7);
-                    if (v5 == v7 and 0 or buffer.readu8(v3, v5)) == 61 then
-                        return "~=";
-                    else
-                        has_error = true;
-                        return "error";
-                    end;
-                elseif v41 == 62 then
-                    v5 = math.min(v5 + 1, v7);
-                    if (v5 == v7 and 0 or buffer.readu8(v3, v5)) == 61 then
-                        return ">=";
-                    else
-                        return ">";
-                    end;
-                elseif v41 == 60 then
-                    v5 = math.min(v5 + 1, v7);
-                    if (v5 == v7 and 0 or buffer.readu8(v3, v5)) == 61 then
-                        return "<=";
-                    else
-                        return "<";
-                    end;
-                elseif v41 == 36 then
-                    v5 = math.min(v5 + 1, v7);
-                    return "$";
-                elseif v41 == 40 then
-                    v5 = math.min(v5 + 1, v7);
-                    return "(";
-                elseif v41 == 41 then
-                    v5 = math.min(v5 + 1, v7);
-                    return ")";
-                elseif v41 == 123 then
-                    v5 = math.min(v5 + 1, v7);
-                    return "{";
-                elseif v41 == 125 then
-                    v5 = math.min(v5 + 1, v7);
-                    return "}";
-                elseif v41 == 91 then
-                    v5 = math.min(v5 + 1, v7);
-                    return "[";
-                elseif v41 == 93 then
-                    v5 = math.min(v5 + 1, v7);
-                    return "]";
-                elseif v41 == 124 then
-                    v5 = math.min(v5 + 1, v7);
-                    return "|";
-                elseif v41 == 10 then
-                    v5 = math.min(v5 + 1, v7);
-                    return "\n";
-                elseif v41 == 59 then
-                    v5 = math.min(v5 + 1, v7);
-                    return ";";
-                elseif v41 == 44 then
-                    v5 = math.min(v5 + 1, v7);
-                    return ",";
-                else
-                    l_v41_0 = v41;
-                    v45 = true;
-                    if l_v41_0 ~= 32 then
-                        v45 = true;
-                        if l_v41_0 ~= 9 then
-                            v45 = l_v41_0 == 13;
-                        end;
-                    end;
-                    if v45 then
-                        v5 = math.min(v5 + 1, v7);
-                        return v40();
-                    else
-                        error(("no symbol matching %*"):format((string.char(v41))), 0);
-                        return "error";
-                    end;
-                end;
-            end;
-        end;
-    end;
-    local function v49() --[[ Line: 292 ]] --[[ Name: next_token ]]
-        -- upvalues: v5 (ref), v40 (copy), v3 (ref)
-        local l_v5_1 = v5;
-        local v48 = v40();
-        while v48 == "whitespace" or v48 == "comment" do
-            l_v5_1 = v5;
-            v48 = v40();
-        end;
-        return {
-            kind = v48, 
-            text = buffer.readstring(v3, l_v5_1, v5 - l_v5_1), 
-            span = vector.create(l_v5_1, v5, 0)
-        };
-    end;
-    local v50 = v49();
-    local l_kind_0 = v50.kind;
-    local l_x_0 = v50.span.x;
-    local v53 = v49();
-    local l_kind_1 = v53.kind;
-    local l_x_1 = v53.span.x;
-    local function _() --[[ Line: 315 ]] --[[ Name: consume ]]
-        -- upvalues: v50 (ref), l_kind_0 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy)
-        local l_v50_0 = v50;
-        local l_l_kind_0_0 = l_kind_0;
-        local l_v53_0 = v53;
-        local l_l_kind_1_0 = l_kind_1;
-        v50 = l_v53_0;
-        l_kind_0 = l_l_kind_1_0;
-        l_x_0 = l_x_1;
-        v53 = v49();
-        l_kind_1 = v53.kind;
-        l_x_1 = v53.span.x;
-        return l_v50_0, l_l_kind_0_0;
-    end;
-    local _ = function(v61) --[[ Line: 325 ]] --[[ Name: current_is ]]
-        -- upvalues: l_kind_0 (ref), v50 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy)
-        while l_kind_0 == "\n" do
-            local _ = v50;
-            local _ = l_kind_0;
-            local l_v53_1 = v53;
-            local l_l_kind_1_1 = l_kind_1;
-            v50 = l_v53_1;
-            l_kind_0 = l_l_kind_1_1;
-            l_x_0 = l_x_1;
-            v53 = v49();
-            l_kind_1 = v53.kind;
-            l_x_1 = v53.span.x;
-        end;
-        return l_kind_0 == v61;
-    end;
-    local function _(v67) --[[ Line: 333 ]] --[[ Name: lookahead_is ]]
-        -- upvalues: l_kind_1 (ref), v53 (ref), v49 (copy)
-        while l_kind_1 == "\n" do
-            v53 = v49();
-            l_kind_1 = v53.kind;
-        end;
-        return l_kind_1 == v67;
-    end;
-    local function _() --[[ Line: 342 ]] --[[ Name: yield ]]
-        -- upvalues: v4 (copy), v3 (ref), v7 (ref), v50 (ref), v49 (copy), l_kind_0 (ref), v53 (ref), l_kind_1 (ref)
-        if v4 then
-            local v69 = coroutine.yield();
-            assert(typeof(v69) == "buffer");
-            v3 = v69;
-            v7 = buffer.len(v69);
-            v50 = v49();
-            l_kind_0 = v50.kind;
-            v53 = v49();
-            l_kind_1 = v53.kind;
-        end;
-    end;
-    local function _(v71) --[[ Line: 356 ]] --[[ Name: display ]]
-        local l_kind_2 = v71.kind;
-        if l_kind_2 == "identifier" or l_kind_2 == "number" or l_kind_2 == "string" then
-            return l_kind_2;
-        elseif v71.kind == "error" then
-            return "error '" .. v71.text .. "'";
-        else
-            return "'" .. l_kind_2 .. "'";
-        end;
-    end;
-    local function v77(v74, v75) --[[ Line: 368 ]] --[[ Name: report ]]
-        -- upvalues: v50 (ref)
-        local v76 = {
-            message = v74, 
-            span = v75 or v50.span
-        };
-        error(("%* from %* to %*"):format(v76.message, v76.span.x, v76.span.y), 0);
-    end;
-    local function v85(v78) --[[ Line: 377 ]] --[[ Name: expect_failure ]]
-        -- upvalues: v77 (copy), v50 (ref), l_kind_0 (ref)
-        local l_v77_0 = v77;
-        local v80 = "expected %*, but got %* of %* instead";
-        local v81 = {
-            kind = v78
-        };
-        local l_kind_3 = v81.kind;
-        local v83 = if not (l_kind_3 ~= "identifier" and l_kind_3 ~= "number") or l_kind_3 == "string" then l_kind_3 else if v81.kind == "error" then "error '" .. v81.text .. "'" else "'" .. l_kind_3 .. "'";
-        l_kind_3 = v50;
-        local l_kind_4 = l_kind_3.kind;
-        return l_v77_0((v80:format(v83, if not (l_kind_4 ~= "identifier" and l_kind_4 ~= "number") or l_kind_4 == "string" then l_kind_4 else if l_kind_3.kind == "error" then "error '" .. l_kind_3.text .. "'" else "'" .. l_kind_4 .. "'", l_kind_0)));
-    end;
-    local function v109(v86) --[[ Line: 387 ]] --[[ Name: expect ]]
-        -- upvalues: l_kind_0 (ref), v50 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy), v4 (copy), v3 (ref), v7 (ref), v85 (copy)
-        while l_kind_0 == "\n" do
-            local _ = v50;
-            local _ = l_kind_0;
-            local l_v53_2 = v53;
-            local l_l_kind_1_2 = l_kind_1;
-            v50 = l_v53_2;
-            l_kind_0 = l_l_kind_1_2;
-            l_x_0 = l_x_1;
-            v53 = v49();
-            l_kind_1 = v53.kind;
-            l_x_1 = v53.span.x;
-        end;
-        if l_kind_0 == v86 then
-            local l_v50_3 = v50;
-            local _ = l_kind_0;
-            local l_v53_3 = v53;
-            local l_l_kind_1_3 = l_kind_1;
-            v50 = l_v53_3;
-            l_kind_0 = l_l_kind_1_3;
-            l_x_0 = l_x_1;
-            v53 = v49();
-            l_kind_1 = v53.kind;
-            l_x_1 = v53.span.x;
-            return l_v50_3;
-        elseif l_kind_0 == "eof" and v4 then
-            if v4 then
-                local v95 = coroutine.yield();
-                assert(typeof(v95) == "buffer");
-                v3 = v95;
-                v7 = buffer.len(v95);
-                v50 = v49();
-                l_kind_0 = v50.kind;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-            end;
-            while l_kind_0 == "\n" do
-                local _ = v50;
-                local _ = l_kind_0;
-                local l_v53_4 = v53;
-                local l_l_kind_1_4 = l_kind_1;
-                v50 = l_v53_4;
-                l_kind_0 = l_l_kind_1_4;
-                l_x_0 = l_x_1;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-                l_x_1 = v53.span.x;
-            end;
-            if l_kind_0 == v86 then
-                local l_v50_5 = v50;
-                local _ = l_kind_0;
-                local l_v53_5 = v53;
-                local l_l_kind_1_5 = l_kind_1;
-                v50 = l_v53_5;
-                l_kind_0 = l_l_kind_1_5;
-                l_x_0 = l_x_1;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-                l_x_1 = v53.span.x;
-                return l_v50_5;
-            else
-                local v104 = "expected %*, but got %* of %* instead";
-                local v105 = {
-                    kind = v86
-                };
-                local l_kind_5 = v105.kind;
-                local v107 = if not (l_kind_5 ~= "identifier" and l_kind_5 ~= "number") or l_kind_5 == "string" then l_kind_5 else if v105.kind == "error" then "error '" .. v105.text .. "'" else "'" .. l_kind_5 .. "'";
-                l_kind_5 = v50;
-                local l_kind_6 = l_kind_5.kind;
-                v104 = {
-                    message = v104:format(v107, if not (l_kind_6 ~= "identifier" and l_kind_6 ~= "number") or l_kind_6 == "string" then l_kind_6 else if l_kind_5.kind == "error" then "error '" .. l_kind_5.text .. "'" else "'" .. l_kind_6 .. "'", l_kind_0), 
-                    span = v50.span
-                };
-                error(("%* from %* to %*"):format(v104.message, v104.span.x, v104.span.y), 0);
-                return nil;
-            end;
-        else
-            return v85(v86);
-        end;
-    end;
-    local v110 = nil;
-    local v111 = nil;
-    local v112 = nil;
-    local v113 = nil;
-    local v114 = nil;
-    local v115 = nil;
-    local v116 = nil;
-    local v117 = nil;
-    local v118 = nil;
-    local v119 = nil;
-    local v120 = nil;
-    local v121 = nil;
-    local v122 = nil;
-    local v123 = nil;
-    v116 = function() --[[ Line: 413 ]] --[[ Name: parse_var_root ]]
-        -- upvalues: l_kind_0 (ref), v50 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy), v109 (copy), v114 (ref), v77 (copy)
-        while l_kind_0 == "\n" do
-            local _ = v50;
-            local _ = l_kind_0;
-            local l_v53_6 = v53;
-            local l_l_kind_1_6 = l_kind_1;
-            v50 = l_v53_6;
-            l_kind_0 = l_l_kind_1_6;
-            l_x_0 = l_x_1;
-            v53 = v49();
-            l_kind_1 = v53.kind;
-            l_x_1 = v53.span.x;
-        end;
-        if l_kind_0 == "identifier" then
-            local v128 = v109("identifier");
-            return {
-                kind = "global", 
-                span = v128.span, 
-                token = v128
-            };
-        else
-            while l_kind_0 == "\n" do
-                local _ = v50;
-                local _ = l_kind_0;
-                local l_v53_7 = v53;
-                local l_l_kind_1_7 = l_kind_1;
-                v50 = l_v53_7;
-                l_kind_0 = l_l_kind_1_7;
-                l_x_0 = l_x_1;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-                l_x_1 = v53.span.x;
-            end;
-            if l_kind_0 == "$" then
-                while l_kind_1 == "\n" do
-                    v53 = v49();
-                    l_kind_1 = v53.kind;
-                end;
-                if l_kind_1 == "identifier" then
-                    local v133 = v109("$");
-                    local v134 = v109("identifier");
-                    return {
-                        kind = "name", 
-                        span = vector.create(v133.span.x, v134.span.y, 0), 
-                        name = v134
-                    };
-                end;
-            end;
-            while l_kind_0 == "\n" do
-                local _ = v50;
-                local _ = l_kind_0;
-                local l_v53_8 = v53;
-                local l_l_kind_1_8 = l_kind_1;
-                v50 = l_v53_8;
-                l_kind_0 = l_l_kind_1_8;
-                l_x_0 = l_x_1;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-                l_x_1 = v53.span.x;
-            end;
-            if l_kind_0 == "$" then
-                while l_kind_1 == "\n" do
-                    v53 = v49();
-                    l_kind_1 = v53.kind;
-                end;
-                if l_kind_1 == "(" then
-                    local v139 = v109("$");
-                    v109("(");
-                    local v140 = v114();
-                    local v141 = v109(")");
-                    return {
-                        kind = "paren", 
-                        span = vector.create(v139.span.x, v141.span.y, 0), 
-                        expr = v140
-                    };
-                end;
-            end;
-            local l_v77_1 = v77;
-            local v143 = "expected identifier, got %*";
-            local l_v53_9 = v53;
-            local l_kind_7 = l_v53_9.kind;
-            return l_v77_1((v143:format(if not (l_kind_7 ~= "identifier" and l_kind_7 ~= "number") or l_kind_7 == "string" then l_kind_7 else if l_v53_9.kind == "error" then "error '" .. l_v53_9.text .. "'" else "'" .. l_kind_7 .. "'")));
-        end;
-    end;
-    v117 = function() --[[ Line: 442 ]] --[[ Name: parse_var_suffix ]]
-        -- upvalues: l_kind_0 (ref), v50 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy), v109 (copy), v114 (ref), v77 (copy)
-        while l_kind_0 == "\n" do
-            local _ = v50;
-            local _ = l_kind_0;
-            local l_v53_10 = v53;
-            local l_l_kind_1_9 = l_kind_1;
-            v50 = l_v53_10;
-            l_kind_0 = l_l_kind_1_9;
-            l_x_0 = l_x_1;
-            v53 = v49();
-            l_kind_1 = v53.kind;
-            l_x_1 = v53.span.x;
-        end;
-        if l_kind_0 == "." then
-            local v150 = v109(".");
-            local v151 = v109("identifier");
-            return {
-                kind = "nameindex", 
-                span = vector.create(v150.span.x, v151.span.y, 0), 
-                name = v151
-            };
-        else
-            while l_kind_0 == "\n" do
-                local _ = v50;
-                local _ = l_kind_0;
-                local l_v53_11 = v53;
-                local l_l_kind_1_10 = l_kind_1;
-                v50 = l_v53_11;
-                l_kind_0 = l_l_kind_1_10;
-                l_x_0 = l_x_1;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-                l_x_1 = v53.span.x;
-            end;
-            if l_kind_0 == "[" then
-                local v156 = v109("[");
-                local v157 = v114();
-                local v158 = v109("]");
-                return {
-                    kind = "exprindex", 
-                    span = vector.create(v156.span.x, v158.span.y, 0), 
-                    expr = v157
-                };
-            else
-                return v77("invalid");
-            end;
-        end;
-    end;
-    v118 = function() --[[ Line: 465 ]] --[[ Name: parse_var_suffixes ]]
-        -- upvalues: l_kind_0 (ref), v50 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy), v117 (ref)
-        local v159 = false;
-        local v160 = {};
-        while true do
-            if l_kind_0 == "\n" then
-                local _ = v50;
-                local _ = l_kind_0;
-                local l_v53_12 = v53;
-                local l_l_kind_1_11 = l_kind_1;
-                v50 = l_v53_12;
-                l_kind_0 = l_l_kind_1_11;
-                l_x_0 = l_x_1;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-                l_x_1 = v53.span.x;
-                continue;
-            end;
-            v159 = l_kind_0 == ".";
-            if not v159 then
-                while l_kind_0 == "\n" do
-                    local _ = v50;
-                    local _ = l_kind_0;
-                    local l_v53_13 = v53;
-                    local l_l_kind_1_12 = l_kind_1;
-                    v50 = l_v53_13;
-                    l_kind_0 = l_l_kind_1_12;
-                    l_x_0 = l_x_1;
-                    v53 = v49();
-                    l_kind_1 = v53.kind;
-                    l_x_1 = v53.span.x;
-                end;
-                if l_kind_0 ~= "[" then
-                    break;
-                end;
-            end;
-            v159 = false;
-            table.insert(v160, (v117()));
-        end;
-        return v160;
-    end;
-    v115 = function() --[[ Line: 474 ]] --[[ Name: parse_var ]]
-        -- upvalues: v116 (ref), v118 (ref)
-        local v169 = v116();
-        local v170 = if v169.kind ~= "global" then v118() else {};
-        return {
-            span = vector.create(v169.span.x, if #v170 > 0 then v170[#v170].span.y else v169.span.y, 0), 
-            prefix = v169, 
-            suffixes = v170
-        };
-    end;
-    v114 = function() --[[ Line: 492 ]] --[[ Name: parse_expression_or_command ]]
-        -- upvalues: l_kind_0 (ref), v50 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy), v111 (ref), v4 (copy), v3 (ref), v7 (ref), v114 (ref), v110 (ref)
-        while l_kind_0 == "\n" do
-            local _ = v50;
-            local _ = l_kind_0;
-            local l_v53_14 = v53;
-            local l_l_kind_1_13 = l_kind_1;
-            v50 = l_v53_14;
-            l_kind_0 = l_l_kind_1_13;
-            l_x_0 = l_x_1;
-            v53 = v49();
-            l_kind_1 = v53.kind;
-            l_x_1 = v53.span.x;
-        end;
-        if l_kind_0 == "identifier" then
-            return v111();
-        elseif l_kind_0 == "eof" and v4 then
-            if v4 then
-                local v175 = coroutine.yield();
-                assert(typeof(v175) == "buffer");
-                v3 = v175;
-                v7 = buffer.len(v175);
-                v50 = v49();
-                l_kind_0 = v50.kind;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-            end;
-            return v114();
-        else
-            return v110();
-        end;
-    end;
-    v119 = function() --[[ Line: 503 ]] --[[ Name: parse_function_body ]]
-        -- upvalues: v109 (copy), l_kind_0 (ref), v50 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy), v4 (copy), v3 (ref), v7 (ref), v112 (ref)
-        local l_x_2 = v109("|").span.x;
-        local v177 = {};
-        local v178 = true;
-        while true do
-            if l_kind_0 == "\n" then
-                local _ = v50;
-                local _ = l_kind_0;
-                local l_v53_15 = v53;
-                local l_l_kind_1_14 = l_kind_1;
-                v50 = l_v53_15;
-                l_kind_0 = l_l_kind_1_14;
-                l_x_0 = l_x_1;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-                l_x_1 = v53.span.x;
-                continue;
-            end;
-            if not (l_kind_0 == "|") then
-                if l_kind_0 == "eof" and v4 then
-                    if v4 then
-                        local v183 = coroutine.yield();
-                        assert(typeof(v183) == "buffer");
-                        v3 = v183;
-                        v7 = buffer.len(v183);
-                        v50 = v49();
-                        l_kind_0 = v50.kind;
-                        v53 = v49();
-                        l_kind_1 = v53.kind;
-                    end;
-                else
-                    if not v178 then
-                        v109(",");
-                    end;
-                    table.insert(v177, v109("identifier"));
-                    v178 = false;
-                end;
-            else
-                break;
-            end;
-        end;
-        v109("|");
-        v109("{");
-        local v184 = v112("}");
-        return {
-            span = vector.create(l_x_2, v109("}").span.y, 0), 
-            arguments = v177, 
-            block = v184
-        };
-    end;
-    v113 = function() --[[ Line: 532 ]] --[[ Name: parse_lambda ]]
-        -- upvalues: v119 (ref)
-        local v185 = v119();
-        return {
-            kind = "lambda", 
-            body = v185, 
-            span = v185.span
-        };
-    end;
-    parse_table = function() --[[ Line: 541 ]] --[[ Name: parse_table ]]
-        -- upvalues: v109 (copy), l_kind_0 (ref), v50 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy), v110 (ref)
-        local l_x_3 = v109("{").span.x;
-        local v187 = {};
-        local v188 = true;
-        while true do
-            if l_kind_0 == "\n" then
-                local _ = v50;
-                local _ = l_kind_0;
-                local l_v53_16 = v53;
-                local l_l_kind_1_15 = l_kind_1;
-                v50 = l_v53_16;
-                l_kind_0 = l_l_kind_1_15;
-                l_x_0 = l_x_1;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-                l_x_1 = v53.span.x;
-                continue;
-            end;
-            if not (l_kind_0 == "}") then
-                if not v188 then
-                    v109(",");
-                end;
-                v188 = false;
-                while l_kind_0 == "\n" do
-                    local _ = v50;
-                    local _ = l_kind_0;
-                    local l_v53_17 = v53;
-                    local l_l_kind_1_16 = l_kind_1;
-                    v50 = l_v53_17;
-                    l_kind_0 = l_l_kind_1_16;
-                    l_x_0 = l_x_1;
-                    v53 = v49();
-                    l_kind_1 = v53.kind;
-                    l_x_1 = v53.span.x;
-                end;
-                if l_kind_0 == "identifier" then
-                    while l_kind_1 == "\n" do
-                        v53 = v49();
-                        l_kind_1 = v53.kind;
-                    end;
-                    if l_kind_1 == "=" then
-                        local v197 = v109("identifier");
-                        v109("=");
-                        local v198 = v110();
-                        table.insert(v187, {
-                            kind = "namekey", 
-                            name = v197, 
-                            value = v198
-                        });
-                        continue;
-                    end;
-                end;
-                while l_kind_0 == "\n" do
-                    local _ = v50;
-                    local _ = l_kind_0;
-                    local l_v53_18 = v53;
-                    local l_l_kind_1_17 = l_kind_1;
-                    v50 = l_v53_18;
-                    l_kind_0 = l_l_kind_1_17;
-                    l_x_0 = l_x_1;
-                    v53 = v49();
-                    l_kind_1 = v53.kind;
-                    l_x_1 = v53.span.x;
-                end;
-                if l_kind_0 == "[" then
-                    v109("[");
-                    local v203 = v110();
-                    v109("]");
-                    v109("=");
-                    local v204 = v110();
-                    table.insert(v187, {
-                        kind = "exprkey", 
-                        key = v203, 
-                        value = v204
-                    });
-                else
-                    local v205 = v110();
-                    table.insert(v187, {
-                        kind = "nokey", 
-                        value = v205
-                    });
-                end;
-            else
-                break;
-            end;
-        end;
-        local l_y_0 = v109("}").span.y;
-        return {
-            fields = v187, 
-            span = vector.create(l_x_3, l_y_0, 0)
-        };
-    end;
-    parse_vector = function() --[[ Line: 584 ]] --[[ Name: parse_vector ]]
-        -- upvalues: v109 (copy), l_kind_0 (ref), v50 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy), v110 (ref)
-        local v207 = v109("[");
-        local v208 = {};
-        local v209 = 0;
-        while v209 < 3 do
-            while l_kind_0 == "\n" do
-                local _ = v50;
-                local _ = l_kind_0;
-                local l_v53_19 = v53;
-                local l_l_kind_1_18 = l_kind_1;
-                v50 = l_v53_19;
-                l_kind_0 = l_l_kind_1_18;
-                l_x_0 = l_x_1;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-                l_x_1 = v53.span.x;
-            end;
-            if not (l_kind_0 == "]") then
-                if v209 ~= 0 then
-                    v109(",");
-                end;
-                v209 = v209 + 1;
-                v208[v209] = v110();
-            else
-                break;
-            end;
-        end;
-        local v214 = v109("]");
-        return {
-            kind = "vector", 
-            span = vector.create(v207.span.x, v214.span.y, 0), 
-            contents = v208
-        };
-    end;
-    v110 = function() --[[ Line: 607 ]] --[[ Name: parse_expression ]]
-        -- upvalues: l_kind_0 (ref), v50 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy), v109 (copy), v111 (ref), v110 (ref), v115 (ref), v113 (ref), v4 (copy), v3 (ref), v7 (ref), v77 (copy)
-        local v215 = false;
-        while l_kind_0 == "\n" do
-            local _ = v50;
-            local _ = l_kind_0;
-            local l_v53_20 = v53;
-            local l_l_kind_1_19 = l_kind_1;
-            v50 = l_v53_20;
-            l_kind_0 = l_l_kind_1_19;
-            l_x_0 = l_x_1;
-            v53 = v49();
-            l_kind_1 = v53.kind;
-            l_x_1 = v53.span.x;
-        end;
-        if l_kind_0 == "$" then
-            while l_kind_1 == "\n" do
-                v53 = v49();
-                l_kind_1 = v53.kind;
-            end;
-            if l_kind_1 == "(" then
-                local l_x_4 = v109("$").span.x;
-                local v221 = nil;
-                while l_kind_1 == "\n" do
-                    v53 = v49();
-                    l_kind_1 = v53.kind;
-                end;
-                if not (l_kind_1 == "$") then
-                    while l_kind_1 == "\n" do
-                        v53 = v49();
-                        l_kind_1 = v53.kind;
-                    end;
-                    if l_kind_1 ~= "identifier" then
-                        v109("(");
-                        v221 = v110();
-                        v215 = true;
-                    end;
-                end;
-                if not v215 then
-                    v109("(");
-                    v221 = v111();
-                end;
-                v215 = false;
-                local l_y_1 = v109(")").span.y;
-                return {
-                    kind = "evaluate", 
-                    body = v221, 
-                    span = vector.create(l_x_4, l_y_1, 0)
-                };
-            end;
-        end;
-        while l_kind_0 == "\n" do
-            local _ = v50;
-            local _ = l_kind_0;
-            local l_v53_21 = v53;
-            local l_l_kind_1_20 = l_kind_1;
-            v50 = l_v53_21;
-            l_kind_0 = l_l_kind_1_20;
-            l_x_0 = l_x_1;
-            v53 = v49();
-            l_kind_1 = v53.kind;
-            l_x_1 = v53.span.x;
-        end;
-        if l_kind_0 == "$" then
-            local v227 = v115();
-            return {
-                kind = "var", 
-                var = v227, 
-                span = v227.span
-            };
-        else
-            while l_kind_0 == "\n" do
-                local _ = v50;
-                local _ = l_kind_0;
-                local l_v53_22 = v53;
-                local l_l_kind_1_21 = l_kind_1;
-                v50 = l_v53_22;
-                l_kind_0 = l_l_kind_1_21;
-                l_x_0 = l_x_1;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-                l_x_1 = v53.span.x;
-            end;
-            if l_kind_0 == "string" then
-                local v232 = v109("string");
-                return {
-                    kind = "string", 
-                    token = v232, 
-                    span = v232.span
-                };
-            else
-                while l_kind_0 == "\n" do
-                    local _ = v50;
-                    local _ = l_kind_0;
-                    local l_v53_23 = v53;
-                    local l_l_kind_1_22 = l_kind_1;
-                    v50 = l_v53_23;
-                    l_kind_0 = l_l_kind_1_22;
-                    l_x_0 = l_x_1;
-                    v53 = v49();
-                    l_kind_1 = v53.kind;
-                    l_x_1 = v53.span.x;
-                end;
-                if l_kind_0 == "number" then
-                    local v237 = v109("number");
-                    return {
-                        kind = "number", 
-                        token = v237, 
-                        span = v237.span
-                    };
-                else
-                    while l_kind_0 == "\n" do
-                        local _ = v50;
-                        local _ = l_kind_0;
-                        local l_v53_24 = v53;
-                        local l_l_kind_1_23 = l_kind_1;
-                        v50 = l_v53_24;
-                        l_kind_0 = l_l_kind_1_23;
-                        l_x_0 = l_x_1;
-                        v53 = v49();
-                        l_kind_1 = v53.kind;
-                        l_x_1 = v53.span.x;
-                    end;
-                    if l_kind_0 == "true" then
-                        local v242 = v109("true");
-                        return {
-                            kind = "boolean", 
-                            token = v242, 
-                            span = v242.span
-                        };
-                    else
-                        while l_kind_0 == "\n" do
-                            local _ = v50;
-                            local _ = l_kind_0;
-                            local l_v53_25 = v53;
-                            local l_l_kind_1_24 = l_kind_1;
-                            v50 = l_v53_25;
-                            l_kind_0 = l_l_kind_1_24;
-                            l_x_0 = l_x_1;
-                            v53 = v49();
-                            l_kind_1 = v53.kind;
-                            l_x_1 = v53.span.x;
-                        end;
-                        if l_kind_0 == "false" then
-                            local v247 = v109("false");
-                            return {
-                                kind = "boolean", 
-                                token = v247, 
-                                span = v247.span
-                            };
-                        else
-                            while l_kind_0 == "\n" do
-                                local _ = v50;
-                                local _ = l_kind_0;
-                                local l_v53_26 = v53;
-                                local l_l_kind_1_25 = l_kind_1;
-                                v50 = l_v53_26;
-                                l_kind_0 = l_l_kind_1_25;
-                                l_x_0 = l_x_1;
-                                v53 = v49();
-                                l_kind_1 = v53.kind;
-                                l_x_1 = v53.span.x;
-                            end;
-                            if l_kind_0 == "identifier" then
-                                local v252 = v109("identifier");
-                                return {
-                                    kind = "string", 
-                                    token = {
-                                        kind = "string", 
-                                        text = ("\"%*\""):format(v252.text), 
-                                        span = v252.span
-                                    }, 
-                                    span = v252.span
-                                };
-                            else
-                                while l_kind_0 == "\n" do
-                                    local _ = v50;
-                                    local _ = l_kind_0;
-                                    local l_v53_27 = v53;
-                                    local l_l_kind_1_26 = l_kind_1;
-                                    v50 = l_v53_27;
-                                    l_kind_0 = l_l_kind_1_26;
-                                    l_x_0 = l_x_1;
-                                    v53 = v49();
-                                    l_kind_1 = v53.kind;
-                                    l_x_1 = v53.span.x;
-                                end;
-                                if l_kind_0 == "|" then
-                                    return v113();
-                                else
-                                    while l_kind_0 == "\n" do
-                                        local _ = v50;
-                                        local _ = l_kind_0;
-                                        local l_v53_28 = v53;
-                                        local l_l_kind_1_27 = l_kind_1;
-                                        v50 = l_v53_28;
-                                        l_kind_0 = l_l_kind_1_27;
-                                        l_x_0 = l_x_1;
-                                        v53 = v49();
-                                        l_kind_1 = v53.kind;
-                                        l_x_1 = v53.span.x;
-                                    end;
-                                    if l_kind_0 == "{" then
-                                        local v261 = parse_table();
-                                        return {
-                                            kind = "table", 
-                                            table = v261, 
-                                            span = v261.span
-                                        };
-                                    else
-                                        while l_kind_0 == "\n" do
-                                            local _ = v50;
-                                            local _ = l_kind_0;
-                                            local l_v53_29 = v53;
-                                            local l_l_kind_1_28 = l_kind_1;
-                                            v50 = l_v53_29;
-                                            l_kind_0 = l_l_kind_1_28;
-                                            l_x_0 = l_x_1;
-                                            v53 = v49();
-                                            l_kind_1 = v53.kind;
-                                            l_x_1 = v53.span.x;
-                                        end;
-                                        if l_kind_0 == "[" then
-                                            return parse_vector();
-                                        elseif l_kind_0 == "eof" and v4 then
-                                            if v4 then
-                                                local v266 = coroutine.yield();
-                                                assert(typeof(v266) == "buffer");
-                                                v3 = v266;
-                                                v7 = buffer.len(v266);
-                                                v50 = v49();
-                                                l_kind_0 = v50.kind;
-                                                v53 = v49();
-                                                l_kind_1 = v53.kind;
-                                            end;
-                                            return v110();
-                                        else
-                                            return v77((("expected expression, got %*"):format(l_kind_0)));
-                                        end;
-                                    end;
-                                end;
-                            end;
-                        end;
-                    end;
-                end;
-            end;
-        end;
-    end;
-    v111 = function() --[[ Line: 687 ]] --[[ Name: parse_command ]]
-        -- upvalues: v115 (ref), l_kind_0 (ref), v50 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy), v110 (ref)
-        local v267 = v115();
-        local v268 = {};
-        while l_kind_0 ~= "\n" do
-            while l_kind_0 == "\n" do
-                local _ = v50;
-                local _ = l_kind_0;
-                local l_v53_30 = v53;
-                local l_l_kind_1_29 = l_kind_1;
-                v50 = l_v53_30;
-                l_kind_0 = l_l_kind_1_29;
-                l_x_0 = l_x_1;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-                l_x_1 = v53.span.x;
-            end;
-            if not (l_kind_0 == "$") then
-                while l_kind_0 == "\n" do
-                    local _ = v50;
-                    local _ = l_kind_0;
-                    local l_v53_31 = v53;
-                    local l_l_kind_1_30 = l_kind_1;
-                    v50 = l_v53_31;
-                    l_kind_0 = l_l_kind_1_30;
-                    l_x_0 = l_x_1;
-                    v53 = v49();
-                    l_kind_1 = v53.kind;
-                    l_x_1 = v53.span.x;
-                end;
-                if not (l_kind_0 == "string") then
-                    while l_kind_0 == "\n" do
-                        local _ = v50;
-                        local _ = l_kind_0;
-                        local l_v53_32 = v53;
-                        local l_l_kind_1_31 = l_kind_1;
-                        v50 = l_v53_32;
-                        l_kind_0 = l_l_kind_1_31;
-                        l_x_0 = l_x_1;
-                        v53 = v49();
-                        l_kind_1 = v53.kind;
-                        l_x_1 = v53.span.x;
-                    end;
-                    if not (l_kind_0 == "number") then
-                        while l_kind_0 == "\n" do
-                            local _ = v50;
-                            local _ = l_kind_0;
-                            local l_v53_33 = v53;
-                            local l_l_kind_1_32 = l_kind_1;
-                            v50 = l_v53_33;
-                            l_kind_0 = l_l_kind_1_32;
-                            l_x_0 = l_x_1;
-                            v53 = v49();
-                            l_kind_1 = v53.kind;
-                            l_x_1 = v53.span.x;
-                        end;
-                        if not (l_kind_0 == "true") then
-                            while l_kind_0 == "\n" do
-                                local _ = v50;
-                                local _ = l_kind_0;
-                                local l_v53_34 = v53;
-                                local l_l_kind_1_33 = l_kind_1;
-                                v50 = l_v53_34;
-                                l_kind_0 = l_l_kind_1_33;
-                                l_x_0 = l_x_1;
-                                v53 = v49();
-                                l_kind_1 = v53.kind;
-                                l_x_1 = v53.span.x;
-                            end;
-                            if not (l_kind_0 == "false") then
-                                while l_kind_0 == "\n" do
-                                    local _ = v50;
-                                    local _ = l_kind_0;
-                                    local l_v53_35 = v53;
-                                    local l_l_kind_1_34 = l_kind_1;
-                                    v50 = l_v53_35;
-                                    l_kind_0 = l_l_kind_1_34;
-                                    l_x_0 = l_x_1;
-                                    v53 = v49();
-                                    l_kind_1 = v53.kind;
-                                    l_x_1 = v53.span.x;
-                                end;
-                                if not (l_kind_0 == "identifier") then
-                                    while l_kind_0 == "\n" do
-                                        local _ = v50;
-                                        local _ = l_kind_0;
-                                        local l_v53_36 = v53;
-                                        local l_l_kind_1_35 = l_kind_1;
-                                        v50 = l_v53_36;
-                                        l_kind_0 = l_l_kind_1_35;
-                                        l_x_0 = l_x_1;
-                                        v53 = v49();
-                                        l_kind_1 = v53.kind;
-                                        l_x_1 = v53.span.x;
-                                    end;
-                                    if not (l_kind_0 == "{") then
-                                        while l_kind_0 == "\n" do
-                                            local _ = v50;
-                                            local _ = l_kind_0;
-                                            local l_v53_37 = v53;
-                                            local l_l_kind_1_36 = l_kind_1;
-                                            v50 = l_v53_37;
-                                            l_kind_0 = l_l_kind_1_36;
-                                            l_x_0 = l_x_1;
-                                            v53 = v49();
-                                            l_kind_1 = v53.kind;
-                                            l_x_1 = v53.span.x;
-                                        end;
-                                        if not (l_kind_0 == "|") then
-                                            while l_kind_0 == "\n" do
-                                                local _ = v50;
-                                                local _ = l_kind_0;
-                                                local l_v53_38 = v53;
-                                                local l_l_kind_1_37 = l_kind_1;
-                                                v50 = l_v53_38;
-                                                l_kind_0 = l_l_kind_1_37;
-                                                l_x_0 = l_x_1;
-                                                v53 = v49();
-                                                l_kind_1 = v53.kind;
-                                                l_x_1 = v53.span.x;
-                                            end;
-                                            if l_kind_0 ~= "[" then
-                                                break;
-                                            end;
-                                        end;
-                                    end;
-                                end;
-                            end;
-                        end;
-                    end;
-                end;
-            end;
-            table.insert(v268, (v110()));
-        end;
-        local v305 = if #v268 > 0 then v268[#v268].span.y else v267.span.y;
-        return {
-            kind = "command", 
-            prefix = v267, 
-            arguments = v268, 
-            span = vector.create(v267.span.x, v305, 0)
-        };
-    end;
-    v120 = function() --[[ Line: 722 ]] --[[ Name: parse_if ]]
-        -- upvalues: v109 (copy), l_kind_0 (ref), v50 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy), v111 (ref), v110 (ref), v112 (ref)
-        local l_x_5 = v109("if").span.x;
-        local v307 = {};
-        local v308 = nil;
-        local v309 = true;
-        local v310 = 0;
-        while true do
-            if v309 then
-                v109("(");
-                while l_kind_0 == "\n" do
-                    local _ = v50;
-                    local _ = l_kind_0;
-                    local l_v53_39 = v53;
-                    local l_l_kind_1_38 = l_kind_1;
-                    v50 = l_v53_39;
-                    l_kind_0 = l_l_kind_1_38;
-                    l_x_0 = l_x_1;
-                    v53 = v49();
-                    l_kind_1 = v53.kind;
-                    l_x_1 = v53.span.x;
-                end;
-                local v315 = if l_kind_0 == "identifier" then v111() else v110();
-                v109(")");
-                v109("{");
-                local v316 = v112("}");
-                v310 = v109("}").span.y;
-                table.insert(v307, {
-                    condition = v315, 
-                    block = v316
-                });
-                v309 = false;
-                continue;
-            end;
-            while l_kind_0 == "\n" do
-                local _ = v50;
-                local _ = l_kind_0;
-                local l_v53_40 = v53;
-                local l_l_kind_1_39 = l_kind_1;
-                v50 = l_v53_40;
-                l_kind_0 = l_l_kind_1_39;
-                l_x_0 = l_x_1;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-                l_x_1 = v53.span.x;
-            end;
-            if l_kind_0 == "else" then
-                while l_kind_1 == "\n" do
-                    v53 = v49();
-                    l_kind_1 = v53.kind;
-                end;
-                if l_kind_1 == "if" then
-                    v109("else");
-                    v109("if");
-                    v109("(");
-                    while l_kind_0 == "\n" do
-                        local _ = v50;
-                        local _ = l_kind_0;
-                        local l_v53_41 = v53;
-                        local l_l_kind_1_40 = l_kind_1;
-                        v50 = l_v53_41;
-                        l_kind_0 = l_l_kind_1_40;
-                        l_x_0 = l_x_1;
-                        v53 = v49();
-                        l_kind_1 = v53.kind;
-                        l_x_1 = v53.span.x;
-                    end;
-                    local v325 = if l_kind_0 == "identifier" then v111() else v110();
-                    v109(")");
-                    v109("{");
-                    local v326 = v112("}");
-                    v310 = v109("}").span.y;
-                    table.insert(v307, {
-                        condition = v325, 
-                        block = v326
-                    });
-                else
-                    break;
-                end;
-            else
-                break;
-            end;
-        end;
-        while l_kind_0 == "\n" do
-            local _ = v50;
-            local _ = l_kind_0;
-            local l_v53_42 = v53;
-            local l_l_kind_1_41 = l_kind_1;
-            v50 = l_v53_42;
-            l_kind_0 = l_l_kind_1_41;
-            l_x_0 = l_x_1;
-            v53 = v49();
-            l_kind_1 = v53.kind;
-            l_x_1 = v53.span.x;
-        end;
-        if l_kind_0 == "else" then
-            v109("else");
-            v109("{");
-            v308 = v112("}");
-            v310 = v109("}").span.y;
-        end;
-        return {
-            kind = "if", 
-            ifs = v307, 
-            fallback = v308, 
-            span = vector.create(l_x_5, v310, 0)
-        };
-    end;
-    v121 = function() --[[ Line: 782 ]] --[[ Name: parse_while ]]
-        -- upvalues: v109 (copy), l_kind_0 (ref), v50 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy), v111 (ref), v110 (ref), v112 (ref)
-        local l_x_6 = v109("while").span.x;
-        v109("(");
-        while l_kind_0 == "\n" do
-            local _ = v50;
-            local _ = l_kind_0;
-            local l_v53_43 = v53;
-            local l_l_kind_1_42 = l_kind_1;
-            v50 = l_v53_43;
-            l_kind_0 = l_l_kind_1_42;
-            l_x_0 = l_x_1;
-            v53 = v49();
-            l_kind_1 = v53.kind;
-            l_x_1 = v53.span.x;
-        end;
-        local v336 = if l_kind_0 == "identifier" then v111() else v110();
-        v109(")");
-        v109("{");
-        local v337 = v112("}");
-        local l_y_2 = v109("}").span.y;
-        return {
-            kind = "while", 
-            expression = v336, 
-            block = v337, 
-            span = vector.create(l_x_6, l_y_2, 0)
-        };
-    end;
-    v122 = function() --[[ Line: 803 ]] --[[ Name: parse_for ]]
-        -- upvalues: v109 (copy), v114 (ref), v119 (ref)
-        local l_x_7 = v109("for").span.x;
-        v109("(");
-        local v340 = v114();
-        v109(")");
-        local v341 = v119();
-        return {
-            kind = "for", 
-            expression = v340, 
-            call = v341, 
-            span = vector.create(l_x_7, v341.span.y, 0)
-        };
-    end;
-    v123 = function() --[[ Line: 818 ]] --[[ Name: parse_return ]]
-        -- upvalues: v109 (copy), l_kind_0 (ref), v110 (ref)
-        local l_span_0 = v109("return").span;
-        local l_x_8 = l_span_0.x;
-        local l_y_3 = l_span_0.y;
-        local v345 = {};
-        while l_kind_0 ~= "}" and l_kind_0 ~= "eof" do
-            if #v345 > 0 then
-                v109(",");
-            end;
-            local v346 = v110();
-            table.insert(v345, v346);
-            l_y_3 = v346.span.y;
-        end;
-        return {
-            kind = "return", 
-            values = v345, 
-            span = vector.create(l_x_8, l_y_3, 0)
-        };
-    end;
-    v112 = function(v347, v348) --[[ Line: 839 ]] --[[ Name: parse_block ]]
-        -- upvalues: l_kind_0 (ref), v50 (ref), v53 (ref), l_kind_1 (ref), l_x_0 (ref), l_x_1 (ref), v49 (copy), v109 (copy), v114 (ref), v120 (ref), v121 (ref), v122 (ref), v123 (ref), v111 (ref), v4 (copy), v3 (ref), v7 (ref)
-        local v349 = false;
-        local v350 = {};
-        local v351 = nil;
-        local v352 = v348 or 0;
-        local l_v352_0 = v352;
-        while l_kind_0 ~= v347 do
-            if v351 then
-                local v354 = {
-                    message = "expected to finish after last statement", 
-                    span = v50.span
-                };
-                error(("%* from %* to %*"):format(v354.message, v354.span.x, v354.span.y), 0);
-            end;
-            while l_kind_0 == "\n" do
-                local _ = v50;
-                local _ = l_kind_0;
-                local l_v53_44 = v53;
-                local l_l_kind_1_43 = l_kind_1;
-                v50 = l_v53_44;
-                l_kind_0 = l_l_kind_1_43;
-                l_x_0 = l_x_1;
-                v53 = v49();
-                l_kind_1 = v53.kind;
-                l_x_1 = v53.span.x;
-            end;
-            if l_kind_0 == "identifier" then
-                while l_kind_1 == "\n" do
-                    v53 = v49();
-                    l_kind_1 = v53.kind;
-                end;
-                if l_kind_1 == "=" then
-                    local v359 = v109("identifier");
-                    v109("=");
-                    local v360 = v114();
-                    table.insert(v350, {
-                        kind = "assign", 
-                        left = v359, 
-                        right = v360
-                    });
-                    v349 = true;
-                end;
-            end;
-            if not v349 then
-                while l_kind_0 == "\n" do
-                    local _ = v50;
-                    local _ = l_kind_0;
-                    local l_v53_45 = v53;
-                    local l_l_kind_1_44 = l_kind_1;
-                    v50 = l_v53_45;
-                    l_kind_0 = l_l_kind_1_44;
-                    l_x_0 = l_x_1;
-                    v53 = v49();
-                    l_kind_1 = v53.kind;
-                    l_x_1 = v53.span.x;
-                end;
-                if l_kind_0 == "if" then
-                    table.insert(v350, v120());
-                else
-                    while l_kind_0 == "\n" do
-                        local _ = v50;
-                        local _ = l_kind_0;
-                        local l_v53_46 = v53;
-                        local l_l_kind_1_45 = l_kind_1;
-                        v50 = l_v53_46;
-                        l_kind_0 = l_l_kind_1_45;
-                        l_x_0 = l_x_1;
-                        v53 = v49();
-                        l_kind_1 = v53.kind;
-                        l_x_1 = v53.span.x;
-                    end;
-                    if l_kind_0 == "while" then
-                        table.insert(v350, v121());
-                    else
-                        while l_kind_0 == "\n" do
-                            local _ = v50;
-                            local _ = l_kind_0;
-                            local l_v53_47 = v53;
-                            local l_l_kind_1_46 = l_kind_1;
-                            v50 = l_v53_47;
-                            l_kind_0 = l_l_kind_1_46;
-                            l_x_0 = l_x_1;
-                            v53 = v49();
-                            l_kind_1 = v53.kind;
-                            l_x_1 = v53.span.x;
-                        end;
-                        if l_kind_0 == "for" then
-                            table.insert(v350, v122());
-                        else
-                            while l_kind_0 == "\n" do
-                                local _ = v50;
-                                local _ = l_kind_0;
-                                local l_v53_48 = v53;
-                                local l_l_kind_1_47 = l_kind_1;
-                                v50 = l_v53_48;
-                                l_kind_0 = l_l_kind_1_47;
-                                l_x_0 = l_x_1;
-                                v53 = v49();
-                                l_kind_1 = v53.kind;
-                                l_x_1 = v53.span.x;
-                            end;
-                            if l_kind_0 == "return" then
-                                v351 = v123();
-                            else
-                                while l_kind_0 == "\n" do
-                                    local _ = v50;
-                                    local _ = l_kind_0;
-                                    local l_v53_49 = v53;
-                                    local l_l_kind_1_48 = l_kind_1;
-                                    v50 = l_v53_49;
-                                    l_kind_0 = l_l_kind_1_48;
-                                    l_x_0 = l_x_1;
-                                    v53 = v49();
-                                    l_kind_1 = v53.kind;
-                                    l_x_1 = v53.span.x;
-                                end;
-                                if l_kind_0 == "break" then
-                                    local l_span_1 = v109("break").span;
-                                    v351 = {
-                                        kind = "break", 
-                                        span = l_span_1
-                                    };
-                                else
-                                    while l_kind_0 == "\n" do
-                                        local _ = v50;
-                                        local _ = l_kind_0;
-                                        local l_v53_50 = v53;
-                                        local l_l_kind_1_49 = l_kind_1;
-                                        v50 = l_v53_50;
-                                        l_kind_0 = l_l_kind_1_49;
-                                        l_x_0 = l_x_1;
-                                        v53 = v49();
-                                        l_kind_1 = v53.kind;
-                                        l_x_1 = v53.span.x;
-                                    end;
-                                    if l_kind_0 == "continue" then
-                                        local v386 = v109("continue");
-                                        v351 = {
-                                            kind = "continue", 
-                                            span = v386
-                                        };
-                                    else
-                                        while l_kind_0 == "\n" do
-                                            local _ = v50;
-                                            local _ = l_kind_0;
-                                            local l_v53_51 = v53;
-                                            local l_l_kind_1_50 = l_kind_1;
-                                            v50 = l_v53_51;
-                                            l_kind_0 = l_l_kind_1_50;
-                                            l_x_0 = l_x_1;
-                                            v53 = v49();
-                                            l_kind_1 = v53.kind;
-                                            l_x_1 = v53.span.x;
-                                        end;
-                                        if not (l_kind_0 == "identifier") then
-                                            while l_kind_0 == "\n" do
-                                                local _ = v50;
-                                                local _ = l_kind_0;
-                                                local l_v53_52 = v53;
-                                                local l_l_kind_1_51 = l_kind_1;
-                                                v50 = l_v53_52;
-                                                l_kind_0 = l_l_kind_1_51;
-                                                l_x_0 = l_x_1;
-                                                v53 = v49();
-                                                l_kind_1 = v53.kind;
-                                                l_x_1 = v53.span.x;
-                                            end;
-                                            if l_kind_0 ~= "$" then
-                                                while l_kind_0 == "\n" do
-                                                    local _ = v50;
-                                                    local _ = l_kind_0;
-                                                    local l_v53_53 = v53;
-                                                    local l_l_kind_1_52 = l_kind_1;
-                                                    v50 = l_v53_53;
-                                                    l_kind_0 = l_l_kind_1_52;
-                                                    l_x_0 = l_x_1;
-                                                    v53 = v49();
-                                                    l_kind_1 = v53.kind;
-                                                    l_x_1 = v53.span.x;
-                                                end;
-                                                if l_kind_0 == ";" then
-                                                    local _ = v50;
-                                                    local _ = l_kind_0;
-                                                    local l_v53_54 = v53;
-                                                    local l_l_kind_1_53 = l_kind_1;
-                                                    v50 = l_v53_54;
-                                                    l_kind_0 = l_l_kind_1_53;
-                                                    l_x_0 = l_x_1;
-                                                    v53 = v49();
-                                                    l_kind_1 = v53.kind;
-                                                    l_x_1 = v53.span.x;
-                                                    v349 = true;
-                                                elseif l_kind_0 == "eof" and v347 ~= "eof" and v4 then
-                                                    if v4 then
-                                                        local v403 = coroutine.yield();
-                                                        assert(typeof(v403) == "buffer");
-                                                        v3 = v403;
-                                                        v7 = buffer.len(v403);
-                                                        v50 = v49();
-                                                        l_kind_0 = v50.kind;
-                                                        v53 = v49();
-                                                        l_kind_1 = v53.kind;
-                                                        v349 = true;
-                                                    else
-                                                        v349 = true;
-                                                    end;
-                                                elseif l_kind_0 == v347 then
-                                                    l_v352_0 = l_x_0;
-                                                    break;
-                                                else
-                                                    local v404 = {
-                                                        message = ("cannot parse %*"):format(l_kind_0), 
-                                                        span = v50.span
-                                                    };
-                                                    error(("%* from %* to %*"):format(v404.message, v404.span.x, v404.span.y), 0);
-                                                    v349 = true;
-                                                end;
-                                            end;
-                                        end;
-                                        if not v349 then
-                                            if not v349 then
-                                                if not v349 then
-                                                    if not v349 then
-                                                        table.insert(v350, v111());
-                                                    end;
-                                                end;
-                                            end;
-                                        end;
-                                    end;
-                                end;
-                            end;
-                        end;
-                    end;
-                end;
-            end;
-            v349 = false;
-            l_v352_0 = l_x_0;
-        end;
-        return {
-            span = vector.create(v352, l_v352_0, 0), 
-            body = v350, 
-            last_statement = v351
-        };
-    end;
-    return v112("eof");
-end;
-return function(v406, v407) --[[ Line: 923 ]] --[[ Name: generate ]]
-    -- upvalues: v405 (copy)
-    local l_v406_0 = v406;
-    local v409 = coroutine.create(v405);
-    local v410 = nil;
-    local function v413(v411) --[[ Line: 928 ]] --[[ Name: append ]]
-        -- upvalues: l_v406_0 (ref), v410 (ref), v409 (copy), v407 (copy)
-        l_v406_0 = l_v406_0 .. v411;
-        local v412 = buffer.fromstring(l_v406_0);
-        return v410(coroutine.resume(v409, v412, v407));
-    end;
-    local function v416(v414) --[[ Line: 934 ]] --[[ Name: overwrite ]]
-        -- upvalues: l_v406_0 (ref), v410 (ref), v409 (copy), v407 (copy)
-        l_v406_0 = v414;
-        local v415 = buffer.fromstring(v414);
-        return v410(coroutine.resume(v409, v415, v407));
-    end;
-    v410 = function(v417, v418) --[[ Line: 940 ]] --[[ Name: get_result ]]
-        -- upvalues: v409 (copy), l_v406_0 (ref), v413 (copy), v416 (copy)
-        if coroutine.status(v409) == "suspended" then
-            return {
-                status = "pending", 
-                src = l_v406_0, 
-                append = v413, 
-                set = v416
-            };
-        elseif v417 == false then
-            return {
-                status = "error", 
-                src = l_v406_0, 
-                why = v418
-            };
-        elseif coroutine.status(v409) == "dead" then
-            return {
-                status = "finished", 
-                src = l_v406_0, 
-                value = v418
-            };
-        else
-            error("?");
-            return;
-        end;
-    end;
-    return v416(v406);
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:48:13
+-- Luau version 6, Types version 3
+-- Time taken: 0.041193 seconds
+
+local function _(arg1) -- Line 8, Named "char"
+	return string.byte(arg1)
+end
+local function parse_upvr(arg1, arg2) -- Line 13, Named "parse"
+	local var1_upvw = 0
+	local var2_upvw = 0
+	local buffer_len_result1_upvw = buffer.len(arg1)
+	local function _() -- Line 18, Named "peek"
+		--[[ Upvalues[3]:
+			[1]: var1_upvw (read and write)
+			[2]: buffer_len_result1_upvw (read and write)
+			[3]: arg1 (read and write)
+		]]
+		if var1_upvw == buffer_len_result1_upvw then
+			return 0
+		end
+		return buffer.readu8(arg1, var1_upvw)
+	end
+	local function _() -- Line 23, Named "bump"
+		--[[ Upvalues[2]:
+			[1]: var1_upvw (read and write)
+			[2]: buffer_len_result1_upvw (read and write)
+		]]
+		var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+	end
+	local function _() -- Line 25, Named "bump_any"
+		--[[ Upvalues[4]:
+			[1]: var1_upvw (read and write)
+			[2]: buffer_len_result1_upvw (read and write)
+			[3]: arg1 (read and write)
+			[4]: var2_upvw (read and write)
+		]]
+		local var4
+		if var1_upvw == buffer_len_result1_upvw then
+			var4 = 0
+		else
+			var4 = buffer.readu8(arg1, var1_upvw)
+		end
+		if var4 == 10 then
+			var4 = var2_upvw
+			var4 += 1
+			var2_upvw = var4
+		end
+		var4 = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+		var1_upvw = var4
+		if var1_upvw == buffer_len_result1_upvw then
+			var4 = 0
+			return var4
+		end
+		var4 = buffer.readu8(arg1, var1_upvw)
+		return var4
+	end
+	local function _(arg1_2) -- Line 34, Named "eof"
+		--[[ Upvalues[2]:
+			[1]: var1_upvw (read and write)
+			[2]: buffer_len_result1_upvw (read and write)
+		]]
+		if buffer_len_result1_upvw <= var1_upvw then
+			error(arg1_2, 0)
+		end
+		return false
+	end
+	local function _() -- Line 39, Named "bump_peek"
+		--[[ Upvalues[3]:
+			[1]: var1_upvw (read and write)
+			[2]: buffer_len_result1_upvw (read and write)
+			[3]: arg1 (read and write)
+		]]
+		var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+		if var1_upvw == buffer_len_result1_upvw then
+			return 0
+		end
+		return buffer.readu8(arg1, var1_upvw)
+	end
+	local function _(arg1_3) -- Line 44, Named "is_whitespace"
+		local var6 = true
+		if arg1_3 ~= 32 then
+			var6 = true
+			if arg1_3 ~= 9 then
+				if arg1_3 ~= 13 then
+					var6 = false
+				else
+					var6 = true
+				end
+			end
+		end
+		return var6
+	end
+	local function _(arg1_4) -- Line 48, Named "is_digit"
+		local var7 = false
+		if 48 <= arg1_4 then
+			if arg1_4 > 57 then
+				var7 = false
+			else
+				var7 = true
+			end
+		end
+		return var7
+	end
+	local function is_alpha_upvr(arg1_5) -- Line 52, Named "is_alpha"
+		local var8
+		local function INLINED() -- Internal function, doesn't exist in bytecode
+			var8 = true
+			return arg1_5 > 122
+		end
+		local function INLINED_2() -- Internal function, doesn't exist in bytecode
+			var8 = true
+			return arg1_5 > 90
+		end
+		local function INLINED_3() -- Internal function, doesn't exist in bytecode
+			var8 = true
+			return arg1_5 ~= 64
+		end
+		if 97 > arg1_5 or INLINED() or 65 > arg1_5 or INLINED_2() or INLINED_3() then
+			if arg1_5 ~= 95 then
+				var8 = false
+			else
+				var8 = true
+			end
+		end
+		return var8
+	end
+	local function string_backslash_upvr() -- Line 59, Named "string_backslash"
+		--[[ Upvalues[4]:
+			[1]: var1_upvw (read and write)
+			[2]: buffer_len_result1_upvw (read and write)
+			[3]: arg1 (read and write)
+			[4]: var2_upvw (read and write)
+		]]
+		-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+		-- KONSTANTERROR: [0] 1. Error Block 63 start (CF ANALYSIS FAILED)
+		local var12
+		if var1_upvw == buffer_len_result1_upvw then
+			var12 = 0
+		else
+			var12 = buffer.readu8(arg1, var1_upvw)
+		end
+		-- KONSTANTERROR: [0] 1. Error Block 63 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [41] 32. Error Block 11 start (CF ANALYSIS FAILED)
+		var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+		var2_upvw += 1
+		do
+			return
+		end
+		-- KONSTANTERROR: [41] 32. Error Block 11 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [54] 43. Error Block 74 start (CF ANALYSIS FAILED)
+		local var13 = 122
+		if var12 == var13 then
+			var13 = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			var1_upvw = var13
+			if var1_upvw == buffer_len_result1_upvw then
+				local _ = 0
+			else
+			end
+			var13 = true
+			if buffer.readu8(arg1, var1_upvw) ~= 32 then
+				var13 = true
+				-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+				if buffer.readu8(arg1, var1_upvw) ~= 9 then
+					-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+					if buffer.readu8(arg1, var1_upvw) ~= 13 then
+						var13 = false
+					else
+						var13 = true
+					end
+				end
+			end
+			if var13 then
+				if var1_upvw == buffer_len_result1_upvw then
+					var13 = 0
+				else
+					var13 = buffer.readu8(arg1, var1_upvw)
+				end
+				if var13 == 10 then
+					var13 = var2_upvw
+					var13 += 1
+					var2_upvw = var13
+				end
+				var13 = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+				var1_upvw = var13
+				if var1_upvw == buffer_len_result1_upvw then
+					var13 = 0
+				else
+					var13 = buffer.readu8(arg1, var1_upvw)
+				end
+				-- KONSTANTWARNING: GOTO [66] #52
+			end
+		else
+			if var1_upvw == buffer_len_result1_upvw then
+				var13 = 0
+			else
+				var13 = buffer.readu8(arg1, var1_upvw)
+			end
+			if var13 == 10 then
+				var13 = var2_upvw
+				var13 += 1
+				var2_upvw = var13
+			end
+			var13 = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			var1_upvw = var13
+			if var1_upvw == buffer_len_result1_upvw then
+				var13 = 0
+				return
+			end
+			var13 = buffer.readu8(arg1, var1_upvw)
+		end
+		-- KONSTANTERROR: [54] 43. Error Block 74 end (CF ANALYSIS FAILED)
+	end
+	local function quoted_string_upvr() -- Line 80, Named "quoted_string"
+		--[[ Upvalues[4]:
+			[1]: var1_upvw (read and write)
+			[2]: buffer_len_result1_upvw (read and write)
+			[3]: arg1 (read and write)
+			[4]: string_backslash_upvr (readonly)
+		]]
+		-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+		local var15
+		if var15 == buffer_len_result1_upvw then
+			local _ = 0
+		else
+			var15 = arg1
+		end
+		var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+		if var1_upvw == buffer_len_result1_upvw then
+			var15 = 0
+		else
+			var15 = buffer.readu8(arg1, var1_upvw)
+		end
+		while var15 ~= buffer.readu8(var15, var1_upvw) do
+			if buffer_len_result1_upvw <= var1_upvw then
+				error("unterminated string", 0)
+			end
+			if false then break end
+			if var15 == 0 or var15 == 10 or var15 == 13 then
+				has_error = true -- Setting global
+				return "error"
+			end
+			if var15 == 92 then
+				var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+				string_backslash_upvr()
+			else
+				var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			end
+			if var1_upvw == buffer_len_result1_upvw then
+				var15 = 0
+			else
+				var15 = buffer.readu8(arg1, var1_upvw)
+			end
+		end
+		var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+		return "string"
+	end
+	local function number_upvr() -- Line 102, Named "number"
+		--[[ Upvalues[4]:
+			[1]: var1_upvw (read and write)
+			[2]: buffer_len_result1_upvw (read and write)
+			[3]: arg1 (read and write)
+			[4]: is_alpha_upvr (readonly)
+		]]
+		local var17 = var1_upvw
+		local var18 = 10
+		local var19
+		if var1_upvw == buffer_len_result1_upvw then
+			var19 = 0
+		else
+			var19 = buffer.readu8(arg1, var1_upvw)
+		end
+		if var19 == 48 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			if var1_upvw == buffer_len_result1_upvw then
+				var19 = 0
+			else
+				var19 = buffer.readu8(arg1, var1_upvw)
+			end
+			if var19 == 120 or var19 == 88 then
+				var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+				if var1_upvw == buffer_len_result1_upvw then
+					var19 = 0
+				else
+					var19 = buffer.readu8(arg1, var1_upvw)
+				end
+				var18 = 16
+			elseif var19 == 98 or var19 == 66 then
+				var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+				if var1_upvw == buffer_len_result1_upvw then
+					var19 = 0
+				else
+					var19 = buffer.readu8(arg1, var1_upvw)
+				end
+				var18 = 2
+			end
+		end
+		while true do
+			local var20 = var19
+			local var21 = false
+			if 48 <= var20 then
+				if var20 > 57 then
+					var21 = false
+				else
+					var21 = true
+				end
+			end
+			if var21 or var19 == 46 or var19 ~= 95 then break end
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			if var1_upvw == buffer_len_result1_upvw then
+				var19 = 0
+			else
+				var19 = buffer.readu8(arg1, var1_upvw)
+			end
+		end
+		local function INLINED_4() -- Internal function, doesn't exist in bytecode
+			if var1_upvw == buffer_len_result1_upvw then
+				var19 = 0
+			else
+				var19 = buffer.readu8(arg1, var1_upvw)
+			end
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return var19 == 43
+		end
+		if var19 == 101 or var19 == 69 or INLINED_4() or var19 == 45 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			if var1_upvw == buffer_len_result1_upvw then
+				var19 = 0
+			else
+				var19 = buffer.readu8(arg1, var1_upvw)
+			end
+		end
+		while true do
+			local var22 = var19
+			local var23 = false
+			if 48 <= var22 then
+				if var22 > 57 then
+					var23 = false
+				else
+					var23 = true
+				end
+			end
+			if var23 or is_alpha_upvr(var19) or var19 ~= 95 then break end
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			if var1_upvw == buffer_len_result1_upvw then
+				var19 = 0
+			else
+				var19 = buffer.readu8(arg1, var1_upvw)
+			end
+		end
+		local var24
+		if var18 == 10 then
+			var24 = buffer.readstring(arg1, var17, var1_upvw - var17)
+		else
+			var24 = buffer.readstring(arg1, var17 + 2, var1_upvw - var17 - 2)
+		end
+		if tonumber(string.gsub(var24, '_', ""), var18) then
+			return "number"
+		end
+		has_error = true -- Setting global
+		return "error"
+	end
+	local function read_kind_upvr() -- Line 152, Named "read_kind"
+		--[[ Upvalues[8]:
+			[1]: var1_upvw (read and write)
+			[2]: buffer_len_result1_upvw (read and write)
+			[3]: arg1 (read and write)
+			[4]: var2_upvw (read and write)
+			[5]: is_alpha_upvr (readonly)
+			[6]: number_upvr (readonly)
+			[7]: quoted_string_upvr (readonly)
+			[8]: read_kind_upvr (readonly)
+		]]
+		-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+		local var42
+		if var1_upvw == buffer_len_result1_upvw then
+			var42 = 0
+		else
+			var42 = buffer.readu8(arg1, var1_upvw)
+		end
+		if var42 == 0 then
+			return "eof"
+		end
+		if var42 == 35 then
+			while true do
+				local var43
+				if var42 == var43 then break end
+				if var42 == 0 then break end
+				if var1_upvw == buffer_len_result1_upvw then
+					var43 = 0
+				else
+					var43 = buffer.readu8(arg1, var1_upvw)
+				end
+				if var43 == 10 then
+					var43 = var2_upvw
+					var43 += 1
+					var2_upvw = var43
+				end
+				var43 = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+				var1_upvw = var43
+				if var1_upvw == buffer_len_result1_upvw then
+					var43 = 0
+				else
+					var43 = buffer.readu8(arg1, var1_upvw)
+				end
+			end
+			return "comment"
+		end
+		local var44 = var42
+		local var45 = true
+		if var44 ~= 32 then
+			var45 = true
+			if var44 ~= 9 then
+				if var44 ~= 13 then
+					var45 = false
+				else
+					var45 = true
+				end
+			end
+		end
+		if var45 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return "whitespace"
+		end
+		if is_alpha_upvr(var42) then
+			local var46 = var1_upvw
+			while true do
+				var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+				if var1_upvw == buffer_len_result1_upvw then
+					var42 = 0
+				else
+					var42 = buffer.readu8(arg1, var1_upvw)
+				end
+				if not is_alpha_upvr(var42) then
+					local var47 = var42
+					local var48 = false
+					if 48 <= var47 then
+						if var47 > 57 then
+							var48 = false
+						else
+							var48 = true
+						end
+					end
+					if var48 or var42 ~= 45 then break end
+				end
+			end
+			local buffer_readstring_result1 = buffer.readstring(arg1, var46, var1_upvw - var46)
+			if buffer_readstring_result1 == "true" then
+				return "true"
+			end
+			if buffer_readstring_result1 == "false" then
+				return "false"
+			end
+			if buffer_readstring_result1 == "nil" then
+				return "nil"
+			end
+			if buffer_readstring_result1 == "return" then
+				return "return"
+			end
+			if buffer_readstring_result1 == "for" then
+				return "for"
+			end
+			if buffer_readstring_result1 == "while" then
+				return "while"
+			end
+			if buffer_readstring_result1 == "if" then
+				return "if"
+			end
+			if buffer_readstring_result1 == "else" then
+				return "else"
+			end
+			if buffer_readstring_result1 == "break" then
+				return "break"
+			end
+			if buffer_readstring_result1 == "continue" then
+				return "continue"
+			end
+			return "identifier"
+		end
+		local var50 = var42
+		var46 = false
+		local var51 = var46
+		if 48 <= var50 then
+			if var50 > 57 then
+				var51 = false
+			else
+				var51 = true
+			end
+		end
+		if var51 then
+			return number_upvr()
+		end
+		if var42 == 34 then
+			return quoted_string_upvr()
+		end
+		if var42 == 39 then
+			return quoted_string_upvr()
+		end
+		if var42 == 46 then
+			if var1_upvw == buffer_len_result1_upvw then
+			else
+			end
+			local buffer_readu8_result1_3 = buffer.readu8(arg1, var1_upvw)
+			if 48 <= buffer_readu8_result1_3 then
+				if buffer_readu8_result1_3 > 57 then
+				else
+				end
+			end
+			if true then
+				var1_upvw -= 1
+				return number_upvr()
+			end
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return '.'
+		end
+		if buffer.readu8(arg1, var1_upvw) == 61 then
+			local minimum_2 = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			var1_upvw = minimum_2
+			if var1_upvw == buffer_len_result1_upvw then
+				minimum_2 = 0
+			else
+				minimum_2 = buffer.readu8(arg1, var1_upvw)
+			end
+			if minimum_2 == 61 then
+				return "=="
+			end
+			return '='
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if buffer.readu8(arg1, var1_upvw) == 126 then
+			local minimum = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			var1_upvw = minimum
+			if var1_upvw == buffer_len_result1_upvw then
+				minimum = 0
+			else
+				minimum = buffer.readu8(arg1, var1_upvw)
+			end
+			if minimum == 61 then
+				return "~="
+			end
+			has_error = true -- Setting global
+			return "error"
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if buffer.readu8(arg1, var1_upvw) == 62 then
+			local minimum_7 = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			var1_upvw = minimum_7
+			if var1_upvw == buffer_len_result1_upvw then
+				minimum_7 = 0
+			else
+				minimum_7 = buffer.readu8(arg1, var1_upvw)
+			end
+			if minimum_7 == 61 then
+				return ">="
+			end
+			return '>'
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if buffer.readu8(arg1, var1_upvw) == 60 then
+			local minimum_4 = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			var1_upvw = minimum_4
+			if var1_upvw == buffer_len_result1_upvw then
+				minimum_4 = 0
+			else
+				minimum_4 = buffer.readu8(arg1, var1_upvw)
+			end
+			if minimum_4 == 61 then
+				return "<="
+			end
+			return '<'
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if buffer.readu8(arg1, var1_upvw) == 36 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return '$'
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if buffer.readu8(arg1, var1_upvw) == 40 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return '('
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if buffer.readu8(arg1, var1_upvw) == 41 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return ')'
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if buffer.readu8(arg1, var1_upvw) == 123 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return '{'
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if buffer.readu8(arg1, var1_upvw) == 125 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return '}'
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if buffer.readu8(arg1, var1_upvw) == 91 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return '['
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if buffer.readu8(arg1, var1_upvw) == 93 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return ']'
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if buffer.readu8(arg1, var1_upvw) == 124 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return '|'
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if buffer.readu8(arg1, var1_upvw) == 10 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return '\n'
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if buffer.readu8(arg1, var1_upvw) == 59 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return ';'
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if buffer.readu8(arg1, var1_upvw) == 44 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return ','
+		end
+		local buffer_readu8_result1_4 = buffer.readu8(arg1, var1_upvw)
+		local var58 = true
+		if buffer_readu8_result1_4 ~= 32 then
+			var58 = true
+			if buffer_readu8_result1_4 ~= 9 then
+				if buffer_readu8_result1_4 ~= 13 then
+					var58 = false
+				else
+					var58 = true
+				end
+			end
+		end
+		if var58 then
+			var1_upvw = math.min(var1_upvw + 1, buffer_len_result1_upvw)
+			return read_kind_upvr()
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		error(`no symbol matching {string.char(buffer.readu8(arg1, var1_upvw))}`, 0)
+		return "error"
+	end
+	local function next_token_upvr() -- Line 292, Named "next_token"
+		--[[ Upvalues[3]:
+			[1]: var1_upvw (read and write)
+			[2]: read_kind_upvr (readonly)
+			[3]: arg1 (read and write)
+		]]
+		-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+		local var59
+		while not (var59 == "whitespace" or var59 ~= "comment") do
+			local var60 = var1_upvw
+			var59 = read_kind_upvr()
+		end
+		return {
+			kind = var59;
+			text = buffer.readstring(arg1, var60, var1_upvw - var60);
+			span = vector.create(var60, var1_upvw, 0);
+		}
+	end
+	local next_token_result1_upvw = next_token_upvr()
+	local kind_3_upvw = next_token_result1_upvw.kind
+	local x_upvw = next_token_result1_upvw.span.x
+	local next_token_result1_upvw_2 = next_token_upvr()
+	local kind_7_upvw = next_token_result1_upvw_2.kind
+	local x_upvw_2 = next_token_result1_upvw_2.span.x
+	local function _() -- Line 315, Named "consume"
+		--[[ Upvalues[7]:
+			[1]: next_token_result1_upvw (read and write)
+			[2]: kind_3_upvw (read and write)
+			[3]: next_token_result1_upvw_2 (read and write)
+			[4]: kind_7_upvw (read and write)
+			[5]: x_upvw (read and write)
+			[6]: x_upvw_2 (read and write)
+			[7]: next_token_upvr (readonly)
+		]]
+		next_token_result1_upvw = next_token_result1_upvw_2
+		kind_3_upvw = kind_7_upvw
+		x_upvw = x_upvw_2
+		next_token_result1_upvw_2 = next_token_upvr()
+		kind_7_upvw = next_token_result1_upvw_2.kind
+		x_upvw_2 = next_token_result1_upvw_2.span.x
+		return next_token_result1_upvw, kind_3_upvw
+	end
+	local function _(arg1_6) -- Line 325, Named "current_is"
+		--[[ Upvalues[7]:
+			[1]: kind_3_upvw (read and write)
+			[2]: next_token_result1_upvw (read and write)
+			[3]: next_token_result1_upvw_2 (read and write)
+			[4]: kind_7_upvw (read and write)
+			[5]: x_upvw (read and write)
+			[6]: x_upvw_2 (read and write)
+			[7]: next_token_upvr (readonly)
+		]]
+		while true do
+			local var68
+			if var68 ~= '\n' then break end
+			var68 = next_token_result1_upvw
+			next_token_result1_upvw = next_token_result1_upvw_2
+			kind_3_upvw = kind_7_upvw
+			x_upvw = x_upvw_2
+			next_token_result1_upvw_2 = next_token_upvr()
+			kind_7_upvw = next_token_result1_upvw_2.kind
+			x_upvw_2 = next_token_result1_upvw_2.span.x
+		end
+		if kind_3_upvw ~= arg1_6 then
+			var68 = false
+		else
+			var68 = true
+		end
+		return var68
+	end
+	local function _(arg1_7) -- Line 333, Named "lookahead_is"
+		--[[ Upvalues[3]:
+			[1]: kind_7_upvw (read and write)
+			[2]: next_token_result1_upvw_2 (read and write)
+			[3]: next_token_upvr (readonly)
+		]]
+		while true do
+			local var69
+			if var69 ~= '\n' then break end
+			var69 = next_token_upvr()
+			next_token_result1_upvw_2 = var69
+			var69 = next_token_result1_upvw_2.kind
+			kind_7_upvw = var69
+		end
+		if kind_7_upvw ~= arg1_7 then
+			var69 = false
+		else
+			var69 = true
+		end
+		return var69
+	end
+	local function _() -- Line 342, Named "yield"
+		--[[ Upvalues[8]:
+			[1]: arg2 (readonly)
+			[2]: arg1 (read and write)
+			[3]: buffer_len_result1_upvw (read and write)
+			[4]: next_token_result1_upvw (read and write)
+			[5]: next_token_upvr (readonly)
+			[6]: kind_3_upvw (read and write)
+			[7]: next_token_result1_upvw_2 (read and write)
+			[8]: kind_7_upvw (read and write)
+		]]
+		local var70
+		if arg2 then
+			local coroutine_yield_result1 = coroutine.yield()
+			if typeof(coroutine_yield_result1) ~= "buffer" then
+				var70 = false
+			else
+				var70 = true
+			end
+			assert(var70)
+			arg1 = coroutine_yield_result1
+			var70 = coroutine_yield_result1
+			buffer_len_result1_upvw = buffer.len(var70)
+			next_token_result1_upvw = next_token_upvr()
+			var70 = next_token_result1_upvw
+			kind_3_upvw = var70.kind
+			next_token_result1_upvw_2 = next_token_upvr()
+			var70 = next_token_result1_upvw_2
+			kind_7_upvw = var70.kind
+		end
+	end
+	local function _(arg1_8) -- Line 356, Named "display"
+		-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+		local kind_5 = arg1_8.kind
+		-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [4] 3. Error Block 2 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [4] 3. Error Block 2 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [8] 5. Error Block 4 start (CF ANALYSIS FAILED)
+		do
+			return kind_5
+		end
+		-- KONSTANTERROR: [8] 5. Error Block 4 end (CF ANALYSIS FAILED)
+	end
+	local function report_upvr(arg1_9, arg2_2) -- Line 368, Named "report"
+		--[[ Upvalues[1]:
+			[1]: next_token_result1_upvw (read and write)
+		]]
+		local tbl_2 = {}
+		tbl_2.message = arg1_9
+		local var74 = arg2_2
+		if not var74 then
+			var74 = next_token_result1_upvw.span
+		end
+		tbl_2.span = var74
+		error(`{tbl_2.message} from {tbl_2.span.x} to {tbl_2.span.y}`, 0)
+	end
+	local function expect_failure_upvr(arg1_10) -- Line 377, Named "expect_failure"
+		--[[ Upvalues[3]:
+			[1]: report_upvr (readonly)
+			[2]: next_token_result1_upvw (read and write)
+			[3]: kind_3_upvw (read and write)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 35 start (CF ANALYSIS FAILED)
+		local tbl_4 = {}
+		tbl_4.kind = arg1_10
+		local kind = tbl_4.kind
+		if kind == "identifier" or kind == "number" or kind == "string" then
+			-- KONSTANTWARNING: GOTO [30] #23
+		end
+		-- KONSTANTERROR: [0] 1. Error Block 35 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [15] 11. Error Block 32 start (CF ANALYSIS FAILED)
+		if tbl_4.kind == "error" then
+			-- KONSTANTWARNING: GOTO [30] #23
+		end
+		-- KONSTANTERROR: [15] 11. Error Block 32 end (CF ANALYSIS FAILED)
+	end
+	local function expect_upvr(arg1_11) -- Line 387, Named "expect"
+		--[[ Upvalues[11]:
+			[1]: kind_3_upvw (read and write)
+			[2]: next_token_result1_upvw (read and write)
+			[3]: next_token_result1_upvw_2 (read and write)
+			[4]: kind_7_upvw (read and write)
+			[5]: x_upvw (read and write)
+			[6]: x_upvw_2 (read and write)
+			[7]: next_token_upvr (readonly)
+			[8]: arg2 (readonly)
+			[9]: arg1 (read and write)
+			[10]: buffer_len_result1_upvw (read and write)
+			[11]: expect_failure_upvr (readonly)
+		]]
+		while true do
+			local var84
+			if kind_3_upvw ~= '\n' then break end
+			next_token_result1_upvw = next_token_result1_upvw_2
+			kind_3_upvw = kind_7_upvw
+			x_upvw = x_upvw_2
+			next_token_result1_upvw_2 = next_token_upvr()
+			kind_7_upvw = next_token_result1_upvw_2.kind
+			x_upvw_2 = next_token_result1_upvw_2.span.x
+		end
+		if kind_3_upvw ~= arg1_11 then
+			var84 = false
+		else
+			var84 = true
+		end
+		if var84 then
+			next_token_result1_upvw = next_token_result1_upvw_2
+			kind_3_upvw = kind_7_upvw
+			x_upvw = x_upvw_2
+			next_token_result1_upvw_2 = next_token_upvr()
+			kind_7_upvw = next_token_result1_upvw_2.kind
+			x_upvw_2 = next_token_result1_upvw_2.span.x
+			var84 = next_token_result1_upvw
+			return var84
+		end
+		var84 = kind_3_upvw
+		if var84 == "eof" then
+			var84 = arg2
+			local var85
+			if var84 then
+				var84 = arg2
+				local var86
+				if var84 then
+					var84 = coroutine.yield()
+					if typeof(var84) ~= "buffer" then
+						var86 = false
+					else
+						var86 = true
+					end
+					assert(var86)
+					arg1 = var84
+					var86 = var84
+					buffer_len_result1_upvw = buffer.len(var86)
+					next_token_result1_upvw = next_token_upvr()
+					var86 = next_token_result1_upvw
+					kind_3_upvw = var86.kind
+					next_token_result1_upvw_2 = next_token_upvr()
+					var86 = next_token_result1_upvw_2
+					kind_7_upvw = var86.kind
+				end
+				while true do
+					var86 = kind_3_upvw
+					if var86 ~= '\n' then break end
+					var86 = next_token_result1_upvw
+					var85 = kind_7_upvw
+					next_token_result1_upvw = next_token_result1_upvw_2
+					kind_3_upvw = var85
+					x_upvw = x_upvw_2
+					next_token_result1_upvw_2 = next_token_upvr()
+					var85 = next_token_result1_upvw_2
+					kind_7_upvw = var85.kind
+					var85 = next_token_result1_upvw_2.span
+					x_upvw_2 = var85.x
+				end
+				if kind_3_upvw ~= arg1_11 then
+					-- KONSTANTWARNING: GOTO [127] #107
+				end
+				if true then
+					next_token_result1_upvw = next_token_result1_upvw_2
+					kind_3_upvw = kind_7_upvw
+					x_upvw = x_upvw_2
+					next_token_result1_upvw_2 = next_token_upvr()
+					kind_7_upvw = next_token_result1_upvw_2.kind
+					var85 = next_token_result1_upvw_2
+					x_upvw_2 = var85.span.x
+					var84 = next_token_result1_upvw
+					return var84
+				end
+				var85 = {}
+				var85.kind = arg1_11
+				local kind_2 = var85.kind
+				if kind_2 == "identifier" or kind_2 == "number" or kind_2 == "string" then
+					-- KONSTANTWARNING: GOTO [180] #149
+				end
+				if var85.kind == "error" then
+					-- KONSTANTWARNING: GOTO [180] #149
+				end
+				local var88 = next_token_result1_upvw
+				local kind_4 = var88.kind
+				if kind_4 == "identifier" or kind_4 == "number" or kind_4 == "string" then
+					var85 = kind_4
+				elseif var88.kind == "error" then
+					var85 = "error '"..var88.text.."'"
+				else
+					var85 = "'"..kind_4.."'"
+				end
+				local _ = {
+					message = `expected {"'"..kind_2.."'"}, but got {var85} of {kind_3_upvw} instead`;
+					span = next_token_result1_upvw.span;
+				}
+				var85 = `{_.message} from {_.span.x} to {_.span.y}`
+				var85 = 0
+				error(var85, var85)
+				var84 = nil
+				return var84
+			end
+		end
+		var84 = expect_failure_upvr(arg1_11)
+		return var84
+	end
+	local parse_expression_upvw
+	local parse_command_upvw
+	local parse_block_upvw
+	local parse_expression_or_command_upvw
+	local function parse_var_root_upvw() -- Line 413, Named "parse_var_root"
+		--[[ Upvalues[10]:
+			[1]: kind_3_upvw (read and write)
+			[2]: next_token_result1_upvw (read and write)
+			[3]: next_token_result1_upvw_2 (read and write)
+			[4]: kind_7_upvw (read and write)
+			[5]: x_upvw (read and write)
+			[6]: x_upvw_2 (read and write)
+			[7]: next_token_upvr (readonly)
+			[8]: expect_upvr (readonly)
+			[9]: parse_expression_or_command_upvw (read and write)
+			[10]: report_upvr (readonly)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 106 start (CF ANALYSIS FAILED)
+		while true do
+			local var95
+			if kind_3_upvw ~= '\n' then break end
+			next_token_result1_upvw = next_token_result1_upvw_2
+			kind_3_upvw = kind_7_upvw
+			x_upvw = x_upvw_2
+			next_token_result1_upvw_2 = next_token_upvr()
+			kind_7_upvw = next_token_result1_upvw_2.kind
+			x_upvw_2 = next_token_result1_upvw_2.span.x
+		end
+		if kind_3_upvw ~= "identifier" then
+			var95 = false
+			-- KONSTANTWARNING: GOTO [30] #26
+		end
+		-- KONSTANTERROR: [0] 1. Error Block 106 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [29] 25. Error Block 87 start (CF ANALYSIS FAILED)
+		var95 = true
+		if var95 then
+			var95 = expect_upvr("identifier")
+			return {
+				kind = "global";
+				span = var95.span;
+				token = var95;
+			}
+		end
+		while kind_3_upvw == '\n' do
+			next_token_result1_upvw = next_token_result1_upvw_2
+			kind_3_upvw = kind_7_upvw
+			x_upvw = x_upvw_2
+			next_token_result1_upvw_2 = next_token_upvr()
+			kind_7_upvw = next_token_result1_upvw_2.kind
+			x_upvw_2 = next_token_result1_upvw_2.span.x
+		end
+		if kind_3_upvw ~= '$' then
+			var95 = false
+		else
+			var95 = true
+		end
+		-- KONSTANTERROR: [29] 25. Error Block 87 end (CF ANALYSIS FAILED)
+	end
+	local function parse_var_suffix_upvw() -- Line 442, Named "parse_var_suffix"
+		--[[ Upvalues[10]:
+			[1]: kind_3_upvw (read and write)
+			[2]: next_token_result1_upvw (read and write)
+			[3]: next_token_result1_upvw_2 (read and write)
+			[4]: kind_7_upvw (read and write)
+			[5]: x_upvw (read and write)
+			[6]: x_upvw_2 (read and write)
+			[7]: next_token_upvr (readonly)
+			[8]: expect_upvr (readonly)
+			[9]: parse_expression_or_command_upvw (read and write)
+			[10]: report_upvr (readonly)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 38 start (CF ANALYSIS FAILED)
+		while true do
+			local var97
+			if kind_3_upvw ~= '\n' then break end
+			next_token_result1_upvw = next_token_result1_upvw_2
+			kind_3_upvw = kind_7_upvw
+			x_upvw = x_upvw_2
+			next_token_result1_upvw_2 = next_token_upvr()
+			kind_7_upvw = next_token_result1_upvw_2.kind
+			x_upvw_2 = next_token_result1_upvw_2.span.x
+		end
+		if kind_3_upvw ~= '.' then
+			var97 = false
+			-- KONSTANTWARNING: GOTO [30] #26
+		end
+		-- KONSTANTERROR: [0] 1. Error Block 38 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [29] 25. Error Block 31 start (CF ANALYSIS FAILED)
+		var97 = true
+		if var97 then
+			var97 = expect_upvr('.')
+			local expect_result1 = expect_upvr("identifier")
+			return {
+				kind = "nameindex";
+				span = vector.create(var97.span.x, expect_result1.span.y, 0);
+				name = expect_result1;
+			}
+		end
+		while kind_3_upvw == '\n' do
+			next_token_result1_upvw = next_token_result1_upvw_2
+			kind_3_upvw = kind_7_upvw
+			x_upvw = x_upvw_2
+			next_token_result1_upvw_2 = next_token_upvr()
+			kind_7_upvw = next_token_result1_upvw_2.kind
+			x_upvw_2 = next_token_result1_upvw_2.span.x
+		end
+		if kind_3_upvw ~= '[' then
+			var97 = false
+		else
+			var97 = true
+		end
+		if var97 then
+			var97 = expect_upvr('[')
+			return {
+				kind = "exprindex";
+				span = vector.create(var97.span.x, expect_upvr(']').span.y, 0);
+				expr = parse_expression_or_command_upvw();
+			}
+		end
+		var97 = report_upvr("invalid")
+		do
+			return var97
+		end
+		-- KONSTANTERROR: [29] 25. Error Block 31 end (CF ANALYSIS FAILED)
+	end
+	local function parse_var_suffixes_upvw() -- Line 465, Named "parse_var_suffixes"
+		--[[ Upvalues[8]:
+			[1]: kind_3_upvw (read and write)
+			[2]: next_token_result1_upvw (read and write)
+			[3]: next_token_result1_upvw_2 (read and write)
+			[4]: kind_7_upvw (read and write)
+			[5]: x_upvw (read and write)
+			[6]: x_upvw_2 (read and write)
+			[7]: next_token_upvr (readonly)
+			[8]: parse_var_suffix_upvw (read and write)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [64] 54. Error Block 20 start (CF ANALYSIS FAILED)
+		table.insert({}, parse_var_suffix_upvw())
+		-- KONSTANTERROR: [64] 54. Error Block 20 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [2] 2. Error Block 28 start (CF ANALYSIS FAILED)
+		if table.insert({}, parse_var_suffix_upvw()) == '\n' then
+			-- KONSTANTWARNING: GOTO [2] #2
+		end
+		-- KONSTANTERROR: [2] 2. Error Block 28 end (CF ANALYSIS FAILED)
+	end
+	local function parse_var_upvw() -- Line 474, Named "parse_var"
+		--[[ Upvalues[2]:
+			[1]: parse_var_root_upvw (read and write)
+			[2]: parse_var_suffixes_upvw (read and write)
+		]]
+		-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+		local parse_var_root_upvw_result1 = parse_var_root_upvw()
+		local var102
+		if parse_var_root_upvw_result1.kind ~= "global" then
+			var102 = parse_var_suffixes_upvw()
+		else
+			var102 = {}
+		end
+		local span = parse_var_root_upvw_result1.span
+		if 0 < #var102 then
+		else
+		end
+		return {
+			span = vector.create(span.x, parse_var_root_upvw_result1.span.y, 0);
+			prefix = parse_var_root_upvw_result1;
+			suffixes = var102;
+		}
+	end
+	function parse_expression_or_command_upvw() -- Line 492, Named "parse_expression_or_command"
+		--[[ Upvalues[13]:
+			[1]: kind_3_upvw (read and write)
+			[2]: next_token_result1_upvw (read and write)
+			[3]: next_token_result1_upvw_2 (read and write)
+			[4]: kind_7_upvw (read and write)
+			[5]: x_upvw (read and write)
+			[6]: x_upvw_2 (read and write)
+			[7]: next_token_upvr (readonly)
+			[8]: parse_command_upvw (read and write)
+			[9]: arg2 (readonly)
+			[10]: arg1 (read and write)
+			[11]: buffer_len_result1_upvw (read and write)
+			[12]: var105_upvw (read and write)
+			[13]: parse_expression_upvw (read and write)
+		]]
+		while true do
+			local var108
+			if kind_3_upvw ~= '\n' then break end
+			next_token_result1_upvw = next_token_result1_upvw_2
+			kind_3_upvw = kind_7_upvw
+			x_upvw = x_upvw_2
+			next_token_result1_upvw_2 = next_token_upvr()
+			kind_7_upvw = next_token_result1_upvw_2.kind
+			x_upvw_2 = next_token_result1_upvw_2.span.x
+		end
+		if kind_3_upvw ~= "identifier" then
+			var108 = false
+		else
+			var108 = true
+		end
+		if var108 then
+			var108 = parse_command_upvw()
+			return var108
+		end
+		var108 = kind_3_upvw
+		if var108 == "eof" then
+			var108 = arg2
+			if var108 then
+				var108 = arg2
+				local var109
+				if var108 then
+					var108 = coroutine.yield()
+					if typeof(var108) ~= "buffer" then
+						var109 = false
+					else
+						var109 = true
+					end
+					assert(var109)
+					arg1 = var108
+					var109 = var108
+					buffer_len_result1_upvw = buffer.len(var109)
+					next_token_result1_upvw = next_token_upvr()
+					var109 = next_token_result1_upvw
+					kind_3_upvw = var109.kind
+					next_token_result1_upvw_2 = next_token_upvr()
+					var109 = next_token_result1_upvw_2
+					kind_7_upvw = var109.kind
+				end
+				var108 = var105_upvw()
+				return var108
+			end
+		end
+		var108 = parse_expression_upvw()
+		return var108
+	end
+	local var105_upvw = parse_expression_or_command_upvw
+	local function parse_function_body_upvw() -- Line 503, Named "parse_function_body"
+		--[[ Upvalues[12]:
+			[1]: expect_upvr (readonly)
+			[2]: kind_3_upvw (read and write)
+			[3]: next_token_result1_upvw (read and write)
+			[4]: next_token_result1_upvw_2 (read and write)
+			[5]: kind_7_upvw (read and write)
+			[6]: x_upvw (read and write)
+			[7]: x_upvw_2 (read and write)
+			[8]: next_token_upvr (readonly)
+			[9]: arg2 (readonly)
+			[10]: arg1 (read and write)
+			[11]: buffer_len_result1_upvw (read and write)
+			[12]: parse_block_upvw (read and write)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+		local var110
+		-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [98] 82. Error Block 20 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [98] 82. Error Block 20 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [10] 8. Error Block 36 start (CF ANALYSIS FAILED)
+		repeat
+			-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [98.4]
+		until nil ~= '\n'
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if nil ~= '|' then
+		else
+		end
+		-- KONSTANTERROR: [10] 8. Error Block 36 end (CF ANALYSIS FAILED)
+	end
+	local function parse_lambda_upvw() -- Line 532, Named "parse_lambda"
+		--[[ Upvalues[1]:
+			[1]: parse_function_body_upvw (read and write)
+		]]
+		local parse_function_body_upvw_result1_2 = parse_function_body_upvw()
+		return {
+			kind = "lambda";
+			body = parse_function_body_upvw_result1_2;
+			span = parse_function_body_upvw_result1_2.span;
+		}
+	end
+	function parse_table() -- Line 541
+		--[[ Upvalues[9]:
+			[1]: expect_upvr (readonly)
+			[2]: kind_3_upvw (read and write)
+			[3]: next_token_result1_upvw (read and write)
+			[4]: next_token_result1_upvw_2 (read and write)
+			[5]: kind_7_upvw (read and write)
+			[6]: x_upvw (read and write)
+			[7]: x_upvw_2 (read and write)
+			[8]: next_token_upvr (readonly)
+			[9]: parse_expression_upvw (read and write)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+		local var113
+		-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [190] 156. Error Block 39 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [190] 156. Error Block 39 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [10] 8. Error Block 69 start (CF ANALYSIS FAILED)
+		repeat
+			-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [190.4]
+		until nil ~= '\n'
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if nil ~= '}' then
+		else
+		end
+		-- KONSTANTERROR: [10] 8. Error Block 69 end (CF ANALYSIS FAILED)
+	end
+	function parse_vector() -- Line 584
+		--[[ Upvalues[9]:
+			[1]: expect_upvr (readonly)
+			[2]: kind_3_upvw (read and write)
+			[3]: next_token_result1_upvw (read and write)
+			[4]: next_token_result1_upvw_2 (read and write)
+			[5]: kind_7_upvw (read and write)
+			[6]: x_upvw (read and write)
+			[7]: x_upvw_2 (read and write)
+			[8]: next_token_upvr (readonly)
+			[9]: parse_expression_upvw (read and write)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+		local const_number = 0
+		-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [38] 32. Error Block 25 start (CF ANALYSIS FAILED)
+		if true then
+			-- KONSTANTWARNING: GOTO [50] #43
+		end
+		if const_number ~= 0 then
+			expect_upvr(',')
+		end
+		local var115 = const_number + 1
+		;({})[var115] = parse_expression_upvw()
+		-- KONSTANTERROR: [38] 32. Error Block 25 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [6] 6. Error Block 2 start (CF ANALYSIS FAILED)
+		-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [49.1019]
+		-- KONSTANTERROR: [6] 6. Error Block 2 end (CF ANALYSIS FAILED)
+	end
+	function parse_expression_upvw() -- Line 607, Named "parse_expression"
+		--[[ Upvalues[16]:
+			[1]: kind_3_upvw (read and write)
+			[2]: next_token_result1_upvw (read and write)
+			[3]: next_token_result1_upvw_2 (read and write)
+			[4]: kind_7_upvw (read and write)
+			[5]: x_upvw (read and write)
+			[6]: x_upvw_2 (read and write)
+			[7]: next_token_upvr (readonly)
+			[8]: expect_upvr (readonly)
+			[9]: parse_command_upvw (read and write)
+			[10]: var116_upvw (read and write)
+			[11]: parse_var_upvw (read and write)
+			[12]: parse_lambda_upvw (read and write)
+			[13]: arg2 (readonly)
+			[14]: arg1 (read and write)
+			[15]: buffer_len_result1_upvw (read and write)
+			[16]: report_upvr (readonly)
+		]]
+		-- KONSTANTERROR: Failed to generate AST for function `parse_expression`:
+runluau:5427: assertion failed!
+Traceback:
+runluau:5427 function get_guaranteed_destinations
+runluau:5469 function will_reach_block
+runluau:5479 function will_reach_block
+runluau:5479 function will_reach_block
+runluau:5479 function will_reach_block
+runluau:5918 function astgen
+runluau:8357 function astgen_protected
+runluau:4639 function expr_function
+runluau:7714 function NEWCLOSURE
+runluau:7954 function gen_from_insts
+runluau:8053 function gen_from_hl_block
+runluau:8340 function astgen
+runluau:8357 function astgen_protected
+runluau:4639 function expr_function
+runluau:7707 function DUPCLOSURE
+runluau:7954 function gen_from_insts
+runluau:8053 function gen_from_hl_block
+runluau:8340 function astgen
+runluau:8357 function astgen_protected
+runluau:8418 function decompile_bytecode
+runluau:11983 function wrapped
+runluau:11991
+runluau:12015 function _decompile
+runluau:12181 function decompile
+runluau:12377
+
+	end
+	local var116_upvw = parse_expression_upvw
+	function parse_command_upvw() -- Line 687, Named "parse_command"
+		--[[ Upvalues[9]:
+			[1]: parse_var_upvw (read and write)
+			[2]: kind_3_upvw (read and write)
+			[3]: next_token_result1_upvw (read and write)
+			[4]: next_token_result1_upvw_2 (read and write)
+			[5]: kind_7_upvw (read and write)
+			[6]: x_upvw (read and write)
+			[7]: x_upvw_2 (read and write)
+			[8]: next_token_upvr (readonly)
+			[9]: var116_upvw (read and write)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [286] 240. Error Block 85 start (CF ANALYSIS FAILED)
+		table.insert({}, var116_upvw())
+		-- KONSTANTERROR: [286] 240. Error Block 85 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [4] 4. Error Block 2 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		-- KONSTANTERROR: [4] 4. Error Block 2 end (CF ANALYSIS FAILED)
+	end
+	local var117_upvw = parse_command_upvw
+	local function parse_if_upvw() -- Line 722, Named "parse_if"
+		--[[ Upvalues[11]:
+			[1]: expect_upvr (readonly)
+			[2]: kind_3_upvw (read and write)
+			[3]: next_token_result1_upvw (read and write)
+			[4]: next_token_result1_upvw_2 (read and write)
+			[5]: kind_7_upvw (read and write)
+			[6]: x_upvw (read and write)
+			[7]: x_upvw_2 (read and write)
+			[8]: next_token_upvr (readonly)
+			[9]: var117_upvw (read and write)
+			[10]: var116_upvw (read and write)
+			[11]: parse_block_upvw (read and write)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+		local var118
+		-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [252] 213. Error Block 53 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [252] 213. Error Block 53 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [12] 10. Error Block 109 start (CF ANALYSIS FAILED)
+		if true then
+			repeat
+				-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [252.7]
+			until nil ~= '\n'
+			-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+			if nil ~= "identifier" then
+				-- KONSTANTWARNING: GOTO [46] #39
+			end
+			-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [252.6]
+			if nil then
+			else
+			end
+			-- KONSTANTWARNING: GOTO [252] #213
+		end
+		-- KONSTANTERROR: [12] 10. Error Block 109 end (CF ANALYSIS FAILED)
+	end
+	local function parse_while_upvw() -- Line 782, Named "parse_while"
+		--[[ Upvalues[11]:
+			[1]: expect_upvr (readonly)
+			[2]: kind_3_upvw (read and write)
+			[3]: next_token_result1_upvw (read and write)
+			[4]: next_token_result1_upvw_2 (read and write)
+			[5]: kind_7_upvw (read and write)
+			[6]: x_upvw (read and write)
+			[7]: x_upvw_2 (read and write)
+			[8]: next_token_upvr (readonly)
+			[9]: var117_upvw (read and write)
+			[10]: var116_upvw (read and write)
+			[11]: parse_block_upvw (read and write)
+		]]
+		expect_upvr('(')
+		local var119
+		while kind_3_upvw == '\n' do
+			next_token_result1_upvw = next_token_result1_upvw_2
+			kind_3_upvw = kind_7_upvw
+			x_upvw = x_upvw_2
+			next_token_result1_upvw_2 = next_token_upvr()
+			kind_7_upvw = next_token_result1_upvw_2.kind
+			x_upvw_2 = next_token_result1_upvw_2.span.x
+		end
+		if kind_3_upvw ~= "identifier" then
+			-- KONSTANTWARNING: GOTO [40] #34
+		end
+		if true then
+			var119 = var117_upvw()
+		else
+			var119 = var116_upvw()
+		end
+		expect_upvr(')')
+		expect_upvr('{')
+		return {
+			kind = "while";
+			expression = var119;
+			block = parse_block_upvw('}');
+			span = vector.create(expect_upvr("while").span.x, expect_upvr('}').span.y, 0);
+		}
+	end
+	local function parse_for_upvw() -- Line 803, Named "parse_for"
+		--[[ Upvalues[3]:
+			[1]: expect_upvr (readonly)
+			[2]: var105_upvw (read and write)
+			[3]: parse_function_body_upvw (read and write)
+		]]
+		expect_upvr('(')
+		expect_upvr(')')
+		local parse_function_body_upvw_result1 = parse_function_body_upvw()
+		return {
+			kind = "for";
+			expression = var105_upvw();
+			call = parse_function_body_upvw_result1;
+			span = vector.create(expect_upvr("for").span.x, parse_function_body_upvw_result1.span.y, 0);
+		}
+	end
+	local function parse_return_upvw() -- Line 818, Named "parse_return"
+		--[[ Upvalues[3]:
+			[1]: expect_upvr (readonly)
+			[2]: kind_3_upvw (read and write)
+			[3]: var116_upvw (read and write)
+		]]
+		local tbl = {}
+		local var125
+		while kind_3_upvw ~= '}' and kind_3_upvw ~= "eof" do
+			if 0 < #tbl then
+				expect_upvr(',')
+			end
+			local var116_upvw_result1 = var116_upvw()
+			table.insert(tbl, var116_upvw_result1)
+			var125 = var116_upvw_result1.span.y
+		end
+		return {
+			kind = "return";
+			values = tbl;
+			span = vector.create(expect_upvr("return").span.x, var125, 0);
+		}
+	end
+	function parse_block_upvw(arg1_12, arg2_3) -- Line 839, Named "parse_block"
+		--[[ Upvalues[17]:
+			[1]: kind_3_upvw (read and write)
+			[2]: next_token_result1_upvw (read and write)
+			[3]: next_token_result1_upvw_2 (read and write)
+			[4]: kind_7_upvw (read and write)
+			[5]: x_upvw (read and write)
+			[6]: x_upvw_2 (read and write)
+			[7]: next_token_upvr (readonly)
+			[8]: expect_upvr (readonly)
+			[9]: var105_upvw (read and write)
+			[10]: parse_if_upvw (read and write)
+			[11]: parse_while_upvw (read and write)
+			[12]: parse_for_upvw (read and write)
+			[13]: parse_return_upvw (read and write)
+			[14]: var117_upvw (read and write)
+			[15]: arg2 (readonly)
+			[16]: arg1 (read and write)
+			[17]: buffer_len_result1_upvw (read and write)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [554] 452. Error Block 117 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [554] 452. Error Block 117 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [5] 5. Error Block 2 start (CF ANALYSIS FAILED)
+		-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [555.6]
+		-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [555.2950882]
+		-- KONSTANTERROR: [5] 5. Error Block 2 end (CF ANALYSIS FAILED)
+	end
+	return parse_block_upvw("eof")
+end
+return function(arg1, arg2) -- Line 923, Named "generate"
+	--[[ Upvalues[1]:
+		[1]: parse_upvr (readonly)
+	]]
+	local var128_upvw = arg1
+	local coroutine_create_result1_upvr = coroutine.create(parse_upvr)
+	local get_result_upvw
+	local function append_upvr(arg1_13) -- Line 928, Named "append"
+		--[[ Upvalues[4]:
+			[1]: var128_upvw (read and write)
+			[2]: get_result_upvw (read and write)
+			[3]: coroutine_create_result1_upvr (readonly)
+			[4]: arg2 (readonly)
+		]]
+		var128_upvw = var128_upvw..arg1_13
+		return get_result_upvw(coroutine.resume(coroutine_create_result1_upvr, buffer.fromstring(var128_upvw), arg2))
+	end
+	local function overwrite_upvr(arg1_14) -- Line 934, Named "overwrite"
+		--[[ Upvalues[4]:
+			[1]: var128_upvw (read and write)
+			[2]: get_result_upvw (read and write)
+			[3]: coroutine_create_result1_upvr (readonly)
+			[4]: arg2 (readonly)
+		]]
+		var128_upvw = arg1_14
+		return get_result_upvw(coroutine.resume(coroutine_create_result1_upvr, buffer.fromstring(arg1_14), arg2))
+	end
+	function get_result_upvw(arg1_15, arg2_4) -- Line 940, Named "get_result"
+		--[[ Upvalues[4]:
+			[1]: coroutine_create_result1_upvr (readonly)
+			[2]: var128_upvw (read and write)
+			[3]: append_upvr (readonly)
+			[4]: overwrite_upvr (readonly)
+		]]
+		if coroutine.status(coroutine_create_result1_upvr) == "suspended" then
+			return {
+				status = "pending";
+				src = var128_upvw;
+				append = append_upvr;
+				set = overwrite_upvr;
+			}
+		end
+		if arg1_15 == false then
+			local module_2 = {
+				status = "error";
+				src = var128_upvw;
+			}
+			module_2.why = arg2_4
+			return module_2
+		end
+		if coroutine.status(coroutine_create_result1_upvr) == "dead" then
+			local module = {
+				status = "finished";
+				src = var128_upvw;
+			}
+			module.value = arg2_4
+			return module
+		end
+		error('?')
+	end
+	return overwrite_upvr(arg1)
+end

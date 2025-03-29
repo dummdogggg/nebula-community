@@ -1,28 +1,38 @@
 --[[
     Script: ReplicatedStorage.Client.Effects.bulletTrail
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local l_TweenService_0 = game:GetService("TweenService");
-local l_Workspace_0 = game:GetService("Workspace");
-return function(v3, v4) --[[ Line: 7 ]] --[[ Name: bulletTrail ]]
-    -- upvalues: l_ReplicatedStorage_0 (copy), l_Workspace_0 (copy), l_TweenService_0 (copy)
-    local l_Magnitude_0 = (v3 - v4).Magnitude;
-    local v6 = l_Magnitude_0 / 400;
-    local v7 = TweenInfo.new(v6, Enum.EasingStyle.Linear, Enum.EasingDirection.Out);
-    local v8 = l_ReplicatedStorage_0.Assets.BulletTrail:Clone();
-    v8.CFrame = CFrame.lookAt(v3, v4);
-    v8.StartAttachment.Position = Vector3.new(0, 0, 0, 0);
-    v8.EndAttachment.Position = Vector3.new(0, 0, -l_Magnitude_0);
-    v8.Parent = l_Workspace_0;
-    local v9 = l_TweenService_0:Create(v8.StartAttachment, v7, {
-        Position = v8.EndAttachment.Position
-    });
-    v9:Play();
-    v9.Completed:Once(function() --[[ Line: 20 ]]
-        -- upvalues: v8 (copy)
-        v8:Destroy();
-    end);
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:11
+-- Luau version 6, Types version 3
+-- Time taken: 0.000843 seconds
+
+local ReplicatedStorage_upvr = game:GetService("ReplicatedStorage")
+local Workspace_upvr = game:GetService("Workspace")
+local TweenService_upvr = game:GetService("TweenService")
+return function(arg1, arg2) -- Line 7, Named "bulletTrail"
+	--[[ Upvalues[3]:
+		[1]: ReplicatedStorage_upvr (readonly)
+		[2]: Workspace_upvr (readonly)
+		[3]: TweenService_upvr (readonly)
+	]]
+	local Magnitude = (arg1 - arg2).Magnitude
+	local clone_upvr = ReplicatedStorage_upvr.Assets.BulletTrail:Clone()
+	clone_upvr.CFrame = CFrame.lookAt(arg1, arg2)
+	clone_upvr.StartAttachment.Position = Vector3.new(0, 0, 0)
+	clone_upvr.EndAttachment.Position = Vector3.new(0, 0, -Magnitude)
+	clone_upvr.Parent = Workspace_upvr
+	local any_Create_result1 = TweenService_upvr:Create(clone_upvr.StartAttachment, TweenInfo.new(Magnitude / 400, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {
+		Position = clone_upvr.EndAttachment.Position;
+	})
+	any_Create_result1:Play()
+	any_Create_result1.Completed:Once(function() -- Line 20
+		--[[ Upvalues[1]:
+			[1]: clone_upvr (readonly)
+		]]
+		clone_upvr:Destroy()
+	end)
+end

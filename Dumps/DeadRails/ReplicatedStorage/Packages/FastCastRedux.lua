@@ -1,57 +1,68 @@
 --[[
     Script: ReplicatedStorage.Packages.FastCastRedux
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = {
-    DebugLogging = false, 
-    VisualizeCasts = false
-};
-v0.__index = v0;
-v0.__type = "FastCast";
-v0.HighFidelityBehavior = {
-    Default = 1, 
-    Always = 3
-};
-local v1 = require(script.ActiveCast);
-local v2 = require(script.Signal);
-local _ = require(script.Table);
-local _ = require(script.TypeDefinitions);
-v1.SetStaticFastCastReference(v0);
-v0.new = function() --[[ Line: 107 ]] --[[ Name: new ]]
-    -- upvalues: v2 (copy), v0 (copy)
-    return (setmetatable({
-        LengthChanged = v2.new("LengthChanged"), 
-        RayHit = v2.new("RayHit"), 
-        RayPierced = v2.new("RayPierced"), 
-        CastTerminating = v2.new("CastTerminating"), 
-        WorldRoot = workspace
-    }, v0));
-end;
-v0.newBehavior = function() --[[ Line: 119 ]] --[[ Name: newBehavior ]]
-    -- upvalues: v0 (copy)
-    return {
-        RaycastParams = nil, 
-        Acceleration = Vector3.new(), 
-        MaxDistance = 1000, 
-        CanPierceFunction = nil, 
-        HighFidelityBehavior = v0.HighFidelityBehavior.Default, 
-        HighFidelitySegmentSize = 0.5, 
-        CosmeticBulletTemplate = nil, 
-        CosmeticBulletProvider = nil, 
-        CosmeticBulletContainer = nil, 
-        AutoIgnoreContainer = true
-    };
-end;
-local v5 = v0.newBehavior();
-v0.Fire = function(v6, v7, v8, v9, v10) --[[ Line: 136 ]] --[[ Name: Fire ]]
-    -- upvalues: v5 (copy), v1 (copy)
-    if v10 == nil then
-        v10 = v5;
-    end;
-    local v11 = v1.new(v6, v7, v8, v9, v10);
-    v11.RayInfo.WorldRoot = v6.WorldRoot;
-    return v11;
-end;
-return v0;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:23
+-- Luau version 6, Types version 3
+-- Time taken: 0.001163 seconds
+
+local module_upvr = {
+	DebugLogging = false;
+	VisualizeCasts = false;
+}
+module_upvr.__index = module_upvr
+module_upvr.__type = "FastCast"
+module_upvr.HighFidelityBehavior = {
+	Default = 1;
+	Always = 3;
+}
+local ActiveCast_upvr = require(script.ActiveCast)
+ActiveCast_upvr.SetStaticFastCastReference(module_upvr)
+local Signal_upvr = require(script.Signal)
+function module_upvr.new() -- Line 107
+	--[[ Upvalues[2]:
+		[1]: Signal_upvr (readonly)
+		[2]: module_upvr (readonly)
+	]]
+	return setmetatable({
+		LengthChanged = Signal_upvr.new("LengthChanged");
+		RayHit = Signal_upvr.new("RayHit");
+		RayPierced = Signal_upvr.new("RayPierced");
+		CastTerminating = Signal_upvr.new("CastTerminating");
+		WorldRoot = workspace;
+	}, module_upvr)
+end
+function module_upvr.newBehavior() -- Line 119
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	return {
+		RaycastParams = nil;
+		Acceleration = Vector3.new();
+		MaxDistance = 1000;
+		CanPierceFunction = nil;
+		HighFidelityBehavior = module_upvr.HighFidelityBehavior.Default;
+		HighFidelitySegmentSize = 0.5;
+		CosmeticBulletTemplate = nil;
+		CosmeticBulletProvider = nil;
+		CosmeticBulletContainer = nil;
+		AutoIgnoreContainer = true;
+	}
+end
+local any_newBehavior_result1_upvr = module_upvr.newBehavior()
+function module_upvr.Fire(arg1, arg2, arg3, arg4, arg5) -- Line 136
+	--[[ Upvalues[2]:
+		[1]: any_newBehavior_result1_upvr (readonly)
+		[2]: ActiveCast_upvr (readonly)
+	]]
+	if arg5 == nil then
+	end
+	local any_new_result1 = ActiveCast_upvr.new(arg1, arg2, arg3, arg4, any_newBehavior_result1_upvr)
+	any_new_result1.RayInfo.WorldRoot = arg1.WorldRoot
+	return any_new_result1
+end
+return module_upvr

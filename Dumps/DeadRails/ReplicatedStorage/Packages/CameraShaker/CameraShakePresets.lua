@@ -1,77 +1,99 @@
 --[[
     Script: ReplicatedStorage.Packages.CameraShaker.CameraShakePresets
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.CameraShakeInstance);
-local v9 = {
-    Bump = function() --[[ Line: 26 ]] --[[ Name: Bump ]]
-        -- upvalues: v0 (copy)
-        local v1 = v0.new(2.5, 4, 0.1, 0.75);
-        v1.PositionInfluence = Vector3.new(0.15000000596046448, 0.15000000596046448, 0.15000000596046448, 0);
-        v1.RotationInfluence = Vector3.new(1, 1, 1, 0);
-        return v1;
-    end, 
-    AK = function() --[[ Line: 33 ]] --[[ Name: AK ]]
-        -- upvalues: v0 (copy)
-        local v2 = v0.new(0.5, 7, 0.1, 0.75);
-        v2.PositionInfluence = Vector3.new(0.15000000596046448, 0.15000000596046448, 0.15000000596046448, 0);
-        v2.RotationInfluence = Vector3.new(1, 1, 1, 0);
-        return v2;
-    end, 
-    Explosion = function() --[[ Line: 43 ]] --[[ Name: Explosion ]]
-        -- upvalues: v0 (copy)
-        local v3 = v0.new(5, 10, 0, 1.5);
-        v3.PositionInfluence = Vector3.new(0.25, 0.25, 0.25, 0);
-        v3.RotationInfluence = Vector3.new(4, 1, 1, 0);
-        return v3;
-    end, 
-    Earthquake = function() --[[ Line: 53 ]] --[[ Name: Earthquake ]]
-        -- upvalues: v0 (copy)
-        local v4 = v0.new(2, 2, 2, 30);
-        v4.PositionInfluence = Vector3.new(0.25, 0.25, 0.25, 0);
-        v4.RotationInfluence = Vector3.new(1, 1, 4, 0);
-        return v4;
-    end, 
-    BadTrip = function() --[[ Line: 63 ]] --[[ Name: BadTrip ]]
-        -- upvalues: v0 (copy)
-        local v5 = v0.new(10, 0.15, 5, 10);
-        v5.PositionInfluence = Vector3.new(0, 0, 0.15000000596046448, 0);
-        v5.RotationInfluence = Vector3.new(2, 1, 4, 0);
-        return v5;
-    end, 
-    HandheldCamera = function() --[[ Line: 73 ]] --[[ Name: HandheldCamera ]]
-        -- upvalues: v0 (copy)
-        local v6 = v0.new(1, 0.25, 5, 10);
-        v6.PositionInfluence = Vector3.new(0, 0, 0, 0);
-        v6.RotationInfluence = Vector3.new(1, 0.5, 0.5, 0);
-        return v6;
-    end, 
-    Vibration = function() --[[ Line: 83 ]] --[[ Name: Vibration ]]
-        -- upvalues: v0 (copy)
-        local v7 = v0.new(0.4, 20, 2, 2);
-        v7.PositionInfluence = Vector3.new(0, 0.15000000596046448, 0, 0);
-        v7.RotationInfluence = Vector3.new(1.25, 0, 4, 0);
-        return v7;
-    end, 
-    RoughDriving = function() --[[ Line: 93 ]] --[[ Name: RoughDriving ]]
-        -- upvalues: v0 (copy)
-        local v8 = v0.new(1, 2, 1, 1);
-        v8.PositionInfluence = Vector3.new(0, 0, 0, 0);
-        v8.RotationInfluence = Vector3.new(1, 1, 1, 0);
-        return v8;
-    end
-};
-return (setmetatable({}, {
-    __index = function(_, v11) --[[ Line: 105 ]] --[[ Name: __index ]]
-        -- upvalues: v9 (copy)
-        local v12 = v9[v11];
-        if type(v12) == "function" then
-            return v12();
-        else
-            error("No preset found with index \"" .. v11 .. "\"");
-            return;
-        end;
-    end
-}));
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:15
+-- Luau version 6, Types version 3
+-- Time taken: 0.001531 seconds
+
+local CameraShakeInstance_upvr = require(script.Parent.CameraShakeInstance)
+local tbl_upvr = {
+	Bump = function() -- Line 26, Named "Bump"
+		--[[ Upvalues[1]:
+			[1]: CameraShakeInstance_upvr (readonly)
+		]]
+		local any_new_result1_8 = CameraShakeInstance_upvr.new(2.5, 4, 0.1, 0.75)
+		any_new_result1_8.PositionInfluence = Vector3.new(0.15000, 0.15000, 0.15000)
+		any_new_result1_8.RotationInfluence = Vector3.new(1, 1, 1)
+		return any_new_result1_8
+	end;
+	AK = function() -- Line 33, Named "AK"
+		--[[ Upvalues[1]:
+			[1]: CameraShakeInstance_upvr (readonly)
+		]]
+		local any_new_result1 = CameraShakeInstance_upvr.new(0.5, 7, 0.1, 0.75)
+		any_new_result1.PositionInfluence = Vector3.new(0.15000, 0.15000, 0.15000)
+		any_new_result1.RotationInfluence = Vector3.new(1, 1, 1)
+		return any_new_result1
+	end;
+	Explosion = function() -- Line 43, Named "Explosion"
+		--[[ Upvalues[1]:
+			[1]: CameraShakeInstance_upvr (readonly)
+		]]
+		local any_new_result1_2 = CameraShakeInstance_upvr.new(5, 10, 0, 1.5)
+		any_new_result1_2.PositionInfluence = Vector3.new(0.25, 0.25, 0.25)
+		any_new_result1_2.RotationInfluence = Vector3.new(4, 1, 1)
+		return any_new_result1_2
+	end;
+	Earthquake = function() -- Line 53, Named "Earthquake"
+		--[[ Upvalues[1]:
+			[1]: CameraShakeInstance_upvr (readonly)
+		]]
+		local any_new_result1_5 = CameraShakeInstance_upvr.new(2, 2, 2, 30)
+		any_new_result1_5.PositionInfluence = Vector3.new(0.25, 0.25, 0.25)
+		any_new_result1_5.RotationInfluence = Vector3.new(1, 1, 4)
+		return any_new_result1_5
+	end;
+	BadTrip = function() -- Line 63, Named "BadTrip"
+		--[[ Upvalues[1]:
+			[1]: CameraShakeInstance_upvr (readonly)
+		]]
+		local any_new_result1_6 = CameraShakeInstance_upvr.new(10, 0.15, 5, 10)
+		any_new_result1_6.PositionInfluence = Vector3.new(0, 0, 0.15000)
+		any_new_result1_6.RotationInfluence = Vector3.new(2, 1, 4)
+		return any_new_result1_6
+	end;
+	HandheldCamera = function() -- Line 73, Named "HandheldCamera"
+		--[[ Upvalues[1]:
+			[1]: CameraShakeInstance_upvr (readonly)
+		]]
+		local any_new_result1_3 = CameraShakeInstance_upvr.new(1, 0.25, 5, 10)
+		any_new_result1_3.PositionInfluence = Vector3.new(0, 0, 0)
+		any_new_result1_3.RotationInfluence = Vector3.new(1, 0.5, 0.5)
+		return any_new_result1_3
+	end;
+	Vibration = function() -- Line 83, Named "Vibration"
+		--[[ Upvalues[1]:
+			[1]: CameraShakeInstance_upvr (readonly)
+		]]
+		local any_new_result1_7 = CameraShakeInstance_upvr.new(0.4, 20, 2, 2)
+		any_new_result1_7.PositionInfluence = Vector3.new(0, 0.15000, 0)
+		any_new_result1_7.RotationInfluence = Vector3.new(1.25, 0, 4)
+		return any_new_result1_7
+	end;
+	RoughDriving = function() -- Line 93, Named "RoughDriving"
+		--[[ Upvalues[1]:
+			[1]: CameraShakeInstance_upvr (readonly)
+		]]
+		local any_new_result1_4 = CameraShakeInstance_upvr.new(1, 2, 1, 1)
+		any_new_result1_4.PositionInfluence = Vector3.new(0, 0, 0)
+		any_new_result1_4.RotationInfluence = Vector3.new(1, 1, 1)
+		return any_new_result1_4
+	end;
+}
+return setmetatable({}, {
+	__index = function(arg1, arg2) -- Line 105, Named "__index"
+		--[[ Upvalues[1]:
+			[1]: tbl_upvr (readonly)
+		]]
+		local var12 = tbl_upvr[arg2]
+		if type(var12) == "function" then
+			return var12()
+		end
+		error("No preset found with index \""..arg2..'"')
+	end;
+})

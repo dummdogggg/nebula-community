@@ -1,18 +1,26 @@
 --[[
     Script: ReplicatedStorage.Client.Effects.playSoundAtPosition
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-return function(v0, v1) --[[ Line: 3 ]] --[[ Name: playSoundAtPosition ]]
-    local l_Attachment_0 = Instance.new("Attachment");
-    l_Attachment_0.WorldPosition = v1;
-    l_Attachment_0.Parent = workspace.Terrain;
-    local v3 = v0:Clone();
-    v3.Parent = l_Attachment_0;
-    v3:Play();
-    v3.Ended:Once(function() --[[ Line: 12 ]]
-        -- upvalues: l_Attachment_0 (copy)
-        l_Attachment_0:Destroy();
-    end);
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:12
+-- Luau version 6, Types version 3
+-- Time taken: 0.000624 seconds
+
+return function(arg1, arg2) -- Line 3, Named "playSoundAtPosition"
+	local Attachment_upvr = Instance.new("Attachment")
+	Attachment_upvr.WorldPosition = arg2
+	Attachment_upvr.Parent = workspace.Terrain
+	local clone = arg1:Clone()
+	clone.Parent = Attachment_upvr
+	clone:Play()
+	clone.Ended:Once(function() -- Line 12
+		--[[ Upvalues[1]:
+			[1]: Attachment_upvr (readonly)
+		]]
+		Attachment_upvr:Destroy()
+	end)
+end

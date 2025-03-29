@@ -1,13 +1,22 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.Dictionary.compat.removeValues
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.Parent.removeValue);
-local v1 = require(script.Parent.Parent.Parent.utils.deprecationWarning);
-return function(v2, ...) --[[ Line: 10 ]] --[[ Name: removeValues ]]
-    -- upvalues: v1 (copy), v0 (copy)
-    v1("Dictionary." .. script.Name, "Dictionary.removeValue");
-    return v0(v2, ...);
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:48:13
+-- Luau version 6, Types version 3
+-- Time taken: 0.000447 seconds
+
+local deprecationWarning_upvr = require(script.Parent.Parent.Parent.utils.deprecationWarning)
+local removeValue_upvr = require(script.Parent.Parent.removeValue)
+return function(arg1, ...) -- Line 10, Named "removeValues"
+	--[[ Upvalues[2]:
+		[1]: deprecationWarning_upvr (readonly)
+		[2]: removeValue_upvr (readonly)
+	]]
+	deprecationWarning_upvr("Dictionary."..script.Name, "Dictionary.removeValue")
+	return removeValue_upvr(arg1, ...)
+end

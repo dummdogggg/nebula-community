@@ -1,27 +1,42 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.Dictionary.flatten
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.Parent.utils.maybeFreeze);
-local function v1(v2, v3) --[[ Line: 4 ]] --[[ Name: flattenImpl ]]
-    -- upvalues: v1 (copy)
-    local v4 = {};
-    for v5, v6 in v2 do
-        if type(v6) == "table" and (not v3 or v3 > 0) then
-            local v7 = v1(v6, v3 and v3 - 1);
-            for v8, v9 in pairs(v4) do
-                v7[v8] = v9;
-            end;
-            v4 = v7;
-        else
-            v4[v5] = v6;
-        end;
-    end;
-    return v4;
-end;
-return function(v10, v11) --[[ Line: 45 ]] --[[ Name: flatten ]]
-    -- upvalues: v0 (copy), v1 (copy)
-    return v0((v1(v10, v11)));
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:48:01
+-- Luau version 6, Types version 3
+-- Time taken: 0.001101 seconds
+
+local function flattenImpl_upvr(arg1, arg2) -- Line 4, Named "flattenImpl"
+	--[[ Upvalues[1]:
+		[1]: flattenImpl_upvr (readonly)
+	]]
+	local var9
+	for i, v in arg1 do
+		if type(v) == "table" and (not arg2 or 0 < arg2) then
+			local var10 = arg2
+			if var10 then
+				var10 = arg2 - 1
+			end
+			for i_2, v_2 in pairs(var9) do
+				flattenImpl_upvr(v, var10)[i_2] = v_2
+				local var15
+			end
+			var9 = var15
+		else
+			var9[i] = v
+		end
+	end
+	return var9
+end
+local maybeFreeze_upvr = require(script.Parent.Parent.utils.maybeFreeze)
+return function(arg1, arg2) -- Line 45, Named "flatten"
+	--[[ Upvalues[2]:
+		[1]: maybeFreeze_upvr (readonly)
+		[2]: flattenImpl_upvr (readonly)
+	]]
+	return maybeFreeze_upvr(flattenImpl_upvr(arg1, arg2))
+end

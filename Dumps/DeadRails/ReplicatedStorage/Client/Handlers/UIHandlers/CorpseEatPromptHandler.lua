@@ -1,79 +1,103 @@
 --[[
     Script: ReplicatedStorage.Client.Handlers.UIHandlers.CorpseEatPromptHandler
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_CollectionService_0 = game:GetService("CollectionService");
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local l_Players_0 = game:GetService("Players");
-local v3 = require(l_ReplicatedStorage_0.Client.LocalPlayerObjectsContainer);
-local _ = require(l_ReplicatedStorage_0.Client.Controllers.PlayerDataController);
-local v5 = require(l_ReplicatedStorage_0.Shared.DataBanks.ClassEnums);
-local v6 = require(l_ReplicatedStorage_0.Shared.SharedConstants.Tag);
-local l_EatCorpse_0 = require(l_ReplicatedStorage_0.Shared.Remotes).Events.EatCorpse;
-local _ = l_Players_0.LocalPlayer;
-local v9 = nil;
-local function v12(v10) --[[ Line: 22 ]] --[[ Name: createEatPrompt ]]
-    -- upvalues: v9 (ref), v5 (copy), l_Players_0 (copy), l_EatCorpse_0 (copy)
-    warn(v9:hasTag(v5.Tag.CorpseEatHeal));
-    if not v10:IsA("Model") or not v10:IsDescendantOf(workspace) then
-        return;
-    elseif l_Players_0:GetPlayerFromCharacter(v10) then
-        return;
-    elseif v10:FindFirstChild("CorpseEatPrompt") then
-        return;
-    else
-        local l_ProximityPrompt_0 = Instance.new("ProximityPrompt");
-        l_ProximityPrompt_0.Name = "CorpseEatPrompt";
-        l_ProximityPrompt_0.ObjectText = "Corpse";
-        l_ProximityPrompt_0.ActionText = "Eat";
-        l_ProximityPrompt_0.HoldDuration = 0.5;
-        l_ProximityPrompt_0.MaxActivationDistance = 10;
-        l_ProximityPrompt_0:AddTag("CorpseEatPrompt");
-        l_ProximityPrompt_0.Parent = v10;
-        l_ProximityPrompt_0.Triggered:Connect(function() --[[ Line: 48 ]]
-            -- upvalues: l_EatCorpse_0 (ref), v10 (copy)
-            l_EatCorpse_0:FireServer(v10);
-        end);
-        return;
-    end;
-end;
-local function _(v13) --[[ Line: 53 ]] --[[ Name: removeEatPrompt ]]
-    local l_CorpseEatPrompt_0 = v13:FindFirstChild("CorpseEatPrompt");
-    if l_CorpseEatPrompt_0 then
-        l_CorpseEatPrompt_0:Destroy();
-    end;
-end;
-local function v18() --[[ Line: 60 ]] --[[ Name: createAllEatPrompts ]]
-    -- upvalues: v9 (ref), v5 (copy), l_CollectionService_0 (copy), v6 (copy), v12 (copy)
-    if not v9:hasTag(v5.Tag.CorpseEatHeal) then
-        return;
-    else
-        for _, v17 in (l_CollectionService_0:GetTagged(v6.Corpse)) do
-            v12(v17);
-        end;
-        return;
-    end;
-end;
-local function v20(v19) --[[ Line: 71 ]] --[[ Name: onInstanceAddedCorpseTag ]]
-    -- upvalues: v9 (ref), v5 (copy), v12 (copy)
-    if v9:hasTag(v5.Tag.CorpseEatHeal) then
-        v12(v19);
-    end;
-end;
-local function v23(v21) --[[ Line: 77 ]] --[[ Name: onInstanceRemovedCorpseTag ]]
-    local l_CorpseEatPrompt_1 = v21:FindFirstChild("CorpseEatPrompt");
-    if l_CorpseEatPrompt_1 then
-        l_CorpseEatPrompt_1:Destroy();
-    end;
-end;
-return {
-    start = function() --[[ Line: 83 ]] --[[ Name: start ]]
-        -- upvalues: v9 (ref), v3 (copy), v18 (copy), l_CollectionService_0 (copy), v6 (copy), v20 (copy), v23 (copy)
-        v9 = v3.getPlayerClassData();
-        v18();
-        l_CollectionService_0:GetInstanceAddedSignal(v6.Corpse):Connect(v20);
-        l_CollectionService_0:GetInstanceRemovedSignal(v6.Corpse):Connect(v23);
-    end
-};
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:48
+-- Luau version 6, Types version 3
+-- Time taken: 0.001852 seconds
+
+local CollectionService_upvr = game:GetService("CollectionService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players_upvr = game:GetService("Players")
+local ClassEnums_upvr = require(ReplicatedStorage.Shared.DataBanks.ClassEnums)
+local Tag_upvr = require(ReplicatedStorage.Shared.SharedConstants.Tag)
+local var6_upvw
+local EatCorpse_upvr = require(ReplicatedStorage.Shared.Remotes).Events.EatCorpse
+local function createEatPrompt_upvr(arg1) -- Line 22, Named "createEatPrompt"
+	--[[ Upvalues[4]:
+		[1]: var6_upvw (read and write)
+		[2]: ClassEnums_upvr (readonly)
+		[3]: Players_upvr (readonly)
+		[4]: EatCorpse_upvr (readonly)
+	]]
+	warn(var6_upvw:hasTag(ClassEnums_upvr.Tag.CorpseEatHeal))
+	if not arg1:IsA("Model") or not arg1:IsDescendantOf(workspace) then
+	else
+		if Players_upvr:GetPlayerFromCharacter(arg1) then return end
+		if arg1:FindFirstChild("CorpseEatPrompt") then return end
+		local ProximityPrompt = Instance.new("ProximityPrompt")
+		ProximityPrompt.Name = "CorpseEatPrompt"
+		ProximityPrompt.ObjectText = "Corpse"
+		ProximityPrompt.ActionText = "Eat"
+		ProximityPrompt.HoldDuration = 0.5
+		ProximityPrompt.MaxActivationDistance = 10
+		ProximityPrompt:AddTag("CorpseEatPrompt")
+		ProximityPrompt.Parent = arg1
+		ProximityPrompt.Triggered:Connect(function() -- Line 48
+			--[[ Upvalues[2]:
+				[1]: EatCorpse_upvr (copied, readonly)
+				[2]: arg1 (readonly)
+			]]
+			EatCorpse_upvr:FireServer(arg1)
+		end)
+	end
+end
+local function _(arg1) -- Line 53, Named "removeEatPrompt"
+	local CorpseEatPrompt_2 = arg1:FindFirstChild("CorpseEatPrompt")
+	if CorpseEatPrompt_2 then
+		CorpseEatPrompt_2:Destroy()
+	end
+end
+local function createAllEatPrompts_upvr() -- Line 60, Named "createAllEatPrompts"
+	--[[ Upvalues[5]:
+		[1]: var6_upvw (read and write)
+		[2]: ClassEnums_upvr (readonly)
+		[3]: CollectionService_upvr (readonly)
+		[4]: Tag_upvr (readonly)
+		[5]: createEatPrompt_upvr (readonly)
+	]]
+	if not var6_upvw:hasTag(ClassEnums_upvr.Tag.CorpseEatHeal) then
+	else
+		for _, var12 in CollectionService_upvr:GetTagged(Tag_upvr.Corpse), nil do
+			createEatPrompt_upvr(var12)
+		end
+	end
+end
+local function onInstanceAddedCorpseTag_upvr(arg1) -- Line 71, Named "onInstanceAddedCorpseTag"
+	--[[ Upvalues[3]:
+		[1]: var6_upvw (read and write)
+		[2]: ClassEnums_upvr (readonly)
+		[3]: createEatPrompt_upvr (readonly)
+	]]
+	if var6_upvw:hasTag(ClassEnums_upvr.Tag.CorpseEatHeal) then
+		createEatPrompt_upvr(arg1)
+	end
+end
+local function onInstanceRemovedCorpseTag_upvr(arg1) -- Line 77, Named "onInstanceRemovedCorpseTag"
+	local CorpseEatPrompt = arg1:FindFirstChild("CorpseEatPrompt")
+	if CorpseEatPrompt then
+		CorpseEatPrompt:Destroy()
+	end
+end
+local module = {}
+local LocalPlayerObjectsContainer_upvr = require(ReplicatedStorage.Client.LocalPlayerObjectsContainer)
+function module.start() -- Line 83
+	--[[ Upvalues[7]:
+		[1]: var6_upvw (read and write)
+		[2]: LocalPlayerObjectsContainer_upvr (readonly)
+		[3]: createAllEatPrompts_upvr (readonly)
+		[4]: CollectionService_upvr (readonly)
+		[5]: Tag_upvr (readonly)
+		[6]: onInstanceAddedCorpseTag_upvr (readonly)
+		[7]: onInstanceRemovedCorpseTag_upvr (readonly)
+	]]
+	var6_upvw = LocalPlayerObjectsContainer_upvr.getPlayerClassData()
+	createAllEatPrompts_upvr()
+	CollectionService_upvr:GetInstanceAddedSignal(Tag_upvr.Corpse):Connect(onInstanceAddedCorpseTag_upvr)
+	CollectionService_upvr:GetInstanceRemovedSignal(Tag_upvr.Corpse):Connect(onInstanceRemovedCorpseTag_upvr)
+end
+return module

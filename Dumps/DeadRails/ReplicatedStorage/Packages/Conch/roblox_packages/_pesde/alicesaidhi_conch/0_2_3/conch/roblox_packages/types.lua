@@ -1,7 +1,10 @@
 --[[
+    STUB SCRIPT (Original could not be decompiled)
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.alicesaidhi+conch.0.2.3.conch.roblox_packages.types
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Error: API Error - Falha na decompilação
 --]]
 
-return (require(script.Parent.Parent.Parent.Parent.Parent["alicesaidhi+conch_types"]["0.2.0"].conch_types.src.lib));
+return {
+    -- Module content not available
+}
