@@ -1,8 +1,13 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.Satchel
     Type: LocalScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-require(l_ReplicatedStorage_0.Packages.Satchel);
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:48:29
+-- Luau version 6, Types version 3
+-- Time taken: 0.000191 seconds
+
+require(game:GetService("ReplicatedStorage").Packages.Satchel)

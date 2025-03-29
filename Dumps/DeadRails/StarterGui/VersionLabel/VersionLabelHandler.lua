@@ -1,13 +1,28 @@
 --[[
     Script: StarterGui.VersionLabel.VersionLabelHandler
     Type: LocalScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local l_TextLabel_0 = script.Parent:WaitForChild("TextLabel");
-local l_l_ReplicatedStorage_0_Attribute_0 = l_ReplicatedStorage_0:GetAttribute("ServerVersion");
-local l_PlaceId_0 = game.PlaceId;
-local l_PlaceVersion_0 = game.PlaceVersion;
-l_TextLabel_0.TextColor3 = if l_PlaceId_0 == 133377094302868 then Color3.fromRGB(255, 0, 0) else Color3.fromRGB(225, 225, 225);
-l_TextLabel_0.Text = ("v%*.%*"):format(l_l_ReplicatedStorage_0_Attribute_0, l_PlaceVersion_0);
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:47:00
+-- Luau version 6, Types version 3
+-- Time taken: 0.000628 seconds
+
+local TextLabel = script.Parent:WaitForChild("TextLabel")
+local game = game
+local var3
+if game.PlaceId ~= 133377094302868 then
+	game = false
+else
+	game = true
+end
+if game then
+	var3 = Color3.fromRGB(255, 0, 0)
+else
+	var3 = Color3.fromRGB(225, 225, 225)
+end
+TextLabel.TextColor3 = var3
+var3 = `v{game:GetService("ReplicatedStorage"):GetAttribute("ServerVersion")}.{game.PlaceVersion}`
+TextLabel.Text = var3

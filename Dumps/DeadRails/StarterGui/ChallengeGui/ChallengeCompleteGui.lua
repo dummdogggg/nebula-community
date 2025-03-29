@@ -1,31 +1,38 @@
 --[[
     Script: StarterGui.ChallengeGui.ChallengeCompleteGui
     Type: LocalScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local _ = game.Players.LocalPlayer;
-local l_TweenService_0 = game:GetService("TweenService");
-local v2 = TweenInfo.new(0.5, Enum.EasingStyle.Quad);
-local v3 = require(game.ReplicatedStorage.Shared.DataBanks.ChallengeData);
-game.ReplicatedStorage.Remotes.ChallengeCompleted.OnClientEvent:Connect(function(v4) --[[ Line: 8 ]]
-    -- upvalues: v3 (copy), l_TweenService_0 (copy), v2 (copy)
-    local v5 = v3[v4];
-    if not v5 then
-        warn("Data not found", v4);
-        return;
-    else
-        script.Parent.ChallengeTemplate.Title.Text = v5.Title;
-        script.Parent.ChallengeTemplate.Description.Text = v5.Description;
-        script.Parent.ChallengeTemplate.RewardFrame.BondFrame.BondCount.Text = v5.Rewards.Bonds;
-        script.Parent.ChallengeTemplate.RewardFrame.StarFrame.StarCount.Text = v5.Rewards.Stars;
-        l_TweenService_0:Create(script.Parent.ChallengeTemplate, v2, {
-            Position = UDim2.fromScale(0.105, 0.159)
-        }):Play();
-        task.wait(7);
-        l_TweenService_0:Create(script.Parent.ChallengeTemplate, v2, {
-            Position = UDim2.fromScale(-0.105, 0.159)
-        }):Play();
-        return;
-    end;
-end);
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:47:08
+-- Luau version 6, Types version 3
+-- Time taken: 0.001023 seconds
+
+local ChallengeData_upvr = require(game.ReplicatedStorage.Shared.DataBanks.ChallengeData)
+local TweenService_upvr = game:GetService("TweenService")
+local TweenInfo_new_result1_upvr = TweenInfo.new(0.5, Enum.EasingStyle.Quad)
+game.ReplicatedStorage.Remotes.ChallengeCompleted.OnClientEvent:Connect(function(arg1) -- Line 8
+	--[[ Upvalues[3]:
+		[1]: ChallengeData_upvr (readonly)
+		[2]: TweenService_upvr (readonly)
+		[3]: TweenInfo_new_result1_upvr (readonly)
+	]]
+	local var5 = ChallengeData_upvr[arg1]
+	if not var5 then
+		warn("Data not found", arg1)
+	else
+		script.Parent.ChallengeTemplate.Title.Text = var5.Title
+		script.Parent.ChallengeTemplate.Description.Text = var5.Description
+		script.Parent.ChallengeTemplate.RewardFrame.BondFrame.BondCount.Text = var5.Rewards.Bonds
+		script.Parent.ChallengeTemplate.RewardFrame.StarFrame.StarCount.Text = var5.Rewards.Stars
+		TweenService_upvr:Create(script.Parent.ChallengeTemplate, TweenInfo_new_result1_upvr, {
+			Position = UDim2.fromScale(0.105, 0.159);
+		}):Play()
+		task.wait(7)
+		TweenService_upvr:Create(script.Parent.ChallengeTemplate, TweenInfo_new_result1_upvr, {
+			Position = UDim2.fromScale(-0.105, 0.159);
+		}):Play()
+	end
+end)

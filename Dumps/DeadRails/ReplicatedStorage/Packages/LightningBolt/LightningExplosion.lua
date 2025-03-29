@@ -1,154 +1,163 @@
 --[[
     Script: ReplicatedStorage.Packages.LightningBolt.LightningExplosion
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent);
-local v1 = require(script.Parent.LightningSparks);
-local v2 = Random.new();
-local l_clock_0 = os.clock;
-RandomVectorOffsetBetween = function(v4, v5, v6) --[[ Line: 9 ]] --[[ Name: RandomVectorOffsetBetween ]]
-    -- upvalues: v2 (copy)
-    return (CFrame.lookAt(Vector3.new(), v4) * CFrame.Angles(0, 0, v2:NextNumber(0, 6.283185307179586)) * CFrame.Angles(math.acos((v2:NextNumber(math.cos(v6), (math.cos(v5))))), 0, 0)).LookVector;
-end;
-local v7 = {};
-local v8 = {};
-v8.__index = v8;
-v8.new = function(v9, v10, v11, v12, v13, v14) --[[ Line: 20 ]] --[[ Name: new ]]
-    -- upvalues: v8 (copy), v2 (copy), v0 (copy), v1 (copy), l_clock_0 (copy), v7 (copy)
-    local v15 = setmetatable({}, v8);
-    v15.Size = v10 or 1;
-    v15.NumBolts = v11 or 14;
-    v15.Color = v12 or ColorSequence.new(Color3.new(1, 0, 0), Color3.new(0, 0, 1));
-    v15.BoltColor = v13 or Color3.new(0.3, 0.3, 1);
-    v15.UpVector = v14 or Vector3.new(0, 1, 0, 0);
-    local l_CurrentCamera_0 = workspace.CurrentCamera;
-    local l_Part_0 = Instance.new("Part");
-    l_Part_0.Name = "LightningExplosion";
-    l_Part_0.Anchored = true;
-    l_Part_0.CanCollide = false;
-    l_Part_0.Locked = true;
-    l_Part_0.CastShadow = false;
-    l_Part_0.Transparency = 1;
-    l_Part_0.Size = Vector3.new(0.05000000074505806, 0.05000000074505806, 0.05000000074505806, 0);
-    l_Part_0.CFrame = CFrame.lookAt(v9 + Vector3.new(0, 0.5, 0, 0), v9 + Vector3.new(0, 0.5, 0, 0) + v15.UpVector) * CFrame.lookAt(Vector3.new(), (Vector3.new(0, 1, 0, 0))):inverse();
-    l_Part_0.Parent = l_CurrentCamera_0;
-    local l_Attachment_0 = Instance.new("Attachment");
-    l_Attachment_0.Parent = l_Part_0;
-    l_Attachment_0.CFrame = CFrame.new();
-    local v19 = script.ExplosionBrightspot:Clone();
-    local v20 = script.GlareEmitter:Clone();
-    local v21 = script.PlasmaEmitter:Clone();
-    local v22 = math.clamp(v15.Size, 0, 1);
-    v20.Size = NumberSequence.new(v22 * 30);
-    v21.Size = NumberSequence.new(v22 * 18);
-    v21.Speed = NumberRange.new(v22 * 100);
-    v19.Parent = l_Attachment_0;
-    v20.Parent = l_Attachment_0;
-    v21.Parent = l_Attachment_0;
-    local l_Color_0 = v15.Color;
-    if typeof(l_Color_0) == "Color3" then
-        local v24 = ColorSequence.new(l_Color_0);
-        local v25 = ColorSequence.new(l_Color_0);
-        v20.Color = v24;
-        v21.Color = v25;
-        local v26;
-        v24, v25, v26 = Color3.toHSV(l_Color_0);
-        v19.Color = ColorSequence.new(Color3.fromHSV(v24, 0.5, v26));
-    else
-        v20.Color = l_Color_0;
-        v21.Color = l_Color_0;
-        local l_Keypoints_0 = l_Color_0.Keypoints;
-        for v28 = 1, #l_Keypoints_0 do
-            local v29, _, v31 = Color3.toHSV(l_Keypoints_0[v28].Value);
-            l_Keypoints_0[v28] = ColorSequenceKeypoint.new(l_Keypoints_0[v28].Time, Color3.fromHSV(v29, 0.5, v31));
-        end;
-        v19.Color = ColorSequence.new(l_Keypoints_0);
-    end;
-    local v32 = true;
-    local v33 = true;
-    local v34 = true;
-    v19.Enabled = v32;
-    v20.Enabled = v33;
-    v21.Enabled = v34;
-    v32 = {};
-    for _ = 1, v15.NumBolts do
-        local v36 = {};
-        local v37 = {};
-        local l_WorldPosition_0 = l_Attachment_0.WorldPosition;
-        local v39 = RandomVectorOffsetBetween(v15.UpVector, 1.1344640137963142, 1.3962634015954636);
-        v36.WorldPosition = l_WorldPosition_0;
-        v36.WorldAxis = v39;
-        l_WorldPosition_0 = l_Attachment_0.WorldPosition + v36.WorldAxis * v2:NextNumber(20, 40) * 1.4 * v22;
-        v39 = RandomVectorOffsetBetween(-v15.UpVector, 1.2217304763960306, 1.9198621771937625);
-        v37.WorldPosition = l_WorldPosition_0;
-        v37.WorldAxis = v39;
-        l_WorldPosition_0 = v0.new(v36, v37, 10);
-        l_WorldPosition_0.AnimationSpeed = 0;
-        l_WorldPosition_0.Color = v15.BoltColor;
-        l_WorldPosition_0.PulseLength = 0.8;
-        l_WorldPosition_0.ColorOffsetSpeed = 20;
-        l_WorldPosition_0.Frequency = 3;
-        v39 = 0;
-        local v40 = v22 * 4;
-        l_WorldPosition_0.MinRadius = v39;
-        l_WorldPosition_0.MaxRadius = v40;
-        l_WorldPosition_0.FadeLength = 0.4;
-        l_WorldPosition_0.PulseSpeed = 5;
-        v39 = 0.7;
-        v40 = 1;
-        l_WorldPosition_0.MinThicknessMultiplier = v39;
-        l_WorldPosition_0.MaxThicknessMultiplier = v40;
-        v39 = v1.new(l_WorldPosition_0);
-        v40 = 7.5;
-        local v41 = 10;
-        v39.MinDistance = v40;
-        v39.MaxDistance = v41;
-        l_WorldPosition_0.Velocity = (v37.WorldPosition - v36.WorldPosition).Unit * 0.1 * v22;
-        v32[#v32 + 1] = l_WorldPosition_0;
-    end;
-    v15.Bolts = v32;
-    v15.Attachment = l_Attachment_0;
-    v15.Part = l_Part_0;
-    v15.StartT = l_clock_0();
-    v15.RefIndex = #v7 + 1;
-    v7[v15.RefIndex] = v15;
-    return v15;
-end;
-v8.Destroy = function(v42) --[[ Line: 122 ]] --[[ Name: Destroy ]]
-    -- upvalues: v7 (copy)
-    v7[v42.RefIndex] = nil;
-    v42.Part:Destroy();
-    for v43 = 1, #v42.Bolts do
-        v42.Bolts[v43] = nil;
-    end;
-    v42 = nil;
-end;
-game:GetService("RunService").Heartbeat:Connect(function() --[[ Line: 133 ]]
-    -- upvalues: v7 (copy), l_clock_0 (copy)
-    for _, v45 in pairs(v7) do
-        local v46 = l_clock_0() - v45.StartT;
-        local l_Attachment_1 = v45.Attachment;
-        if v46 < 0.7 then
-            if v46 > 0.2 then
-                local l_ExplosionBrightspot_0 = l_Attachment_1.ExplosionBrightspot;
-                local l_GlareEmitter_0 = l_Attachment_1.GlareEmitter;
-                local l_PlasmaEmitter_0 = l_Attachment_1.PlasmaEmitter;
-                local v51 = false;
-                local v52 = false;
-                local v53 = false;
-                l_ExplosionBrightspot_0.Enabled = v51;
-                l_GlareEmitter_0.Enabled = v52;
-                l_PlasmaEmitter_0.Enabled = v53;
-            end;
-            for v54 = 1, #v45.Bolts do
-                local v55 = v45.Bolts[v54];
-                v55.Attachment1.WorldPosition = v55.Attachment1.WorldPosition + v55.Velocity;
-            end;
-        else
-            v45:Destroy();
-        end;
-    end;
-end);
-return v8;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:45
+-- Luau version 6, Types version 3
+-- Time taken: 0.004653 seconds
+
+local random_state_upvr = Random.new()
+local clock_upvr = os.clock
+function RandomVectorOffsetBetween(arg1, arg2, arg3) -- Line 9
+	--[[ Upvalues[1]:
+		[1]: random_state_upvr (readonly)
+	]]
+	return (CFrame.lookAt(Vector3.new(), arg1) * CFrame.Angles(0, 0, random_state_upvr:NextNumber(0, (-math.pi*2))) * CFrame.Angles(math.acos(random_state_upvr:NextNumber(math.cos(arg3), math.cos(arg2))), 0, 0)).LookVector
+end
+local tbl_upvr = {}
+local module_upvr = {}
+module_upvr.__index = module_upvr
+local Parent_upvr = require(script.Parent)
+local LightningSparks_upvr = require(script.Parent.LightningSparks)
+function module_upvr.new(arg1, arg2, arg3, arg4, arg5, arg6) -- Line 20
+	--[[ Upvalues[6]:
+		[1]: module_upvr (readonly)
+		[2]: random_state_upvr (readonly)
+		[3]: Parent_upvr (readonly)
+		[4]: LightningSparks_upvr (readonly)
+		[5]: clock_upvr (readonly)
+		[6]: tbl_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local setmetatable_result1 = setmetatable({}, module_upvr)
+	setmetatable_result1.Size = arg2 or 1
+	setmetatable_result1.NumBolts = arg3 or 14
+	local var16 = arg4
+	if not var16 then
+		var16 = ColorSequence.new(Color3.new(1, 0, 0), Color3.new(0, 0, 1))
+	end
+	setmetatable_result1.Color = var16
+	var16 = arg5
+	local var17 = var16
+	if not var17 then
+		var17 = Color3.new(0.3, 0.3, 1)
+	end
+	setmetatable_result1.BoltColor = var17
+	setmetatable_result1.UpVector = arg6 or Vector3.new(0, 1, 0)
+	local Part = Instance.new("Part")
+	Part.Name = "LightningExplosion"
+	Part.Anchored = true
+	Part.CanCollide = false
+	Part.Locked = true
+	Part.CastShadow = false
+	Part.Transparency = 1
+	Part.Size = Vector3.new(0.05000, 0.05000, 0.05000)
+	Part.CFrame = CFrame.lookAt(arg1 + Vector3.new(0, 0.5, 0), arg1 + Vector3.new(0, 0.5, 0) + setmetatable_result1.UpVector) * CFrame.lookAt(Vector3.new(), Vector3.new(0, 1, 0)):inverse()
+	Part.Parent = workspace.CurrentCamera
+	local Attachment = Instance.new("Attachment")
+	Attachment.Parent = Part
+	Attachment.CFrame = CFrame.new()
+	local clone_3 = script.ExplosionBrightspot:Clone()
+	local clone_2 = script.GlareEmitter:Clone()
+	local clone = script.PlasmaEmitter:Clone()
+	local clamped = math.clamp(setmetatable_result1.Size, 0, 1)
+	clone_2.Size = NumberSequence.new(clamped * 30)
+	clone.Size = NumberSequence.new(clamped * 18)
+	clone.Speed = NumberRange.new(clamped * 100)
+	clone_3.Parent = Attachment
+	clone_2.Parent = Attachment
+	clone.Parent = Attachment
+	local Color = setmetatable_result1.Color
+	if typeof(Color) == "Color3" then
+		clone_2.Color = ColorSequence.new(Color)
+		clone.Color = ColorSequence.new(Color)
+		local Color3_toHSV_result1, _, Color3_toHSV_result3 = Color3.toHSV(Color)
+		clone_3.Color = ColorSequence.new(Color3.fromHSV(Color3_toHSV_result1, 0.5, Color3_toHSV_result3))
+	else
+		clone_2.Color = Color
+		clone.Color = Color
+		local Keypoints = Color.Keypoints
+		for i = 1, #Keypoints do
+			local Color3_toHSV_result1_2, _, Color3_toHSV_result3_2 = Color3.toHSV(Keypoints[i].Value)
+			Keypoints[i] = ColorSequenceKeypoint.new(Keypoints[i].Time, Color3.fromHSV(Color3_toHSV_result1_2, 0.5, Color3_toHSV_result3_2))
+			local var32
+		end
+		clone_3.Color = ColorSequence.new(var32)
+	end
+	clone_3.Enabled = true
+	clone_2.Enabled = true
+	clone.Enabled = true
+	local tbl = {}
+	i = 1
+	for _ = i, setmetatable_result1.NumBolts do
+		local tbl_3 = {}
+		local tbl_2 = {}
+		tbl_3.WorldPosition = Attachment.WorldPosition
+		tbl_3.WorldAxis = RandomVectorOffsetBetween(setmetatable_result1.UpVector, 1.1344640137963142, 1.3962634015954636)
+		tbl_2.WorldPosition = Attachment.WorldPosition + tbl_3.WorldAxis * random_state_upvr:NextNumber(20, 40) * 1.4 * clamped
+		tbl_2.WorldAxis = RandomVectorOffsetBetween(-setmetatable_result1.UpVector, 1.2217304763960306, 1.9198621771937625)
+		local any_new_result1_2 = Parent_upvr.new(tbl_3, tbl_2, 10)
+		any_new_result1_2.AnimationSpeed = 0
+		any_new_result1_2.Color = setmetatable_result1.BoltColor
+		any_new_result1_2.PulseLength = 0.8
+		any_new_result1_2.ColorOffsetSpeed = 20
+		any_new_result1_2.Frequency = 3
+		any_new_result1_2.MinRadius = 0
+		any_new_result1_2.MaxRadius = clamped * 4
+		any_new_result1_2.FadeLength = 0.4
+		any_new_result1_2.PulseSpeed = 5
+		any_new_result1_2.MinThicknessMultiplier = 0.7
+		any_new_result1_2.MaxThicknessMultiplier = 1
+		local any_new_result1 = LightningSparks_upvr.new(any_new_result1_2)
+		any_new_result1.MinDistance = 7.5
+		any_new_result1.MaxDistance = 10
+		any_new_result1_2.Velocity = (tbl_2.WorldPosition - tbl_3.WorldPosition).Unit * 0.1 * clamped
+		tbl[#tbl + 1] = any_new_result1_2
+		local var38
+	end
+	setmetatable_result1.Bolts = tbl
+	setmetatable_result1.Attachment = var38
+	setmetatable_result1.Part = Part
+	setmetatable_result1.StartT = clock_upvr()
+	setmetatable_result1.RefIndex = #tbl_upvr + 1
+	tbl_upvr[setmetatable_result1.RefIndex] = setmetatable_result1
+	return setmetatable_result1
+end
+function module_upvr.Destroy(arg1) -- Line 122
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	tbl_upvr[arg1.RefIndex] = nil
+	arg1.Part:Destroy()
+	for i_3 = 1, #arg1.Bolts do
+		arg1.Bolts[i_3] = nil
+	end
+end
+game:GetService("RunService").Heartbeat:Connect(function() -- Line 133
+	--[[ Upvalues[2]:
+		[1]: tbl_upvr (readonly)
+		[2]: clock_upvr (readonly)
+	]]
+	for _, v in pairs(tbl_upvr) do
+		local var47 = clock_upvr() - v.StartT
+		local Attachment_2 = v.Attachment
+		if var47 < 0.7 then
+			if 0.2 < var47 then
+				Attachment_2.ExplosionBrightspot.Enabled = false
+				Attachment_2.GlareEmitter.Enabled = false
+				Attachment_2.PlasmaEmitter.Enabled = false
+			end
+			for i_5 = 1, #v.Bolts do
+				local var49 = v.Bolts[i_5]
+				var49.Attachment1.WorldPosition = var49.Attachment1.WorldPosition + var49.Velocity
+			end
+		else
+			v:Destroy()
+		end
+	end
+end)
+return module_upvr

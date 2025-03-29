@@ -1,28 +1,31 @@
 --[[
     Script: Workspace.Train.TrainFix
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:43:53
+-- Luau version 6, Types version 3
+-- Time taken: 0.001363 seconds
+
 return {
-    GetClosestRailToPlayer = function() --[[ Line: 5 ]] --[[ Name: GetClosestRailToPlayer ]]
-        local v0 = 1e999;
-        local v1 = nil;
-        for _, v3 in pairs(game.Players:GetPlayers()) do
-            local l_Character_0 = v3.Character;
-            if l_Character_0 then
-                for _, v6 in pairs(game.Workspace.RailSegments:GetChildren()) do
-                    local l_Magnitude_0 = (v6:GetPivot().Position - l_Character_0.HumanoidRootPart.Position).Magnitude;
-                    if l_Magnitude_0 < v0 then
-                        v0 = l_Magnitude_0;
-                        v1 = v6;
-                        if l_Magnitude_0 < 50 then
-                            return v6;
-                        end;
-                    end;
-                end;
-            end;
-        end;
-        return v1;
-    end
-};
+	GetClosestRailToPlayer = function() -- Line 5, Named "GetClosestRailToPlayer"
+		local var30
+		for _, v in pairs(game.Players:GetPlayers()) do
+			local Character_2 = v.Character
+			if Character_2 then
+				for _, v_2 in pairs(game.Workspace.RailSegments:GetChildren()) do
+					local Magnitude = (v_2:GetPivot().Position - Character_2.HumanoidRootPart.Position).Magnitude
+					if Magnitude < math.huge then
+						if Magnitude < 50 then
+							return v_2
+						end
+					end
+				end
+			end
+		end
+		return nil
+	end;
+}

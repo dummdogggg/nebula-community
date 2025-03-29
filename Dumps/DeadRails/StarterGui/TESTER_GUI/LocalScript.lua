@@ -1,25 +1,29 @@
 --[[
     Script: StarterGui.TESTER_GUI.LocalScript
     Type: LocalScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_Players_0 = game:GetService("Players");
-local l_PlaceId_0 = game.PlaceId;
-local l_LocalPlayer_0 = l_Players_0.LocalPlayer;
-local l_Parent_0 = script.Parent;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:47:11
+-- Luau version 6, Types version 3
+-- Time taken: 0.000629 seconds
+
+local PlaceId = game.PlaceId
+local Parent = script.Parent
 if game:GetService("RunService"):IsStudio() then
-    l_Parent_0.Enabled = false;
-    return;
-elseif l_PlaceId_0 == 98018823628597 or l_PlaceId_0 == 133377094302868 then
-    l_Parent_0.Enabled = true;
-    for _, v5 in l_Parent_0:WaitForChild("ScreenIds"):GetChildren() do
-        if v5:IsA("TextLabel") then
-            v5.Text = tostring(l_LocalPlayer_0.UserId);
-        end;
-    end;
-    return;
+	Parent.Enabled = false
 else
-    l_Parent_0.Enabled = false;
-    return;
-end;
+	if PlaceId == 98018823628597 or PlaceId == 133377094302868 then
+		Parent.Enabled = true
+	else
+		Parent.Enabled = false
+		return
+	end
+	for _, v in Parent:WaitForChild("ScreenIds"):GetChildren() do
+		if v:IsA("TextLabel") then
+			v.Text = tostring(game:GetService("Players").LocalPlayer.UserId)
+		end
+	end
+end

@@ -1,55 +1,60 @@
 --[[
     Script: ReplicatedStorage.Packages._Index.jakeywastaken_imgizmo@3.5.1.imgizmo.Gizmos.Ray
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = {};
-v0.__index = v0;
-v0.Init = function(v1, v2, v3, v4, v5) --[[ Line: 6 ]] --[[ Name: Init ]]
-    -- upvalues: v0 (copy)
-    local v6 = setmetatable({}, v0);
-    v6.Ceive = v1;
-    v6.Propertys = v2;
-    v6.Request = v3;
-    v6.Release = v4;
-    v6.Retain = v5;
-    return v6;
-end;
-v0.Draw = function(v7, v8, v9) --[[ Line: 22 ]] --[[ Name: Draw ]]
-    local l_Ceive_0 = v7.Ceive;
-    if not l_Ceive_0.Enabled then
-        return;
-    else
-        if v7.Propertys.AlwaysOnTop then
-            l_Ceive_0.AOTWireframeHandle:AddLine(v8, v9);
-        else
-            l_Ceive_0.WireframeHandle:AddLine(v8, v9);
-        end;
-        local l_Ceive_1 = v7.Ceive;
-        l_Ceive_1.ActiveRays = l_Ceive_1.ActiveRays + 1;
-        v7.Ceive.ScheduleCleaning();
-        return;
-    end;
-end;
-v0.Create = function(v12, v13, v14) --[[ Line: 45 ]] --[[ Name: Create ]]
-    local v15 = {
-        Origin = v13, 
-        End = v14, 
-        AlwaysOnTop = v12.Propertys.AlwaysOnTop, 
-        Transparency = v12.Propertys.Transparency, 
-        Color3 = v12.Propertys.Color3, 
-        Enabled = true, 
-        Destroy = false
-    };
-    v12:Retain(v15);
-    return v15;
-end;
-v0.Update = function(v16, v17) --[[ Line: 61 ]] --[[ Name: Update ]]
-    local l_Ceive_2 = v16.Ceive;
-    l_Ceive_2.PushProperty("AlwaysOnTop", v17.AlwaysOnTop);
-    l_Ceive_2.PushProperty("Transparency", v17.Transparency);
-    l_Ceive_2.PushProperty("Color3", v17.Color3);
-    v16:Draw(v17.Origin, v17.End);
-end;
-return v0;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:14
+-- Luau version 6, Types version 3
+-- Time taken: 0.001143 seconds
+
+local module_upvr = {}
+module_upvr.__index = module_upvr
+function module_upvr.Init(arg1, arg2, arg3, arg4, arg5) -- Line 6
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	local setmetatable_result1 = setmetatable({}, module_upvr)
+	setmetatable_result1.Ceive = arg1
+	setmetatable_result1.Propertys = arg2
+	setmetatable_result1.Request = arg3
+	setmetatable_result1.Release = arg4
+	setmetatable_result1.Retain = arg5
+	return setmetatable_result1
+end
+function module_upvr.Draw(arg1, arg2, arg3) -- Line 22
+	local Ceive_3 = arg1.Ceive
+	if not Ceive_3.Enabled then
+	else
+		if arg1.Propertys.AlwaysOnTop then
+			Ceive_3.AOTWireframeHandle:AddLine(arg2, arg3)
+		else
+			Ceive_3.WireframeHandle:AddLine(arg2, arg3)
+		end
+		local Ceive_2 = arg1.Ceive
+		Ceive_2.ActiveRays += 1
+		arg1.Ceive.ScheduleCleaning()
+	end
+end
+function module_upvr.Create(arg1, arg2, arg3) -- Line 45
+	local module = {}
+	module.Origin = arg2
+	module.End = arg3
+	module.AlwaysOnTop = arg1.Propertys.AlwaysOnTop
+	module.Transparency = arg1.Propertys.Transparency
+	module.Color3 = arg1.Propertys.Color3
+	module.Enabled = true
+	module.Destroy = false
+	arg1.Retain(arg1, module)
+	return module
+end
+function module_upvr.Update(arg1, arg2) -- Line 61
+	local Ceive = arg1.Ceive
+	Ceive.PushProperty("AlwaysOnTop", arg2.AlwaysOnTop)
+	Ceive.PushProperty("Transparency", arg2.Transparency)
+	Ceive.PushProperty("Color3", arg2.Color3)
+	arg1:Draw(arg2.Origin, arg2.End)
+end
+return module_upvr

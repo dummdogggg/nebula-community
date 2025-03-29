@@ -1,42 +1,42 @@
 --[[
     Script: StarterGui.TutorialGui.TutorialTextChange
     Type: LocalScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = {
-    [1] = "Drag gold bar to the table to sell it (0/1)", 
-    [2] = "Buy coal from the general store (0/1)", 
-    [3] = "Use the coal to refuel the train (0/1)"
-};
-local v1 = {
-    [1] = Vector3.new(128.52699279785156, 28.25, 29924.873046875, 0), 
-    [2] = Vector3.new(128.52699279785156, 28.25, 29800, 0), 
-    [3] = Vector3.new(56.527000427246094, 28.25, 29886.873046875, 0)
-};
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:56
+-- Luau version 6, Types version 3
+-- Time taken: 0.000930 seconds
+
+local tbl_upvr = {"Drag gold bar to the table to sell it (0/1)", "Buy coal from the general store (0/1)", "Use the coal to refuel the train (0/1)"}
+local tbl_upvr_2 = {Vector3.new(128.526, 28.25, 29924.8), Vector3.new(128.526, 28.25, 29800), Vector3.new(56.5270, 28.25, 29886.8)}
 if require(game.ReplicatedStorage.Client.Controllers.ActionController.InputCategorizer).getLastInputCategory() == "KeyboardAndMouse" then
-    script.Parent.MouseUnlockText.Visible = true;
-end;
-local v2 = game.ReplicatedStorage.Assets.ObjectiveMarker:Clone();
-v2.Parent = game.Workspace;
-local l_TutorialStep_0 = game.ReplicatedStorage.TutorialStep;
-if l_TutorialStep_0.Value == 4 then
-    script.Parent.TutorialText.Visible = false;
-    v2:Destroy();
-    script.Parent.MouseUnlockText.Visible = false;
-end;
-v2.Position = v1[l_TutorialStep_0.Value];
-script.Parent.TutorialText.Text = v0[l_TutorialStep_0.Value];
-l_TutorialStep_0.Changed:Connect(function(v4) --[[ Line: 34 ]]
-    -- upvalues: v2 (copy), v1 (copy), v0 (copy)
-    if v4 == 4 then
-        script.Parent.TutorialText.Visible = false;
-        v2:Destroy();
-        script.Parent.MouseUnlockText.Visible = false;
-        return;
-    else
-        v2.Position = v1[v4];
-        script.Parent.TutorialText.Text = v0[v4];
-        return;
-    end;
-end);
+	script.Parent.MouseUnlockText.Visible = true
+end
+local clone_upvr = game.ReplicatedStorage.Assets.ObjectiveMarker:Clone()
+clone_upvr.Parent = game.Workspace
+local TutorialStep = game.ReplicatedStorage.TutorialStep
+if TutorialStep.Value == 4 then
+	script.Parent.TutorialText.Visible = false
+	clone_upvr:Destroy()
+	script.Parent.MouseUnlockText.Visible = false
+end
+clone_upvr.Position = tbl_upvr_2[TutorialStep.Value]
+script.Parent.TutorialText.Text = tbl_upvr[TutorialStep.Value]
+TutorialStep.Changed:Connect(function(arg1) -- Line 34
+	--[[ Upvalues[3]:
+		[1]: clone_upvr (readonly)
+		[2]: tbl_upvr_2 (readonly)
+		[3]: tbl_upvr (readonly)
+	]]
+	if arg1 == 4 then
+		script.Parent.TutorialText.Visible = false
+		clone_upvr:Destroy()
+		script.Parent.MouseUnlockText.Visible = false
+	else
+		clone_upvr.Position = tbl_upvr_2[arg1]
+		script.Parent.TutorialText.Text = tbl_upvr[arg1]
+	end
+end)

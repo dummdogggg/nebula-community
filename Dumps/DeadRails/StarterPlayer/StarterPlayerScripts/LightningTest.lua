@@ -1,71 +1,69 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.LightningTest
     Type: LocalScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local v1 = require(l_ReplicatedStorage_0.Packages.LightningBolt);
-local v2 = require(l_ReplicatedStorage_0.Packages.LightningBolt.LightningExplosion);
-local v3 = require(l_ReplicatedStorage_0.Packages.LightningBolt.LightningSparks);
-local l_LocalPlayer_0 = game.Players.LocalPlayer;
-l_ReplicatedStorage_0.Remotes.LightningReplicate.OnClientEvent:Connect(function(v5, v6, v7) --[[ Line: 11 ]]
-    -- upvalues: v1 (copy), v3 (copy), v2 (copy), l_LocalPlayer_0 (copy)
-    local v8 = Random.new(v7);
-    local v9 = game.ReplicatedStorage.Assets.LightningModel:Clone();
-    v9.Parent = game.Workspace;
-    v9.Part1.Position = v5;
-    v9.Part2.Position = v6;
-    local v10 = v1.new(v9.Part1.Attachment1, v9.Part2.Attachment2, 20);
-    local v11 = 15.39600717839002;
-    local v12 = 15.39600717839002;
-    v10.CurveSize0 = v11;
-    v10.CurveSize1 = v12;
-    v10.Color = Color3.fromRGB(193, 217, 255);
-    v10.AnimationSpeed = 0.5;
-    v10.Thickness = 3;
-    v10.MinRadius = 0;
-    v10.MaxRadius = 20;
-    v11 = 1;
-    v12 = 1;
-    v10.MinThicknessMultiplier = v11;
-    v10.MaxThicknessMultiplier = v12;
-    v10.ColorOffsetSpeed = 4;
-    v10.Frequency = 6;
-    v11 = v3.new(v10, 5);
-    v12 = 10;
-    local v13 = 20;
-    v11.MinSpeed = v12;
-    v11.MaxSpeed = v13;
-    v12 = 3;
-    v13 = 6;
-    v11.MinDistance = v12;
-    v11.MaxDistance = v13;
-    v12 = 9;
-    v13 = 11;
-    v11.MinPartsPerSpark = v12;
-    v11.MaxPartsPerSpark = v13;
-    v10.Enabled = false;
-    v12 = v2.new(v9.Part1.Attachment1.WorldPosition, 0.5, 5, ColorSequence.new(Color3.fromRGB(178, 255, 252)), Color3.fromRGB(221, 255, 202));
-    v13 = game.SoundService.Lightning:GetChildren()[v8:NextInteger(1, #game.SoundService.Lightning:GetChildren())]:Clone();
-    v13.Parent = v9.Part1;
-    v13.PlayOnRemove = true;
-    v13:Destroy();
-    local l_Character_0 = l_LocalPlayer_0.Character;
-    if l_Character_0 then
-        local v15 = math.clamp(4 * (1 - (l_Character_0.HumanoidRootPart.Position - v5).Magnitude / 300), 0, 1.5);
-        game.Lighting.ExposureCompensation = v15;
-        task.delay(0.25, function() --[[ Line: 51 ]]
-            game.Lighting.ExposureCompensation = 0;
-        end);
-    end;
-    for _ = 1, 6 do
-        v10.Enabled = true;
-        task.wait(0.05);
-        v10.Enabled = false;
-        task.wait(0.015);
-    end;
-    task.wait(1);
-    v10:Destroy();
-    v9:Destroy();
-end);
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:47:21
+-- Luau version 6, Types version 3
+-- Time taken: 0.001678 seconds
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LightningBolt_upvr = require(ReplicatedStorage.Packages.LightningBolt)
+local LightningSparks_upvr = require(ReplicatedStorage.Packages.LightningBolt.LightningSparks)
+local LightningExplosion_upvr = require(ReplicatedStorage.Packages.LightningBolt.LightningExplosion)
+local LocalPlayer_upvr = game.Players.LocalPlayer
+ReplicatedStorage.Remotes.LightningReplicate.OnClientEvent:Connect(function(arg1, arg2, arg3) -- Line 11
+	--[[ Upvalues[4]:
+		[1]: LightningBolt_upvr (readonly)
+		[2]: LightningSparks_upvr (readonly)
+		[3]: LightningExplosion_upvr (readonly)
+		[4]: LocalPlayer_upvr (readonly)
+	]]
+	local clone = game.ReplicatedStorage.Assets.LightningModel:Clone()
+	clone.Parent = game.Workspace
+	clone.Part1.Position = arg1
+	clone.Part2.Position = arg2
+	local any_new_result1_2 = LightningBolt_upvr.new(clone.Part1.Attachment1, clone.Part2.Attachment2, 20)
+	any_new_result1_2.CurveSize0 = 15.39600717839002
+	any_new_result1_2.CurveSize1 = 15.39600717839002
+	any_new_result1_2.Color = Color3.fromRGB(193, 217, 255)
+	any_new_result1_2.AnimationSpeed = 0.5
+	any_new_result1_2.Thickness = 3
+	any_new_result1_2.MinRadius = 0
+	any_new_result1_2.MaxRadius = 20
+	any_new_result1_2.MinThicknessMultiplier = 1
+	any_new_result1_2.MaxThicknessMultiplier = 1
+	any_new_result1_2.ColorOffsetSpeed = 4
+	any_new_result1_2.Frequency = 6
+	local any_new_result1 = LightningSparks_upvr.new(any_new_result1_2, 5)
+	any_new_result1.MinSpeed = 10
+	any_new_result1.MaxSpeed = 20
+	any_new_result1.MinDistance = 3
+	any_new_result1.MaxDistance = 6
+	any_new_result1.MinPartsPerSpark = 9
+	any_new_result1.MaxPartsPerSpark = 11
+	any_new_result1_2.Enabled = false
+	local clone_2 = game.SoundService.Lightning:GetChildren()[Random.new(arg3):NextInteger(1, #game.SoundService.Lightning:GetChildren())]:Clone()
+	clone_2.Parent = clone.Part1
+	clone_2.PlayOnRemove = true
+	clone_2:Destroy()
+	local Character = LocalPlayer_upvr.Character
+	if Character then
+		game.Lighting.ExposureCompensation = math.clamp(4 * (1 - (Character.HumanoidRootPart.Position - arg1).Magnitude / 300), 0, 1.5)
+		task.delay(0.25, function() -- Line 51
+			game.Lighting.ExposureCompensation = 0
+		end)
+	end
+	for _ = 1, 6 do
+		any_new_result1_2.Enabled = true
+		task.wait(0.05)
+		any_new_result1_2.Enabled = false
+		task.wait(0.015)
+	end
+	task.wait(1)
+	any_new_result1_2:Destroy()
+	clone:Destroy()
+end)

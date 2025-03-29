@@ -1,167 +1,173 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.PlayerModule.ControlModule.PathDisplay
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_CommonUtils_0 = script.Parent.Parent:WaitForChild("CommonUtils");
-local v1 = require(l_CommonUtils_0:WaitForChild("FlagUtil")).getUserFlag("UserRaycastPerformanceImprovements");
-local v2 = RaycastParams.new();
-v2.FilterType = Enum.RaycastFilterType.Exclude;
-local v3 = {
-    spacing = 8, 
-    image = "rbxasset://textures/Cursors/Gamepad/Pointer.png", 
-    imageSize = Vector2.new(2, 2)
-};
-local v4 = {};
-local v5 = {};
-local l_Model_0 = Instance.new("Model");
-l_Model_0.Name = "PathDisplayPoints";
-local l_Part_0 = Instance.new("Part");
-l_Part_0.Anchored = true;
-l_Part_0.CanCollide = false;
-l_Part_0.Transparency = 1;
-l_Part_0.Name = "PathDisplayAdornee";
-l_Part_0.CFrame = CFrame.new(0, 0, 0);
-l_Part_0.Parent = l_Model_0;
-local v8 = {};
-local v9 = 30;
-for v10 = 1, v9 do
-    local l_ImageHandleAdornment_0 = Instance.new("ImageHandleAdornment");
-    l_ImageHandleAdornment_0.Archivable = false;
-    l_ImageHandleAdornment_0.Adornee = l_Part_0;
-    l_ImageHandleAdornment_0.Image = v3.image;
-    l_ImageHandleAdornment_0.Size = v3.imageSize;
-    v8[v10] = l_ImageHandleAdornment_0;
-end;
-local function _() --[[ Line: 41 ]] --[[ Name: retrieveFromPool ]]
-    -- upvalues: v8 (copy), v9 (ref)
-    local v12 = v8[1];
-    if not v12 then
-        return nil;
-    else
-        local l_v8_0 = v8;
-        local l_v8_1 = v8;
-        local l_v9_0 = v9;
-        local v16 = v8[v9];
-        local v17 = nil;
-        l_v8_0[1] = v16;
-        l_v8_1[l_v9_0] = v17;
-        v9 = v9 - 1;
-        return v12;
-    end;
-end;
-local function _(v19) --[[ Line: 52 ]] --[[ Name: returnToPool ]]
-    -- upvalues: v9 (ref), v8 (copy)
-    v9 = v9 + 1;
-    v8[v9] = v19;
-end;
-local function v33(v21, _) --[[ Line: 57 ]] --[[ Name: renderPoint ]]
-    -- upvalues: v9 (ref), v8 (copy), v1 (copy), v2 (copy), l_Model_0 (copy)
-    if v9 == 0 then
-        return nil;
-    else
-        local v23 = v8[1];
-        local v24;
-        if not v23 then
-            v24 = nil;
-        else
-            local l_v8_2 = v8;
-            local l_v8_3 = v8;
-            local l_v9_1 = v9;
-            local v28 = v8[v9];
-            local v29 = nil;
-            l_v8_2[1] = v28;
-            l_v8_3[l_v9_1] = v29;
-            v9 = v9 - 1;
-            v24 = v23;
-        end;
-        if v1 then
-            v2.FilterDescendantsInstances = {
-                game.Players.LocalPlayer.Character, 
-                workspace.CurrentCamera
-            };
-            v23 = workspace:Raycast(v21 + Vector3.new(0, 2, 0, 0), Vector3.new(0, -8, 0, 0), v2);
-            if not v23 then
-                return nil;
-            else
-                v24.CFrame = CFrame.lookAlong(v23.Position, v23.Normal);
-                v24.Parent = l_Model_0;
-                return v24;
-            end;
-        else
-            v23 = Ray.new(v21 + Vector3.new(0, 2, 0, 0), (Vector3.new(0, -8, 0, 0)));
-            local l_workspace_PartOnRayWithIgnoreList_0, v31, v32 = workspace:FindPartOnRayWithIgnoreList(v23, {
-                game.Players.LocalPlayer.Character, 
-                workspace.CurrentCamera
-            });
-            if not l_workspace_PartOnRayWithIgnoreList_0 then
-                return nil;
-            else
-                v24.CFrame = CFrame.new(v31, v31 + v32);
-                v24.Parent = l_Model_0;
-                return v24;
-            end;
-        end;
-    end;
-end;
-v3.setCurrentPoints = function(v34) --[[ Line: 89 ]] --[[ Name: setCurrentPoints ]]
-    -- upvalues: v4 (ref)
-    if typeof(v34) == "table" then
-        v4 = v34;
-        return;
-    else
-        v4 = {};
-        return;
-    end;
-end;
-v3.clearRenderedPath = function() --[[ Line: 97 ]] --[[ Name: clearRenderedPath ]]
-    -- upvalues: v5 (ref), v9 (ref), v8 (copy), l_Model_0 (copy)
-    for _, v36 in ipairs(v5) do
-        v36.Parent = nil;
-        v9 = v9 + 1;
-        v8[v9] = v36;
-    end;
-    v5 = {};
-    l_Model_0.Parent = nil;
-end;
-v3.renderPath = function() --[[ Line: 106 ]] --[[ Name: renderPath ]]
-    -- upvalues: v3 (copy), v4 (ref), v5 (ref), v33 (copy), l_Model_0 (copy)
-    v3.clearRenderedPath();
-    if not v4 or #v4 == 0 then
-        return;
-    else
-        local v37 = #v4;
-        local v38 = v4[v37];
-        local v39 = 0;
-        v5[1] = v33(v38, true);
-        if not v5[1] then
-            return;
-        else
-            while true do
-                local v40 = v4[v37];
-                local v41 = v4[v37 - 1];
-                if v37 >= 2 then
-                    local v42 = v41 - v40;
-                    local l_magnitude_0 = v42.magnitude;
-                    if l_magnitude_0 < v39 then
-                        v39 = v39 - l_magnitude_0;
-                        v37 = v37 - 1;
-                    else
-                        local v44 = v40 + v42.unit * v39;
-                        local v45 = v33(v44, false);
-                        if v45 then
-                            v5[#v5 + 1] = v45;
-                        end;
-                        v39 = v39 + v3.spacing;
-                    end;
-                else
-                    break;
-                end;
-            end;
-            l_Model_0.Parent = workspace.CurrentCamera;
-            return;
-        end;
-    end;
-end;
-return v3;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:47:30
+-- Luau version 6, Types version 3
+-- Time taken: 0.003340 seconds
+
+local RaycastParams_new_result1_upvr = RaycastParams.new()
+RaycastParams_new_result1_upvr.FilterType = Enum.RaycastFilterType.Exclude
+local module_upvr = {
+	spacing = 8;
+	image = "rbxasset://textures/Cursors/Gamepad/Pointer.png";
+	imageSize = Vector2.new(2, 2);
+}
+local tbl_upvw_2 = {}
+local tbl_upvw = {}
+local Model_upvr = Instance.new("Model")
+Model_upvr.Name = "PathDisplayPoints"
+local Part = Instance.new("Part")
+Part.Anchored = true
+Part.CanCollide = false
+Part.Transparency = 1
+Part.Name = "PathDisplayAdornee"
+Part.CFrame = CFrame.new(0, 0, 0)
+Part.Parent = Model_upvr
+local tbl_upvr = {}
+local var10_upvw = 30
+for i = 1, var10_upvw do
+	local ImageHandleAdornment = Instance.new("ImageHandleAdornment")
+	ImageHandleAdornment.Archivable = false
+	ImageHandleAdornment.Adornee = Part
+	ImageHandleAdornment.Image = module_upvr.image
+	ImageHandleAdornment.Size = module_upvr.imageSize
+	tbl_upvr[i] = ImageHandleAdornment
+end
+local function _() -- Line 41, Named "retrieveFromPool"
+	--[[ Upvalues[2]:
+		[1]: tbl_upvr (readonly)
+		[2]: var10_upvw (read and write)
+	]]
+	local _1 = tbl_upvr[1]
+	if not _1 then
+		return nil
+	end
+	tbl_upvr[1] = tbl_upvr[var10_upvw]
+	tbl_upvr[var10_upvw] = nil
+	var10_upvw -= 1
+	return _1
+end
+local function _(arg1) -- Line 52, Named "returnToPool"
+	--[[ Upvalues[2]:
+		[1]: var10_upvw (read and write)
+		[2]: tbl_upvr (readonly)
+	]]
+	var10_upvw += 1
+	tbl_upvr[var10_upvw] = arg1
+end
+local any_getUserFlag_result1_upvr = require(script.Parent.Parent:WaitForChild("CommonUtils"):WaitForChild("FlagUtil")).getUserFlag("UserRaycastPerformanceImprovements")
+local function renderPoint_upvr(arg1, arg2) -- Line 57, Named "renderPoint"
+	--[[ Upvalues[5]:
+		[1]: var10_upvw (read and write)
+		[2]: tbl_upvr (readonly)
+		[3]: any_getUserFlag_result1_upvr (readonly)
+		[4]: RaycastParams_new_result1_upvr (readonly)
+		[5]: Model_upvr (readonly)
+	]]
+	local var14
+	if var14 == 0 then
+		var14 = nil
+		return var14
+	end
+	local _1_2 = tbl_upvr[1]
+	if not _1_2 then
+		var14 = nil
+	else
+		tbl_upvr[1] = tbl_upvr[var10_upvw]
+		tbl_upvr[var10_upvw] = nil
+		var10_upvw -= 1
+		var14 = _1_2
+	end
+	if any_getUserFlag_result1_upvr then
+		RaycastParams_new_result1_upvr.FilterDescendantsInstances = {game.Players.LocalPlayer.Character, workspace.CurrentCamera}
+		local workspace_Raycast_result1 = workspace:Raycast(arg1 + Vector3.new(0, 2, 0), Vector3.new(0, -8, 0), RaycastParams_new_result1_upvr)
+		if not workspace_Raycast_result1 then
+			return nil
+		end
+		var14.CFrame = CFrame.lookAlong(workspace_Raycast_result1.Position, workspace_Raycast_result1.Normal)
+		var14.Parent = Model_upvr
+		return var14
+	end
+	local workspace_FindPartOnRayWithIgnoreList_result1, workspace_FindPartOnRayWithIgnoreList_result2, workspace_FindPartOnRayWithIgnoreList_result3 = workspace:FindPartOnRayWithIgnoreList(Ray.new(arg1 + Vector3.new(0, 2, 0), Vector3.new(0, -8, 0)), {game.Players.LocalPlayer.Character, workspace.CurrentCamera})
+	if not workspace_FindPartOnRayWithIgnoreList_result1 then
+		return nil
+	end
+	var14.CFrame = CFrame.new(workspace_FindPartOnRayWithIgnoreList_result2, workspace_FindPartOnRayWithIgnoreList_result2 + workspace_FindPartOnRayWithIgnoreList_result3)
+	var14.Parent = Model_upvr
+	return var14
+end
+function module_upvr.setCurrentPoints(arg1) -- Line 89
+	--[[ Upvalues[1]:
+		[1]: tbl_upvw_2 (read and write)
+	]]
+	if typeof(arg1) == "table" then
+		tbl_upvw_2 = arg1
+	else
+		tbl_upvw_2 = {}
+	end
+end
+function module_upvr.clearRenderedPath() -- Line 97
+	--[[ Upvalues[4]:
+		[1]: tbl_upvw (read and write)
+		[2]: var10_upvw (read and write)
+		[3]: tbl_upvr (readonly)
+		[4]: Model_upvr (readonly)
+	]]
+	for _, v in ipairs(tbl_upvw) do
+		v.Parent = nil
+		var10_upvw += 1
+		tbl_upvr[var10_upvw] = v
+	end
+	tbl_upvw = {}
+	Model_upvr.Parent = nil
+end
+function module_upvr.renderPath() -- Line 106
+	--[[ Upvalues[5]:
+		[1]: module_upvr (readonly)
+		[2]: tbl_upvw_2 (read and write)
+		[3]: tbl_upvw (read and write)
+		[4]: renderPoint_upvr (readonly)
+		[5]: Model_upvr (readonly)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 21 start (CF ANALYSIS FAILED)
+	module_upvr.clearRenderedPath()
+	local var27
+	local function INLINED() -- Internal function, doesn't exist in bytecode
+		var27 = #tbl_upvw_2
+		return var27 == 0
+	end
+	if not var27 or INLINED() then return end
+	var27 = #tbl_upvw_2
+	local const_number = 0
+	tbl_upvw[1] = renderPoint_upvr(tbl_upvw_2[var27], true)
+	local var29 = tbl_upvw
+	local _1_3 = var29[1]
+	-- KONSTANTERROR: [0] 1. Error Block 21 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [25] 24. Error Block 6 start (CF ANALYSIS FAILED)
+	do
+		return
+	end
+	-- KONSTANTERROR: [25] 24. Error Block 6 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [35] 33. Error Block 28 start (CF ANALYSIS FAILED)
+	local var31 = var29 - _1_3
+	local magnitude = var31.magnitude
+	if magnitude < const_number then
+		var27 -= 1
+	else
+		local renderPoint_result1 = renderPoint_upvr(_1_3 + var31.unit * (const_number - magnitude), false)
+		if renderPoint_result1 then
+			tbl_upvw[#tbl_upvw + 1] = renderPoint_result1
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+	end
+	-- KONSTANTERROR: [35] 33. Error Block 28 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [26] 25. Error Block 7 start (CF ANALYSIS FAILED)
+	-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [61.263163]
+	-- KONSTANTERROR: [26] 25. Error Block 7 end (CF ANALYSIS FAILED)
+end
+return module_upvr

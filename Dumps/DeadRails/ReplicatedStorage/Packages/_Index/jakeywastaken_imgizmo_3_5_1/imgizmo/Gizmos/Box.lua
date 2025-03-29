@@ -1,104 +1,118 @@
 --[[
     Script: ReplicatedStorage.Packages._Index.jakeywastaken_imgizmo@3.5.1.imgizmo.Gizmos.Box
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = {};
-v0.__index = v0;
-v0.Init = function(v1, v2, v3, v4, v5) --[[ Line: 6 ]] --[[ Name: Init ]]
-    -- upvalues: v0 (copy)
-    local v6 = setmetatable({}, v0);
-    v6.Ceive = v1;
-    v6.Propertys = v2;
-    v6.Request = v3;
-    v6.Release = v4;
-    v6.Retain = v5;
-    return v6;
-end;
-v0.Draw = function(v7, v8, v9, v10) --[[ Line: 23 ]] --[[ Name: Draw ]]
-    local l_Ceive_0 = v7.Ceive;
-    if not l_Ceive_0.Enabled then
-        return;
-    else
-        local l_Position_0 = v8.Position;
-        local l_UpVector_0 = v8.UpVector;
-        local l_RightVector_0 = v8.RightVector;
-        local l_LookVector_0 = v8.LookVector;
-        local v16 = v9 / 2;
-        local v17 = l_UpVector_0 * v16.Y;
-        local v18 = l_RightVector_0 * v16.X;
-        local v19 = l_LookVector_0 * v16.Z;
-        local function v27(v20, v21, v22) --[[ Line: 39 ]] --[[ Name: CalculateYFace ]]
-            -- upvalues: l_Position_0 (copy), l_Ceive_0 (copy), v10 (copy)
-            local v23 = l_Position_0 + (v20 - v21 + v22);
-            local v24 = l_Position_0 + (v20 + v21 + v22);
-            local v25 = l_Position_0 + (v20 - v21 - v22);
-            local v26 = l_Position_0 + (v20 + v21 - v22);
-            l_Ceive_0.Ray:Draw(v23, v24);
-            l_Ceive_0.Ray:Draw(v23, v25);
-            l_Ceive_0.Ray:Draw(v24, v26);
-            if v10 ~= false then
-                l_Ceive_0.Ray:Draw(v24, v25);
-            end;
-            l_Ceive_0.Ray:Draw(v25, v26);
-        end;
-        local function v35(v28, v29, v30) --[[ Line: 56 ]] --[[ Name: CalculateZFace ]]
-            -- upvalues: l_Position_0 (copy), l_Ceive_0 (copy), v10 (copy)
-            local v31 = l_Position_0 + (v28 - v29 + v30);
-            local v32 = l_Position_0 + (v28 + v29 + v30);
-            local v33 = l_Position_0 + (-v28 - v29 + v30);
-            local v34 = l_Position_0 + (-v28 + v29 + v30);
-            l_Ceive_0.Ray:Draw(v31, v32);
-            l_Ceive_0.Ray:Draw(v31, v33);
-            l_Ceive_0.Ray:Draw(v32, v34);
-            if v10 ~= false then
-                l_Ceive_0.Ray:Draw(v32, v33);
-            end;
-            l_Ceive_0.Ray:Draw(v33, v34);
-        end;
-        local function v43(v36, v37, v38) --[[ Line: 73 ]] --[[ Name: CalculateXFace ]]
-            -- upvalues: l_Position_0 (copy), l_Ceive_0 (copy), v10 (copy)
-            local v39 = l_Position_0 + (v36 - v37 - v38);
-            local v40 = l_Position_0 + (v36 - v37 + v38);
-            local v41 = l_Position_0 + (-v36 - v37 - v38);
-            local v42 = l_Position_0 + (-v36 - v37 + v38);
-            l_Ceive_0.Ray:Draw(v39, v40);
-            l_Ceive_0.Ray:Draw(v39, v41);
-            l_Ceive_0.Ray:Draw(v40, v42);
-            if v10 ~= false then
-                l_Ceive_0.Ray:Draw(v40, v41);
-            end;
-            l_Ceive_0.Ray:Draw(v41, v42);
-        end;
-        v43(v17, v18, v19);
-        v43(v17, -v18, v19);
-        v27(v17, v18, v19);
-        v27(-v17, v18, v19);
-        v35(v17, v18, v19);
-        v35(v17, v18, -v19);
-        return;
-    end;
-end;
-v0.Create = function(v44, v45, v46, v47) --[[ Line: 106 ]] --[[ Name: Create ]]
-    local v48 = {
-        Transform = v45, 
-        Size = v46, 
-        DrawTriangles = v47, 
-        AlwaysOnTop = v44.Propertys.AlwaysOnTop, 
-        Transparency = v44.Propertys.Transparency, 
-        Color3 = v44.Propertys.Color3, 
-        Enabled = true, 
-        Destroy = false
-    };
-    v44:Retain(v48);
-    return v48;
-end;
-v0.Update = function(v49, v50) --[[ Line: 123 ]] --[[ Name: Update ]]
-    local l_Ceive_1 = v49.Ceive;
-    l_Ceive_1.PushProperty("AlwaysOnTop", v50.AlwaysOnTop);
-    l_Ceive_1.PushProperty("Transparency", v50.Transparency);
-    l_Ceive_1.PushProperty("Color3", v50.Color3);
-    v49:Draw(v50.Transform, v50.Size, v50.DrawTriangles);
-end;
-return v0;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:43:59
+-- Luau version 6, Types version 3
+-- Time taken: 0.002211 seconds
+
+local module_2_upvr = {}
+module_2_upvr.__index = module_2_upvr
+function module_2_upvr.Init(arg1, arg2, arg3, arg4, arg5) -- Line 6
+	--[[ Upvalues[1]:
+		[1]: module_2_upvr (readonly)
+	]]
+	local setmetatable_result1 = setmetatable({}, module_2_upvr)
+	setmetatable_result1.Ceive = arg1
+	setmetatable_result1.Propertys = arg2
+	setmetatable_result1.Request = arg3
+	setmetatable_result1.Release = arg4
+	setmetatable_result1.Retain = arg5
+	return setmetatable_result1
+end
+function module_2_upvr.Draw(arg1, arg2, arg3, arg4) -- Line 23
+	local Ceive_2_upvr = arg1.Ceive
+	if not Ceive_2_upvr.Enabled then
+	else
+		local Position_upvr = arg2.Position
+		local var5 = arg3 / 2
+		local var6 = arg2.UpVector * var5.Y
+		local var7 = arg2.RightVector * var5.X
+		local var8 = arg2.LookVector * var5.Z
+		local function CalculateYFace(arg1_2, arg2_2, arg3_2) -- Line 39
+			--[[ Upvalues[3]:
+				[1]: Position_upvr (readonly)
+				[2]: Ceive_2_upvr (readonly)
+				[3]: arg4 (readonly)
+			]]
+			local var9 = (Position_upvr) + (arg1_2 - arg2_2 + arg3_2)
+			local var10 = (Position_upvr) + (arg1_2 + arg2_2 + arg3_2)
+			local var11 = (Position_upvr) + (arg1_2 - arg2_2 - arg3_2)
+			local var12 = (Position_upvr) + (arg1_2 + arg2_2 - arg3_2)
+			Ceive_2_upvr.Ray:Draw(var9, var10)
+			Ceive_2_upvr.Ray:Draw(var9, var11)
+			Ceive_2_upvr.Ray:Draw(var10, var12)
+			if arg4 ~= false then
+				Ceive_2_upvr.Ray:Draw(var10, var11)
+			end
+			Ceive_2_upvr.Ray:Draw(var11, var12)
+		end
+		local function CalculateZFace(arg1_3, arg2_3, arg3_3) -- Line 56
+			--[[ Upvalues[3]:
+				[1]: Position_upvr (readonly)
+				[2]: Ceive_2_upvr (readonly)
+				[3]: arg4 (readonly)
+			]]
+			local var13 = (Position_upvr) + (arg1_3 - arg2_3 + arg3_3)
+			local var14 = (Position_upvr) + (arg1_3 + arg2_3 + arg3_3)
+			local var15 = (Position_upvr) + (-arg1_3 - arg2_3 + arg3_3)
+			local var16 = (Position_upvr) + (-arg1_3 + arg2_3 + arg3_3)
+			Ceive_2_upvr.Ray:Draw(var13, var14)
+			Ceive_2_upvr.Ray:Draw(var13, var15)
+			Ceive_2_upvr.Ray:Draw(var14, var16)
+			if arg4 ~= false then
+				Ceive_2_upvr.Ray:Draw(var14, var15)
+			end
+			Ceive_2_upvr.Ray:Draw(var15, var16)
+		end
+		local function CalculateXFace(arg1_4, arg2_4, arg3_4) -- Line 73
+			--[[ Upvalues[3]:
+				[1]: Position_upvr (readonly)
+				[2]: Ceive_2_upvr (readonly)
+				[3]: arg4 (readonly)
+			]]
+			local var17 = (Position_upvr) + (arg1_4 - arg2_4 - arg3_4)
+			local var18 = (Position_upvr) + (arg1_4 - arg2_4 + arg3_4)
+			local var19 = (Position_upvr) + (-arg1_4 - arg2_4 - arg3_4)
+			local var20 = (Position_upvr) + (-arg1_4 - arg2_4 + arg3_4)
+			Ceive_2_upvr.Ray:Draw(var17, var18)
+			Ceive_2_upvr.Ray:Draw(var17, var19)
+			Ceive_2_upvr.Ray:Draw(var18, var20)
+			if arg4 ~= false then
+				Ceive_2_upvr.Ray:Draw(var18, var19)
+			end
+			Ceive_2_upvr.Ray:Draw(var19, var20)
+		end
+		CalculateXFace(var6, var7, var8)
+		CalculateXFace(var6, -var7, var8)
+		CalculateYFace(var6, var7, var8)
+		CalculateYFace(-var6, var7, var8)
+		CalculateZFace(var6, var7, var8)
+		CalculateZFace(var6, var7, -var8)
+	end
+end
+function module_2_upvr.Create(arg1, arg2, arg3, arg4) -- Line 106
+	local module = {}
+	module.Transform = arg2
+	module.Size = arg3
+	module.DrawTriangles = arg4
+	module.AlwaysOnTop = arg1.Propertys.AlwaysOnTop
+	module.Transparency = arg1.Propertys.Transparency
+	module.Color3 = arg1.Propertys.Color3
+	module.Enabled = true
+	module.Destroy = false
+	arg1.Retain(arg1, module)
+	return module
+end
+function module_2_upvr.Update(arg1, arg2) -- Line 123
+	local Ceive = arg1.Ceive
+	Ceive.PushProperty("AlwaysOnTop", arg2.AlwaysOnTop)
+	Ceive.PushProperty("Transparency", arg2.Transparency)
+	Ceive.PushProperty("Color3", arg2.Color3)
+	arg1:Draw(arg2.Transform, arg2.Size, arg2.DrawTriangles)
+end
+return module_2_upvr

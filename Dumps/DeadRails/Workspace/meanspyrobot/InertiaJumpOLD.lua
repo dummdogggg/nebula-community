@@ -1,81 +1,110 @@
 --[[
     Script: Workspace.meanspyrobot.InertiaJumpOLD
     Type: LocalScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_RunService_0 = game:GetService("RunService");
-local _ = game.Players.LocalPlayer;
-local l_Parent_0 = script.Parent;
-local l_Humanoid_0 = l_Parent_0:WaitForChild("Humanoid");
-local v4 = nil;
-local v5 = nil;
-local v6 = nil;
-local v7 = RaycastParams.new();
-v7.FilterType = Enum.RaycastFilterType.Exclude;
-v7.FilterDescendantsInstances = {
-    l_Parent_0
-};
-local function v11() --[[ Line: 16 ]] --[[ Name: stayAttached ]]
-    -- upvalues: l_Parent_0 (copy), v7 (copy), v6 (ref), v5 (ref)
-    local l_HumanoidRootPart_0 = l_Parent_0:WaitForChild("HumanoidRootPart");
-    local v9 = workspace:Spherecast(l_HumanoidRootPart_0.Position, 2, Vector3.new(0, -50, 0, 0), v7);
-    if not v9 then
-        return;
-    else
-        local l_Instance_0 = v9.Instance;
-        if l_Instance_0 and l_Instance_0:IsA("BasePart") then
-            if v6 == l_Instance_0 then
-                l_HumanoidRootPart_0.CFrame = l_Instance_0.CFrame * v5:inverse() * l_HumanoidRootPart_0.CFrame;
-                v5 = l_Instance_0.CFrame;
-                return;
-            else
-                v6 = l_Instance_0;
-                v5 = l_Instance_0.CFrame;
-                return;
-            end;
-        else
-            v6 = nil;
-            v5 = nil;
-            return;
-        end;
-    end;
-end;
-local function _() --[[ Line: 48 ]] --[[ Name: startInertia ]]
-    -- upvalues: v5 (ref), v6 (ref), v11 (copy), v4 (ref), l_RunService_0 (copy)
-    v5 = nil;
-    v6 = nil;
-    v11();
-    v4 = l_RunService_0.Heartbeat:Connect(function() --[[ Line: 54 ]]
-        -- upvalues: v11 (ref)
-        v11();
-    end);
-end;
-l_Humanoid_0.Jumping:Connect(function(v13) --[[ Line: 63 ]]
-    -- upvalues: v4 (ref), v5 (ref), v6 (ref), v11 (copy), l_RunService_0 (copy)
-    if v13 and not v4 then
-        v5 = nil;
-        v6 = nil;
-        v11();
-        v4 = l_RunService_0.Heartbeat:Connect(function() --[[ Line: 54 ]]
-            -- upvalues: v11 (ref)
-            v11();
-        end);
-    end;
-end);
-l_Humanoid_0.StateChanged:Connect(function(_, v15) --[[ Line: 74 ]]
-    -- upvalues: v4 (ref), v5 (ref), v6 (ref), v11 (copy), l_RunService_0 (copy)
-    if (v15 == Enum.HumanoidStateType.Climbing or v15 == Enum.HumanoidStateType.Freefall) and not v4 then
-        v5 = nil;
-        v6 = nil;
-        v11();
-        v4 = l_RunService_0.Heartbeat:Connect(function() --[[ Line: 54 ]]
-            -- upvalues: v11 (ref)
-            v11();
-        end);
-    end;
-    if (v15 == Enum.HumanoidStateType.Landed or v15 == Enum.HumanoidStateType.Running) and v4 then
-        v4:Disconnect();
-        v4 = nil;
-    end;
-end);
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:03
+-- Luau version 6, Types version 3
+-- Time taken: 0.002094 seconds
+
+local RunService_upvr = game:GetService("RunService")
+local Parent_upvr = script.Parent
+local Humanoid = Parent_upvr:WaitForChild("Humanoid")
+local var4_upvw
+local var5_upvw
+local var6_upvw
+local RaycastParams_new_result1_upvr = RaycastParams.new()
+RaycastParams_new_result1_upvr.FilterType = Enum.RaycastFilterType.Exclude
+RaycastParams_new_result1_upvr.FilterDescendantsInstances = {Parent_upvr}
+local function stayAttached_upvr() -- Line 16, Named "stayAttached"
+	--[[ Upvalues[4]:
+		[1]: Parent_upvr (readonly)
+		[2]: RaycastParams_new_result1_upvr (readonly)
+		[3]: var6_upvw (read and write)
+		[4]: var5_upvw (read and write)
+	]]
+	local HumanoidRootPart = Parent_upvr:WaitForChild("HumanoidRootPart")
+	local workspace_Spherecast_result1 = workspace:Spherecast(HumanoidRootPart.Position, 2, Vector3.new(0, -50, 0), RaycastParams_new_result1_upvr)
+	if not workspace_Spherecast_result1 then
+	else
+		local Instance = workspace_Spherecast_result1.Instance
+		if Instance and Instance:IsA("BasePart") then
+			if var6_upvw == Instance then
+				HumanoidRootPart.CFrame = Instance.CFrame * var5_upvw:inverse() * HumanoidRootPart.CFrame
+				var5_upvw = Instance.CFrame
+			else
+				var6_upvw = Instance
+				var5_upvw = Instance.CFrame
+			end
+		end
+		var6_upvw = nil
+		var5_upvw = nil
+	end
+end
+local function _() -- Line 48, Named "startInertia"
+	--[[ Upvalues[5]:
+		[1]: var5_upvw (read and write)
+		[2]: var6_upvw (read and write)
+		[3]: stayAttached_upvr (readonly)
+		[4]: var4_upvw (read and write)
+		[5]: RunService_upvr (readonly)
+	]]
+	var5_upvw = nil
+	var6_upvw = nil
+	stayAttached_upvr()
+	var4_upvw = RunService_upvr.Heartbeat:Connect(function() -- Line 54
+		--[[ Upvalues[1]:
+			[1]: stayAttached_upvr (copied, readonly)
+		]]
+		stayAttached_upvr()
+	end)
+end
+Humanoid.Jumping:Connect(function(arg1) -- Line 63
+	--[[ Upvalues[5]:
+		[1]: var4_upvw (read and write)
+		[2]: var5_upvw (read and write)
+		[3]: var6_upvw (read and write)
+		[4]: stayAttached_upvr (readonly)
+		[5]: RunService_upvr (readonly)
+	]]
+	if arg1 and not var4_upvw then
+		var5_upvw = nil
+		var6_upvw = nil
+		stayAttached_upvr()
+		var4_upvw = RunService_upvr.Heartbeat:Connect(function() -- Line 54
+			--[[ Upvalues[1]:
+				[1]: stayAttached_upvr (copied, readonly)
+			]]
+			stayAttached_upvr()
+		end)
+	end
+end)
+Humanoid.StateChanged:Connect(function(arg1, arg2) -- Line 74
+	--[[ Upvalues[5]:
+		[1]: var4_upvw (read and write)
+		[2]: var5_upvw (read and write)
+		[3]: var6_upvw (read and write)
+		[4]: stayAttached_upvr (readonly)
+		[5]: RunService_upvr (readonly)
+	]]
+	if arg2 == Enum.HumanoidStateType.Climbing or arg2 == Enum.HumanoidStateType.Freefall or not var4_upvw then
+		var5_upvw = nil
+		var6_upvw = nil
+		stayAttached_upvr()
+		var4_upvw = RunService_upvr.Heartbeat:Connect(function() -- Line 54
+			--[[ Upvalues[1]:
+				[1]: stayAttached_upvr (copied, readonly)
+			]]
+			stayAttached_upvr()
+		end)
+	end
+	if arg2 == Enum.HumanoidStateType.Landed or arg2 == Enum.HumanoidStateType.Running then
+		if var4_upvw then
+			var4_upvw:Disconnect()
+			var4_upvw = nil
+		end
+	end
+end)

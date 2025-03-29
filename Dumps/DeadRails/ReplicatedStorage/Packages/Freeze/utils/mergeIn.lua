@@ -1,18 +1,28 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.utils.mergeIn
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.updateIn);
-local v1 = require(script.Parent.merge);
-return function(v2, v3, ...) --[[ Line: 5 ]]
-    -- upvalues: v0 (copy), v1 (copy)
-    local v4 = {
-        ...
-    };
-    return v0(v2, v3, function(v5) --[[ Line: 7 ]]
-        -- upvalues: v1 (ref), v4 (copy)
-        return v1(v5, table.unpack(v4));
-    end, {});
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:47:02
+-- Luau version 6, Types version 3
+-- Time taken: 0.000549 seconds
+
+local updateIn_upvr = require(script.Parent.updateIn)
+local merge_upvr = require(script.Parent.merge)
+return function(arg1, arg2, ...) -- Line 5
+	--[[ Upvalues[2]:
+		[1]: updateIn_upvr (readonly)
+		[2]: merge_upvr (readonly)
+	]]
+	local args_list_upvr = {...}
+	return updateIn_upvr(arg1, arg2, function(arg1_2) -- Line 7
+		--[[ Upvalues[2]:
+			[1]: merge_upvr (copied, readonly)
+			[2]: args_list_upvr (readonly)
+		]]
+		return merge_upvr(arg1_2, table.unpack(args_list_upvr))
+	end, {})
+end

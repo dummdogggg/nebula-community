@@ -1,16 +1,20 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.utils.forEach
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-return function(v0, v1) --[[ Line: 3 ]]
-    local v2 = 0;
-    for v3, v4 in v0 do
-        v2 = v2 + 1;
-        if v1(v4, v3) == false then
-            break;
-        end;
-    end;
-    return v2;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:42
+-- Luau version 6, Types version 3
+-- Time taken: 0.000524 seconds
+
+return function(arg1, arg2) -- Line 3
+	local var6
+	for i, v in arg1 do
+		var6 += 1
+		if arg2(v, i) == false then break end
+	end
+	return var6
+end

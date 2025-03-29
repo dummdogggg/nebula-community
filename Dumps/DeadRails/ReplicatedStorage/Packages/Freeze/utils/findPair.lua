@@ -1,14 +1,20 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.utils.findPair
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-return function(v0, v1) --[[ Line: 3 ]]
-    for v2, v3 in v0 do
-        if v1(v3, v2) == true then
-            return v2, v3;
-        end;
-    end;
-    return nil;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:22
+-- Luau version 6, Types version 3
+-- Time taken: 0.000412 seconds
+
+return function(arg1, arg2) -- Line 3
+	for i, v in arg1 do
+		if arg2(v, i) == true then
+			return i, v
+		end
+	end
+	return nil
+end

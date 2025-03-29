@@ -1,576 +1,696 @@
 --[[
     Script: ReplicatedStorage.Packages.t.ts
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v5 = {
-    type = function(v0) --[[ Line: 5 ]] --[[ Name: type ]]
-        return function(v1) --[[ Line: 6 ]]
-            -- upvalues: v0 (copy)
-            if type(v1) == v0 then
-                return true;
-            else
-                return false;
-            end;
-        end;
-    end, 
-    typeof = function(v2) --[[ Line: 16 ]] --[[ Name: typeof ]]
-        return function(v3) --[[ Line: 17 ]]
-            -- upvalues: v2 (copy)
-            if typeof(v3) == v2 then
-                return true;
-            else
-                return false;
-            end;
-        end;
-    end, 
-    any = function(v4) --[[ Line: 34 ]] --[[ Name: any ]]
-        if v4 ~= nil then
-            return true;
-        else
-            return false;
-        end;
-    end
-};
-v5.boolean = v5.typeof("boolean");
-v5.thread = v5.typeof("thread");
-v5.callback = v5.typeof("function");
-v5["function"] = v5.callback;
-v5.none = v5.typeof("nil");
-v5["nil"] = v5.none;
-v5.string = v5.typeof("string");
-v5.table = v5.typeof("table");
-v5.userdata = v5.type("userdata");
-v5.number = function(v6) --[[ Line: 116 ]] --[[ Name: number ]]
-    if typeof(v6) == "number" then
-        if v6 == v6 then
-            return true;
-        else
-            return false;
-        end;
-    else
-        return false;
-    end;
-end;
-v5.nan = function(v7) --[[ Line: 136 ]] --[[ Name: nan ]]
-    if typeof(v7) == "number" then
-        if v7 ~= v7 then
-            return true;
-        else
-            return false;
-        end;
-    else
-        return false;
-    end;
-end;
-v5.Axes = v5.typeof("Axes");
-v5.BrickColor = v5.typeof("BrickColor");
-v5.CatalogSearchParams = v5.typeof("CatalogSearchParams");
-v5.CFrame = v5.typeof("CFrame");
-v5.Color3 = v5.typeof("Color3");
-v5.ColorSequence = v5.typeof("ColorSequence");
-v5.ColorSequenceKeypoint = v5.typeof("ColorSequenceKeypoint");
-v5.DateTime = v5.typeof("DateTime");
-v5.DockWidgetPluginGuiInfo = v5.typeof("DockWidgetPluginGuiInfo");
-v5.Enum = v5.typeof("Enum");
-v5.EnumItem = v5.typeof("EnumItem");
-v5.Enums = v5.typeof("Enums");
-v5.Faces = v5.typeof("Faces");
-v5.FloatCurveKey = v5.typeof("FloatCurveKey");
-v5.Font = v5.typeof("Font");
-v5.Instance = v5.typeof("Instance");
-v5.NumberRange = v5.typeof("NumberRange");
-v5.NumberSequence = v5.typeof("NumberSequence");
-v5.NumberSequenceKeypoint = v5.typeof("NumberSequenceKeypoint");
-v5.OverlapParams = v5.typeof("OverlapParams");
-v5.PathWaypoint = v5.typeof("PathWaypoint");
-v5.PhysicalProperties = v5.typeof("PhysicalProperties");
-v5.Random = v5.typeof("Random");
-v5.Ray = v5.typeof("Ray");
-v5.RaycastParams = v5.typeof("RaycastParams");
-v5.RaycastResult = v5.typeof("RaycastResult");
-v5.RBXScriptConnection = v5.typeof("RBXScriptConnection");
-v5.RBXScriptSignal = v5.typeof("RBXScriptSignal");
-v5.Rect = v5.typeof("Rect");
-v5.Region3 = v5.typeof("Region3");
-v5.Region3int16 = v5.typeof("Region3int16");
-v5.TweenInfo = v5.typeof("TweenInfo");
-v5.UDim = v5.typeof("UDim");
-v5.UDim2 = v5.typeof("UDim2");
-v5.Vector2 = v5.typeof("Vector2");
-v5.Vector2int16 = v5.typeof("Vector2int16");
-v5.Vector3 = v5.typeof("Vector3");
-v5.Vector3int16 = v5.typeof("Vector3int16");
-v5.literal = function(...) --[[ Line: 500 ]] --[[ Name: literal ]]
-    -- upvalues: v5 (copy)
-    local v8 = select("#", ...);
-    if v8 == 1 then
-        local v9 = ...;
-        return function(v10) --[[ Line: 504 ]]
-            -- upvalues: v9 (copy)
-            if v10 ~= v9 then
-                return false;
-            else
-                return true;
-            end;
-        end;
-    else
-        local v11 = {};
-        for v12 = 1, v8 do
-            local v13 = select(v12, ...);
-            v11[v12] = v5.literal(v13);
-        end;
-        return v5.union(table.unpack(v11, 1, v8));
-    end;
-end;
-v5.exactly = v5.literal;
-v5.keyOf = function(v14) --[[ Line: 535 ]] --[[ Name: keyOf ]]
-    -- upvalues: v5 (copy)
-    local v15 = {};
-    local v16 = 0;
-    for v17 in pairs(v14) do
-        v16 = v16 + 1;
-        v15[v16] = v17;
-    end;
-    return v5.literal(table.unpack(v15, 1, v16));
-end;
-v5.valueOf = function(v18) --[[ Line: 553 ]] --[[ Name: valueOf ]]
-    -- upvalues: v5 (copy)
-    local v19 = {};
-    local v20 = 0;
-    for _, v22 in pairs(v18) do
-        v20 = v20 + 1;
-        v19[v20] = v22;
-    end;
-    return v5.literal(table.unpack(v19, 1, v20));
-end;
-v5.integer = function(v23) --[[ Line: 571 ]] --[[ Name: integer ]]
-    -- upvalues: v5 (copy)
-    if not v5.number(v23) then
-        return false;
-    elseif v23 % 1 == 0 then
-        return true;
-    else
-        return false;
-    end;
-end;
-v5.numberMin = function(v24) --[[ Line: 591 ]] --[[ Name: numberMin ]]
-    -- upvalues: v5 (copy)
-    return function(v25) --[[ Line: 592 ]]
-        -- upvalues: v5 (ref), v24 (copy)
-        if not v5.number(v25) then
-            return false;
-        elseif v24 <= v25 then
-            return true;
-        else
-            return false;
-        end;
-    end;
-end;
-v5.numberMax = function(v26) --[[ Line: 613 ]] --[[ Name: numberMax ]]
-    -- upvalues: v5 (copy)
-    return function(v27) --[[ Line: 614 ]]
-        -- upvalues: v5 (ref), v26 (copy)
-        if not v5.number(v27) then
-            return false;
-        elseif v27 <= v26 then
-            return true;
-        else
-            return false;
-        end;
-    end;
-end;
-v5.numberMinExclusive = function(v28) --[[ Line: 635 ]] --[[ Name: numberMinExclusive ]]
-    -- upvalues: v5 (copy)
-    return function(v29) --[[ Line: 636 ]]
-        -- upvalues: v5 (ref), v28 (copy)
-        if not v5.number(v29) then
-            return false;
-        elseif v28 < v29 then
-            return true;
-        else
-            return false;
-        end;
-    end;
-end;
-v5.numberMaxExclusive = function(v30) --[[ Line: 657 ]] --[[ Name: numberMaxExclusive ]]
-    -- upvalues: v5 (copy)
-    return function(v31) --[[ Line: 658 ]]
-        -- upvalues: v5 (ref), v30 (copy)
-        if not v5.number(v31) then
-            return false;
-        elseif v31 < v30 then
-            return true;
-        else
-            return false;
-        end;
-    end;
-end;
-v5.numberPositive = v5.numberMinExclusive(0);
-v5.numberNegative = v5.numberMaxExclusive(0);
-v5.numberConstrained = function(v32, v33) --[[ Line: 694 ]] --[[ Name: numberConstrained ]]
-    -- upvalues: v5 (copy)
-    assert(v5.number(v32));
-    assert(v5.number(v33));
-    local v34 = v5.numberMin(v32);
-    local v35 = v5.numberMax(v33);
-    return function(v36) --[[ Line: 700 ]]
-        -- upvalues: v34 (copy), v35 (copy)
-        if not v34(v36) then
-            return false;
-        elseif not v35(v36) then
-            return false;
-        else
-            return true;
-        end;
-    end;
-end;
-v5.numberConstrainedExclusive = function(v37, v38) --[[ Line: 723 ]] --[[ Name: numberConstrainedExclusive ]]
-    -- upvalues: v5 (copy)
-    assert(v5.number(v37));
-    assert(v5.number(v38));
-    local v39 = v5.numberMinExclusive(v37);
-    local v40 = v5.numberMaxExclusive(v38);
-    return function(v41) --[[ Line: 729 ]]
-        -- upvalues: v39 (copy), v40 (copy)
-        if not v39(v41) then
-            return false;
-        elseif not v40(v41) then
-            return false;
-        else
-            return true;
-        end;
-    end;
-end;
-v5.match = function(v42) --[[ Line: 751 ]] --[[ Name: match ]]
-    -- upvalues: v5 (copy)
-    assert(v5.string(v42));
-    return function(v43) --[[ Line: 753 ]]
-        -- upvalues: v5 (ref), v42 (copy)
-        if not v5.string(v43) then
-            return false;
-        elseif string.match(v43, v42) == nil then
-            return false;
-        else
-            return true;
-        end;
-    end;
-end;
-v5.optional = function(v44) --[[ Line: 774 ]] --[[ Name: optional ]]
-    -- upvalues: v5 (copy)
-    assert(v5.callback(v44));
-    return function(v45) --[[ Line: 776 ]]
-        -- upvalues: v44 (copy)
-        if v45 == nil then
-            return true;
-        elseif v44(v45) then
-            return true;
-        else
-            return false;
-        end;
-    end;
-end;
-v5.tuple = function(...) --[[ Line: 797 ]] --[[ Name: tuple ]]
-    local v46 = {
-        ...
-    };
-    return function(...) --[[ Line: 799 ]]
-        -- upvalues: v46 (copy)
-        local v47 = {
-            ...
-        };
-        for v48, v49 in ipairs(v46) do
-            if v49(v47[v48]) == false then
-                return false;
-            end;
-        end;
-        return true;
-    end;
-end;
-v5.keys = function(v50) --[[ Line: 819 ]] --[[ Name: keys ]]
-    -- upvalues: v5 (copy)
-    assert(v5.callback(v50));
-    return function(v51) --[[ Line: 821 ]]
-        -- upvalues: v5 (ref), v50 (copy)
-        if v5.table(v51) == false then
-            return false;
-        else
-            for v52 in pairs(v51) do
-                if v50(v52) == false then
-                    return false;
-                end;
-            end;
-            return true;
-        end;
-    end;
-end;
-v5.values = function(v53) --[[ Line: 845 ]] --[[ Name: values ]]
-    -- upvalues: v5 (copy)
-    assert(v5.callback(v53));
-    return function(v54) --[[ Line: 847 ]]
-        -- upvalues: v5 (ref), v53 (copy)
-        if v5.table(v54) == false then
-            return false;
-        else
-            for _, v56 in pairs(v54) do
-                if v53(v56) == false then
-                    return false;
-                end;
-            end;
-            return true;
-        end;
-    end;
-end;
-v5.map = function(v57, v58) --[[ Line: 872 ]] --[[ Name: map ]]
-    -- upvalues: v5 (copy)
-    assert(v5.callback(v57));
-    assert(v5.callback(v58));
-    local v59 = v5.keys(v57);
-    local v60 = v5.values(v58);
-    return function(v61) --[[ Line: 878 ]]
-        -- upvalues: v59 (copy), v60 (copy)
-        if not v59(v61) then
-            return false;
-        elseif not v60(v61) then
-            return false;
-        else
-            return true;
-        end;
-    end;
-end;
-v5.set = function(v62) --[[ Line: 900 ]] --[[ Name: set ]]
-    -- upvalues: v5 (copy)
-    return v5.map(v62, v5.literal(true));
-end;
-local v63 = v5.keys(v5.integer);
-local l_v63_0 = v63 --[[ copy: 1 -> 2 ]];
-v5.array = function(v65) --[[ Line: 913 ]] --[[ Name: array ]]
-    -- upvalues: v5 (copy), l_v63_0 (copy)
-    assert(v5.callback(v65));
-    local v66 = v5.values(v65);
-    return function(v67) --[[ Line: 917 ]]
-        -- upvalues: l_v63_0 (ref), v66 (copy)
-        if l_v63_0(v67) == false then
-            return false;
-        else
-            local v68 = 0;
-            for _ in ipairs(v67) do
-                v68 = v68 + 1;
-            end;
-            for v70 in pairs(v67) do
-                if v70 < 1 or v68 < v70 then
-                    return false;
-                end;
-            end;
-            if not v66(v67) then
-                return false;
-            else
-                return true;
-            end;
-        end;
-    end;
-end;
-v5.strictArray = function(...) --[[ Line: 953 ]] --[[ Name: strictArray ]]
-    -- upvalues: v5 (copy), l_v63_0 (copy)
-    local v71 = {
-        ...
-    };
-    assert(v5.array(v5.callback)(v71));
-    return function(v72) --[[ Line: 957 ]]
-        -- upvalues: l_v63_0 (ref), v71 (copy)
-        if l_v63_0(v72) == false then
-            return false;
-        elseif #v71 < #v72 then
-            return false;
-        else
-            for v73, v74 in pairs(v71) do
-                if not v74(v72[v73]) then
-                    return false;
-                end;
-            end;
-            return true;
-        end;
-    end;
-end;
-v63 = v5.array(v5.callback);
-local l_v63_1 = v63 --[[ copy: 1 -> 3 ]];
-v5.union = function(...) --[[ Line: 989 ]] --[[ Name: union ]]
-    -- upvalues: l_v63_1 (copy)
-    local v76 = {
-        ...
-    };
-    assert(l_v63_1(v76));
-    return function(v77) --[[ Line: 993 ]]
-        -- upvalues: v76 (copy)
-        for _, v79 in ipairs(v76) do
-            if v79(v77) then
-                return true;
-            end;
-        end;
-        return false;
-    end;
-end;
-v5.some = v5.union;
-v5.intersection = function(...) --[[ Line: 1016 ]] --[[ Name: intersection ]]
-    -- upvalues: l_v63_1 (copy)
-    local v80 = {
-        ...
-    };
-    assert(l_v63_1(v80));
-    return function(v81) --[[ Line: 1020 ]]
-        -- upvalues: v80 (copy)
-        for _, v83 in ipairs(v80) do
-            if not v83(v81) then
-                return false;
-            end;
-        end;
-        return true;
-    end;
-end;
-v5.every = v5.intersection;
-v63 = v5.map(v5.any, v5.callback);
-local l_v63_2 = v63 --[[ copy: 1 -> 4 ]];
-v5.interface = function(v85) --[[ Line: 1047 ]] --[[ Name: interface ]]
-    -- upvalues: l_v63_2 (copy), v5 (copy)
-    assert(l_v63_2(v85));
-    return function(v86) --[[ Line: 1049 ]]
-        -- upvalues: v5 (ref), v85 (copy)
-        if v5.table(v86) == false then
-            return false;
-        else
-            for v87, v88 in pairs(v85) do
-                if v88(v86[v87]) == false then
-                    return false;
-                end;
-            end;
-            return true;
-        end;
-    end;
-end;
-v5.strictInterface = function(v89) --[[ Line: 1073 ]] --[[ Name: strictInterface ]]
-    -- upvalues: l_v63_2 (copy), v5 (copy)
-    assert(l_v63_2(v89));
-    return function(v90) --[[ Line: 1075 ]]
-        -- upvalues: v5 (ref), v89 (copy)
-        if v5.table(v90) == false then
-            return false;
-        else
-            for v91, v92 in pairs(v89) do
-                if v92(v90[v91]) == false then
-                    return false;
-                end;
-            end;
-            for v93 in pairs(v90) do
-                if not v89[v93] then
-                    return false;
-                end;
-            end;
-            return true;
-        end;
-    end;
-end;
-v5.instanceOf = function(v94, v95) --[[ Line: 1106 ]] --[[ Name: instanceOf ]]
-    -- upvalues: v5 (copy)
-    assert(v5.string(v94));
-    local v96 = nil;
-    if v95 ~= nil then
-        v96 = v5.children(v95);
-    end;
-    return function(v97) --[[ Line: 1114 ]]
-        -- upvalues: v5 (ref), v94 (copy), v96 (ref)
-        if not v5.Instance(v97) then
-            return false;
-        elseif v97.ClassName ~= v94 then
-            return false;
-        elseif v96 and not v96(v97) then
-            return false;
-        else
-            return true;
-        end;
-    end;
-end;
-v5.instance = v5.instanceOf;
-v5.instanceIsA = function(v98, v99) --[[ Line: 1144 ]] --[[ Name: instanceIsA ]]
-    -- upvalues: v5 (copy)
-    assert(v5.string(v98));
-    local v100 = nil;
-    if v99 ~= nil then
-        v100 = v5.children(v99);
-    end;
-    return function(v101) --[[ Line: 1152 ]]
-        -- upvalues: v5 (ref), v98 (copy), v100 (ref)
-        if not v5.Instance(v101) then
-            return false;
-        elseif not v101:IsA(v98) then
-            return false;
-        elseif v100 and not v100(v101) then
-            return false;
-        else
-            return true;
-        end;
-    end;
-end;
-v5.enum = function(v102) --[[ Line: 1180 ]] --[[ Name: enum ]]
-    -- upvalues: v5 (copy)
-    assert(v5.Enum(v102));
-    return function(v103) --[[ Line: 1182 ]]
-        -- upvalues: v5 (ref), v102 (copy)
-        if not v5.EnumItem(v103) then
-            return false;
-        elseif v103.EnumType == v102 then
-            return true;
-        else
-            return false;
-        end;
-    end;
-end;
-v63 = v5.tuple(v5.callback, v5.callback);
-local l_v63_3 = v63 --[[ copy: 1 -> 5 ]];
-v5.wrap = function(v105, v106) --[[ Line: 1207 ]] --[[ Name: wrap ]]
-    -- upvalues: l_v63_3 (copy)
-    assert(l_v63_3(v105, v106));
-    return function(...) --[[ Line: 1209 ]]
-        -- upvalues: v106 (copy), v105 (copy)
-        assert(v106(...));
-        return v105(...);
-    end;
-end;
-v5.strict = function(v107) --[[ Line: 1223 ]] --[[ Name: strict ]]
-    return function(...) --[[ Line: 1224 ]]
-        -- upvalues: v107 (copy)
-        assert(v107(...));
-    end;
-end;
-v63 = v5.map(v5.string, v5.callback);
-v5.children = function(v108) --[[ Line: 1243 ]] --[[ Name: children ]]
-    -- upvalues: v63 (copy), v5 (copy)
-    assert(v63(v108));
-    return function(v109) --[[ Line: 1246 ]]
-        -- upvalues: v5 (ref), v108 (copy)
-        if not v5.Instance(v109) then
-            return false;
-        else
-            local v110 = {};
-            for _, v112 in ipairs(v109:GetChildren()) do
-                local l_Name_0 = v112.Name;
-                if v108[l_Name_0] then
-                    if v110[l_Name_0] then
-                        return false;
-                    else
-                        v110[l_Name_0] = v112;
-                    end;
-                end;
-            end;
-            for v114, v115 in pairs(v108) do
-                if not v115(v110[v114]) then
-                    return false;
-                end;
-            end;
-            return true;
-        end;
-    end;
-end;
-return {
-    t = v5
-};
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:47:06
+-- Luau version 6, Types version 3
+-- Time taken: 0.011636 seconds
+
+local tbl_upvr = {
+	type = function(arg1) -- Line 5, Named "type"
+		return function(arg1_2) -- Line 6
+			--[[ Upvalues[1]:
+				[1]: arg1 (readonly)
+			]]
+			if type(arg1_2) == arg1 then
+				return true
+			end
+			return false
+		end
+	end;
+	typeof = function(arg1) -- Line 16, Named "typeof"
+		return function(arg1_3) -- Line 17
+			--[[ Upvalues[1]:
+				[1]: arg1 (readonly)
+			]]
+			if typeof(arg1_3) == arg1 then
+				return true
+			end
+			return false
+		end
+	end;
+	any = function(arg1) -- Line 34, Named "any"
+		if arg1 ~= nil then
+			return true
+		end
+		return false
+	end;
+	boolean = tbl_upvr.typeof("boolean");
+	thread = tbl_upvr.typeof("thread");
+	callback = tbl_upvr.typeof("function");
+	["function"] = tbl_upvr.callback;
+	none = tbl_upvr.typeof("nil");
+	["nil"] = tbl_upvr.none;
+	string = tbl_upvr.typeof("string");
+	table = tbl_upvr.typeof("table");
+	userdata = tbl_upvr.type("userdata");
+	number = function(arg1) -- Line 116, Named "number"
+		if typeof(arg1) == "number" then
+			if arg1 == arg1 then
+				return true
+			end
+			return false
+		end
+		return false
+	end;
+	nan = function(arg1) -- Line 136, Named "nan"
+		if typeof(arg1) == "number" then
+			if arg1 ~= arg1 then
+				return true
+			end
+			return false
+		end
+		return false
+	end;
+	Axes = tbl_upvr.typeof("Axes");
+	BrickColor = tbl_upvr.typeof("BrickColor");
+	CatalogSearchParams = tbl_upvr.typeof("CatalogSearchParams");
+	CFrame = tbl_upvr.typeof("CFrame");
+	Color3 = tbl_upvr.typeof("Color3");
+	ColorSequence = tbl_upvr.typeof("ColorSequence");
+	ColorSequenceKeypoint = tbl_upvr.typeof("ColorSequenceKeypoint");
+	DateTime = tbl_upvr.typeof("DateTime");
+	DockWidgetPluginGuiInfo = tbl_upvr.typeof("DockWidgetPluginGuiInfo");
+	Enum = tbl_upvr.typeof("Enum");
+	EnumItem = tbl_upvr.typeof("EnumItem");
+	Enums = tbl_upvr.typeof("Enums");
+	Faces = tbl_upvr.typeof("Faces");
+	FloatCurveKey = tbl_upvr.typeof("FloatCurveKey");
+	Font = tbl_upvr.typeof("Font");
+	Instance = tbl_upvr.typeof("Instance");
+	NumberRange = tbl_upvr.typeof("NumberRange");
+	NumberSequence = tbl_upvr.typeof("NumberSequence");
+	NumberSequenceKeypoint = tbl_upvr.typeof("NumberSequenceKeypoint");
+	OverlapParams = tbl_upvr.typeof("OverlapParams");
+	PathWaypoint = tbl_upvr.typeof("PathWaypoint");
+	PhysicalProperties = tbl_upvr.typeof("PhysicalProperties");
+	Random = tbl_upvr.typeof("Random");
+	Ray = tbl_upvr.typeof("Ray");
+	RaycastParams = tbl_upvr.typeof("RaycastParams");
+	RaycastResult = tbl_upvr.typeof("RaycastResult");
+	RBXScriptConnection = tbl_upvr.typeof("RBXScriptConnection");
+	RBXScriptSignal = tbl_upvr.typeof("RBXScriptSignal");
+	Rect = tbl_upvr.typeof("Rect");
+	Region3 = tbl_upvr.typeof("Region3");
+	Region3int16 = tbl_upvr.typeof("Region3int16");
+	TweenInfo = tbl_upvr.typeof("TweenInfo");
+	UDim = tbl_upvr.typeof("UDim");
+	UDim2 = tbl_upvr.typeof("UDim2");
+	Vector2 = tbl_upvr.typeof("Vector2");
+	Vector2int16 = tbl_upvr.typeof("Vector2int16");
+	Vector3 = tbl_upvr.typeof("Vector3");
+	Vector3int16 = tbl_upvr.typeof("Vector3int16");
+}
+function tbl_upvr.literal(...) -- Line 500
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	local arg_count = select('#', ...)
+	if arg_count == 1 then
+		local var8_upvr = ...
+		return function(arg1) -- Line 504
+			--[[ Upvalues[1]:
+				[1]: var8_upvr (readonly)
+			]]
+			if arg1 ~= var8_upvr then
+				return false
+			end
+			return true
+		end
+	end
+	var8_upvr = {}
+	for i = 1, arg_count do
+		var8_upvr[i] = tbl_upvr.literal(select(i, ...))
+		local var10
+	end
+	return tbl_upvr.union(table.unpack(var10, 1, arg_count))
+end
+tbl_upvr.exactly = tbl_upvr.literal
+function tbl_upvr.keyOf(arg1) -- Line 535
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	local module_2 = {}
+	local var14 = 0
+	for i_2 in pairs(arg1) do
+		var14 += 1
+		module_2[var14] = i_2
+	end
+	return tbl_upvr.literal(table.unpack(module_2, 1, var14))
+end
+function tbl_upvr.valueOf(arg1) -- Line 553
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	local module = {}
+	local var23 = 0
+	for _, v in pairs(arg1) do
+		var23 += 1
+		module[var23] = v
+	end
+	return tbl_upvr.literal(table.unpack(module, 1, var23))
+end
+function tbl_upvr.integer(arg1) -- Line 571
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	if not tbl_upvr.number(arg1) then
+		return false
+	end
+	if arg1 % 1 == 0 then
+		return true
+	end
+	return false
+end
+function tbl_upvr.numberMin(arg1) -- Line 591
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	return function(arg1_4) -- Line 592
+		--[[ Upvalues[2]:
+			[1]: tbl_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+		]]
+		if not tbl_upvr.number(arg1_4) then
+			return false
+		end
+		if arg1 <= arg1_4 then
+			return true
+		end
+		return false
+	end
+end
+function tbl_upvr.numberMax(arg1) -- Line 613
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	return function(arg1_5) -- Line 614
+		--[[ Upvalues[2]:
+			[1]: tbl_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+		]]
+		if not tbl_upvr.number(arg1_5) then
+			return false
+		end
+		if arg1_5 <= arg1 then
+			return true
+		end
+		return false
+	end
+end
+function tbl_upvr.numberMinExclusive(arg1) -- Line 635
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	return function(arg1_6) -- Line 636
+		--[[ Upvalues[2]:
+			[1]: tbl_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+		]]
+		if not tbl_upvr.number(arg1_6) then
+			return false
+		end
+		if arg1 < arg1_6 then
+			return true
+		end
+		return false
+	end
+end
+function tbl_upvr.numberMaxExclusive(arg1) -- Line 657
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	return function(arg1_7) -- Line 658
+		--[[ Upvalues[2]:
+			[1]: tbl_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+		]]
+		if not tbl_upvr.number(arg1_7) then
+			return false
+		end
+		if arg1_7 < arg1 then
+			return true
+		end
+		return false
+	end
+end
+tbl_upvr.numberPositive = tbl_upvr.numberMinExclusive(0)
+tbl_upvr.numberNegative = tbl_upvr.numberMaxExclusive(0)
+function tbl_upvr.numberConstrained(arg1, arg2) -- Line 694
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	assert(tbl_upvr.number(arg1))
+	assert(tbl_upvr.number(arg2))
+	local any_numberMin_result1_upvr = tbl_upvr.numberMin(arg1)
+	local any_numberMax_result1_upvr = tbl_upvr.numberMax(arg2)
+	return function(arg1_8) -- Line 700
+		--[[ Upvalues[2]:
+			[1]: any_numberMin_result1_upvr (readonly)
+			[2]: any_numberMax_result1_upvr (readonly)
+		]]
+		if not any_numberMin_result1_upvr(arg1_8) then
+			return false
+		end
+		if not any_numberMax_result1_upvr(arg1_8) then
+			return false
+		end
+		return true
+	end
+end
+function tbl_upvr.numberConstrainedExclusive(arg1, arg2) -- Line 723
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	assert(tbl_upvr.number(arg1))
+	assert(tbl_upvr.number(arg2))
+	local any_numberMinExclusive_result1_upvr = tbl_upvr.numberMinExclusive(arg1)
+	local any_numberMaxExclusive_result1_upvr = tbl_upvr.numberMaxExclusive(arg2)
+	return function(arg1_9) -- Line 729
+		--[[ Upvalues[2]:
+			[1]: any_numberMinExclusive_result1_upvr (readonly)
+			[2]: any_numberMaxExclusive_result1_upvr (readonly)
+		]]
+		if not any_numberMinExclusive_result1_upvr(arg1_9) then
+			return false
+		end
+		if not any_numberMaxExclusive_result1_upvr(arg1_9) then
+			return false
+		end
+		return true
+	end
+end
+function tbl_upvr.match(arg1) -- Line 751
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	assert(tbl_upvr.string(arg1))
+	return function(arg1_10) -- Line 753
+		--[[ Upvalues[2]:
+			[1]: tbl_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+		]]
+		if not tbl_upvr.string(arg1_10) then
+			return false
+		end
+		if string.match(arg1_10, arg1) == nil then
+			return false
+		end
+		return true
+	end
+end
+function tbl_upvr.optional(arg1) -- Line 774
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	assert(tbl_upvr.callback(arg1))
+	return function(arg1_11) -- Line 776
+		--[[ Upvalues[1]:
+			[1]: arg1 (readonly)
+		]]
+		if arg1_11 == nil then
+			return true
+		end
+		if arg1(arg1_11) then
+			return true
+		end
+		return false
+	end
+end
+function tbl_upvr.tuple(...) -- Line 797
+	local args_list_upvr_3 = {...}
+	return function(...) -- Line 799
+		--[[ Upvalues[1]:
+			[1]: args_list_upvr_3 (readonly)
+		]]
+		for i_4, v_2 in ipairs(args_list_upvr_3) do
+			if v_2(({...})[i_4]) == false then
+				return false
+			end
+		end
+		return true
+	end
+end
+function tbl_upvr.keys(arg1) -- Line 819
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	assert(tbl_upvr.callback(arg1))
+	return function(arg1_12) -- Line 821
+		--[[ Upvalues[2]:
+			[1]: tbl_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+		]]
+		if tbl_upvr.table(arg1_12) == false then
+			return false
+		end
+		for i_5 in pairs(arg1_12) do
+			if arg1(i_5) == false then
+				return false
+			end
+		end
+		return true
+	end
+end
+function tbl_upvr.values(arg1) -- Line 845
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	assert(tbl_upvr.callback(arg1))
+	return function(arg1_13) -- Line 847
+		--[[ Upvalues[2]:
+			[1]: tbl_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+		]]
+		if tbl_upvr.table(arg1_13) == false then
+			return false
+		end
+		for _, v_3 in pairs(arg1_13) do
+			if arg1(v_3) == false then
+				return false
+			end
+		end
+		return true
+	end
+end
+function tbl_upvr.map(arg1, arg2) -- Line 872
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	assert(tbl_upvr.callback(arg1))
+	assert(tbl_upvr.callback(arg2))
+	local any_keys_result1_upvr = tbl_upvr.keys(arg1)
+	local any_values_result1_upvr_2 = tbl_upvr.values(arg2)
+	return function(arg1_14) -- Line 878
+		--[[ Upvalues[2]:
+			[1]: any_keys_result1_upvr (readonly)
+			[2]: any_values_result1_upvr_2 (readonly)
+		]]
+		if not any_keys_result1_upvr(arg1_14) then
+			return false
+		end
+		if not any_values_result1_upvr_2(arg1_14) then
+			return false
+		end
+		return true
+	end
+end
+function tbl_upvr.set(arg1) -- Line 900
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	return tbl_upvr.map(arg1, tbl_upvr.literal(true))
+end
+local any_keys_result1_upvr_2 = tbl_upvr.keys(tbl_upvr.integer)
+function tbl_upvr.array(arg1) -- Line 913
+	--[[ Upvalues[2]:
+		[1]: tbl_upvr (readonly)
+		[2]: any_keys_result1_upvr_2 (readonly)
+	]]
+	assert(tbl_upvr.callback(arg1))
+	local any_values_result1_upvr = tbl_upvr.values(arg1)
+	return function(arg1_15) -- Line 917
+		--[[ Upvalues[2]:
+			[1]: any_keys_result1_upvr_2 (copied, readonly)
+			[2]: any_values_result1_upvr (readonly)
+		]]
+		local var68
+		if any_keys_result1_upvr_2(arg1_15) == false then
+			var68 = false
+			return var68
+		end
+		var68 = 0
+		for _ in ipairs(arg1_15) do
+			var68 += 1
+		end
+		for i_8 in pairs(arg1_15) do
+			if i_8 < 1 or var68 < i_8 then
+				return false
+			end
+		end
+		if not any_values_result1_upvr(arg1_15) then
+			return false
+		end
+		return true
+	end
+end
+function tbl_upvr.strictArray(...) -- Line 953
+	--[[ Upvalues[2]:
+		[1]: tbl_upvr (readonly)
+		[2]: any_keys_result1_upvr_2 (readonly)
+	]]
+	local args_list_upvr_4 = {...}
+	assert(tbl_upvr.array(tbl_upvr.callback)(args_list_upvr_4))
+	return function(arg1) -- Line 957
+		--[[ Upvalues[2]:
+			[1]: any_keys_result1_upvr_2 (copied, readonly)
+			[2]: args_list_upvr_4 (readonly)
+		]]
+		if any_keys_result1_upvr_2(arg1) == false then
+			return false
+		end
+		if #args_list_upvr_4 < #arg1 then
+			return false
+		end
+		for i_9, v_4 in pairs(args_list_upvr_4) do
+			if not v_4(arg1[i_9]) then
+				return false
+			end
+		end
+		return true
+	end
+end
+any_keys_result1_upvr_2 = tbl_upvr.array(tbl_upvr.callback)
+local var82_upvr = any_keys_result1_upvr_2
+function tbl_upvr.union(...) -- Line 989
+	--[[ Upvalues[1]:
+		[1]: var82_upvr (readonly)
+	]]
+	local args_list_upvr_2 = {...}
+	assert(var82_upvr(args_list_upvr_2))
+	return function(arg1) -- Line 993
+		--[[ Upvalues[1]:
+			[1]: args_list_upvr_2 (readonly)
+		]]
+		for _, v_5 in ipairs(args_list_upvr_2) do
+			if v_5(arg1) then
+				return true
+			end
+		end
+		return false
+	end
+end
+tbl_upvr.some = tbl_upvr.union
+function tbl_upvr.intersection(...) -- Line 1016
+	--[[ Upvalues[1]:
+		[1]: var82_upvr (readonly)
+	]]
+	local args_list_upvr = {...}
+	assert(var82_upvr(args_list_upvr))
+	return function(arg1) -- Line 1020
+		--[[ Upvalues[1]:
+			[1]: args_list_upvr (readonly)
+		]]
+		for _, v_6 in ipairs(args_list_upvr) do
+			if not v_6(arg1) then
+				return false
+			end
+		end
+		return true
+	end
+end
+tbl_upvr.every = tbl_upvr.intersection
+var82_upvr = tbl_upvr.map(tbl_upvr.any, tbl_upvr.callback)
+local strict_upvr = var82_upvr
+function tbl_upvr.interface(arg1) -- Line 1047
+	--[[ Upvalues[2]:
+		[1]: strict_upvr (readonly)
+		[2]: tbl_upvr (readonly)
+	]]
+	assert(strict_upvr(arg1))
+	return function(arg1_16) -- Line 1049
+		--[[ Upvalues[2]:
+			[1]: tbl_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+		]]
+		if tbl_upvr.table(arg1_16) == false then
+			return false
+		end
+		for i_12, v_7 in pairs(arg1) do
+			if v_7(arg1_16[i_12]) == false then
+				return false
+			end
+		end
+		return true
+	end
+end
+function tbl_upvr.strictInterface(arg1) -- Line 1073
+	--[[ Upvalues[2]:
+		[1]: strict_upvr (readonly)
+		[2]: tbl_upvr (readonly)
+	]]
+	assert(strict_upvr(arg1))
+	return function(arg1_17) -- Line 1075
+		--[[ Upvalues[2]:
+			[1]: tbl_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+		]]
+		if tbl_upvr.table(arg1_17) == false then
+			return false
+		end
+		for i_13, v_8 in pairs(arg1) do
+			if v_8(arg1_17[i_13]) == false then
+				return false
+			end
+		end
+		for i_14 in pairs(arg1_17) do
+			if not arg1[i_14] then
+				return false
+			end
+		end
+		return true
+	end
+end
+function strict_upvr(arg1, arg2) -- Line 1106, Named "instanceOf"
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	assert(tbl_upvr.string(arg1))
+	local var114_upvw
+	if arg2 ~= nil then
+		var114_upvw = tbl_upvr.children(arg2)
+	end
+	return function(arg1_18) -- Line 1114
+		--[[ Upvalues[3]:
+			[1]: tbl_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+			[3]: var114_upvw (read and write)
+		]]
+		if not tbl_upvr.Instance(arg1_18) then
+			return false
+		end
+		if arg1_18.ClassName ~= arg1 then
+			return false
+		end
+		if var114_upvw and not var114_upvw(arg1_18) then
+			return false
+		end
+		return true
+	end
+end
+tbl_upvr.instanceOf = strict_upvr
+strict_upvr = tbl_upvr.instanceOf
+tbl_upvr.instance = strict_upvr
+function strict_upvr(arg1, arg2) -- Line 1144, Named "instanceIsA"
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	assert(tbl_upvr.string(arg1))
+	local var116_upvw
+	if arg2 ~= nil then
+		var116_upvw = tbl_upvr.children(arg2)
+	end
+	return function(arg1_19) -- Line 1152
+		--[[ Upvalues[3]:
+			[1]: tbl_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+			[3]: var116_upvw (read and write)
+		]]
+		if not tbl_upvr.Instance(arg1_19) then
+			return false
+		end
+		if not arg1_19:IsA(arg1) then
+			return false
+		end
+		if var116_upvw and not var116_upvw(arg1_19) then
+			return false
+		end
+		return true
+	end
+end
+tbl_upvr.instanceIsA = strict_upvr
+function strict_upvr(arg1) -- Line 1180, Named "enum"
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	assert(tbl_upvr.Enum(arg1))
+	return function(arg1_20) -- Line 1182
+		--[[ Upvalues[2]:
+			[1]: tbl_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+		]]
+		if not tbl_upvr.EnumItem(arg1_20) then
+			return false
+		end
+		if arg1_20.EnumType == arg1 then
+			return true
+		end
+		return false
+	end
+end
+tbl_upvr.enum = strict_upvr
+strict_upvr = tbl_upvr.tuple(tbl_upvr.callback, tbl_upvr.callback)
+function tbl_upvr.wrap(arg1, arg2) -- Line 1207
+	--[[ Upvalues[1]:
+		[1]: strict_upvr (readonly)
+	]]
+	assert(strict_upvr(arg1, arg2))
+	return function(...) -- Line 1209
+		--[[ Upvalues[2]:
+			[1]: arg2 (readonly)
+			[2]: arg1 (readonly)
+		]]
+		assert(arg2(...))
+		return arg1(...)
+	end
+end
+function strict_upvr(arg1) -- Line 1223, Named "strict"
+	return function(...) -- Line 1224
+		--[[ Upvalues[1]:
+			[1]: arg1 (readonly)
+		]]
+		assert(arg1(...))
+	end
+end
+tbl_upvr.strict = strict_upvr
+strict_upvr = tbl_upvr.map(tbl_upvr.string, tbl_upvr.callback)
+function tbl_upvr.children(arg1) -- Line 1243
+	--[[ Upvalues[2]:
+		[1]: strict_upvr (readonly)
+		[2]: tbl_upvr (readonly)
+	]]
+	assert(strict_upvr(arg1))
+	return function(arg1_21) -- Line 1246
+		--[[ Upvalues[2]:
+			[1]: tbl_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+		]]
+		if not tbl_upvr.Instance(arg1_21) then
+			return false
+		end
+		local tbl = {}
+		for _, v_9 in ipairs(arg1_21:GetChildren()) do
+			local Name = v_9.Name
+			if arg1[Name] then
+				if tbl[Name] then
+					return false
+				end
+				tbl[Name] = v_9
+			end
+		end
+		for i_16, v_10 in pairs(arg1) do
+			if not v_10(tbl[i_16]) then
+				return false
+			end
+		end
+		return true
+	end
+end
+strict_upvr = {}
+local var134 = strict_upvr
+var134.t = tbl_upvr
+return var134

@@ -1,160 +1,247 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.roblox_testez@0.4.1.testez.TestSession
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.TestEnum);
-local v1 = require(script.Parent.TestResults);
-local v2 = require(script.Parent.Context);
-local v3 = require(script.Parent.ExpectationContext);
-local v4 = {};
-v4.__index = v4;
-v4.new = function(v5) --[[ Line: 24 ]] --[[ Name: new ]]
-    -- upvalues: v1 (copy), v4 (copy)
-    local v6 = {
-        results = v1.new(v5), 
-        nodeStack = {}, 
-        contextStack = {}, 
-        expectationContextStack = {}, 
-        hasFocusNodes = false
-    };
-    setmetatable(v6, v4);
-    return v6;
-end;
-v4.calculateTotals = function(v7) --[[ Line: 42 ]] --[[ Name: calculateTotals ]]
-    -- upvalues: v0 (copy)
-    local l_results_0 = v7.results;
-    l_results_0.successCount = 0;
-    l_results_0.failureCount = 0;
-    l_results_0.skippedCount = 0;
-    l_results_0:visitAllNodes(function(v9) --[[ Line: 49 ]]
-        -- upvalues: v0 (ref), l_results_0 (copy)
-        local l_status_0 = v9.status;
-        if v9.planNode.type == v0.NodeType.It then
-            if l_status_0 == v0.TestStatus.Success then
-                l_results_0.successCount = l_results_0.successCount + 1;
-                return;
-            elseif l_status_0 == v0.TestStatus.Failure then
-                l_results_0.failureCount = l_results_0.failureCount + 1;
-                return;
-            elseif l_status_0 == v0.TestStatus.Skipped then
-                l_results_0.skippedCount = l_results_0.skippedCount + 1;
-            end;
-        end;
-    end);
-end;
-v4.gatherErrors = function(v11) --[[ Line: 69 ]] --[[ Name: gatherErrors ]]
-    local l_results_1 = v11.results;
-    l_results_1.errors = {};
-    l_results_1:visitAllNodes(function(v13) --[[ Line: 74 ]]
-        -- upvalues: l_results_1 (copy)
-        if #v13.errors > 0 then
-            for _, v15 in ipairs(v13.errors) do
-                table.insert(l_results_1.errors, v15);
-            end;
-        end;
-    end);
-end;
-v4.finalize = function(v16) --[[ Line: 86 ]] --[[ Name: finalize ]]
-    if #v16.nodeStack ~= 0 then
-        error("Cannot finalize TestResults with nodes still on the stack!", 2);
-    end;
-    v16:calculateTotals();
-    v16:gatherErrors();
-    return v16.results;
-end;
-v4.pushNode = function(v17, v18) --[[ Line: 100 ]] --[[ Name: pushNode ]]
-    -- upvalues: v1 (copy), v2 (copy), v3 (copy)
-    local v19 = v1.createNode(v18);
-    table.insert((v17.nodeStack[#v17.nodeStack] or v17.results).children, v19);
-    table.insert(v17.nodeStack, v19);
-    local v20 = v17.contextStack[#v17.contextStack];
-    local v21 = v2.new(v20);
-    table.insert(v17.contextStack, v21);
-    local v22 = v17.expectationContextStack[#v17.expectationContextStack];
-    local v23 = v3.new(v22);
-    table.insert(v17.expectationContextStack, v23);
-end;
-v4.popNode = function(v24) --[[ Line: 118 ]] --[[ Name: popNode ]]
-    assert(#v24.nodeStack > 0, "Tried to pop from an empty node stack!");
-    table.remove(v24.nodeStack, #v24.nodeStack);
-    table.remove(v24.contextStack, #v24.contextStack);
-    table.remove(v24.expectationContextStack, #v24.expectationContextStack);
-end;
-v4.getContext = function(v25) --[[ Line: 128 ]] --[[ Name: getContext ]]
-    assert(#v25.contextStack > 0, "Tried to get context from an empty stack!");
-    return v25.contextStack[#v25.contextStack];
-end;
-v4.getExpectationContext = function(v26) --[[ Line: 134 ]] --[[ Name: getExpectationContext ]]
-    assert(#v26.expectationContextStack > 0, "Tried to get expectationContext from an empty stack!");
-    return v26.expectationContextStack[#v26.expectationContextStack];
-end;
-v4.shouldSkip = function(v27) --[[ Line: 142 ]] --[[ Name: shouldSkip ]]
-    -- upvalues: v0 (copy)
-    if v27.hasFocusNodes then
-        for v28 = #v27.nodeStack, 1, -1 do
-            local v29 = v27.nodeStack[v28];
-            if v29.planNode.modifier == v0.NodeModifier.Skip then
-                return true;
-            elseif v29.planNode.modifier == v0.NodeModifier.Focus then
-                return false;
-            end;
-        end;
-        return true;
-    else
-        for v30 = #v27.nodeStack, 1, -1 do
-            if v27.nodeStack[v30].planNode.modifier == v0.NodeModifier.Skip then
-                return true;
-            end;
-        end;
-        return false;
-    end;
-end;
-v4.setSuccess = function(v31) --[[ Line: 176 ]] --[[ Name: setSuccess ]]
-    -- upvalues: v0 (copy)
-    assert(#v31.nodeStack > 0, "Attempting to set success status on empty stack");
-    v31.nodeStack[#v31.nodeStack].status = v0.TestStatus.Success;
-end;
-v4.setSkipped = function(v32) --[[ Line: 184 ]] --[[ Name: setSkipped ]]
-    -- upvalues: v0 (copy)
-    assert(#v32.nodeStack > 0, "Attempting to set skipped status on empty stack");
-    v32.nodeStack[#v32.nodeStack].status = v0.TestStatus.Skipped;
-end;
-v4.setError = function(v33, v34) --[[ Line: 193 ]] --[[ Name: setError ]]
-    -- upvalues: v0 (copy)
-    assert(#v33.nodeStack > 0, "Attempting to set error status on empty stack");
-    local v35 = v33.nodeStack[#v33.nodeStack];
-    v35.status = v0.TestStatus.Failure;
-    table.insert(v35.errors, v34);
-end;
-v4.addDummyError = function(v36, v37, v38) --[[ Line: 205 ]] --[[ Name: addDummyError ]]
-    -- upvalues: v0 (copy)
-    v36:pushNode({
-        type = v0.NodeType.It, 
-        phrase = v37
-    });
-    v36:setError(v38);
-    v36:popNode();
-    v36.nodeStack[#v36.nodeStack].status = v0.TestStatus.Failure;
-end;
-v4.setStatusFromChildren = function(v39) --[[ Line: 217 ]] --[[ Name: setStatusFromChildren ]]
-    -- upvalues: v0 (copy)
-    assert(#v39.nodeStack > 0, "Attempting to set status from children on empty stack");
-    local v40 = v39.nodeStack[#v39.nodeStack];
-    local l_Success_0 = v0.TestStatus.Success;
-    local v42 = true;
-    for _, v44 in ipairs(v40.children) do
-        if v44.status ~= v0.TestStatus.Skipped then
-            v42 = false;
-            if v44.status == v0.TestStatus.Failure then
-                l_Success_0 = v0.TestStatus.Failure;
-            end;
-        end;
-    end;
-    if v42 then
-        l_Success_0 = v0.TestStatus.Skipped;
-    end;
-    v40.status = l_Success_0;
-end;
-return v4;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:45:58
+-- Luau version 6, Types version 3
+-- Time taken: 0.005119 seconds
+
+local TestEnum_upvr = require(script.Parent.TestEnum)
+local TestResults_upvr = require(script.Parent.TestResults)
+local module_upvr = {}
+module_upvr.__index = module_upvr
+function module_upvr.new(arg1) -- Line 24
+	--[[ Upvalues[2]:
+		[1]: TestResults_upvr (readonly)
+		[2]: module_upvr (readonly)
+	]]
+	local module = {
+		results = TestResults_upvr.new(arg1);
+		nodeStack = {};
+		contextStack = {};
+		expectationContextStack = {};
+		hasFocusNodes = false;
+	}
+	setmetatable(module, module_upvr)
+	return module
+end
+function module_upvr.calculateTotals(arg1) -- Line 42
+	--[[ Upvalues[1]:
+		[1]: TestEnum_upvr (readonly)
+	]]
+	local results_upvr_2 = arg1.results
+	results_upvr_2.successCount = 0
+	results_upvr_2.failureCount = 0
+	results_upvr_2.skippedCount = 0
+	results_upvr_2:visitAllNodes(function(arg1_2) -- Line 49
+		--[[ Upvalues[2]:
+			[1]: TestEnum_upvr (copied, readonly)
+			[2]: results_upvr_2 (readonly)
+		]]
+		local status = arg1_2.status
+		if arg1_2.planNode.type == TestEnum_upvr.NodeType.It then
+			if status == TestEnum_upvr.TestStatus.Success then
+				results_upvr_2.successCount += 1
+				return
+			end
+			if status == TestEnum_upvr.TestStatus.Failure then
+				results_upvr_2.failureCount += 1
+				return
+			end
+			if status == TestEnum_upvr.TestStatus.Skipped then
+				results_upvr_2.skippedCount += 1
+			end
+		end
+	end)
+end
+function module_upvr.gatherErrors(arg1) -- Line 69
+	local results_upvr = arg1.results
+	results_upvr.errors = {}
+	results_upvr:visitAllNodes(function(arg1_3) -- Line 74
+		--[[ Upvalues[1]:
+			[1]: results_upvr (readonly)
+		]]
+		if 0 < #arg1_3.errors then
+			for _, v in ipairs(arg1_3.errors) do
+				table.insert(results_upvr.errors, v)
+			end
+		end
+	end)
+end
+function module_upvr.finalize(arg1) -- Line 86
+	if #arg1.nodeStack ~= 0 then
+		error("Cannot finalize TestResults with nodes still on the stack!", 2)
+	end
+	arg1:calculateTotals()
+	arg1:gatherErrors()
+	return arg1.results
+end
+local Context_upvr = require(script.Parent.Context)
+local ExpectationContext_upvr = require(script.Parent.ExpectationContext)
+function module_upvr.pushNode(arg1, arg2) -- Line 100
+	--[[ Upvalues[3]:
+		[1]: TestResults_upvr (readonly)
+		[2]: Context_upvr (readonly)
+		[3]: ExpectationContext_upvr (readonly)
+	]]
+	local any_createNode_result1 = TestResults_upvr.createNode(arg2)
+	local var18 = arg1.nodeStack[#arg1.nodeStack]
+	if not var18 then
+		var18 = arg1.results
+	end
+	table.insert(var18.children, any_createNode_result1)
+	table.insert(arg1.nodeStack, any_createNode_result1)
+	table.insert(arg1.contextStack, Context_upvr.new(arg1.contextStack[#arg1.contextStack]))
+	table.insert(arg1.expectationContextStack, ExpectationContext_upvr.new(arg1.expectationContextStack[#arg1.expectationContextStack]))
+end
+function module_upvr.popNode(arg1) -- Line 118
+	local var19
+	if 0 >= #arg1.nodeStack then
+		var19 = false
+	else
+		var19 = true
+	end
+	assert(var19, "Tried to pop from an empty node stack!")
+	var19 = arg1.nodeStack
+	table.remove(var19, #arg1.nodeStack)
+	var19 = arg1.contextStack
+	table.remove(var19, #arg1.contextStack)
+	var19 = arg1.expectationContextStack
+	table.remove(var19, #arg1.expectationContextStack)
+end
+function module_upvr.getContext(arg1) -- Line 128
+	local var20
+	if 0 >= #arg1.contextStack then
+		var20 = false
+	else
+		var20 = true
+	end
+	assert(var20, "Tried to get context from an empty stack!")
+	var20 = arg1.contextStack
+	return var20[#arg1.contextStack]
+end
+function module_upvr.getExpectationContext(arg1) -- Line 134
+	local var21
+	if 0 >= #arg1.expectationContextStack then
+		var21 = false
+	else
+		var21 = true
+	end
+	assert(var21, "Tried to get expectationContext from an empty stack!")
+	var21 = arg1.expectationContextStack
+	return var21[#arg1.expectationContextStack]
+end
+function module_upvr.shouldSkip(arg1) -- Line 142
+	--[[ Upvalues[1]:
+		[1]: TestEnum_upvr (readonly)
+	]]
+	if arg1.hasFocusNodes then
+		for i_2 = #arg1.nodeStack, 1, -1 do
+			local var24 = arg1.nodeStack[i_2]
+			if var24.planNode.modifier == TestEnum_upvr.NodeModifier.Skip then
+				return true
+			end
+			if var24.planNode.modifier == TestEnum_upvr.NodeModifier.Focus then
+				return false
+			end
+		end
+		return true
+	end
+	for i_3 = #arg1.nodeStack, 1, -1 do
+		if arg1.nodeStack[i_3].planNode.modifier == TestEnum_upvr.NodeModifier.Skip then
+			return true
+		end
+	end
+	return false
+end
+function module_upvr.setSuccess(arg1) -- Line 176
+	--[[ Upvalues[1]:
+		[1]: TestEnum_upvr (readonly)
+	]]
+	local var25
+	if 0 >= #arg1.nodeStack then
+		var25 = false
+	else
+		var25 = true
+	end
+	assert(var25, "Attempting to set success status on empty stack")
+	var25 = arg1.nodeStack
+	var25 = TestEnum_upvr.TestStatus.Success
+	var25[#arg1.nodeStack].status = var25
+end
+function module_upvr.setSkipped(arg1) -- Line 184
+	--[[ Upvalues[1]:
+		[1]: TestEnum_upvr (readonly)
+	]]
+	local var26
+	if 0 >= #arg1.nodeStack then
+		var26 = false
+	else
+		var26 = true
+	end
+	assert(var26, "Attempting to set skipped status on empty stack")
+	var26 = arg1.nodeStack
+	var26 = TestEnum_upvr.TestStatus.Skipped
+	var26[#arg1.nodeStack].status = var26
+end
+function module_upvr.setError(arg1, arg2) -- Line 193
+	--[[ Upvalues[1]:
+		[1]: TestEnum_upvr (readonly)
+	]]
+	local var27
+	if 0 >= #arg1.nodeStack then
+		var27 = false
+	else
+		var27 = true
+	end
+	assert(var27, "Attempting to set error status on empty stack")
+	var27 = arg1.nodeStack
+	local var28 = var27[#arg1.nodeStack]
+	var27 = TestEnum_upvr.TestStatus.Failure
+	var28.status = var27
+	var27 = table.insert
+	var27(var28.errors, arg2)
+end
+function module_upvr.addDummyError(arg1, arg2, arg3) -- Line 205
+	--[[ Upvalues[1]:
+		[1]: TestEnum_upvr (readonly)
+	]]
+	local tbl = {
+		type = TestEnum_upvr.NodeType.It;
+	}
+	tbl.phrase = arg2
+	arg1:pushNode(tbl)
+	arg1:setError(arg3)
+	arg1:popNode()
+	arg1.nodeStack[#arg1.nodeStack].status = TestEnum_upvr.TestStatus.Failure
+end
+function module_upvr.setStatusFromChildren(arg1) -- Line 217
+	--[[ Upvalues[1]:
+		[1]: TestEnum_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local var38
+	if 0 >= #arg1.nodeStack then
+		var38 = false
+	else
+		var38 = true
+	end
+	assert(var38, "Attempting to set status from children on empty stack")
+	var38 = arg1.nodeStack
+	local var39 = var38[#arg1.nodeStack]
+	var38 = TestEnum_upvr.TestStatus.Success
+	for _, v_2 in ipairs(var39.children) do
+		if v_2.status ~= TestEnum_upvr.TestStatus.Skipped and v_2.status == TestEnum_upvr.TestStatus.Failure then
+			var38 = TestEnum_upvr.TestStatus.Failure
+		end
+	end
+	if false then
+		var38 = TestEnum_upvr.TestStatus.Skipped
+	end
+	var39.status = var38
+end
+return module_upvr

@@ -1,67 +1,67 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.LegacySoundHandler
     Type: LocalScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_char_0 = string.char;
-local l_byte_0 = string.byte;
-local l_sub_0 = string.sub;
-local l_bxor_0 = (bit32 or bit).bxor;
-local l_concat_0 = table.concat;
-local l_insert_0 = table.insert;
-local function v10(v6, v7) --[[ Line: 48 ]] --[[ Name: v7 ]]
-    -- upvalues: l_bxor_0 (copy), l_sub_0 (copy), l_byte_0 (copy), l_char_0 (copy), l_insert_0 (copy), l_concat_0 (copy)
-    local v8 = {};
-    for v9 = 1, #v6 do
-        l_insert_0(v8, (l_char_0(l_bxor_0(l_byte_0((l_sub_0(v6, v9, v9 + 1))), l_byte_0((l_sub_0(v7, 1 + v9 % #v7, 1 + v9 % #v7 + 1)))) % 256)));
-    end;
-    return l_concat_0(v8);
-end;
-local l_game_Service_0 = game:GetService(v10("\227\198\203)\239\184\198\n\212\199\2321\233\169\198\025\212", "~\177\163\187E\134\219\167"));
-local l_game_Service_1 = game:GetService(v10("\015\194-\246\2491\219#\198\249", "\156C\173J\165"));
-local v13 = v10("\018\190[\019\158)H0\164z\025\169(B", "&T\215)v\220F");
-local v14 = {
-    v10("\127\004+\029\240\016:+\016\236Q\004;", "\1580vBr"), 
-    v10("\153%\t0z\160\247\175d\fv]\170\239\2357\0213z\171\252\235=\031#a\229\250\1680\0259}\182\187\162*P8|\177\242\173-\0197g\172\244\1657O", "\155\203DpV\019\197"), 
-    v10("e\2133\255K8\225\247E\206x\239Ij\236\237U\147;\249Nm\165\254I\207v\244Et\245\184Q\212\"\244\000J\228\225@\2123\240D8\246\232C\222?\250I{\165\252C\2033\240Oh\232\253H\201x", "\152&\189V\156 \024\133"), 
-    v10("\217O\162E\233C\168T\188\r\231m\238Y\171", "&\1567\199"), 
-    v10("\141ey+\006`\245Q\232'<\f\022x\238B", "#\200\029\028Hs\020\154"), 
-    v10("<\167\212\220\1528;\v\255\139\159\181):\022", "Ty\223\177\191\237L"), 
-    v10("\158N\204\163/D?\211\251\f\137\1315T5\217", "\161\2196\169\192Z0P"), 
-    v10("lZ\005&\\V\0157\t\024@\015cq\016)FK\020eQ\0028 GM", "E)\"`"), 
-    v10("\153\219\210\t\023?\179\209\151PB\n\174\192\210\031\017k\132", "K\220\163\183jb"), 
-    v10("'\162\1424\204\022\181\153w\131B\156\135\"\193\023\169", "\185b\218\235W"), 
-    v10("\238$\"\229\203\190\196.g\188\158\156\206;&\222", "\202\171\\G\134\190"), 
-    v10("\f\217)\139<\213#\154i\155l\1699\209 \141\030\192>\141", "\232I\161L")
-};
-local function v17() --[[ Line: 48 ]] --[[ Name: v12 ]]
-    -- upvalues: l_game_Service_0 (copy), v10 (copy), v13 (copy)
-    for _, v16 in l_game_Service_0:WaitForChild(v10("\137\220OR\n\190\202", "~\219\185\"=")):GetChildren() do
-        if v16:HasTag(v13) then
-            return v16;
-        end;
-    end;
-    return nil;
-end;
-l_game_Service_1.MessageOut:Connect(function(v18) --[[ Line: 48 ]] --[[ Name: v13 ]]
-    -- upvalues: v14 (copy), v17 (copy)
-    for _, v20 in v14 do
-        local v21 = 0;
-        local v22 = nil;
-        local v23 = nil;
-        while v21 ~= 1 do
-            if v21 == 0 then
-                v22 = 0;
-                v23 = nil;
-                v21 = 1;
-            end;
-        end;
-        while v22 ~= 0 do
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:48:36
+-- Luau version 6, Types version 3
+-- Time taken: 0.001847 seconds
 
-        end;
-        if string.match(v18, v20) then
-            v17():FireServer();
-        end;
-    end;
-end);
+local bit32 = bit32
+if not bit32 then
+	bit32 = bit
+end
+local bxor_upvr = bit32.bxor
+local sub_upvr = string.sub
+local byte_upvr = string.byte
+local char_upvr = string.char
+local insert_upvr = table.insert
+local concat_upvr = table.concat
+local function v7_upvr(arg1, arg2) -- Line 48, Named "v7"
+	--[[ Upvalues[6]:
+		[1]: bxor_upvr (readonly)
+		[2]: sub_upvr (readonly)
+		[3]: byte_upvr (readonly)
+		[4]: char_upvr (readonly)
+		[5]: insert_upvr (readonly)
+		[6]: concat_upvr (readonly)
+	]]
+	local module = {}
+	for i = 1, #arg1 do
+		insert_upvr(module, char_upvr(bxor_upvr(byte_upvr(sub_upvr(arg1, i, i + 1)), byte_upvr(sub_upvr(arg2, 1 + i % #arg2, 1 + i % #arg2 + 1))) % 256))
+	end
+	return concat_upvr(module)
+end
+local tbl_upvr = {v7_upvr("\x7F\x04\x2B\x1D\xF0\x10\x3A\x2B\x10\xEC\x51\x04\x3B", "\x9E0vBr"), v7_upvr("\x99\x25\x09\x30\x7A\xA0\xF7\xAF\x64\x0C\x76\x5D\xAA\xEF\xEB\x37\x15\x33\x7A\xAB\xFC\xEB\x3D\x1F\x23\x61\xE5\xFA\xA8\x30\x19\x39\x7D\xB6\xBB\xA2\x2A\x50\x38\x7C\xB1\xF2\xAD\x2D\x13\x37\x67\xAC\xF4\xA5\x37\x4F", "\x9B\xCB\x44\x70\x56\x13\xC5"), v7_upvr("\x65\xD5\x33\xFF\x4B\x38\xE1\xF7\x45\xCE\x78\xEF\x49\x6A\xEC\xED\x55\x93\x3B\xF9\x4E\x6D\xA5\xFE\x49\xCF\x76\xF4\x45\x74\xF5\xB8\x51\xD4\x22\xF4\x00\x4A\xE4\xE1\x40\xD4\x33\xF0\x44\x38\xF6\xE8\x43\xDE\x3F\xFA\x49\x7B\xA5\xFC\x43\xCB\x33\xF0\x4F\x68\xE8\xFD\x48\xC9\x78", "\x98\x26\xBD\x56\x9C\x20\x18\x85"), v7_upvr("\xD9\x4F\xA2\x45\xE9\x43\xA8\x54\xBC\x0D\xE7\x6D\xEE\x59\xAB", "\x26\x9C\x37\xC7"), v7_upvr("\x8D\x65\x79\x2B\x06\x60\xF5\x51\xE8\x27\x3C\x0C\x16\x78\xEE\x42", "\x23\xC8\x1D\x1C\x48\x73\x14\x9A"), v7_upvr("\x3C\xA7\xD4\xDC\x98\x38\x3B\x0B\xFF\x8B\x9F\xB5\x29\x3A\x16", "\x54\x79\xDF\xB1\xBF\xED\x4C"), v7_upvr("\x9E\x4E\xCC\xA3\x2F\x44\x3F\xD3\xFB\x0C\x89\x83\x35\x54\x35\xD9", "\xA1\xDB\x36\xA9\xC0\x5A\x30\x50"), v7_upvr("lZ\x05&\\V\x0F7\t\x18@\x0Fcq\x10)FK\x14eQ\x028 GM", "E)\"`"), v7_upvr("\x99\xDB\xD2\x09\x17\x3F\xB3\xD1\x97\x50\x42\x0A\xAE\xC0\xD2\x1F\x11\x6B\x84", "\x4B\xDC\xA3\xB7\x6A\x62"), v7_upvr("\x27\xA2\x8E\x34\xCC\x16\xB5\x99\x77\x83\x42\x9C\x87\x22\xC1\x17\xA9", "\xB9\x62\xDA\xEB\x57"), v7_upvr("\xEE\x24\x22\xE5\xCB\xBE\xC4\x2E\x67\xBC\x9E\x9C\xCE\x3B\x26\xDE", "\xCA\xAB\x5C\x47\x86\xBE"), v7_upvr("\x0C\xD9\x29\x8B\x3C\xD5\x23\x9A\x69\x9B\x6C\xA9\x39\xD1\x20\x8D\x1E\xC0\x3E\x8D", "\xE8\x49\xA1\x4C")}
+local service_upvr = game:GetService(v7_upvr("\xE3\xC6\xCB\x29\xEF\xB8\xC6\x0A\xD4\xC7\xE8\x31\xE9\xA9\xC6\x19\xD4", "\x7E\xB1\xA3\xBB\x45\x86\xDB\xA7"))
+local v7_upvr_result1_upvr = v7_upvr("\x12\xBE\x5B\x13\x9E\x29\x48\x30\xA4\x7A\x19\xA9\x28\x42", "&T\xD7)v\xDCF")
+local function v12_upvr() -- Line 48, Named "v12"
+	--[[ Upvalues[3]:
+		[1]: service_upvr (readonly)
+		[2]: v7_upvr (readonly)
+		[3]: v7_upvr_result1_upvr (readonly)
+	]]
+	while true do
+		for _, v in service_upvr:WaitForChild(v7_upvr("\x89\xDC\x4F\x52\x0A\xBE\xCA", "~۹\"=")):GetChildren() do
+			if v:HasTag(v7_upvr_result1_upvr) then
+				return v
+			end
+		end
+		return nil
+	end
+end
+game:GetService(v7_upvr("\x0F\xC2\x2D\xF6\xF9\x31\xDB\x23\xC6\xF9", "\x9C\x43\xAD\x4A\xA5")).MessageOut:Connect(function(arg1) -- Line 48, Named "v13"
+	--[[ Upvalues[2]:
+		[1]: tbl_upvr (readonly)
+		[2]: v12_upvr (readonly)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [32] 28. Error Block 12 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [32] 28. Error Block 12 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [4] 5. Error Block 2 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [4] 5. Error Block 2 end (CF ANALYSIS FAILED)
+end)

@@ -1,81 +1,83 @@
 --[[
     Script: ReplicatedStorage.Packages._Index.jakeywastaken_imgizmo@3.5.1.imgizmo.Gizmos.Capsule
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = {};
-v0.__index = v0;
-v0.Init = function(v1, v2, v3, v4, v5) --[[ Line: 8 ]] --[[ Name: Init ]]
-    -- upvalues: v0 (copy)
-    local v6 = setmetatable({}, v0);
-    v6.Ceive = v1;
-    v6.Propertys = v2;
-    v6.Request = v3;
-    v6.Release = v4;
-    v6.Retain = v5;
-    return v6;
-end;
-v0.Draw = function(v7, v8, v9, v10, v11) --[[ Line: 26 ]] --[[ Name: Draw ]]
-    local l_Ceive_0 = v7.Ceive;
-    if not l_Ceive_0.Enabled then
-        return;
-    else
-        local v13 = v8.Position + v8.UpVector * (v10 / 2);
-        local v14 = v8.Position - v8.UpVector * (v10 / 2);
-        v13 = CFrame.lookAt(v13, v13 + v8.UpVector);
-        v14 = CFrame.lookAt(v14, v14 - v8.UpVector);
-        local v15 = math.floor(360 / v11);
-        local v16 = nil;
-        local v17 = nil;
-        local v18 = nil;
-        local v19 = nil;
-        for v20 = 0, 360, v15 do
-            local v21 = math.sin((math.rad(v20))) * v9;
-            local v22 = math.cos((math.rad(v20))) * v9;
-            local v23 = v8.LookVector * v22 + v8.RightVector * v21;
-            local v24 = v13.Position + v23;
-            local v25 = v14.Position + v23;
-            l_Ceive_0.Ray:Draw(v24, v25);
-            l_Ceive_0.Circle:Draw(CFrame.new(v13.Position) * v8.Rotation * CFrame.Angles(0, math.rad(v20), 0), v9, v11 / 2, 90, false);
-            l_Ceive_0.Circle:Draw(CFrame.new(v14.Position) * v8.Rotation * CFrame.Angles(3.141592653589793, math.rad(v20), 0), v9, v11 / 2, 90, false);
-            if not v16 then
-                v16 = v24;
-                v17 = v25;
-                v18 = v24;
-                v19 = v25;
-            else
-                l_Ceive_0.Ray:Draw(v16, v24);
-                l_Ceive_0.Ray:Draw(v17, v25);
-                v16 = v24;
-                v17 = v25;
-            end;
-        end;
-        l_Ceive_0.Ray:Draw(v16, v18);
-        l_Ceive_0.Ray:Draw(v17, v19);
-        return;
-    end;
-end;
-v0.Create = function(v26, v27, v28, v29, v30) --[[ Line: 91 ]] --[[ Name: Create ]]
-    local v31 = {
-        Transform = v27, 
-        Radius = v28, 
-        Length = v29, 
-        Subdivisions = v30, 
-        AlwaysOnTop = v26.Propertys.AlwaysOnTop, 
-        Transparency = v26.Propertys.Transparency, 
-        Color3 = v26.Propertys.Color3, 
-        Enabled = true, 
-        Destroy = false
-    };
-    v26:Retain(v31);
-    return v31;
-end;
-v0.Update = function(v32, v33) --[[ Line: 109 ]] --[[ Name: Update ]]
-    local l_Ceive_1 = v32.Ceive;
-    l_Ceive_1.PushProperty("AlwaysOnTop", v33.AlwaysOnTop);
-    l_Ceive_1.PushProperty("Transparency", v33.Transparency);
-    l_Ceive_1.PushProperty("Color3", v33.Color3);
-    v32:Draw(v33.Transform, v33.Radius, v33.Length, v33.Subdivisions);
-end;
-return v0;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:00
+-- Luau version 6, Types version 3
+-- Time taken: 0.002723 seconds
+
+local module_upvr = {}
+module_upvr.__index = module_upvr
+function module_upvr.Init(arg1, arg2, arg3, arg4, arg5) -- Line 8
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	local setmetatable_result1 = setmetatable({}, module_upvr)
+	setmetatable_result1.Ceive = arg1
+	setmetatable_result1.Propertys = arg2
+	setmetatable_result1.Request = arg3
+	setmetatable_result1.Release = arg4
+	setmetatable_result1.Retain = arg5
+	return setmetatable_result1
+end
+function module_upvr.Draw(arg1, arg2, arg3, arg4, arg5) -- Line 26
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local Ceive = arg1.Ceive
+	local var8
+	if not Ceive.Enabled then
+	else
+		var8 = arg2.UpVector
+		local var9 = arg2.Position + (var8) * (arg4 / 2)
+		var8 = (arg2.UpVector) * (arg4 / 2)
+		local var10 = arg2.Position - var8
+		var8 = var9
+		local cframe_looking_at_2 = CFrame.lookAt(var8, var9 + arg2.UpVector)
+		var8 = var10
+		local cframe_looking_at = CFrame.lookAt(var8, var10 - arg2.UpVector)
+		var8 = 360 / arg5
+		var8 = nil
+		for i = 0, 360, math.floor(var8) do
+			local var13 = (arg2.LookVector) * (math.cos(math.rad(i)) * arg3) + (arg2.RightVector) * (math.sin(math.rad(i)) * arg3)
+			local var14 = cframe_looking_at_2.Position + var13
+			local var15 = cframe_looking_at.Position + var13
+			Ceive.Ray:Draw(var14, var15)
+			Ceive.Circle:Draw(CFrame.new(cframe_looking_at_2.Position) * arg2.Rotation * CFrame.Angles(0, math.rad(i), 0), arg3, arg5 / 2, 90, false)
+			Ceive.Circle:Draw(CFrame.new(cframe_looking_at.Position) * arg2.Rotation * CFrame.Angles(math.pi, math.rad(i), 0), arg3, arg5 / 2, 90, false)
+			if not var8 then
+				var8 = var14
+			else
+				Ceive.Ray:Draw(var8, var14)
+				Ceive.Ray:Draw(var15, var15)
+				var8 = var14
+			end
+		end
+		Ceive.Ray:Draw(var8, var14)
+		Ceive.Ray:Draw(var15, var15)
+	end
+end
+function module_upvr.Create(arg1, arg2, arg3, arg4, arg5) -- Line 91
+	local module = {}
+	module.Transform = arg2
+	module.Radius = arg3
+	module.Length = arg4
+	module.Subdivisions = arg5
+	module.AlwaysOnTop = arg1.Propertys.AlwaysOnTop
+	module.Transparency = arg1.Propertys.Transparency
+	module.Color3 = arg1.Propertys.Color3
+	module.Enabled = true
+	module.Destroy = false
+	arg1.Retain(arg1, module)
+	return module
+end
+function module_upvr.Update(arg1, arg2) -- Line 109
+	local Ceive_2 = arg1.Ceive
+	Ceive_2.PushProperty("AlwaysOnTop", arg2.AlwaysOnTop)
+	Ceive_2.PushProperty("Transparency", arg2.Transparency)
+	Ceive_2.PushProperty("Color3", arg2.Color3)
+	arg1:Draw(arg2.Transform, arg2.Radius, arg2.Length, arg2.Subdivisions)
+end
+return module_upvr

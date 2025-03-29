@@ -1,192 +1,212 @@
 --[[
     Script: ReplicatedStorage.Packages.RemotePromise.Trove
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = newproxy();
-local v1 = newproxy();
-local v2 = {
-    "Destroy", 
-    "Disconnect", 
-    "destroy", 
-    "disconnect"
-};
-local l_RunService_0 = game:GetService("RunService");
-local function v9(v4, v5) --[[ Line: 11 ]] --[[ Name: GetObjectCleanupFunction ]]
-    -- upvalues: v0 (copy), v1 (copy), v2 (copy)
-    local v6 = typeof(v4);
-    if v6 == "function" then
-        return v0;
-    elseif v6 == "thread" then
-        return v1;
-    elseif v5 then
-        return v5;
-    elseif v6 == "Instance" then
-        return "Destroy";
-    elseif v6 == "RBXScriptConnection" then
-        return "Disconnect";
-    else
-        if v6 == "table" then
-            for _, v8 in v2 do
-                if typeof(v4[v8]) == "function" then
-                    return v8;
-                end;
-            end;
-        end;
-        error("Failed to get cleanup function for object " .. v6 .. ": " .. tostring(v4), 3);
-        return;
-    end;
-end;
-local function _(v10) --[[ Line: 35 ]] --[[ Name: AssertPromiseLike ]]
-    if typeof(v10) ~= "table" or typeof(v10.getStatus) ~= "function" or typeof(v10.finally) ~= "function" or typeof(v10.cancel) ~= "function" then
-        error("Did not receive a Promise as an argument", 3);
-    end;
-end;
-local v12 = {};
-v12.__index = v12;
-v12.new = function() --[[ Line: 58 ]] --[[ Name: new ]]
-    -- upvalues: v12 (copy)
-    local v13 = setmetatable({}, v12);
-    v13._objects = {};
-    v13._cleaning = false;
-    return v13;
-end;
-v12.Extend = function(v14) --[[ Line: 84 ]] --[[ Name: Extend ]]
-    -- upvalues: v12 (copy)
-    if v14._cleaning then
-        error("Cannot call trove:Extend() while cleaning", 2);
-    end;
-    return v14:Construct(v12);
-end;
-v12.Clone = function(v15, v16) --[[ Line: 95 ]] --[[ Name: Clone ]]
-    if v15._cleaning then
-        error("Cannot call trove:Clone() while cleaning", 2);
-    end;
-    return v15:Add(v16:Clone());
-end;
-v12.Construct = function(v17, v18, ...) --[[ Line: 135 ]] --[[ Name: Construct ]]
-    if v17._cleaning then
-        error("Cannot call trove:Construct() while cleaning", 2);
-    end;
-    local v19 = nil;
-    local v20 = type(v18);
-    if v20 == "table" then
-        v19 = v18.new(...);
-    elseif v20 == "function" then
-        v19 = v18(...);
-    end;
-    return v17:Add(v19);
-end;
-v12.Connect = function(v21, v22, v23) --[[ Line: 164 ]] --[[ Name: Connect ]]
-    if v21._cleaning then
-        error("Cannot call trove:Connect() while cleaning", 2);
-    end;
-    return v21:Add(v22:Connect(v23));
-end;
-v12.BindToRenderStep = function(v24, v25, v26, v27) --[[ Line: 184 ]] --[[ Name: BindToRenderStep ]]
-    -- upvalues: l_RunService_0 (copy)
-    if v24._cleaning then
-        error("Cannot call trove:BindToRenderStep() while cleaning", 2);
-    end;
-    l_RunService_0:BindToRenderStep(v25, v26, v27);
-    v24:Add(function() --[[ Line: 189 ]]
-        -- upvalues: l_RunService_0 (ref), v25 (copy)
-        l_RunService_0:UnbindFromRenderStep(v25);
-    end);
-end;
-v12.AddPromise = function(v28, v29) --[[ Line: 217 ]] --[[ Name: AddPromise ]]
-    if v28._cleaning then
-        error("Cannot call trove:AddPromise() while cleaning", 2);
-    end;
-    if typeof(v29) ~= "table" or typeof(v29.getStatus) ~= "function" or typeof(v29.finally) ~= "function" or typeof(v29.cancel) ~= "function" then
-        error("Did not receive a Promise as an argument", 3);
-    end;
-    if v29:getStatus() == "Started" then
-        v29:finally(function() --[[ Line: 223 ]]
-            -- upvalues: v28 (copy), v29 (copy)
-            if v28._cleaning then
-                return;
-            else
-                v28:_findAndRemoveFromObjects(v29, false);
-                return;
-            end;
-        end);
-        v28:Add(v29, "cancel");
-    end;
-    return v29;
-end;
-v12.Add = function(v30, v31, v32) --[[ Line: 282 ]] --[[ Name: Add ]]
-    -- upvalues: v9 (copy)
-    if v30._cleaning then
-        error("Cannot call trove:Add() while cleaning", 2);
-    end;
-    local v33 = v9(v31, v32);
-    table.insert(v30._objects, {
-        v31, 
-        v33
-    });
-    return v31;
-end;
-v12.Remove = function(v34, v35) --[[ Line: 301 ]] --[[ Name: Remove ]]
-    if v34._cleaning then
-        error("Cannot call trove:Remove() while cleaning", 2);
-    end;
-    return v34:_findAndRemoveFromObjects(v35, true);
-end;
-v12.Clean = function(v36) --[[ Line: 314 ]] --[[ Name: Clean ]]
-    if v36._cleaning then
-        return;
-    else
-        v36._cleaning = true;
-        for _, v38 in v36._objects do
-            v36:_cleanupObject(v38[1], v38[2]);
-        end;
-        table.clear(v36._objects);
-        v36._cleaning = false;
-        return;
-    end;
-end;
-v12._findAndRemoveFromObjects = function(v39, v40, v41) --[[ Line: 326 ]] --[[ Name: _findAndRemoveFromObjects ]]
-    local l__objects_0 = v39._objects;
-    for v43, v44 in ipairs(l__objects_0) do
-        if v44[1] == v40 then
-            local v45 = #l__objects_0;
-            l__objects_0[v43] = l__objects_0[v45];
-            l__objects_0[v45] = nil;
-            if v41 then
-                v39:_cleanupObject(v44[1], v44[2]);
-            end;
-            return true;
-        end;
-    end;
-    return false;
-end;
-v12._cleanupObject = function(_, v47, v48) --[[ Line: 342 ]] --[[ Name: _cleanupObject ]]
-    -- upvalues: v0 (copy), v1 (copy)
-    if v48 == v0 then
-        v47();
-        return;
-    elseif v48 == v1 then
-        pcall(task.cancel, v47);
-        return;
-    else
-        v47[v48](v47);
-        return;
-    end;
-end;
-v12.AttachToInstance = function(v49, v50) --[[ Line: 365 ]] --[[ Name: AttachToInstance ]]
-    if v49._cleaning then
-        error("Cannot call trove:AttachToInstance() while cleaning", 2);
-    elseif not v50:IsDescendantOf(game) then
-        error("Instance is not a descendant of the game hierarchy", 2);
-    end;
-    return v49:Connect(v50.Destroying, function() --[[ Line: 371 ]]
-        -- upvalues: v49 (copy)
-        v49:Destroy();
-    end);
-end;
-v12.Destroy = function(v51) --[[ Line: 379 ]] --[[ Name: Destroy ]]
-    v51:Clean();
-end;
-return v12;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:07
+-- Luau version 6, Types version 3
+-- Time taken: 0.004599 seconds
+
+local newproxy_result1_upvr = newproxy()
+local newproxy_result1_upvr_2 = newproxy()
+local tbl_upvr = {"Destroy", "Disconnect", "destroy", "disconnect"}
+local function GetObjectCleanupFunction_upvr(arg1, arg2) -- Line 11, Named "GetObjectCleanupFunction"
+	--[[ Upvalues[3]:
+		[1]: newproxy_result1_upvr (readonly)
+		[2]: newproxy_result1_upvr_2 (readonly)
+		[3]: tbl_upvr (readonly)
+	]]
+	local typeof_result1 = typeof(arg1)
+	if typeof_result1 == "function" then
+		return newproxy_result1_upvr
+	end
+	if typeof_result1 == "thread" then
+		return newproxy_result1_upvr_2
+	end
+	if arg2 then
+		return arg2
+	end
+	if typeof_result1 == "Instance" then
+		return "Destroy"
+	end
+	if typeof_result1 == "RBXScriptConnection" then
+		return "Disconnect"
+	end
+	if typeof_result1 == "table" then
+		for _, v in tbl_upvr do
+			if typeof(arg1[v]) == "function" then
+				return v
+			end
+		end
+	end
+	error("Failed to get cleanup function for object "..typeof_result1..": "..tostring(arg1), 3)
+end
+local function _(arg1) -- Line 35, Named "AssertPromiseLike"
+	if typeof(arg1) ~= "table" or typeof(arg1.getStatus) ~= "function" or typeof(arg1.finally) ~= "function" or typeof(arg1.cancel) ~= "function" then
+		error("Did not receive a Promise as an argument", 3)
+	end
+end
+local module_upvr = {}
+module_upvr.__index = module_upvr
+function module_upvr.new() -- Line 58
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	local setmetatable_result1 = setmetatable({}, module_upvr)
+	setmetatable_result1._objects = {}
+	setmetatable_result1._cleaning = false
+	return setmetatable_result1
+end
+function module_upvr.Extend(arg1) -- Line 84
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	if arg1._cleaning then
+		error("Cannot call trove:Extend() while cleaning", 2)
+	end
+	return arg1:Construct(module_upvr)
+end
+function module_upvr.Clone(arg1, arg2) -- Line 95
+	if arg1._cleaning then
+		error("Cannot call trove:Clone() while cleaning", 2)
+	end
+	return arg1:Add(arg2:Clone())
+end
+function module_upvr.Construct(arg1, arg2, ...) -- Line 135
+	if arg1._cleaning then
+		error("Cannot call trove:Construct() while cleaning", 2)
+	end
+	local var9
+	local type_result1 = type(arg2)
+	if type_result1 == "table" then
+		var9 = arg2.new(...)
+	elseif type_result1 == "function" then
+		var9 = arg2(...)
+	end
+	return arg1:Add(var9)
+end
+function module_upvr.Connect(arg1, arg2, arg3) -- Line 164
+	if arg1._cleaning then
+		error("Cannot call trove:Connect() while cleaning", 2)
+	end
+	return arg1:Add(arg2:Connect(arg3))
+end
+local RunService_upvr = game:GetService("RunService")
+function module_upvr.BindToRenderStep(arg1, arg2, arg3, arg4) -- Line 184
+	--[[ Upvalues[1]:
+		[1]: RunService_upvr (readonly)
+	]]
+	if arg1._cleaning then
+		error("Cannot call trove:BindToRenderStep() while cleaning", 2)
+	end
+	RunService_upvr:BindToRenderStep(arg2, arg3, arg4)
+	arg1:Add(function() -- Line 189
+		--[[ Upvalues[2]:
+			[1]: RunService_upvr (copied, readonly)
+			[2]: arg2 (readonly)
+		]]
+		RunService_upvr:UnbindFromRenderStep(arg2)
+	end)
+end
+function module_upvr.AddPromise(arg1, arg2) -- Line 217
+	if arg1._cleaning then
+		error("Cannot call trove:AddPromise() while cleaning", 2)
+	end
+	if typeof(arg2) ~= "table" or typeof(arg2.getStatus) ~= "function" or typeof(arg2.finally) ~= "function" or typeof(arg2.cancel) ~= "function" then
+		error("Did not receive a Promise as an argument", 3)
+	end
+	if arg2:getStatus() == "Started" then
+		arg2:finally(function() -- Line 223
+			--[[ Upvalues[2]:
+				[1]: arg1 (readonly)
+				[2]: arg2 (readonly)
+			]]
+			if arg1._cleaning then
+			else
+				arg1:_findAndRemoveFromObjects(arg2, false)
+			end
+		end)
+		arg1:Add(arg2, "cancel")
+	end
+	return arg2
+end
+function module_upvr.Add(arg1, arg2, arg3) -- Line 282
+	--[[ Upvalues[1]:
+		[1]: GetObjectCleanupFunction_upvr (readonly)
+	]]
+	if arg1._cleaning then
+		error("Cannot call trove:Add() while cleaning", 2)
+	end
+	local tbl = {}
+	tbl[1] = arg2
+	tbl[2] = GetObjectCleanupFunction_upvr(arg2, arg3)
+	table.insert(arg1._objects, tbl)
+	return arg2
+end
+function module_upvr.Remove(arg1, arg2) -- Line 301
+	if arg1._cleaning then
+		error("Cannot call trove:Remove() while cleaning", 2)
+	end
+	return arg1:_findAndRemoveFromObjects(arg2, true)
+end
+function module_upvr.Clean(arg1) -- Line 314
+	if arg1._cleaning then
+	else
+		arg1._cleaning = true
+		for _, v_3 in arg1._objects do
+			arg1:_cleanupObject(v_3[1], v_3[2])
+		end
+		table.clear(arg1._objects)
+		arg1._cleaning = false
+	end
+end
+function module_upvr._findAndRemoveFromObjects(arg1, arg2, arg3) -- Line 326
+	local _objects = arg1._objects
+	for i_2, v_2 in ipairs(_objects) do
+		if v_2[1] == arg2 then
+			local len = #_objects
+			_objects[i_2] = _objects[len]
+			_objects[len] = nil
+			if arg3 then
+				arg1:_cleanupObject(v_2[1], v_2[2])
+			end
+			return true
+		end
+	end
+	return false
+end
+function module_upvr._cleanupObject(arg1, arg2, arg3) -- Line 342
+	--[[ Upvalues[2]:
+		[1]: newproxy_result1_upvr (readonly)
+		[2]: newproxy_result1_upvr_2 (readonly)
+	]]
+	if arg3 == newproxy_result1_upvr then
+		arg2()
+	else
+		if arg3 == newproxy_result1_upvr_2 then
+			pcall(task.cancel, arg2)
+			return
+		end
+		arg2[arg3](arg2)
+	end
+end
+function module_upvr.AttachToInstance(arg1, arg2) -- Line 365
+	if arg1._cleaning then
+		error("Cannot call trove:AttachToInstance() while cleaning", 2)
+	elseif not arg2:IsDescendantOf(game) then
+		error("Instance is not a descendant of the game hierarchy", 2)
+	end
+	return arg1:Connect(arg2.Destroying, function() -- Line 371
+		--[[ Upvalues[1]:
+			[1]: arg1 (readonly)
+		]]
+		arg1:Destroy()
+	end)
+end
+function module_upvr.Destroy(arg1) -- Line 379
+	arg1:Clean()
+end
+return module_upvr

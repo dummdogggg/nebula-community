@@ -1,25 +1,33 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.PlayerModule
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = {};
-v0.__index = v0;
-v0.new = function() --[[ Line: 12 ]] --[[ Name: new ]]
-    -- upvalues: v0 (copy)
-    local v1 = setmetatable({}, v0);
-    v1.cameras = require(script:WaitForChild("CameraModule"));
-    v1.controls = require(script:WaitForChild("ControlModule"));
-    return v1;
-end;
-v0.GetCameras = function(v2) --[[ Line: 19 ]] --[[ Name: GetCameras ]]
-    return v2.cameras;
-end;
-v0.GetControls = function(v3) --[[ Line: 23 ]] --[[ Name: GetControls ]]
-    return v3.controls;
-end;
-v0.GetClickToMoveController = function(v4) --[[ Line: 27 ]] --[[ Name: GetClickToMoveController ]]
-    return v4.controls:GetClickToMoveController();
-end;
-return v0.new();
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:47:23
+-- Luau version 6, Types version 3
+-- Time taken: 0.000686 seconds
+
+local module_upvr = {}
+module_upvr.__index = module_upvr
+function module_upvr.new() -- Line 12
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	local setmetatable_result1 = setmetatable({}, module_upvr)
+	setmetatable_result1.cameras = require(script:WaitForChild("CameraModule"))
+	setmetatable_result1.controls = require(script:WaitForChild("ControlModule"))
+	return setmetatable_result1
+end
+function module_upvr.GetCameras(arg1) -- Line 19
+	return arg1.cameras
+end
+function module_upvr.GetControls(arg1) -- Line 23
+	return arg1.controls
+end
+function module_upvr.GetClickToMoveController(arg1) -- Line 27
+	return arg1.controls:GetClickToMoveController()
+end
+return module_upvr.new()

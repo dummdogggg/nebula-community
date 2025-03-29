@@ -1,349 +1,327 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.PlayerModule.CameraModule.ZoomController.Popper
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_Players_0 = game:GetService("Players");
-local l_CurrentCamera_0 = game.Workspace.CurrentCamera;
-local l_CommonUtils_0 = script.Parent.Parent.Parent:WaitForChild("CommonUtils");
-local v3 = require(l_CommonUtils_0:WaitForChild("FlagUtil")).getUserFlag("UserRaycastPerformanceImprovements");
-local l_min_0 = math.min;
-local l_tan_0 = math.tan;
-local l_rad_0 = math.rad;
-local l_new_0 = Ray.new;
-local v8 = RaycastParams.new();
-v8.IgnoreWater = true;
-v8.FilterType = Enum.RaycastFilterType.Exclude;
-local v9 = RaycastParams.new();
-v9.IgnoreWater = true;
-v9.FilterType = Enum.RaycastFilterType.Include;
-local function _(v10) --[[ Line: 31 ]] --[[ Name: getTotalTransparency ]]
-    return 1 - (1 - v10.Transparency) * (1 - v10.LocalTransparencyModifier);
-end;
-local function _(v12, v13) --[[ Line: 35 ]] --[[ Name: eraseFromEnd ]]
-    for v14 = #v12, v13 + 1, -1 do
-        v12[v14] = nil;
-    end;
-end;
-local v16 = nil;
-local v17 = nil;
-local v18 = nil;
-local function v22() --[[ Line: 42 ]] --[[ Name: updateProjection ]]
-    -- upvalues: l_CurrentCamera_0 (copy), l_rad_0 (copy), v18 (ref), l_tan_0 (copy), v17 (ref)
-    local v19 = l_rad_0(l_CurrentCamera_0.FieldOfView);
-    local l_ViewportSize_0 = l_CurrentCamera_0.ViewportSize;
-    local v21 = l_ViewportSize_0.X / l_ViewportSize_0.Y;
-    v18 = l_tan_0(v19 / 2) * 2;
-    v17 = v21 * v18;
-end;
-l_CurrentCamera_0:GetPropertyChangedSignal("FieldOfView"):Connect(v22);
-l_CurrentCamera_0:GetPropertyChangedSignal("ViewportSize"):Connect(v22);
-local v23 = l_rad_0(l_CurrentCamera_0.FieldOfView);
-local l_ViewportSize_1 = l_CurrentCamera_0.ViewportSize;
-local v25 = l_ViewportSize_1.X / l_ViewportSize_1.Y;
-v18 = l_tan_0(v23 / 2) * 2;
-v17 = v25 * v18;
-v16 = l_CurrentCamera_0.NearPlaneZ;
-l_CurrentCamera_0:GetPropertyChangedSignal("NearPlaneZ"):Connect(function() --[[ Line: 57 ]]
-    -- upvalues: v16 (ref), l_CurrentCamera_0 (copy)
-    v16 = l_CurrentCamera_0.NearPlaneZ;
-end);
-v22 = {};
-v23 = {};
-local l_v23_0 = v23 --[[ copy: 17 -> 27 ]];
-l_ViewportSize_1 = function() --[[ Line: 65 ]] --[[ Name: refreshIgnoreList ]]
-    -- upvalues: v22 (ref), l_v23_0 (copy)
-    local v27 = 1;
-    v22 = {};
-    for _, v29 in pairs(l_v23_0) do
-        v22[v27] = v29;
-        v27 = v27 + 1;
-    end;
-end;
-v25 = function(v30) --[[ Line: 74 ]] --[[ Name: playerAdded ]]
-    -- upvalues: l_v23_0 (copy), v22 (ref)
-    local function v35(v31) --[[ Line: 75 ]] --[[ Name: characterAdded ]]
-        -- upvalues: l_v23_0 (ref), v30 (copy), v22 (ref)
-        l_v23_0[v30] = v31;
-        local v32 = 1;
-        v22 = {};
-        for _, v34 in pairs(l_v23_0) do
-            v22[v32] = v34;
-            v32 = v32 + 1;
-        end;
-    end;
-    local function v39() --[[ Line: 79 ]] --[[ Name: characterRemoving ]]
-        -- upvalues: l_v23_0 (ref), v30 (copy), v22 (ref)
-        l_v23_0[v30] = nil;
-        local v36 = 1;
-        v22 = {};
-        for _, v38 in pairs(l_v23_0) do
-            v22[v36] = v38;
-            v36 = v36 + 1;
-        end;
-    end;
-    v30.CharacterAdded:Connect(v35);
-    v30.CharacterRemoving:Connect(v39);
-    if v30.Character then
-        l_v23_0[v30] = v30.Character;
-        local v40 = 1;
-        v22 = {};
-        for _, v42 in pairs(l_v23_0) do
-            v22[v40] = v42;
-            v40 = v40 + 1;
-        end;
-    end;
-end;
-local function v47(v43) --[[ Line: 91 ]] --[[ Name: playerRemoving ]]
-    -- upvalues: l_v23_0 (copy), v22 (ref)
-    l_v23_0[v43] = nil;
-    local v44 = 1;
-    v22 = {};
-    for _, v46 in pairs(l_v23_0) do
-        v22[v44] = v46;
-        v44 = v44 + 1;
-    end;
-end;
-l_Players_0.PlayerAdded:Connect(v25);
-l_Players_0.PlayerRemoving:Connect(v47);
-for _, v49 in ipairs(l_Players_0:GetPlayers()) do
-    v25(v49);
-end;
-local v50 = 1;
-v22 = {};
-for _, v52 in pairs(v23) do
-    v22[v50] = v52;
-    v50 = v50 + 1;
-end;
-v23 = nil;
-l_ViewportSize_1 = nil;
-l_CurrentCamera_0:GetPropertyChangedSignal("CameraSubject"):Connect(function() --[[ Line: 125 ]]
-    -- upvalues: l_CurrentCamera_0 (copy), l_ViewportSize_1 (ref)
-    local l_CameraSubject_0 = l_CurrentCamera_0.CameraSubject;
-    if l_CameraSubject_0:IsA("Humanoid") then
-        l_ViewportSize_1 = l_CameraSubject_0.RootPart;
-        return;
-    elseif l_CameraSubject_0:IsA("BasePart") then
-        l_ViewportSize_1 = l_CameraSubject_0;
-        return;
-    else
-        l_ViewportSize_1 = nil;
-        return;
-    end;
-end);
-v25 = function(v54) --[[ Line: 136 ]] --[[ Name: canOcclude ]]
-    -- upvalues: v23 (ref)
-    local v55 = false;
-    if 1 - (1 - v54.Transparency) * (1 - v54.LocalTransparencyModifier) < 0.25 then
-        v55 = v54.CanCollide and v23 ~= (v54:GetRootPart() or v54) and not v54:IsA("TrussPart");
-    end;
-    return v55;
-end;
-v47 = {
-    Vector2.new(0.4, 0), 
-    Vector2.new(-0.4, 0), 
-    Vector2.new(0, -0.4), 
-    Vector2.new(0, 0.4), 
-    Vector2.new(0, 0.2)
-};
-v50 = function(v56, v57) --[[ Line: 164 ]] --[[ Name: getCollisionPoint ]]
-    -- upvalues: v3 (copy), v8 (copy), v22 (ref), l_new_0 (copy)
-    if v3 then
-        v8.FilterDescendantsInstances = v22;
-        repeat
-            local v58 = workspace:Raycast(v56, v57, v8);
-            if v58 then
-                if v58.Instance.CanCollide then
-                    return v58.Position, true;
-                else
-                    v8:AddToFilter(v58.Instance);
-                end;
-            end;
-        until not v58;
-    else
-        local v59 = #v22;
-        while true do
-            local l_workspace_PartOnRayWithIgnoreList_0, v61 = workspace:FindPartOnRayWithIgnoreList(l_new_0(v56, v57), v22, false, true);
-            if l_workspace_PartOnRayWithIgnoreList_0 then
-                if l_workspace_PartOnRayWithIgnoreList_0.CanCollide then
-                    local l_v22_0 = v22;
-                    for v63 = #l_v22_0, v59 + 1, -1 do
-                        l_v22_0[v63] = nil;
-                    end;
-                    return v61, true;
-                else
-                    v22[#v22 + 1] = l_workspace_PartOnRayWithIgnoreList_0;
-                end;
-            end;
-            if not l_workspace_PartOnRayWithIgnoreList_0 then
-                l_workspace_PartOnRayWithIgnoreList_0 = v22;
-                for v64 = #l_workspace_PartOnRayWithIgnoreList_0, v59 + 1, -1 do
-                    l_workspace_PartOnRayWithIgnoreList_0[v64] = nil;
-                end;
-                break;
-            end;
-        end;
-    end;
-    return v56 + v57, false;
-end;
-local function v91(v65, v66, v67, v68) --[[ Line: 202 ]] --[[ Name: queryPoint ]]
-    -- upvalues: v22 (ref), v16 (ref), v3 (copy), v8 (copy), v23 (ref), v9 (copy), l_new_0 (copy)
-    debug.profilebegin("queryPoint");
-    local v69 = #v22;
-    v67 = v67 + v16;
-    local v70 = v65 + v66 * v67;
-    local v71 = 1e999;
-    local v72 = 1e999;
-    local l_v65_0 = v65;
-    local v74 = 0;
-    if v3 then
-        repeat
-            v8.FilterDescendantsInstances = v22;
-            local v75 = workspace:Raycast(l_v65_0, v70 - l_v65_0, v8);
-            local v76 = nil;
-            local v77 = nil;
-            if v75 then
-                v76 = v75.Instance;
-                v77 = v75.Position;
-                v74 = v74 + 1;
-                local v78 = v74 >= 64;
-                local l_v76_0 = v76;
-                local v80 = false;
-                if 1 - (1 - l_v76_0.Transparency) * (1 - l_v76_0.LocalTransparencyModifier) < 0.25 then
-                    v80 = l_v76_0.CanCollide and v23 ~= (l_v76_0:GetRootPart() or l_v76_0) and not l_v76_0:IsA("TrussPart");
-                end;
-                if v80 or v78 then
-                    v9.FilterDescendantsInstances = {
-                        v76
-                    };
-                    l_v76_0 = workspace:Raycast(v70, v77 - v70, v9);
-                    local l_Magnitude_0 = (v77 - v65).Magnitude;
-                    if l_v76_0 and not v78 then
-                        if if v68 then workspace:Raycast(v68, v70 - v68, v9) or workspace:Raycast(v70, v68 - v70, v9) else nil then
-                            v72 = l_Magnitude_0;
-                        elseif v67 < v71 then
-                            v71 = l_Magnitude_0;
-                        end;
-                    else
-                        v72 = l_Magnitude_0;
-                    end;
-                end;
-                v8:AddToFilter(v76);
-                l_v65_0 = v77 - v66 * 0.001;
-            end;
-        until v72 < 1e999 or not v76;
-    else
-        repeat
-            local l_workspace_PartOnRayWithIgnoreList_1, v83 = workspace:FindPartOnRayWithIgnoreList(l_new_0(l_v65_0, v70 - l_v65_0), v22, false, true);
-            v74 = v74 + 1;
-            if l_workspace_PartOnRayWithIgnoreList_1 then
-                local v84 = v74 >= 64;
-                local v85 = false;
-                if 1 - (1 - l_workspace_PartOnRayWithIgnoreList_1.Transparency) * (1 - l_workspace_PartOnRayWithIgnoreList_1.LocalTransparencyModifier) < 0.25 then
-                    v85 = l_workspace_PartOnRayWithIgnoreList_1.CanCollide and v23 ~= (l_workspace_PartOnRayWithIgnoreList_1:GetRootPart() or l_workspace_PartOnRayWithIgnoreList_1) and not l_workspace_PartOnRayWithIgnoreList_1:IsA("TrussPart");
-                end;
-                if v85 or v84 then
-                    v85 = {
-                        l_workspace_PartOnRayWithIgnoreList_1
-                    };
-                    local l_workspace_PartOnRayWithWhitelist_0 = workspace:FindPartOnRayWithWhitelist(l_new_0(v70, v83 - v70), v85, true);
-                    local l_Magnitude_1 = (v83 - v65).Magnitude;
-                    if l_workspace_PartOnRayWithWhitelist_0 and not v84 then
-                        local v88 = false;
-                        if v68 then
-                            v88 = workspace:FindPartOnRayWithWhitelist(l_new_0(v68, v70 - v68), v85, true) or workspace:FindPartOnRayWithWhitelist(l_new_0(v70, v68 - v70), v85, true);
-                        end;
-                        if v88 then
-                            v72 = l_Magnitude_1;
-                        elseif v67 < v71 then
-                            v71 = l_Magnitude_1;
-                        end;
-                    else
-                        v72 = l_Magnitude_1;
-                    end;
-                end;
-                v22[#v22 + 1] = l_workspace_PartOnRayWithIgnoreList_1;
-                l_v65_0 = v83 - v66 * 0.001;
-            end;
-        until v72 < 1e999 or not l_workspace_PartOnRayWithIgnoreList_1;
-        local l_v22_1 = v22;
-        for v90 = #l_v22_1, v69 + 1, -1 do
-            l_v22_1[v90] = nil;
-        end;
-    end;
-    debug.profileend();
-    return v71 - v16, v72 - v16;
-end;
-local function v109(v92, v93) --[[ Line: 306 ]] --[[ Name: queryViewport ]]
-    -- upvalues: l_CurrentCamera_0 (copy), v17 (ref), v18 (ref), v16 (ref), v91 (copy)
-    debug.profilebegin("queryViewport");
-    local l_p_0 = v92.p;
-    local l_rightVector_0 = v92.rightVector;
-    local l_upVector_0 = v92.upVector;
-    local v97 = -v92.lookVector;
-    local l_ViewportSize_2 = l_CurrentCamera_0.ViewportSize;
-    local v99 = 1e999;
-    local v100 = 1e999;
-    for v101 = 0, 1 do
-        local v102 = l_rightVector_0 * ((v101 - 0.5) * v17);
-        for v103 = 0, 1 do
-            local v104 = l_upVector_0 * ((v103 - 0.5) * v18);
-            local v105 = l_p_0 + v16 * (v102 + v104);
-            local l_Origin_0 = l_CurrentCamera_0:ViewportPointToRay(l_ViewportSize_2.x * v101, l_ViewportSize_2.y * v103).Origin;
-            local v107, v108 = v91(v105, v97, v93, l_Origin_0);
-            if v108 < v99 then
-                v99 = v108;
-            end;
-            if v107 < v100 then
-                v100 = v107;
-            end;
-        end;
-    end;
-    debug.profileend();
-    return v100, v99;
-end;
-local function v124(v110, v111, v112) --[[ Line: 347 ]] --[[ Name: testPromotion ]]
-    -- upvalues: v50 (copy), l_min_0 (copy), v91 (copy), v47 (copy)
-    debug.profilebegin("testPromotion");
-    local l_p_1 = v110.p;
-    local l_rightVector_1 = v110.rightVector;
-    local l_upVector_1 = v110.upVector;
-    local v116 = -v110.lookVector;
-    debug.profilebegin("extrapolate");
-    local l_Magnitude_2 = (v50(l_p_1, v112.posVelocity * 1.25) - l_p_1).Magnitude;
-    local l_magnitude_0 = v112.posVelocity.magnitude;
-    for v119 = 0, l_min_0(1.25, v112.rotVelocity.magnitude + l_Magnitude_2 / l_magnitude_0), 0.0625 do
-        local v120 = v112.extrapolate(v119);
-        if v111 <= v91(v120.p, -v120.lookVector, v111) then
-            return false;
-        end;
-    end;
-    debug.profileend();
-    debug.profilebegin("testOffsets");
-    for _, v122 in ipairs(v47) do
-        local v123 = v50(l_p_1, l_rightVector_1 * v122.x + l_upVector_1 * v122.y);
-        if v91(v123, (l_p_1 + v116 * v111 - v123).Unit, v111) == 1e999 then
-            return false;
-        end;
-    end;
-    debug.profileend();
-    debug.profileend();
-    return true;
-end;
-return function(v125, v126, v127) --[[ Line: 396 ]] --[[ Name: Popper ]]
-    -- upvalues: v23 (ref), l_ViewportSize_1 (ref), v109 (copy), v124 (copy)
-    debug.profilebegin("popper");
-    v23 = l_ViewportSize_1 and l_ViewportSize_1:GetRootPart() or l_ViewportSize_1;
-    local l_v126_0 = v126;
-    local v129, v130 = v109(v125, v126);
-    if v130 < l_v126_0 then
-        l_v126_0 = v130;
-    end;
-    if v129 < l_v126_0 and v124(v125, v126, v127) then
-        l_v126_0 = v129;
-    end;
-    v23 = nil;
-    debug.profileend();
-    return l_v126_0;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:48:01
+-- Luau version 6, Types version 3
+-- Time taken: 0.008224 seconds
+
+-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+local Players = game:GetService("Players")
+local CurrentCamera_upvr = game.Workspace.CurrentCamera
+local any_getUserFlag_result1_upvr = require(script.Parent.Parent.Parent:WaitForChild("CommonUtils"):WaitForChild("FlagUtil")).getUserFlag("UserRaycastPerformanceImprovements")
+local tan_upvr = math.tan
+local rad_upvr = math.rad
+local new_upvr = Ray.new
+local RaycastParams_new_result1_upvr = RaycastParams.new()
+RaycastParams_new_result1_upvr.IgnoreWater = true
+RaycastParams_new_result1_upvr.FilterType = Enum.RaycastFilterType.Exclude
+local RaycastParams_new_result1_upvr_2 = RaycastParams.new()
+RaycastParams_new_result1_upvr_2.IgnoreWater = true
+RaycastParams_new_result1_upvr_2.FilterType = Enum.RaycastFilterType.Include
+local function _(arg1) -- Line 31, Named "getTotalTransparency"
+	return 1 - (1 - arg1.Transparency) * (1 - arg1.LocalTransparencyModifier)
+end
+local function _(arg1, arg2) -- Line 35, Named "eraseFromEnd"
+	for i = #arg1, arg2 + 1, -1 do
+		arg1[i] = nil
+	end
+end
+local var26_upvw
+local var27_upvw
+local function updateProjection() -- Line 42
+	--[[ Upvalues[5]:
+		[1]: CurrentCamera_upvr (readonly)
+		[2]: rad_upvr (readonly)
+		[3]: var26_upvw (read and write)
+		[4]: tan_upvr (readonly)
+		[5]: var27_upvw (read and write)
+	]]
+	local ViewportSize = CurrentCamera_upvr.ViewportSize
+	var26_upvw = tan_upvr(rad_upvr(CurrentCamera_upvr.FieldOfView) / 2) * 2
+	var27_upvw = ViewportSize.X / ViewportSize.Y * var26_upvw
+end
+CurrentCamera_upvr:GetPropertyChangedSignal("FieldOfView"):Connect(updateProjection)
+CurrentCamera_upvr:GetPropertyChangedSignal("ViewportSize"):Connect(updateProjection)
+local ViewportSize_3 = CurrentCamera_upvr.ViewportSize
+var26_upvw = tan_upvr(rad_upvr(CurrentCamera_upvr.FieldOfView) / 2) * 2
+local var30_upvw = var26_upvw
+var27_upvw = ViewportSize_3.X / ViewportSize_3.Y * var30_upvw
+local NearPlaneZ_upvw = CurrentCamera_upvr.NearPlaneZ
+local function playerAdded() -- Line 57
+	--[[ Upvalues[2]:
+		[1]: NearPlaneZ_upvw (read and write)
+		[2]: CurrentCamera_upvr (readonly)
+	]]
+	NearPlaneZ_upvw = CurrentCamera_upvr.NearPlaneZ
+end
+CurrentCamera_upvr:GetPropertyChangedSignal("NearPlaneZ"):Connect(playerAdded)
+local tbl_upvw = {}
+local tbl_upvr_2 = {}
+local function _() -- Line 65, Named "refreshIgnoreList"
+	--[[ Upvalues[2]:
+		[1]: tbl_upvw (read and write)
+		[2]: tbl_upvr_2 (readonly)
+	]]
+	local var39 = 1
+	tbl_upvw = {}
+	for _, v in pairs(tbl_upvr_2) do
+		tbl_upvw[var39] = v
+		var39 += 1
+	end
+end
+function playerAdded(arg1) -- Line 74
+	--[[ Upvalues[2]:
+		[1]: tbl_upvr_2 (readonly)
+		[2]: tbl_upvw (read and write)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	arg1.CharacterAdded:Connect(function(arg1_2) -- Line 75, Named "characterAdded"
+		--[[ Upvalues[3]:
+			[1]: tbl_upvr_2 (copied, readonly)
+			[2]: arg1 (readonly)
+			[3]: tbl_upvw (copied, read and write)
+		]]
+		tbl_upvr_2[arg1] = arg1_2
+		local var56 = 1
+		tbl_upvw = {}
+		for _, v_2 in pairs(tbl_upvr_2) do
+			tbl_upvw[var56] = v_2
+			var56 += 1
+		end
+	end)
+	arg1.CharacterRemoving:Connect(function() -- Line 79, Named "characterRemoving"
+		--[[ Upvalues[3]:
+			[1]: tbl_upvr_2 (copied, readonly)
+			[2]: arg1 (readonly)
+			[3]: tbl_upvw (copied, read and write)
+		]]
+		tbl_upvr_2[arg1] = nil
+		local var64 = 1
+		tbl_upvw = {}
+		for _, v_3 in pairs(tbl_upvr_2) do
+			tbl_upvw[var64] = v_3
+			var64 += 1
+		end
+	end)
+	if arg1.Character then
+		tbl_upvr_2[arg1] = arg1.Character
+		tbl_upvw = {}
+		for _, v_4 in pairs(tbl_upvr_2) do
+			tbl_upvw[1] = v_4
+			-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+			local var71
+		end
+	end
+end
+local var43 = playerAdded
+Players.PlayerAdded:Connect(var43)
+Players.PlayerRemoving:Connect(function(arg1) -- Line 91, Named "playerRemoving"
+	--[[ Upvalues[2]:
+		[1]: tbl_upvr_2 (readonly)
+		[2]: tbl_upvw (read and write)
+	]]
+	tbl_upvr_2[arg1] = nil
+	local var76 = 1
+	tbl_upvw = {}
+	for _, v_5 in pairs(tbl_upvr_2) do
+		tbl_upvw[var76] = v_5
+		var76 += 1
+	end
+end)
+for _, v_6 in ipairs(Players:GetPlayers()) do
+	var43(v_6)
+end
+tbl_upvw = {}
+local var83_upvw = tbl_upvw
+for _, v_7 in pairs(tbl_upvr_2) do
+	var83_upvw[1] = v_7
+	-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+	local var87
+end
+tbl_upvr_2 = nil
+local var88_upvw = tbl_upvr_2
+local var89_upvw
+CurrentCamera_upvr:GetPropertyChangedSignal("CameraSubject"):Connect(function() -- Line 125
+	--[[ Upvalues[2]:
+		[1]: CurrentCamera_upvr (readonly)
+		[2]: var89_upvw (read and write)
+	]]
+	local CameraSubject = CurrentCamera_upvr.CameraSubject
+	if CameraSubject:IsA("Humanoid") then
+		var89_upvw = CameraSubject.RootPart
+	else
+		if CameraSubject:IsA("BasePart") then
+			var89_upvw = CameraSubject
+			return
+		end
+		var89_upvw = nil
+	end
+end)
+local function _(arg1) -- Line 136, Named "canOcclude"
+	--[[ Upvalues[1]:
+		[1]: var88_upvw (read and write)
+	]]
+	local var94 = false
+	if 1 - (1 - arg1.Transparency) * (1 - arg1.LocalTransparencyModifier) < 0.25 then
+		var94 = arg1.CanCollide
+		if var94 then
+			var94 = false
+			if var88_upvw ~= (arg1:GetRootPart() or arg1) then
+				var94 = not arg1:IsA("TrussPart")
+			end
+		end
+	end
+	return var94
+end
+local tbl_upvr = {Vector2.new(0.4, 0), Vector2.new(-0.4, 0), Vector2.new(0, -0.4), Vector2.new(0, 0.4), Vector2.new(0, 0.2)}
+local function getCollisionPoint_upvr(arg1, arg2) -- Line 164, Named "getCollisionPoint"
+	--[[ Upvalues[4]:
+		[1]: any_getUserFlag_result1_upvr (readonly)
+		[2]: RaycastParams_new_result1_upvr (readonly)
+		[3]: var83_upvw (read and write)
+		[4]: new_upvr (readonly)
+	]]
+	-- KONSTANTERROR: Failed to generate AST for function `getCollisionPoint`:
+runluau:5427: assertion failed!
+Traceback:
+runluau:5427 function get_guaranteed_destinations
+runluau:5469 function will_reach_block
+runluau:5918 function astgen
+runluau:8357 function astgen_protected
+runluau:4639 function expr_function
+runluau:7714 function NEWCLOSURE
+runluau:7954 function gen_from_insts
+runluau:8053 function gen_from_hl_block
+runluau:8131 function gen_from_hl_block
+runluau:8131 function gen_from_hl_block
+runluau:8340 function astgen
+runluau:8357 function astgen_protected
+runluau:8418 function decompile_bytecode
+runluau:11983 function wrapped
+runluau:11991
+runluau:12015 function _decompile
+runluau:12181 function decompile
+runluau:12377
+
+end
+local function queryPoint_upvr(arg1, arg2, arg3, arg4) -- Line 202, Named "queryPoint"
+	--[[ Upvalues[7]:
+		[1]: var83_upvw (read and write)
+		[2]: NearPlaneZ_upvw (read and write)
+		[3]: any_getUserFlag_result1_upvr (readonly)
+		[4]: RaycastParams_new_result1_upvr (readonly)
+		[5]: var88_upvw (read and write)
+		[6]: RaycastParams_new_result1_upvr_2 (readonly)
+		[7]: new_upvr (readonly)
+	]]
+	-- KONSTANTERROR: Failed to generate AST for function `queryPoint`:
+runluau:5427: assertion failed!
+Traceback:
+runluau:5427 function get_guaranteed_destinations
+runluau:5469 function will_reach_block
+runluau:5918 function astgen
+runluau:8357 function astgen_protected
+runluau:4639 function expr_function
+runluau:7714 function NEWCLOSURE
+runluau:7954 function gen_from_insts
+runluau:8053 function gen_from_hl_block
+runluau:8131 function gen_from_hl_block
+runluau:8131 function gen_from_hl_block
+runluau:8340 function astgen
+runluau:8357 function astgen_protected
+runluau:8418 function decompile_bytecode
+runluau:11983 function wrapped
+runluau:11991
+runluau:12015 function _decompile
+runluau:12181 function decompile
+runluau:12377
+
+end
+local function queryViewport_upvr(arg1, arg2) -- Line 306, Named "queryViewport"
+	--[[ Upvalues[5]:
+		[1]: CurrentCamera_upvr (readonly)
+		[2]: var27_upvw (read and write)
+		[3]: var30_upvw (read and write)
+		[4]: NearPlaneZ_upvw (read and write)
+		[5]: queryPoint_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	debug.profilebegin("queryViewport")
+	local ViewportSize_2 = CurrentCamera_upvr.ViewportSize
+	local var105
+	for i_9 = 0, 1 do
+		for i_10 = 0, 1 do
+			local queryPoint_upvr_result1, queryPoint_upvr_result2 = queryPoint_upvr(arg1.p + NearPlaneZ_upvw * ((arg1.rightVector) * ((i_9 - 0.5) * var27_upvw) + (arg1.upVector) * ((i_10 - 0.5) * var30_upvw)), -arg1.lookVector, arg2, CurrentCamera_upvr:ViewportPointToRay(ViewportSize_2.x * i_9, ViewportSize_2.y * i_10).Origin)
+			if queryPoint_upvr_result2 < math.huge then
+			end
+			if queryPoint_upvr_result1 < var105 then
+				var105 = queryPoint_upvr_result1
+			end
+		end
+	end
+	debug.profileend()
+	return var105, queryPoint_upvr_result2
+end
+local min_upvr = math.min
+local function testPromotion_upvr(arg1, arg2, arg3) -- Line 347, Named "testPromotion"
+	--[[ Upvalues[4]:
+		[1]: getCollisionPoint_upvr (readonly)
+		[2]: min_upvr (readonly)
+		[3]: queryPoint_upvr (readonly)
+		[4]: tbl_upvr (readonly)
+	]]
+	debug.profilebegin("testPromotion")
+	local p = arg1.p
+	debug.profilebegin("extrapolate")
+	for i_11 = 0, min_upvr(1.25, arg3.rotVelocity.magnitude + (getCollisionPoint_upvr(p, arg3.posVelocity * 1.25) - p).Magnitude / arg3.posVelocity.magnitude), 0.0625 do
+		local any_extrapolate_result1 = arg3.extrapolate(i_11)
+		if arg2 <= queryPoint_upvr(any_extrapolate_result1.p, -any_extrapolate_result1.lookVector, arg2) then
+			return false
+		end
+	end
+	debug.profileend()
+	debug.profilebegin("testOffsets")
+	for _, v_8 in ipairs(tbl_upvr) do
+		local getCollisionPoint_upvr_result1 = getCollisionPoint_upvr(p, arg1.rightVector * v_8.x + arg1.upVector * v_8.y)
+		if queryPoint_upvr(getCollisionPoint_upvr_result1, (p + -arg1.lookVector * arg2 - getCollisionPoint_upvr_result1).Unit, arg2) == math.huge then
+			return false
+		end
+	end
+	debug.profileend()
+	debug.profileend()
+	return true
+end
+return function(arg1, arg2, arg3) -- Line 396, Named "Popper"
+	--[[ Upvalues[4]:
+		[1]: var88_upvw (read and write)
+		[2]: var89_upvw (read and write)
+		[3]: queryViewport_upvr (readonly)
+		[4]: testPromotion_upvr (readonly)
+	]]
+	debug.profilebegin("popper")
+	local var118
+	local function INLINED() -- Internal function, doesn't exist in bytecode
+		var118 = var89_upvw:GetRootPart()
+		return var118
+	end
+	if not var89_upvw or not INLINED() then
+		var118 = var89_upvw
+	end
+	var88_upvw = var118
+	var118 = arg2
+	local queryViewport_upvr_result1, queryViewport_upvr_result2 = queryViewport_upvr(arg1, arg2)
+	if queryViewport_upvr_result2 < var118 then
+		var118 = queryViewport_upvr_result2
+	end
+	if queryViewport_upvr_result1 < var118 and testPromotion_upvr(arg1, arg2, arg3) then
+		var118 = queryViewport_upvr_result1
+	end
+	var88_upvw = nil
+	debug.profileend()
+	return var118
+end

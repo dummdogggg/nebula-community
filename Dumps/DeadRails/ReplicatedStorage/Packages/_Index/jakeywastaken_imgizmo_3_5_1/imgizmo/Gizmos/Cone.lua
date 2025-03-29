@@ -1,73 +1,78 @@
 --[[
     Script: ReplicatedStorage.Packages._Index.jakeywastaken_imgizmo@3.5.1.imgizmo.Gizmos.Cone
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = {};
-v0.__index = v0;
-v0.Init = function(v1, v2, v3, v4, v5) --[[ Line: 8 ]] --[[ Name: Init ]]
-    -- upvalues: v0 (copy)
-    local v6 = setmetatable({}, v0);
-    v6.Ceive = v1;
-    v6.Propertys = v2;
-    v6.Request = v3;
-    v6.Release = v4;
-    v6.Retain = v5;
-    return v6;
-end;
-v0.Draw = function(v7, v8, v9, v10, v11) --[[ Line: 26 ]] --[[ Name: Draw ]]
-    local l_Ceive_0 = v7.Ceive;
-    if not l_Ceive_0.Enabled then
-        return;
-    else
-        v8 = v8 * CFrame.Angles(-1.5707963267948966, 0, 0);
-        local v13 = v8.Position + v8.UpVector * (v10 / 2);
-        local v14 = v8.Position + -v8.UpVector * (v10 / 2);
-        v13 = CFrame.lookAt(v13, v13 + v8.UpVector);
-        v14 = CFrame.lookAt(v14, v14 - v8.UpVector);
-        local v15 = math.floor(360 / v11);
-        local v16 = nil;
-        local v17 = nil;
-        for v18 = 0, 360, v15 do
-            local v19 = math.sin((math.rad(v18))) * v9;
-            local v20 = math.cos((math.rad(v18))) * v9;
-            local v21 = v8.LookVector * v20 + v8.RightVector * v19;
-            local v22 = v14.Position + v21;
-            if not v16 then
-                v16 = v22;
-                v17 = v22;
-                l_Ceive_0.Ray:Draw(v22, v13.Position);
-            else
-                l_Ceive_0.Ray:Draw(v22, v13.Position);
-                l_Ceive_0.Ray:Draw(v16, v22);
-                v16 = v22;
-            end;
-        end;
-        l_Ceive_0.Ray:Draw(v16, v17);
-        return;
-    end;
-end;
-v0.Create = function(v23, v24, v25, v26, v27) --[[ Line: 78 ]] --[[ Name: Create ]]
-    local v28 = {
-        Transform = v24, 
-        Radius = v25, 
-        Length = v26, 
-        Subdivisions = v27, 
-        AlwaysOnTop = v23.Propertys.AlwaysOnTop, 
-        Transparency = v23.Propertys.Transparency, 
-        Color3 = v23.Propertys.Color3, 
-        Enabled = true, 
-        Destroy = false
-    };
-    v23:Retain(v28);
-    return v28;
-end;
-v0.Update = function(v29, v30) --[[ Line: 96 ]] --[[ Name: Update ]]
-    local l_Ceive_1 = v29.Ceive;
-    l_Ceive_1.PushProperty("AlwaysOnTop", v30.AlwaysOnTop);
-    l_Ceive_1.PushProperty("Transparency", v30.Transparency);
-    l_Ceive_1.PushProperty("Color3", v30.Color3);
-    v29:Draw(v30.Transform, v30.Radius, v30.Length, v30.Subdivisions);
-end;
-return v0;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:07
+-- Luau version 6, Types version 3
+-- Time taken: 0.002751 seconds
+
+local module_upvr = {}
+module_upvr.__index = module_upvr
+function module_upvr.Init(arg1, arg2, arg3, arg4, arg5) -- Line 8
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	local setmetatable_result1 = setmetatable({}, module_upvr)
+	setmetatable_result1.Ceive = arg1
+	setmetatable_result1.Propertys = arg2
+	setmetatable_result1.Request = arg3
+	setmetatable_result1.Release = arg4
+	setmetatable_result1.Retain = arg5
+	return setmetatable_result1
+end
+function module_upvr.Draw(arg1, arg2, arg3, arg4, arg5) -- Line 26
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local Ceive = arg1.Ceive
+	local var8
+	if not Ceive.Enabled then
+	else
+		var8 = 0
+		local var9 = arg2 * CFrame.Angles((-math.pi/2), 0, var8)
+		var8 = var9.UpVector
+		local var10 = var9.Position + (var8) * (arg4 / 2)
+		var8 = (-var9.UpVector) * (arg4 / 2)
+		var8 = var10
+		var8 = var9.Position + var8
+		var8 = 360 / arg5
+		var8 = nil
+		for i = 0, 360, math.floor(var8) do
+			local var12 = (CFrame.lookAt(var8, var9.Position + var8 - var9.UpVector).Position) + ((var9.LookVector) * (math.cos(math.rad(i)) * arg3) + (var9.RightVector) * (math.sin(math.rad(i)) * arg3))
+			if not var8 then
+				var8 = var12
+				Ceive.Ray:Draw(var12, CFrame.lookAt(var8, var10 + var9.UpVector).Position)
+			else
+				-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+				Ceive.Ray:Draw(var12, CFrame.lookAt(var8, var10 + var9.UpVector).Position)
+				Ceive.Ray:Draw(var8, var12)
+				var8 = var12
+			end
+		end
+		Ceive.Ray:Draw(var8, var12)
+	end
+end
+function module_upvr.Create(arg1, arg2, arg3, arg4, arg5) -- Line 78
+	local module = {}
+	module.Transform = arg2
+	module.Radius = arg3
+	module.Length = arg4
+	module.Subdivisions = arg5
+	module.AlwaysOnTop = arg1.Propertys.AlwaysOnTop
+	module.Transparency = arg1.Propertys.Transparency
+	module.Color3 = arg1.Propertys.Color3
+	module.Enabled = true
+	module.Destroy = false
+	arg1.Retain(arg1, module)
+	return module
+end
+function module_upvr.Update(arg1, arg2) -- Line 96
+	local Ceive_2 = arg1.Ceive
+	Ceive_2.PushProperty("AlwaysOnTop", arg2.AlwaysOnTop)
+	Ceive_2.PushProperty("Transparency", arg2.Transparency)
+	Ceive_2.PushProperty("Color3", arg2.Color3)
+	arg1:Draw(arg2.Transform, arg2.Radius, arg2.Length, arg2.Subdivisions)
+end
+return module_upvr

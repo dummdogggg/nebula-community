@@ -1,84 +1,99 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.roblox_testez@0.4.1.testez.Reporters.TextReporter
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_select_0 = select;
-local function v6(v1, v2, ...)
-    local v3, v4 = {
-        ...
-    }, l_select_0("#", ...);
-    for v5 = v2, v2 + v4 - 1 do
-        v1[v5] = v3[v5 - v2 + 1];
-    end;
-end;
-local l_TestService_0 = game:GetService("TestService");
-local v8 = require(script.Parent.Parent.TestEnum);
-local v9 = (" "):rep(3);
-local v10 = {
-    [v8.TestStatus.Success] = "+", 
-    [v8.TestStatus.Failure] = "-", 
-    [v8.TestStatus.Skipped] = "~"
-};
-local v11 = {};
-local function v14(v12, v13) --[[ Line: 20 ]] --[[ Name: compareNodes ]]
-    return v12.planNode.phrase:lower() < v13.planNode.phrase:lower();
-end;
-local function v15(v16, v17, v18) --[[ Line: 24 ]] --[[ Name: reportNode ]]
-    -- upvalues: v8 (copy), v10 (copy), v9 (copy), v14 (copy), v15 (copy)
-    v17 = v17 or {};
-    v18 = v18 or 0;
-    if v16.status == v8.TestStatus.Skipped then
-        return v17;
-    else
-        local v19 = nil;
-        if v16.status then
-            local v20 = v10[v16.status] or "?";
-            v19 = ("%s[%s] %s"):format(v9:rep(v18), v20, v16.planNode.phrase);
-        else
-            v19 = ("%s%s"):format(v9:rep(v18), v16.planNode.phrase);
-        end;
-        table.insert(v17, v19);
-        table.sort(v16.children, v14);
-        for _, v22 in ipairs(v16.children) do
-            v15(v22, v17, v18 + 1);
-        end;
-        return v17;
-    end;
-end;
-local function v27(v23) --[[ Line: 59 ]] --[[ Name: reportRoot ]]
-    -- upvalues: v14 (copy), v15 (copy)
-    local v24 = {};
-    table.sort(v23.children, v14);
-    for _, v26 in ipairs(v23.children) do
-        v15(v26, v24, 0);
-    end;
-    return v24;
-end;
-local function _(v28) --[[ Line: 70 ]] --[[ Name: report ]]
-    -- upvalues: v27 (copy)
-    local v29 = v27(v28);
-    return table.concat(v29, "\n");
-end;
-v11.report = function(v31) --[[ Line: 76 ]] --[[ Name: report ]]
-    -- upvalues: v27 (copy), l_TestService_0 (copy)
-    local v32 = {};
-    local v33 = "Test results:";
-    local v34 = v27(v31);
-    local v35 = table.concat(v34, "\n");
-    v6(v32, 1, v33, v35, ("%d passed, %d failed, %d skipped"):format(v31.successCount, v31.failureCount, v31.skippedCount));
-    print(table.concat(v32, "\n"));
-    if v31.failureCount > 0 then
-        print(("%d test nodes reported failures."):format(v31.failureCount));
-    end;
-    if #v31.errors > 0 then
-        print("Errors reported by tests:");
-        print("");
-        for _, v37 in ipairs(v31.errors) do
-            l_TestService_0:Error(v37);
-            print("");
-        end;
-    end;
-end;
-return v11;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:02
+-- Luau version 6, Types version 3
+-- Time taken: 0.002416 seconds
+
+local TestEnum_upvr = require(script.Parent.Parent.TestEnum)
+local tbl_upvr = {
+	[TestEnum_upvr.TestStatus.Success] = '+';
+	[TestEnum_upvr.TestStatus.Failure] = '-';
+	[TestEnum_upvr.TestStatus.Skipped] = '~';
+}
+local module_2 = {}
+local function compareNodes_upvr(arg1, arg2) -- Line 20, Named "compareNodes"
+	local var4
+	if arg1.planNode.phrase:lower() >= arg2.planNode.phrase:lower() then
+		var4 = false
+	else
+		var4 = true
+	end
+	return var4
+end
+local any_rep_result1_upvr = ' ':rep(3)
+local function reportNode_upvr(arg1, arg2, arg3) -- Line 24, Named "reportNode"
+	--[[ Upvalues[5]:
+		[1]: TestEnum_upvr (readonly)
+		[2]: tbl_upvr (readonly)
+		[3]: any_rep_result1_upvr (readonly)
+		[4]: compareNodes_upvr (readonly)
+		[5]: reportNode_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local var14 = arg2
+	if not var14 then
+		var14 = {}
+	end
+	local var15 = var14
+	local var16 = arg3 or 0
+	if arg1.status == TestEnum_upvr.TestStatus.Skipped then
+		return var15
+	end
+	local var17
+	if arg1.status then
+		var17 = "%s[%s] %s":format(any_rep_result1_upvr:rep(var16), tbl_upvr[arg1.status] or '?', arg1.planNode.phrase)
+	else
+		var17 = "%s%s":format(any_rep_result1_upvr:rep(var16), arg1.planNode.phrase)
+	end
+	table.insert(var15, var17)
+	table.sort(arg1.children, compareNodes_upvr)
+	for _, v in ipairs(arg1.children) do
+		reportNode_upvr(v, var15, var16 + 1)
+		local var21
+	end
+	return var21
+end
+local function reportRoot_upvr(arg1) -- Line 59, Named "reportRoot"
+	--[[ Upvalues[2]:
+		[1]: compareNodes_upvr (readonly)
+		[2]: reportNode_upvr (readonly)
+	]]
+	local module = {}
+	table.sort(arg1.children, compareNodes_upvr)
+	for _, v_2 in ipairs(arg1.children) do
+		reportNode_upvr(v_2, module, 0)
+	end
+	return module
+end
+local function report(arg1) -- Line 70
+	--[[ Upvalues[1]:
+		[1]: reportRoot_upvr (readonly)
+	]]
+	return table.concat(reportRoot_upvr(arg1), '\n')
+end
+local TestService_upvr = game:GetService("TestService")
+function module_2.report(arg1) -- Line 76
+	--[[ Upvalues[2]:
+		[1]: reportRoot_upvr (readonly)
+		[2]: TestService_upvr (readonly)
+	]]
+	print(table.concat({"Test results:", table.concat(reportRoot_upvr(arg1), '\n'), "%d passed, %d failed, %d skipped":format(arg1.successCount, arg1.failureCount, arg1.skippedCount)}, '\n'))
+	if 0 < arg1.failureCount then
+		print("%d test nodes reported failures.":format(arg1.failureCount))
+	end
+	if 0 < #arg1.errors then
+		print("Errors reported by tests:")
+		print("")
+		for _, v_3 in ipairs(arg1.errors) do
+			TestService_upvr:Error(v_3)
+			print("")
+		end
+	end
+end
+return module_2

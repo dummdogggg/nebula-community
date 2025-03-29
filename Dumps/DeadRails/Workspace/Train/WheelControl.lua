@@ -1,26 +1,36 @@
 --[[
     Script: Workspace.Train.WheelControl
     Type: Script
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = {
-    Medium = game.ReplicatedStorage.Assets.MediumWheelBase, 
-    Large = game.ReplicatedStorage.Assets.WheelBaseLarge
-};
-local l_RunService_0 = game:GetService("RunService");
-(function() --[[ Line: 8 ]] --[[ Name: initializeWheels ]]
-    -- upvalues: v0 (copy), l_RunService_0 (copy)
-    script.Parent.WheelBases:ClearAllChildren();
-    for _, v3 in pairs(script.Parent.AxelNodes:GetChildren()) do
-        local v4 = v0[v3.Name]:Clone();
-        v4.Parent = script.Parent.WheelBases;
-        l_RunService_0.Heartbeat:Connect(function() --[[ Line: 15 ]]
-            -- upvalues: v3 (copy), v4 (copy)
-            local l_Magnitude_0 = v3.AssemblyLinearVelocity.Magnitude;
-            local l_Value_0 = v4.Radius.Value;
-            local v7, _, _ = v4:GetPivot():ToEulerAnglesXYZ();
-            v4:PivotTo(v3.CFrame * CFrame.Angles(v7 - math.rad(l_Magnitude_0 / l_Value_0), 0, 0));
-        end);
-    end;
-end)();
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:43:55
+-- Luau version 6, Types version 3
+-- Time taken: 0.000963 seconds
+
+local tbl_upvr = {
+	Medium = game.ReplicatedStorage.Assets.MediumWheelBase;
+	Large = game.ReplicatedStorage.Assets.WheelBaseLarge;
+}
+local RunService_upvr = game:GetService("RunService")
+;(function() -- Line 8, Named "initializeWheels"
+	--[[ Upvalues[2]:
+		[1]: tbl_upvr (readonly)
+		[2]: RunService_upvr (readonly)
+	]]
+	script.Parent.WheelBases:ClearAllChildren()
+	for _, v_upvr in pairs(script.Parent.AxelNodes:GetChildren()) do
+		local clone_upvr = tbl_upvr[v_upvr.Name]:Clone()
+		clone_upvr.Parent = script.Parent.WheelBases
+		RunService_upvr.Heartbeat:Connect(function() -- Line 15
+			--[[ Upvalues[2]:
+				[1]: v_upvr (readonly)
+				[2]: clone_upvr (readonly)
+			]]
+			local any_ToEulerAnglesXYZ_result1, _, _ = clone_upvr:GetPivot():ToEulerAnglesXYZ()
+			clone_upvr:PivotTo(v_upvr.CFrame * CFrame.Angles(any_ToEulerAnglesXYZ_result1 - math.rad(v_upvr.AssemblyLinearVelocity.Magnitude / clone_upvr.Radius.Value), 0, 0))
+		end)
+	end
+end)()

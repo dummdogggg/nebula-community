@@ -1,37 +1,47 @@
 --[[
     Script: StarterGui.GameModeDisplay.DisplayGameMode
     Type: LocalScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedFirst_0 = game:GetService("ReplicatedFirst");
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local l_Players_0 = game:GetService("Players");
-local l_TweenService_0 = game:GetService("TweenService");
-local v4 = require(l_ReplicatedStorage_0.Shared.Remotes);
-local l_GameModeDisplay_0 = l_Players_0.LocalPlayer.PlayerGui:WaitForChild("GameModeDisplay");
-local l_TextLabel_0 = l_GameModeDisplay_0:WaitForChild("TextLabel");
-local _ = TweenInfo.new(0.25, Enum.EasingStyle.Linear);
-local v8 = TweenInfo.new(2.5, Enum.EasingStyle.Linear);
-local function v10() --[[ Line: 16 ]] --[[ Name: displayGameModeAsync ]]
-    -- upvalues: l_ReplicatedFirst_0 (copy), l_GameModeDisplay_0 (copy), l_TextLabel_0 (copy), l_TweenService_0 (copy), v8 (copy)
-    if not l_ReplicatedFirst_0.StartClient:GetAttribute("IsStarted") then
-        l_ReplicatedFirst_0.StartClient:GetAttributeChangedSignal("IsStarted"):Wait();
-    end;
-    l_GameModeDisplay_0.Enabled = true;
-    l_TextLabel_0.BackgroundTransparency = 0;
-    l_TextLabel_0.TextTransparency = 0;
-    task.wait(2);
-    local v9 = l_TweenService_0:Create(l_TextLabel_0, v8, {
-        BackgroundTransparency = 1, 
-        TextTransparency = 1
-    });
-    v9:Play();
-    v9.Completed:Wait();
-    task.wait(1);
-    l_GameModeDisplay_0.Enabled = false;
-end;
-v4.Events.DisplayGameMode.OnClientEvent:Connect(function() --[[ Line: 48 ]] --[[ Name: onDisplayGameMode ]]
-    -- upvalues: v10 (copy)
-    v10();
-end);
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:47:14
+-- Luau version 6, Types version 3
+-- Time taken: 0.000988 seconds
+
+local GameModeDisplay_upvr = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("GameModeDisplay")
+local ReplicatedFirst_upvr = game:GetService("ReplicatedFirst")
+local TextLabel_upvr = GameModeDisplay_upvr:WaitForChild("TextLabel")
+local TweenService_upvr = game:GetService("TweenService")
+local TweenInfo_new_result1_upvr = TweenInfo.new(2.5, Enum.EasingStyle.Linear)
+local function displayGameModeAsync_upvr() -- Line 16, Named "displayGameModeAsync"
+	--[[ Upvalues[5]:
+		[1]: ReplicatedFirst_upvr (readonly)
+		[2]: GameModeDisplay_upvr (readonly)
+		[3]: TextLabel_upvr (readonly)
+		[4]: TweenService_upvr (readonly)
+		[5]: TweenInfo_new_result1_upvr (readonly)
+	]]
+	if not ReplicatedFirst_upvr.StartClient:GetAttribute("IsStarted") then
+		ReplicatedFirst_upvr.StartClient:GetAttributeChangedSignal("IsStarted"):Wait()
+	end
+	GameModeDisplay_upvr.Enabled = true
+	TextLabel_upvr.BackgroundTransparency = 0
+	TextLabel_upvr.TextTransparency = 0
+	task.wait(2)
+	local any_Create_result1 = TweenService_upvr:Create(TextLabel_upvr, TweenInfo_new_result1_upvr, {
+		BackgroundTransparency = 1;
+		TextTransparency = 1;
+	})
+	any_Create_result1:Play()
+	any_Create_result1.Completed:Wait()
+	task.wait(1)
+	GameModeDisplay_upvr.Enabled = false
+end
+require(game:GetService("ReplicatedStorage").Shared.Remotes).Events.DisplayGameMode.OnClientEvent:Connect(function() -- Line 48, Named "onDisplayGameMode"
+	--[[ Upvalues[1]:
+		[1]: displayGameModeAsync_upvr (readonly)
+	]]
+	displayGameModeAsync_upvr()
+end)

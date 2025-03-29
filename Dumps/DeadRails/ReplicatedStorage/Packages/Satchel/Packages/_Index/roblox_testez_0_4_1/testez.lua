@@ -1,38 +1,38 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.roblox_testez@0.4.1.testez
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Expectation);
-local v1 = require(script.TestBootstrap);
-local v2 = require(script.TestEnum);
-local v3 = require(script.TestPlan);
-local v4 = require(script.TestPlanner);
-local v5 = require(script.TestResults);
-local v6 = require(script.TestRunner);
-local v7 = require(script.TestSession);
-local v8 = require(script.Reporters.TextReporter);
-local v9 = require(script.Reporters.TextReporterQuiet);
-local v10 = require(script.Reporters.TeamCityReporter);
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:45:33
+-- Luau version 6, Types version 3
+-- Time taken: 0.001190 seconds
+
+local TestBootstrap_upvr = require(script.TestBootstrap)
+local TestPlanner_upvr = require(script.TestPlanner)
+local TestRunner_upvr = require(script.TestRunner)
 return {
-    run = function(v11, v12) --[[ Line: 13 ]] --[[ Name: run ]]
-        -- upvalues: v1 (copy), v4 (copy), v6 (copy)
-        local v13 = v1:getModules(v11);
-        local v14 = v4.createPlan(v13);
-        v12((v6.runPlan(v14)));
-    end, 
-    Expectation = v0, 
-    TestBootstrap = v1, 
-    TestEnum = v2, 
-    TestPlan = v3, 
-    TestPlanner = v4, 
-    TestResults = v5, 
-    TestRunner = v6, 
-    TestSession = v7, 
-    Reporters = {
-        TextReporter = v8, 
-        TextReporterQuiet = v9, 
-        TeamCityReporter = v10
-    }
-};
+	run = function(arg1, arg2) -- Line 13, Named "run"
+		--[[ Upvalues[3]:
+			[1]: TestBootstrap_upvr (readonly)
+			[2]: TestPlanner_upvr (readonly)
+			[3]: TestRunner_upvr (readonly)
+		]]
+		arg2(TestRunner_upvr.runPlan(TestPlanner_upvr.createPlan(TestBootstrap_upvr:getModules(arg1))))
+	end;
+	Expectation = require(script.Expectation);
+	TestBootstrap = TestBootstrap_upvr;
+	TestEnum = require(script.TestEnum);
+	TestPlan = require(script.TestPlan);
+	TestPlanner = TestPlanner_upvr;
+	TestResults = require(script.TestResults);
+	TestRunner = TestRunner_upvr;
+	TestSession = require(script.TestSession);
+	Reporters = {
+		TextReporter = require(script.Reporters.TextReporter);
+		TextReporterQuiet = require(script.Reporters.TextReporterQuiet);
+		TeamCityReporter = require(script.Reporters.TeamCityReporter);
+	};
+}

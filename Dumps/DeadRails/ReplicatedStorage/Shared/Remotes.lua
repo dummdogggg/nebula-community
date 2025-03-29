@@ -1,39 +1,49 @@
 --[[
     Script: ReplicatedStorage.Shared.Remotes
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_RunService_0 = game:GetService("RunService");
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local v2 = require(l_ReplicatedStorage_0.Packages.RemotePromise);
-local function v6(v3, v4) --[[ Line: 6 ]] --[[ Name: getOrCreateEventAsync ]]
-    -- upvalues: l_RunService_0 (copy)
-    if l_RunService_0:IsServer() then
-        local v5 = if v4 then Instance.new("UnreliableRemoteEvent") else Instance.new("RemoteEvent");
-        v5.Name = v3;
-        v5.Parent = script;
-        return v5;
-    else
-        return (script:WaitForChild(v3));
-    end;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:41
+-- Luau version 6, Types version 3
+-- Time taken: 0.001032 seconds
+
+local RunService_upvr = game:GetService("RunService")
+local function getOrCreateEventAsync(arg1, arg2) -- Line 6
+	--[[ Upvalues[1]:
+		[1]: RunService_upvr (readonly)
+	]]
+	local any_IsServer_result1 = RunService_upvr:IsServer()
+	if any_IsServer_result1 then
+		if arg2 then
+			any_IsServer_result1 = Instance.new("UnreliableRemoteEvent")
+		else
+			any_IsServer_result1 = Instance.new("RemoteEvent")
+		end
+		any_IsServer_result1.Name = arg1
+		any_IsServer_result1.Parent = script
+		return any_IsServer_result1
+	end
+	return script:WaitForChild(arg1)
+end
 return {
-    Events = {
-        RequestStartDrag = v6("RequestStartDrag"), 
-        UpdateDrag = v6("UpdateDrag", true), 
-        RequestStopDrag = v6("RequestStopDrag"), 
-        RequestWeld = v6("RequestWeld"), 
-        RequestUnweld = v6("RequestUnweld"), 
-        AttachRope = v6("AttachRope"), 
-        RagdollFlop = v6("RagdollFlop"), 
-        EatCorpse = v6("EatCorpse"), 
-        DropAmmo = v6("DropAmmo"), 
-        DropEquipment = v6("DropEquipment"), 
-        TEMP_PlayMeleeAttack = v6("TEMP_PlayMeleeAttack", true), 
-        DisplayGameMode = v6("DisplayGameMode")
-    }, 
-    Promises = {
-        InteractWithObject = v2.new("InteractWithObject")
-    }
-};
+	Events = {
+		RequestStartDrag = getOrCreateEventAsync("RequestStartDrag");
+		UpdateDrag = getOrCreateEventAsync("UpdateDrag", true);
+		RequestStopDrag = getOrCreateEventAsync("RequestStopDrag");
+		RequestWeld = getOrCreateEventAsync("RequestWeld");
+		RequestUnweld = getOrCreateEventAsync("RequestUnweld");
+		AttachRope = getOrCreateEventAsync("AttachRope");
+		RagdollFlop = getOrCreateEventAsync("RagdollFlop");
+		EatCorpse = getOrCreateEventAsync("EatCorpse");
+		DropAmmo = getOrCreateEventAsync("DropAmmo");
+		DropEquipment = getOrCreateEventAsync("DropEquipment");
+		TEMP_PlayMeleeAttack = getOrCreateEventAsync("TEMP_PlayMeleeAttack", true);
+		DisplayGameMode = getOrCreateEventAsync("DisplayGameMode");
+	};
+	Promises = {
+		InteractWithObject = require(game:GetService("ReplicatedStorage").Packages.RemotePromise).new("InteractWithObject");
+	};
+}

@@ -1,41 +1,43 @@
 --[[
     Script: StarterPlayer.StarterCharacterScripts.VelocityTest
     Type: LocalScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_RunService_0 = game:GetService("RunService");
-local _ = game:GetService("Players").LocalPlayer;
-local l_Parent_0 = script.Parent;
-local l_Humanoid_0 = l_Parent_0:WaitForChild("Humanoid");
-local v4 = nil;
-local v5 = false;
-l_RunService_0.Heartbeat:Connect(function(_) --[[ Line: 12 ]]
-    -- upvalues: l_Humanoid_0 (copy), l_Parent_0 (copy), v5 (ref), v4 (ref)
-    local l_RootPart_0 = l_Humanoid_0.RootPart;
-    if not l_RootPart_0 then
-        return;
-    else
-        local v8 = RaycastParams.new();
-        v8.FilterType = Enum.RaycastFilterType.Exclude;
-        v8.FilterDescendantsInstances = {
-            l_Parent_0
-        };
-        local v9 = workspace:Blockcast(l_RootPart_0.CFrame, l_RootPart_0.Size, l_RootPart_0.CFrame.UpVector * -4, v8);
-        if v9 then
-            v5 = true;
-            v4 = v9.Instance;
-        else
-            v5 = false;
-        end;
-        if not v5 and v4 then
-            if v4.AssemblyLinearVelocity.Magnitude < 1 then
-                return;
-            else
-                l_RootPart_0.AssemblyLinearVelocity = Vector3.new(v4.AssemblyLinearVelocity.X, l_RootPart_0.AssemblyLinearVelocity.Y, v4.AssemblyLinearVelocity.Z);
-                l_RootPart_0.AssemblyAngularVelocity = v4.AssemblyAngularVelocity;
-            end;
-        end;
-        return;
-    end;
-end);
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:48:43
+-- Luau version 6, Types version 3
+-- Time taken: 0.000883 seconds
+
+local Parent_upvr = script.Parent
+local Humanoid_upvr = Parent_upvr:WaitForChild("Humanoid")
+local var4_upvw = false
+local var5_upvw
+game:GetService("RunService").Heartbeat:Connect(function(arg1) -- Line 12
+	--[[ Upvalues[4]:
+		[1]: Humanoid_upvr (readonly)
+		[2]: Parent_upvr (readonly)
+		[3]: var4_upvw (read and write)
+		[4]: var5_upvw (read and write)
+	]]
+	local RootPart = Humanoid_upvr.RootPart
+	if not RootPart then
+	else
+		local RaycastParams_new_result1 = RaycastParams.new()
+		RaycastParams_new_result1.FilterType = Enum.RaycastFilterType.Exclude
+		RaycastParams_new_result1.FilterDescendantsInstances = {Parent_upvr}
+		local workspace_Blockcast_result1 = workspace:Blockcast(RootPart.CFrame, RootPart.Size, RootPart.CFrame.UpVector * -4, RaycastParams_new_result1)
+		if workspace_Blockcast_result1 then
+			var4_upvw = true
+			var5_upvw = workspace_Blockcast_result1.Instance
+		else
+			var4_upvw = false
+		end
+		if not var4_upvw and var5_upvw then
+			if var5_upvw.AssemblyLinearVelocity.Magnitude < 1 then return end
+			RootPart.AssemblyLinearVelocity = Vector3.new(var5_upvw.AssemblyLinearVelocity.X, RootPart.AssemblyLinearVelocity.Y, var5_upvw.AssemblyLinearVelocity.Z)
+			RootPart.AssemblyAngularVelocity = var5_upvw.AssemblyAngularVelocity
+		end
+	end
+end)

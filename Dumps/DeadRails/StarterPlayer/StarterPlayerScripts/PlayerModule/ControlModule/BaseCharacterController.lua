@@ -1,35 +1,44 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.PlayerModule.ControlModule.BaseCharacterController
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_CommonUtils_0 = script.Parent.Parent:WaitForChild("CommonUtils");
-local l_ConnectionUtil_0 = require(l_CommonUtils_0:WaitForChild("ConnectionUtil"));
-local v2 = Vector3.new();
-local v3 = {};
-v3.__index = v3;
-v3.new = function() --[[ Line: 33 ]] --[[ Name: new ]]
-    -- upvalues: v3 (copy), v2 (copy), l_ConnectionUtil_0 (copy)
-    local v4 = setmetatable({}, v3);
-    v4.enabled = false;
-    v4.moveVector = v2;
-    v4.moveVectorIsCameraRelative = true;
-    v4.isJumping = false;
-    v4._connectionUtil = l_ConnectionUtil_0.new();
-    return v4;
-end;
-v3.GetMoveVector = function(v5) --[[ Line: 45 ]] --[[ Name: GetMoveVector ]]
-    return v5.moveVector;
-end;
-v3.IsMoveVectorCameraRelative = function(v6) --[[ Line: 49 ]] --[[ Name: IsMoveVectorCameraRelative ]]
-    return v6.moveVectorIsCameraRelative;
-end;
-v3.GetIsJumping = function(v7) --[[ Line: 53 ]] --[[ Name: GetIsJumping ]]
-    return v7.isJumping;
-end;
-v3.Enable = function(_, _) --[[ Line: 59 ]] --[[ Name: Enable ]]
-    error("BaseCharacterController:Enable must be overridden in derived classes and should not be called.");
-    return false;
-end;
-return v3;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:47:29
+-- Luau version 6, Types version 3
+-- Time taken: 0.000942 seconds
+
+local module_upvr_2 = {}
+module_upvr_2.__index = module_upvr_2
+local zero_vector3_upvr = Vector3.new()
+local module_upvr = require(script.Parent.Parent:WaitForChild("CommonUtils"):WaitForChild("ConnectionUtil"))
+function module_upvr_2.new() -- Line 33
+	--[[ Upvalues[3]:
+		[1]: module_upvr_2 (readonly)
+		[2]: zero_vector3_upvr (readonly)
+		[3]: module_upvr (readonly)
+	]]
+	local setmetatable_result1 = setmetatable({}, module_upvr_2)
+	setmetatable_result1.enabled = false
+	setmetatable_result1.moveVector = zero_vector3_upvr
+	setmetatable_result1.moveVectorIsCameraRelative = true
+	setmetatable_result1.isJumping = false
+	setmetatable_result1._connectionUtil = module_upvr.new()
+	return setmetatable_result1
+end
+function module_upvr_2.GetMoveVector(arg1) -- Line 45
+	return arg1.moveVector
+end
+function module_upvr_2.IsMoveVectorCameraRelative(arg1) -- Line 49
+	return arg1.moveVectorIsCameraRelative
+end
+function module_upvr_2.GetIsJumping(arg1) -- Line 53
+	return arg1.isJumping
+end
+function module_upvr_2.Enable(arg1, arg2) -- Line 59
+	error("BaseCharacterController:Enable must be overridden in derived classes and should not be called.")
+	return false
+end
+return module_upvr_2

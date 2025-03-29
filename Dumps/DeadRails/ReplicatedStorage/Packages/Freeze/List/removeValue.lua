@@ -1,54 +1,56 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.List.removeValue
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.Parent.utils.maybeFreeze);
-local v1 = require(script.Parent.toSet);
-local function v9(v2, ...) --[[ Line: 5 ]] --[[ Name: removeValues ]]
-    -- upvalues: v1 (copy), v0 (copy)
-    local v3 = v1({
-        ...
-    });
-    local v4 = {};
-    local v5 = 1;
-    local v6 = false;
-    for _, v8 in ipairs(v2) do
-        if not v3[v8] then
-            v6 = true;
-            v4[v5] = v8;
-            v5 = v5 + 1;
-        end;
-    end;
-    if v6 then
-        return (v0(v4));
-    else
-        return v2;
-    end;
-end;
-return function(v10, ...) --[[ Line: 35 ]] --[[ Name: removeValue ]]
-    -- upvalues: v0 (copy), v9 (copy)
-    local v11 = {
-        ...
-    };
-    if #v11 == 1 then
-        local v12 = v11[1];
-        local v13 = table.create(#v10);
-        local v14 = false;
-        for _, v16 in v10 do
-            if v16 == v12 then
-                v14 = true;
-            else
-                table.insert(v13, v16);
-            end;
-        end;
-        if v14 then
-            return (v0(v13));
-        else
-            return v10;
-        end;
-    else
-        return v9(v10, ...);
-    end;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:48:45
+-- Luau version 6, Types version 3
+-- Time taken: 0.001369 seconds
+
+local maybeFreeze_upvr = require(script.Parent.Parent.utils.maybeFreeze)
+local toSet_upvr = require(script.Parent.toSet)
+local function removeValues_upvr(arg1, ...) -- Line 5, Named "removeValues"
+	--[[ Upvalues[2]:
+		[1]: toSet_upvr (readonly)
+		[2]: maybeFreeze_upvr (readonly)
+	]]
+	local var12
+	for _, v in ipairs(arg1) do
+		if not toSet_upvr({...})[v] then
+			({})[1] = v
+		end
+	end
+	if nil then
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		return maybeFreeze_upvr({})
+	end
+	return arg1
+end
+return function(arg1, ...) -- Line 35, Named "removeValue"
+	--[[ Upvalues[2]:
+		[1]: maybeFreeze_upvr (readonly)
+		[2]: removeValues_upvr (readonly)
+	]]
+	local args_list = {...}
+	local var18
+	if #args_list == 1 then
+		var18 = #arg1
+		var18 = false
+		for _, v_2 in arg1 do
+			if v_2 == args_list[1] then
+				var18 = true
+			else
+				table.insert(table.create(var18), v_2)
+			end
+		end
+		if var18 then
+			-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+			return maybeFreeze_upvr(table.create(var18))
+		end
+		return arg1
+	end
+	return removeValues_upvr(arg1, ...)
+end

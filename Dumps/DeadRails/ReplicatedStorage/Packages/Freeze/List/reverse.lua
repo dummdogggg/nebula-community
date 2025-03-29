@@ -1,17 +1,25 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.List.reverse
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.Parent.utils.maybeFreeze);
-return function(v1) --[[ Line: 14 ]] --[[ Name: reverse ]]
-    -- upvalues: v0 (copy)
-    local v2 = #v1;
-    local v3 = table.create(v2);
-    local v4 = v2 + 1;
-    for v5, _ in v1 do
-        v3[v5] = v1[v4 - v5];
-    end;
-    return v0(v3);
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:58
+-- Luau version 6, Types version 3
+-- Time taken: 0.000590 seconds
+
+local maybeFreeze_upvr = require(script.Parent.Parent.utils.maybeFreeze)
+return function(arg1) -- Line 14, Named "reverse"
+	--[[ Upvalues[1]:
+		[1]: maybeFreeze_upvr (readonly)
+	]]
+	local len = #arg1
+	local table_create_result1 = table.create(len)
+	local var8 = len + 1
+	for i, _ in arg1 do
+		table_create_result1[i] = arg1[var8 - i]
+	end
+	return maybeFreeze_upvr(table_create_result1)
+end

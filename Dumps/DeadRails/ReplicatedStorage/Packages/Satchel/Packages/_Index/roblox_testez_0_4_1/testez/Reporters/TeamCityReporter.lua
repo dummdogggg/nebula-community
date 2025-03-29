@@ -1,117 +1,102 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.roblox_testez@0.4.1.testez.Reporters.TeamCityReporter
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_select_0 = select;
-local function v6(v1, v2, ...)
-    local v3, v4 = {
-        ...
-    }, l_select_0("#", ...);
-    for v5 = v2, v2 + v4 - 1 do
-        v1[v5] = v3[v5 - v2 + 1];
-    end;
-end;
-local l_TestService_0 = game:GetService("TestService");
-local v8 = require(script.Parent.Parent.TestEnum);
-local v9 = {};
-local function _(v10) --[[ Line: 7 ]] --[[ Name: teamCityEscape ]]
-    v10 = string.gsub(v10, "([]|'[])", "|%1");
-    v10 = string.gsub(v10, "\r", "|r");
-    return (string.gsub(v10, "\n", "|n"));
-end;
-local function v16(v12) --[[ Line: 14 ]] --[[ Name: teamCityEnterSuite ]]
-    local l_format_0 = string.format;
-    local v14 = "##teamcity[testSuiteStarted name='%s']";
-    local v15 = string.gsub(v12, "([]|'[])", "|%1");
-    v15 = string.gsub(v15, "\r", "|r");
-    return l_format_0(v14, (string.gsub(v15, "\n", "|n")));
-end;
-local function v21(v17) --[[ Line: 18 ]] --[[ Name: teamCityLeaveSuite ]]
-    local l_format_1 = string.format;
-    local v19 = "##teamcity[testSuiteFinished name='%s']";
-    local v20 = string.gsub(v17, "([]|'[])", "|%1");
-    v20 = string.gsub(v20, "\r", "|r");
-    return l_format_1(v19, (string.gsub(v20, "\n", "|n")));
-end;
-local function v26(v22) --[[ Line: 22 ]] --[[ Name: teamCityEnterCase ]]
-    local l_format_2 = string.format;
-    local v24 = "##teamcity[testStarted name='%s']";
-    local v25 = string.gsub(v22, "([]|'[])", "|%1");
-    v25 = string.gsub(v25, "\r", "|r");
-    return l_format_2(v24, (string.gsub(v25, "\n", "|n")));
-end;
-local function v31(v27) --[[ Line: 26 ]] --[[ Name: teamCityLeaveCase ]]
-    local l_format_3 = string.format;
-    local v29 = "##teamcity[testFinished name='%s']";
-    local v30 = string.gsub(v27, "([]|'[])", "|%1");
-    v30 = string.gsub(v30, "\r", "|r");
-    return l_format_3(v29, (string.gsub(v30, "\n", "|n")));
-end;
-local function v39(v32, v33) --[[ Line: 30 ]] --[[ Name: teamCityFailCase ]]
-    local l_format_4 = string.format;
-    local v35 = "##teamcity[testFailed name='%s' message='%s']";
-    local v36 = string.gsub(v32, "([]|'[])", "|%1");
-    v36 = string.gsub(v36, "\r", "|r");
-    local v37 = string.gsub(v36, "\n", "|n");
-    local v38 = string.gsub(v33, "([]|'[])", "|%1");
-    v38 = string.gsub(v38, "\r", "|r");
-    return l_format_4(v35, v37, (string.gsub(v38, "\n", "|n")));
-end;
-local function v40(v41, v42, v43) --[[ Line: 35 ]] --[[ Name: reportNode ]]
-    -- upvalues: v8 (copy), v16 (copy), v40 (copy), v21 (copy), v26 (copy), v39 (copy), v31 (copy)
-    v42 = v42 or {};
-    v43 = v43 or 0;
-    if v41.status == v8.TestStatus.Skipped then
-        return v42;
-    elseif v41.planNode.type == v8.NodeType.Describe then
-        table.insert(v42, v16(v41.planNode.phrase));
-        for _, v45 in ipairs(v41.children) do
-            v40(v45, v42, v43 + 1);
-        end;
-        table.insert(v42, v21(v41.planNode.phrase));
-        return;
-    else
-        table.insert(v42, v26(v41.planNode.phrase));
-        if v41.status == v8.TestStatus.Failure then
-            table.insert(v42, v39(v41.planNode.phrase, table.concat(v41.errors, "\n")));
-        end;
-        table.insert(v42, v31(v41.planNode.phrase));
-        return;
-    end;
-end;
-local function v50(v46) --[[ Line: 56 ]] --[[ Name: reportRoot ]]
-    -- upvalues: v40 (copy)
-    local v47 = {};
-    for _, v49 in ipairs(v46.children) do
-        v40(v49, v47, 0);
-    end;
-    return v47;
-end;
-local function _(v51) --[[ Line: 66 ]] --[[ Name: report ]]
-    -- upvalues: v50 (copy)
-    local v52 = v50(v51);
-    return table.concat(v52, "\n");
-end;
-v9.report = function(v54) --[[ Line: 72 ]] --[[ Name: report ]]
-    -- upvalues: v50 (copy), l_TestService_0 (copy)
-    local v55 = {};
-    local v56 = "Test results:";
-    local v57 = v50(v54);
-    local v58 = table.concat(v57, "\n");
-    v6(v55, 1, v56, v58, ("%d passed, %d failed, %d skipped"):format(v54.successCount, v54.failureCount, v54.skippedCount));
-    print(table.concat(v55, "\n"));
-    if v54.failureCount > 0 then
-        print(("%d test nodes reported failures."):format(v54.failureCount));
-    end;
-    if #v54.errors > 0 then
-        print("Errors reported by tests:");
-        print("");
-        for _, v60 in ipairs(v54.errors) do
-            l_TestService_0:Error(v60);
-            print("");
-        end;
-    end;
-end;
-return v9;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:45:59
+-- Luau version 6, Types version 3
+-- Time taken: 0.003253 seconds
+
+local module = {}
+local function _(arg1) -- Line 7, Named "teamCityEscape"
+	return string.gsub(string.gsub(string.gsub(arg1, "([]|'[])", "|%1"), '\r', "|r"), '\n', "|n")
+end
+local function teamCityEnterSuite_upvr(arg1) -- Line 14, Named "teamCityEnterSuite"
+	return string.format("##teamcity[testSuiteStarted name='%s']", string.gsub(string.gsub(string.gsub(arg1, "([]|'[])", "|%1"), '\r', "|r"), '\n', "|n"))
+end
+local function teamCityLeaveSuite_upvr(arg1) -- Line 18, Named "teamCityLeaveSuite"
+	return string.format("##teamcity[testSuiteFinished name='%s']", string.gsub(string.gsub(string.gsub(arg1, "([]|'[])", "|%1"), '\r', "|r"), '\n', "|n"))
+end
+local function teamCityEnterCase_upvr(arg1) -- Line 22, Named "teamCityEnterCase"
+	return string.format("##teamcity[testStarted name='%s']", string.gsub(string.gsub(string.gsub(arg1, "([]|'[])", "|%1"), '\r', "|r"), '\n', "|n"))
+end
+local function teamCityLeaveCase_upvr(arg1) -- Line 26, Named "teamCityLeaveCase"
+	return string.format("##teamcity[testFinished name='%s']", string.gsub(string.gsub(string.gsub(arg1, "([]|'[])", "|%1"), '\r', "|r"), '\n', "|n"))
+end
+local function teamCityFailCase_upvr(arg1, arg2) -- Line 30, Named "teamCityFailCase"
+	return string.format("##teamcity[testFailed name='%s' message='%s']", string.gsub(string.gsub(string.gsub(arg1, "([]|'[])", "|%1"), '\r', "|r"), '\n', "|n"), string.gsub(string.gsub(string.gsub(arg2, "([]|'[])", "|%1"), '\r', "|r"), '\n', "|n"))
+end
+local TestEnum_upvr = require(script.Parent.Parent.TestEnum)
+local function reportNode_upvr(arg1, arg2, arg3) -- Line 35, Named "reportNode"
+	--[[ Upvalues[7]:
+		[1]: TestEnum_upvr (readonly)
+		[2]: teamCityEnterSuite_upvr (readonly)
+		[3]: reportNode_upvr (readonly)
+		[4]: teamCityLeaveSuite_upvr (readonly)
+		[5]: teamCityEnterCase_upvr (readonly)
+		[6]: teamCityFailCase_upvr (readonly)
+		[7]: teamCityLeaveCase_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local var11 = arg2
+	if not var11 then
+		var11 = {}
+	end
+	local var12 = var11
+	if arg1.status == TestEnum_upvr.TestStatus.Skipped then
+		return var12
+	end
+	if arg1.planNode.type == TestEnum_upvr.NodeType.Describe then
+		table.insert(var12, teamCityEnterSuite_upvr(arg1.planNode.phrase))
+		for _, v in ipairs(arg1.children) do
+			reportNode_upvr(v, var12, (arg3 or 0) + 1)
+			local var16
+		end
+		table.insert(var16, teamCityLeaveSuite_upvr(arg1.planNode.phrase))
+	else
+		table.insert(var16, teamCityEnterCase_upvr(arg1.planNode.phrase))
+		if arg1.status == TestEnum_upvr.TestStatus.Failure then
+			table.insert(var16, teamCityFailCase_upvr(arg1.planNode.phrase, table.concat(arg1.errors, '\n')))
+		end
+		table.insert(var16, teamCityLeaveCase_upvr(arg1.planNode.phrase))
+	end
+end
+local function reportRoot_upvr(arg1) -- Line 56, Named "reportRoot"
+	--[[ Upvalues[1]:
+		[1]: reportNode_upvr (readonly)
+	]]
+	local module_2 = {}
+	for _, v_2 in ipairs(arg1.children) do
+		reportNode_upvr(v_2, module_2, 0)
+	end
+	return module_2
+end
+local function report(arg1) -- Line 66
+	--[[ Upvalues[1]:
+		[1]: reportRoot_upvr (readonly)
+	]]
+	return table.concat(reportRoot_upvr(arg1), '\n')
+end
+local TestService_upvr = game:GetService("TestService")
+function module.report(arg1) -- Line 72
+	--[[ Upvalues[2]:
+		[1]: reportRoot_upvr (readonly)
+		[2]: TestService_upvr (readonly)
+	]]
+	print(table.concat({"Test results:", table.concat(reportRoot_upvr(arg1), '\n'), "%d passed, %d failed, %d skipped":format(arg1.successCount, arg1.failureCount, arg1.skippedCount)}, '\n'))
+	if 0 < arg1.failureCount then
+		print("%d test nodes reported failures.":format(arg1.failureCount))
+	end
+	if 0 < #arg1.errors then
+		print("Errors reported by tests:")
+		print("")
+		for _, v_3 in ipairs(arg1.errors) do
+			TestService_upvr:Error(v_3)
+			print("")
+		end
+	end
+end
+return module

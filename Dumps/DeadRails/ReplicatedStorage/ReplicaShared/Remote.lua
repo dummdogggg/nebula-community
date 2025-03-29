@@ -1,154 +1,204 @@
 --[[
     Script: ReplicatedStorage.ReplicaShared.Remote
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_RunService_0 = game:GetService("RunService");
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local v2 = l_RunService_0:IsStudio();
-local v3 = l_RunService_0:IsServer();
-local v4 = {};
-local v5 = nil;
-local v6 = nil;
-if v3 == true then
-    v5 = l_ReplicatedStorage_0:FindFirstChild("RemoteEvents");
-    if v5 ~= nil then
-        if v2 == true then
-            warn((("[%*]: ReplicatedStorage \"%*\" container was already defined"):format(script.Name, "RemoteEvents")));
-        end;
-    else
-        v5 = Instance.new("Folder");
-        v5.Name = "RemoteEvents";
-        v5.Parent = l_ReplicatedStorage_0;
-    end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:45:44
+-- Luau version 6, Types version 3
+-- Time taken: 0.004048 seconds
+
+-- KONSTANTERROR: [0] 1. Error Block 16 start (CF ANALYSIS FAILED)
+local RunService = game:GetService("RunService")
+local ReplicatedStorage_upvr = game:GetService("ReplicatedStorage")
+local any_IsServer_result1_upvr = RunService:IsServer()
+local var4_upvw
+local var5_upvw
+if any_IsServer_result1_upvr == true then
+	var4_upvw = ReplicatedStorage_upvr:FindFirstChild("RemoteEvents")
+	if var4_upvw ~= nil then
+		if RunService:IsStudio() == true then
+			warn(`[{script.Name}]: ReplicatedStorage "{"RemoteEvents"}" container was already defined`)
+			-- KONSTANTWARNING: GOTO [78] #57
+		end
+	else
+		var4_upvw = Instance.new("Folder")
+		var4_upvw.Name = "RemoteEvents"
+		var4_upvw.Parent = ReplicatedStorage_upvr
+	end
 else
-    v5 = l_ReplicatedStorage_0:FindFirstChild("RemoteEvents");
-    if v5 == nil then
-        v6 = Instance.new("BindableEvent");
-        task.spawn(function() --[[ Line: 50 ]]
-            -- upvalues: v5 (ref), l_ReplicatedStorage_0 (copy), v6 (ref)
-            while true do
-                if task.wait() then
-                    v5 = l_ReplicatedStorage_0:FindFirstChild("RemoteEvents");
-                    if v5 ~= nil then
-                        v6:Fire();
-                        return;
-                    end;
-                else
-                    return;
-                end;
-            end;
-        end);
-    end;
-end;
-local v7 = {};
-v7.__index = v7;
-v7.New = function(v8) --[[ Line: 71 ]] --[[ Name: New ]]
-    -- upvalues: v7 (copy)
-    return (setmetatable({
-        fn = v8, 
-        is_disconnected = false, 
-        real_connection = nil
-    }, v7));
-end;
-v7.Disconnect = function(v9) --[[ Line: 79 ]] --[[ Name: Disconnect ]]
-    v9.is_disconnected = true;
-    if v9.real_connection ~= nil then
-        v9.real_connection:Disconnect();
-    end;
-end;
-local v10 = {};
-v10.__index = v10;
-v10.New = function(v11, v12) --[[ Line: 89 ]] --[[ Name: New ]]
-    -- upvalues: v3 (copy), v4 (copy), v5 (ref), v7 (copy), v10 (copy), v6 (ref)
-    if type(v11) ~= "string" then
-        error((("[%*]: name must be a string"):format(script.Name)));
-    end;
-    if v3 == true then
-        if v4[v11] ~= nil then
-            error((("[%*]: RemoteEvent %* was already defined"):format(script.Name, v11)));
-        end;
-        v4[v11] = true;
-        local v13 = Instance.new(v12 == true and "UnreliableRemoteEvent" or "RemoteEvent");
-        v13.Name = v11;
-        v13.Parent = v5;
-        return v13;
-    else
-        local v14 = v5 and v5:FindFirstChild(v11);
-        if v14 ~= nil then
-            return v14;
-        else
-            local v15 = {};
-            local v19 = setmetatable({
-                OnClientEvent = {
-                    Connect = function(_, v17) --[[ Line: 121 ]] --[[ Name: Connect ]]
-                        -- upvalues: v14 (ref), v7 (ref), v15 (ref)
-                        if v14 ~= nil then
-                            return v14.OnClientEvent:Connect(v17);
-                        else
-                            local v18 = v7.New(v17);
-                            table.insert(v15, v18);
-                            return v18;
-                        end;
-                    end
-                }, 
-                OnServerEvent = {
-                    Connect = function() --[[ Line: 134 ]] --[[ Name: Connect ]]
-                        error((("[%*]: Can't connect to \"OnServerEvent\" client-side"):format(script.Name)));
-                    end
-                }, 
-                RemoteEvent = nil
-            }, v10);
-            local function v23() --[[ Line: 141 ]] --[[ Name: on_container_ready ]]
-                -- upvalues: v14 (ref), v5 (ref), v11 (copy), v15 (ref), v19 (copy)
-                local v20 = os.clock();
-                while true do
-                    v14 = v5:FindFirstChild(v11);
-                    if v14 == nil then
-                        if v20 ~= nil and os.clock() - v20 > 20 then
-                            v20 = nil;
-                            warn((("[%*]: RemoteEvent \"%*\" hasn't been defined server-side"):format(script.Name, v11)));
-                        end;
-                        task.wait();
-                    else
-                        break;
-                    end;
-                end;
-                for _, v22 in ipairs(v15) do
-                    if v22.is_disconnected == false then
-                        v22.real_connection = v14.OnClientEvent:Connect(v22.fn);
-                    end;
-                end;
-                v19.RemoteEvent = v14;
-                v15 = nil;
-            end;
-            if v5 ~= nil then
-                task.spawn(v23);
-            else
-                local v24 = nil;
-                do
-                    local l_v24_0 = v24;
-                    l_v24_0 = v6.Event:Connect(function() --[[ Line: 173 ]]
-                        -- upvalues: l_v24_0 (ref), v23 (copy)
-                        l_v24_0:Disconnect();
-                        v23();
-                    end);
-                end;
-            end;
-            return v19;
-        end;
-    end;
-end;
-v10.FireServer = function(v26, ...) --[[ Line: 185 ]] --[[ Name: FireServer ]]
-    if v26.RemoteEvent ~= nil then
-        v26.RemoteEvent:FireServer(...);
-    end;
-end;
-v10.FireClient = function(_) --[[ Line: 191 ]] --[[ Name: FireClient ]]
-    error((("[%*]: Can't use \"FireClient\" client-side"):format(script.Name)));
-end;
-v10.FireAllClients = function(_) --[[ Line: 195 ]] --[[ Name: FireAllClients ]]
-    error((("[%*]: Can't use \"FireAllClients\" client-side"):format(script.Name)));
-end;
-return v10;
+	var4_upvw = ReplicatedStorage_upvr:FindFirstChild("RemoteEvents")
+	if var4_upvw == nil then
+		var5_upvw = Instance.new("BindableEvent")
+		task.spawn(function() -- Line 50
+			--[[ Upvalues[3]:
+				[1]: var4_upvw (read and write)
+				[2]: ReplicatedStorage_upvr (readonly)
+				[3]: var5_upvw (read and write)
+			]]
+			while task.wait() do
+				var4_upvw = ReplicatedStorage_upvr:FindFirstChild("RemoteEvents")
+				if var4_upvw ~= nil then
+					var5_upvw:Fire()
+					return
+				end
+			end
+		end)
+	end
+end
+-- KONSTANTERROR: [0] 1. Error Block 16 end (CF ANALYSIS FAILED)
+-- KONSTANTERROR: [78] 57. Error Block 10 start (CF ANALYSIS FAILED)
+local tbl_4_upvr = {}
+tbl_4_upvr.__index = tbl_4_upvr
+local function New(arg1) -- Line 71
+	--[[ Upvalues[1]:
+		[1]: tbl_4_upvr (readonly)
+	]]
+	local module = {}
+	module.fn = arg1
+	module.is_disconnected = false
+	module.real_connection = nil
+	return setmetatable(module, tbl_4_upvr)
+end
+tbl_4_upvr.New = New
+function tbl_4_upvr.Disconnect(arg1) -- Line 79
+	arg1.is_disconnected = true
+	if arg1.real_connection ~= nil then
+		arg1.real_connection:Disconnect()
+	end
+end
+local module_2_upvr = {}
+module_2_upvr.__index = module_2_upvr
+local tbl_5_upvr = {}
+function module_2_upvr.New(arg1, arg2) -- Line 89
+	--[[ Upvalues[6]:
+		[1]: any_IsServer_result1_upvr (readonly)
+		[2]: tbl_5_upvr (readonly)
+		[3]: var4_upvw (read and write)
+		[4]: tbl_4_upvr (readonly)
+		[5]: module_2_upvr (readonly)
+		[6]: var5_upvw (read and write)
+	]]
+	local var11_upvw
+	if var11_upvw ~= "string" then
+		var11_upvw = error
+		var11_upvw(`[{script.Name}]: name must be a string`)
+	end
+	var11_upvw = any_IsServer_result1_upvr
+	if var11_upvw == true then
+		var11_upvw = tbl_5_upvr[arg1]
+		if var11_upvw ~= nil then
+			var11_upvw = error
+			var11_upvw(`[{script.Name}]: RemoteEvent {arg1} was already defined`)
+		end
+		var11_upvw = tbl_5_upvr
+		local var12 = true
+		var11_upvw[arg1] = var12
+		var11_upvw = Instance.new
+		if arg2 == true then
+			var12 = "UnreliableRemoteEvent"
+		else
+			var12 = "RemoteEvent"
+		end
+		var11_upvw = var11_upvw(var12)
+		var11_upvw.Name = arg1
+		var11_upvw.Parent = var4_upvw
+		return var11_upvw
+	end
+	var11_upvw = var4_upvw
+	if var11_upvw then
+		var11_upvw = var4_upvw:FindFirstChild(arg1)
+	end
+	if var11_upvw ~= nil then
+		return var11_upvw
+	end
+	local tbl_3_upvw = {}
+	local tbl = {}
+	local tbl_2 = {}
+	local function Connect(arg1_2, arg2_2) -- Line 121
+		--[[ Upvalues[3]:
+			[1]: var11_upvw (read and write)
+			[2]: tbl_4_upvr (copied, readonly)
+			[3]: tbl_3_upvw (read and write)
+		]]
+		if var11_upvw ~= nil then
+			return var11_upvw.OnClientEvent:Connect(arg2_2)
+		end
+		local any_New_result1 = tbl_4_upvr.New(arg2_2)
+		table.insert(tbl_3_upvw, any_New_result1)
+		return any_New_result1
+	end
+	tbl_2.Connect = Connect
+	tbl.OnClientEvent = tbl_2
+	tbl.OnServerEvent = {
+		Connect = function() -- Line 134, Named "Connect"
+			error(`[{script.Name}]: Can't connect to "OnServerEvent" client-side`)
+		end;
+	}
+	tbl.RemoteEvent = nil
+	local setmetatable_result1_upvr = setmetatable(tbl, module_2_upvr)
+	local function on_container_ready_upvr() -- Line 141, Named "on_container_ready"
+		--[[ Upvalues[5]:
+			[1]: var11_upvw (read and write)
+			[2]: var4_upvw (copied, read and write)
+			[3]: arg1 (readonly)
+			[4]: tbl_3_upvw (read and write)
+			[5]: setmetatable_result1_upvr (readonly)
+		]]
+		-- KONSTANTERROR: [39] 29. Error Block 7 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [39] 29. Error Block 7 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [0] 1. Error Block 24 start (CF ANALYSIS FAILED)
+		-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [39.1]
+		if nil == nil then
+			-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [39.0]
+			if nil ~= nil then
+				-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [39.2]
+				-- KONSTANTWARNING: Failed to evaluate expression, replaced with nil [39.4292477000]
+				if nil < nil then
+				end
+			end
+			-- KONSTANTWARNING: GOTO [3] #3
+		end
+		-- KONSTANTERROR: [0] 1. Error Block 24 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [41] 31. Error Block 20 start (CF ANALYSIS FAILED)
+		for _, v in ipairs(tbl_3_upvw) do
+			if v.is_disconnected == false then
+				v.real_connection = var11_upvw.OnClientEvent:Connect(v.fn)
+			end
+		end
+		setmetatable_result1_upvr.RemoteEvent = var11_upvw
+		tbl_3_upvw = nil
+		-- KONSTANTERROR: [41] 31. Error Block 20 end (CF ANALYSIS FAILED)
+	end
+	if var4_upvw ~= nil then
+		task.spawn(on_container_ready_upvr)
+	else
+		local var30_upvw
+		var30_upvw = var5_upvw.Event:Connect(function() -- Line 173
+			--[[ Upvalues[2]:
+				[1]: var30_upvw (read and write)
+				[2]: on_container_ready_upvr (readonly)
+			]]
+			var30_upvw:Disconnect()
+			on_container_ready_upvr()
+		end)
+	end
+	return setmetatable_result1_upvr
+end
+function module_2_upvr.FireServer(arg1, ...) -- Line 185
+	if arg1.RemoteEvent ~= nil then
+		arg1.RemoteEvent:FireServer(...)
+	end
+end
+function module_2_upvr.FireClient(arg1) -- Line 191
+	error(`[{script.Name}]: Can't use "FireClient" client-side`)
+end
+function module_2_upvr.FireAllClients(arg1) -- Line 195
+	error(`[{script.Name}]: Can't use "FireAllClients" client-side`)
+end
+do
+	return module_2_upvr
+end
+-- KONSTANTERROR: [78] 57. Error Block 10 end (CF ANALYSIS FAILED)

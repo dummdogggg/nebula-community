@@ -1,9 +1,10 @@
 --[[
+    STUB SCRIPT (Original could not be decompiled)
     Script: ReplicatedStorage.Packages.Freeze.utils.isDataStructure
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Error: API Error - Falha na decompilação
 --]]
 
-return function(v0) --[[ Line: 2 ]]
-    return typeof(v0) == "table";
-end;
+return {
+    -- Module content not available
+}

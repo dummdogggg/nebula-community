@@ -1,7 +1,11 @@
 --[[
     Script: Workspace.Train.TrainControls.Lever.HitBox.HornControl
     Type: Script
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
--- Failed to decompile the script
+-- Failed to get script bytecode, error:
+
+--[[
+Unable to decompress bytecode!
+--]]

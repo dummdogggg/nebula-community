@@ -1,55 +1,85 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.utils.updateIn
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_Parent_0 = script.Parent.Parent;
-local v1 = require(l_Parent_0.None);
-local v2 = require(script.Parent.Parent.utils.isDataStructure);
-local v3 = require(script.Parent.slice);
-local v4 = require(script.Parent.get);
-local l_remove_0 = require(script.Parent:FindFirstChild("remove"));
-local v6 = require(script.Parent.set);
-local function _(v7) --[[ Line: 12 ]] --[[ Name: toString ]]
-    return table.concat(v7, ", ");
-end;
-local function v9(v10, v11, v12, v13, v14) --[[ Line: 16 ]] --[[ Name: updateInDeeply ]]
-    -- upvalues: v1 (copy), v2 (copy), v3 (copy), v4 (copy), v9 (copy), l_remove_0 (copy), v6 (copy)
-    local v15 = v10 == v1;
-    if v12 == #v11 + 1 then
-        local v16 = if v15 then v14 else v10;
-        local v17 = v13(v16);
-        if v17 == v16 then
-            return v10;
-        else
-            return v17;
-        end;
-    else
-        if not v15 and not v2(v10) then
-            local l_error_0 = error;
-            local v19 = "Cannot update within non-data-structure value in path [";
-            local v20 = v3(v11, 1, v12 - 1);
-            l_error_0(v19 .. table.concat(v20, ", ") .. "]: " .. tostring(v10));
-        end;
-        local v21 = v11[v12];
-        local v22 = if v15 then v1 else v4(v10, v21, v1);
-        local v23 = v9(v22, v11, v12 + 1, v13, v14);
-        if v23 == v22 then
-            return v10;
-        elseif v23 == v1 then
-            return (l_remove_0(v10, v21));
-        else
-            return (v6(if v15 then {} else v10, v21, v23));
-        end;
-    end;
-end;
-return function(v24, v25, v26, v27) --[[ Line: 49 ]]
-    -- upvalues: v9 (copy), v1 (copy)
-    local v28 = v9(v24, v25, 1, v26, v27);
-    if v28 == v1 then
-        return v27;
-    else
-        return v28;
-    end;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:46:29
+-- Luau version 6, Types version 3
+-- Time taken: 0.003326 seconds
+
+local None_upvr = require(script.Parent.Parent.None)
+local function _(arg1) -- Line 12, Named "toString"
+	return table.concat(arg1, ", ")
+end
+local isDataStructure_upvr = require(script.Parent.Parent.utils.isDataStructure)
+local slice_upvr = require(script.Parent.slice)
+local get_upvr = require(script.Parent.get)
+local module_upvr = require(script.Parent:FindFirstChild("remove"))
+local set_upvr = require(script.Parent.set)
+local function updateInDeeply_upvr(arg1, arg2, arg3, arg4, arg5) -- Line 16, Named "updateInDeeply"
+	--[[ Upvalues[7]:
+		[1]: None_upvr (readonly)
+		[2]: isDataStructure_upvr (readonly)
+		[3]: slice_upvr (readonly)
+		[4]: get_upvr (readonly)
+		[5]: updateInDeeply_upvr (readonly)
+		[6]: module_upvr (readonly)
+		[7]: set_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local var12
+	if arg1 ~= None_upvr then
+		var12 = false
+	else
+		var12 = true
+	end
+	if arg3 == #arg2 + 1 then
+		if var12 then
+			local _ = arg5
+		else
+		end
+		local arg4_result1 = arg4(arg1)
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if arg4_result1 == arg1 then
+			return arg1
+		end
+		return arg4_result1
+	end
+	if not var12 then
+		if not isDataStructure_upvr(arg1) then
+			error("Cannot update within non-data-structure value in path ["..table.concat(slice_upvr(arg2, 1, arg3 - 1), ", ").."]: "..tostring(arg1))
+		end
+	end
+	if var12 then
+		local _ = None_upvr
+	else
+	end
+	local updateInDeeply_upvr_result1_2 = updateInDeeply_upvr(get_upvr(arg1, arg2[arg3], None_upvr), arg2, arg3 + 1, arg4, arg5)
+	-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+	if updateInDeeply_upvr_result1_2 == get_upvr(arg1, arg2[arg3], None_upvr) then
+		return arg1
+	end
+	if updateInDeeply_upvr_result1_2 == None_upvr then
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		return module_upvr(arg1, arg2[arg3])
+	end
+	if var12 then
+	else
+	end
+	-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+	return set_upvr(arg1, arg2[arg3], updateInDeeply_upvr_result1_2)
+end
+return function(arg1, arg2, arg3, arg4) -- Line 49
+	--[[ Upvalues[2]:
+		[1]: updateInDeeply_upvr (readonly)
+		[2]: None_upvr (readonly)
+	]]
+	local updateInDeeply_upvr_result1_3 = updateInDeeply_upvr(arg1, arg2, 1, arg3, arg4)
+	if updateInDeeply_upvr_result1_3 == None_upvr then
+		return arg4
+	end
+	return updateInDeeply_upvr_result1_3
+end

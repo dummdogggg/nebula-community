@@ -1,68 +1,75 @@
 --[[
     Script: ReplicatedStorage.Packages._Index.jakeywastaken_imgizmo@3.5.1.imgizmo.Gizmos.VolumeCylinder
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_Terrain_0 = workspace.Terrain;
-local v1 = {};
-v1.__index = v1;
-v1.Init = function(v2, v3, v4, v5, v6, v7) --[[ Line: 8 ]] --[[ Name: Init ]]
-    -- upvalues: v1 (copy)
-    local v8 = setmetatable({}, v1);
-    v8.Ceive = v2;
-    v8.Propertys = v3;
-    v8.Request = v4;
-    v8.Release = v5;
-    v8.Retain = v6;
-    v8.Register = v7;
-    return v8;
-end;
-v1.Draw = function(v9, v10, v11, v12, v13, v14) --[[ Line: 28 ]] --[[ Name: Draw ]]
-    -- upvalues: l_Terrain_0 (copy)
-    local l_Ceive_0 = v9.Ceive;
-    if not l_Ceive_0.Enabled then
-        return;
-    else
-        local v16 = v9.Request("CylinderHandleAdornment");
-        v16.Color3 = v9.Propertys.Color3;
-        v16.Transparency = v9.Propertys.Transparency;
-        v16.CFrame = v10;
-        v16.Height = v12;
-        v16.Radius = v11;
-        v16.InnerRadius = v13 or 0;
-        v16.Angle = v14 or 360;
-        v16.AlwaysOnTop = v9.Propertys.AlwaysOnTop;
-        v16.ZIndex = 1;
-        v16.Adornee = l_Terrain_0;
-        v16.Parent = l_Terrain_0;
-        l_Ceive_0.ActiveInstances = l_Ceive_0.ActiveInstances + 1;
-        v9.Register(v16);
-        v9.Ceive.ScheduleCleaning();
-        return;
-    end;
-end;
-v1.Create = function(v17, v18, v19, v20, v21, v22) --[[ Line: 63 ]] --[[ Name: Create ]]
-    local v23 = {
-        Transform = v18, 
-        Radius = v19, 
-        Length = v20, 
-        InnerRadius = v21 or 0, 
-        Angle = v22 or 360, 
-        AlwaysOnTop = v17.Propertys.AlwaysOnTop, 
-        Transparency = v17.Propertys.Transparency, 
-        Color3 = v17.Propertys.Color3, 
-        Enabled = true, 
-        Destroy = false
-    };
-    v17:Retain(v23);
-    return v23;
-end;
-v1.Update = function(v24, v25) --[[ Line: 82 ]] --[[ Name: Update ]]
-    local l_Ceive_1 = v24.Ceive;
-    l_Ceive_1.PushProperty("AlwaysOnTop", v25.AlwaysOnTop);
-    l_Ceive_1.PushProperty("Transparency", v25.Transparency);
-    l_Ceive_1.PushProperty("Color3", v25.Color3);
-    v24:Draw(v25.Transform, v25.Radius, v25.Length, v25.InnerRadius, v25.Angle);
-end;
-return v1;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:21
+-- Luau version 6, Types version 3
+-- Time taken: 0.001391 seconds
+
+local module_2_upvr = {}
+module_2_upvr.__index = module_2_upvr
+function module_2_upvr.Init(arg1, arg2, arg3, arg4, arg5, arg6) -- Line 8
+	--[[ Upvalues[1]:
+		[1]: module_2_upvr (readonly)
+	]]
+	local setmetatable_result1 = setmetatable({}, module_2_upvr)
+	setmetatable_result1.Ceive = arg1
+	setmetatable_result1.Propertys = arg2
+	setmetatable_result1.Request = arg3
+	setmetatable_result1.Release = arg4
+	setmetatable_result1.Retain = arg5
+	setmetatable_result1.Register = arg6
+	return setmetatable_result1
+end
+local Terrain_upvr = workspace.Terrain
+function module_2_upvr.Draw(arg1, arg2, arg3, arg4, arg5, arg6) -- Line 28
+	--[[ Upvalues[1]:
+		[1]: Terrain_upvr (readonly)
+	]]
+	local Ceive = arg1.Ceive
+	if not Ceive.Enabled then
+	else
+		local any_Request_result1 = arg1.Request("CylinderHandleAdornment")
+		any_Request_result1.Color3 = arg1.Propertys.Color3
+		any_Request_result1.Transparency = arg1.Propertys.Transparency
+		any_Request_result1.CFrame = arg2
+		any_Request_result1.Height = arg4
+		any_Request_result1.Radius = arg3
+		any_Request_result1.InnerRadius = arg5 or 0
+		any_Request_result1.Angle = arg6 or 360
+		any_Request_result1.AlwaysOnTop = arg1.Propertys.AlwaysOnTop
+		any_Request_result1.ZIndex = 1
+		any_Request_result1.Adornee = Terrain_upvr
+		any_Request_result1.Parent = Terrain_upvr
+		Ceive.ActiveInstances += 1
+		arg1.Register(any_Request_result1)
+		arg1.Ceive.ScheduleCleaning()
+	end
+end
+function module_2_upvr.Create(arg1, arg2, arg3, arg4, arg5, arg6) -- Line 63
+	local module = {}
+	module.Transform = arg2
+	module.Radius = arg3
+	module.Length = arg4
+	module.InnerRadius = arg5 or 0
+	module.Angle = arg6 or 360
+	module.AlwaysOnTop = arg1.Propertys.AlwaysOnTop
+	module.Transparency = arg1.Propertys.Transparency
+	module.Color3 = arg1.Propertys.Color3
+	module.Enabled = true
+	module.Destroy = false
+	arg1.Retain(arg1, module)
+	return module
+end
+function module_2_upvr.Update(arg1, arg2) -- Line 82
+	local Ceive_2 = arg1.Ceive
+	Ceive_2.PushProperty("AlwaysOnTop", arg2.AlwaysOnTop)
+	Ceive_2.PushProperty("Transparency", arg2.Transparency)
+	Ceive_2.PushProperty("Color3", arg2.Color3)
+	arg1:Draw(arg2.Transform, arg2.Radius, arg2.Length, arg2.InnerRadius, arg2.Angle)
+end
+return module_2_upvr

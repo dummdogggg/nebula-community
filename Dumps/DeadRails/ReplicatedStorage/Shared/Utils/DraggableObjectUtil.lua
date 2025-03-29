@@ -1,63 +1,69 @@
 --[[
     Script: ReplicatedStorage.Shared.Utils.DraggableObjectUtil
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_RunService_0 = game:GetService("RunService");
-local _ = game:GetService("Players");
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local v3 = require(l_ReplicatedStorage_0.Shared.SharedConstants.Tag);
-local v4 = l_RunService_0:IsServer();
-local function v10(v5, v6, v7) --[[ Line: 13 ]] --[[ Name: findFirstAncestorOfClassWithTag ]]
-    local l_v5_FirstAncestorOfClass_0 = v5:FindFirstAncestorOfClass(v6);
-    local v9 = 0;
-    while true do
-        if l_v5_FirstAncestorOfClass_0 and v9 < 10 then
-            if l_v5_FirstAncestorOfClass_0:HasTag(v7) then
-                return l_v5_FirstAncestorOfClass_0;
-            else
-                l_v5_FirstAncestorOfClass_0 = l_v5_FirstAncestorOfClass_0:FindFirstAncestorOfClass(v6);
-                v9 = v9 + 1;
-            end;
-        else
-            return nil;
-        end;
-    end;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:43
+-- Luau version 6, Types version 3
+-- Time taken: 0.002144 seconds
+
+local function findFirstAncestorOfClassWithTag_upvr(arg1, arg2, arg3) -- Line 13, Named "findFirstAncestorOfClassWithTag"
+	local instance = arg1:FindFirstAncestorOfClass(arg2)
+	while instance and 0 < 10 do
+		if instance:HasTag(arg3) then
+			return instance
+		end
+	end
+	return nil
+end
+local Tag_upvr = require(game:GetService("ReplicatedStorage").Shared.SharedConstants.Tag)
+local any_IsServer_result1_upvr = game:GetService("RunService"):IsServer()
 return {
-    isValidDraggableObject = function(v11) --[[ Line: 31 ]] --[[ Name: isValidDraggableObject ]]
-        -- upvalues: v3 (copy), v4 (copy)
-        if typeof(v11) ~= "Instance" then
-            return false;
-        elseif not v11 or not v11:HasTag(v3.DraggableObject) or not v11:IsA("Model") or not v11.PrimaryPart then
-            return false;
-        elseif v4 and not v11.PrimaryPart:CanSetNetworkOwnership() then
-            return false;
-        else
-            return true;
-        end;
-    end, 
-    isValidWeldTarget = function(v12) --[[ Line: 53 ]] --[[ Name: isValidWeldTarget ]]
-        -- upvalues: v10 (copy)
-        if v12 and v12:HasTag("WeldableSurface") then
-            return true;
-        elseif not v12 or not v12:IsA("BasePart") or v12:HasTag("DraggableObject") or not v12:FindFirstAncestor("Train") or v12:IsGrounded() then
-            return false;
-        elseif v10(v12, "Model", "DraggableObject") and true or false then
-            return false;
-        else
-            local l_v12_FirstAncestorOfClass_0 = v12:FindFirstAncestorOfClass("Model");
-            if l_v12_FirstAncestorOfClass_0 then
-                local l_l_v12_FirstAncestorOfClass_0_FirstChild_0 = l_v12_FirstAncestorOfClass_0:FindFirstChild("Humanoid", true);
-                if l_l_v12_FirstAncestorOfClass_0_FirstChild_0 and l_l_v12_FirstAncestorOfClass_0_FirstChild_0:IsA("Humanoid") then
-                    return false;
-                end;
-            end;
-            return true;
-        end;
-    end, 
-    isDraggableObjectWelded = function(v15) --[[ Line: 88 ]] --[[ Name: isDraggableObjectWelded ]]
-        return (v15.PrimaryPart:FindFirstChild("DragWeldConstraint"));
-    end
-};
+	isValidDraggableObject = function(arg1) -- Line 31, Named "isValidDraggableObject"
+		--[[ Upvalues[2]:
+			[1]: Tag_upvr (readonly)
+			[2]: any_IsServer_result1_upvr (readonly)
+		]]
+		if typeof(arg1) ~= "Instance" then
+			return false
+		end
+		if not arg1 or not arg1:HasTag(Tag_upvr.DraggableObject) or not arg1:IsA("Model") or not arg1.PrimaryPart then
+			return false
+		end
+		if any_IsServer_result1_upvr and not arg1.PrimaryPart:CanSetNetworkOwnership() then
+			return false
+		end
+		return true
+	end;
+	isValidWeldTarget = function(arg1) -- Line 53, Named "isValidWeldTarget"
+		--[[ Upvalues[1]:
+			[1]: findFirstAncestorOfClassWithTag_upvr (readonly)
+		]]
+		if arg1 and arg1:HasTag("WeldableSurface") then
+			return true
+		end
+		if not arg1 or not arg1:IsA("BasePart") or arg1:HasTag("DraggableObject") or not arg1:FindFirstAncestor("Train") or arg1:IsGrounded() then
+			return false
+		end
+		if findFirstAncestorOfClassWithTag_upvr(arg1, "Model", "DraggableObject") then
+		else
+		end
+		if false then
+			return false
+		end
+		local class_Model = arg1:FindFirstAncestorOfClass("Model")
+		if class_Model then
+			local Humanoid_2 = class_Model:FindFirstChild("Humanoid", true)
+			if Humanoid_2 and Humanoid_2:IsA("Humanoid") then
+				return false
+			end
+		end
+		return true
+	end;
+	isDraggableObjectWelded = function(arg1) -- Line 88, Named "isDraggableObjectWelded"
+		return arg1.PrimaryPart:FindFirstChild("DragWeldConstraint")
+	end;
+}

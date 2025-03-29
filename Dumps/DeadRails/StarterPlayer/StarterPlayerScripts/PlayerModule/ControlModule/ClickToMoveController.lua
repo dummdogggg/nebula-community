@@ -1,1367 +1,1515 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.PlayerModule.ControlModule.ClickToMoveController
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_status_0, l_result_0 = pcall(function() --[[ Line: 10 ]]
-    return UserSettings():IsUserFeatureEnabled("UserExcludeNonCollidableForPathfinding");
-end);
-local v2 = l_status_0 and l_result_0;
-local l_status_1, l_result_1 = pcall(function() --[[ Line: 14 ]]
-    return UserSettings():IsUserFeatureEnabled("UserClickToMoveSupportAgentCanClimb2");
-end);
-local v5 = l_status_1 and l_result_1;
-local l_UserInputService_0 = game:GetService("UserInputService");
-local l_PathfindingService_0 = game:GetService("PathfindingService");
-local l_Players_0 = game:GetService("Players");
-local _ = game:GetService("Debris");
-local l_StarterGui_0 = game:GetService("StarterGui");
-local l_Workspace_0 = game:GetService("Workspace");
-local l_CollectionService_0 = game:GetService("CollectionService");
-local l_GuiService_0 = game:GetService("GuiService");
-local l_CommonUtils_0 = script.Parent.Parent:WaitForChild("CommonUtils");
-local v15 = require(l_CommonUtils_0:WaitForChild("FlagUtil")).getUserFlag("UserRaycastPerformanceImprovements");
-local v16 = true;
-local v17 = true;
-local v18 = false;
-local v19 = 1;
-local v20 = 8;
-local v21 = {
-    [Enum.KeyCode.W] = true, 
-    [Enum.KeyCode.A] = true, 
-    [Enum.KeyCode.S] = true, 
-    [Enum.KeyCode.D] = true, 
-    [Enum.KeyCode.Up] = true, 
-    [Enum.KeyCode.Down] = true
-};
-local l_LocalPlayer_0 = l_Players_0.LocalPlayer;
-local l_ClickToMoveDisplay_0 = require(script.Parent:WaitForChild("ClickToMoveDisplay"));
-local v24 = RaycastParams.new();
-v24.FilterType = Enum.RaycastFilterType.Exclude;
-local v25 = {};
-if not v15 then
-    local function v26(v27) --[[ Line: 65 ]] --[[ Name: FindCharacterAncestor ]]
-        -- upvalues: v26 (copy)
-        if v27 then
-            local l_Humanoid_0 = v27:FindFirstChildOfClass("Humanoid");
-            if l_Humanoid_0 then
-                return v27, l_Humanoid_0;
-            else
-                return v26(v27.Parent);
-            end;
-        else
-            return;
-        end;
-    end;
-    v25.FindCharacterAncestor = v26;
-    local l_v26_0 = v26 --[[ copy: 27 -> 51 ]];
-    local function v30(v31, v32, v33) --[[ Line: 77 ]] --[[ Name: Raycast ]]
-        -- upvalues: l_Workspace_0 (copy), l_v26_0 (copy), v30 (copy)
-        v33 = v33 or {};
-        local l_l_Workspace_0_PartOnRayWithIgnoreList_0, v35, v36, v37 = l_Workspace_0:FindPartOnRayWithIgnoreList(v31, v33);
-        if l_l_Workspace_0_PartOnRayWithIgnoreList_0 then
-            if v32 and l_l_Workspace_0_PartOnRayWithIgnoreList_0.CanCollide == false then
-                local v38;
-                if l_l_Workspace_0_PartOnRayWithIgnoreList_0 then
-                    local l_Humanoid_1 = l_l_Workspace_0_PartOnRayWithIgnoreList_0:FindFirstChildOfClass("Humanoid");
-                    if l_Humanoid_1 then
-                        local _ = l_l_Workspace_0_PartOnRayWithIgnoreList_0;
-                        v38 = l_Humanoid_1;
-                    else
-                        local v41, v42 = l_v26_0(l_l_Workspace_0_PartOnRayWithIgnoreList_0.Parent);
-                        local _ = v41;
-                        v38 = v42;
-                    end;
-                else
-                    local _ = nil;
-                    v38 = nil;
-                end;
-                if v38 == nil then
-                    table.insert(v33, l_l_Workspace_0_PartOnRayWithIgnoreList_0);
-                    return v30(v31, v32, v33);
-                end;
-            end;
-            return l_l_Workspace_0_PartOnRayWithIgnoreList_0, v35, v36, v37;
-        else
-            return nil, nil;
-        end;
-    end;
-    v25.Raycast = v30;
-end;
-local v45 = {};
-local function _(v46) --[[ Line: 99 ]] --[[ Name: findPlayerHumanoid ]]
-    -- upvalues: v45 (copy)
-    local v47 = v46 and v46.Character;
-    if v47 then
-        local v48 = v45[v46];
-        if v48 and v48.Parent == v47 then
-            return v48;
-        else
-            v45[v46] = nil;
-            local l_Humanoid_2 = v47:FindFirstChildOfClass("Humanoid");
-            if l_Humanoid_2 then
-                v45[v46] = l_Humanoid_2;
-            end;
-            return l_Humanoid_2;
-        end;
-    else
-        return;
-    end;
-end;
-local v51 = nil;
-local v52 = nil;
-local v53 = nil;
-local v54 = nil;
-local function _() --[[ Line: 123 ]] --[[ Name: GetCharacter ]]
-    -- upvalues: l_LocalPlayer_0 (copy)
-    return l_LocalPlayer_0 and l_LocalPlayer_0.Character;
-end;
-local function v63(v56) --[[ Line: 127 ]] --[[ Name: UpdateIgnoreTag ]]
-    -- upvalues: v52 (ref), v53 (ref), v54 (ref), v51 (ref), l_LocalPlayer_0 (copy), l_CollectionService_0 (copy)
-    if v56 == v52 then
-        return;
-    else
-        if v53 then
-            v53:Disconnect();
-            v53 = nil;
-        end;
-        if v54 then
-            v54:Disconnect();
-            v54 = nil;
-        end;
-        v52 = v56;
-        v51 = {
-            l_LocalPlayer_0 and l_LocalPlayer_0.Character
-        };
-        if v52 ~= nil then
-            local l_l_CollectionService_0_Tagged_0 = l_CollectionService_0:GetTagged(v52);
-            for _, v59 in ipairs(l_l_CollectionService_0_Tagged_0) do
-                table.insert(v51, v59);
-            end;
-            v53 = l_CollectionService_0:GetInstanceAddedSignal(v52):Connect(function(v60) --[[ Line: 147 ]]
-                -- upvalues: v51 (ref)
-                table.insert(v51, v60);
-            end);
-            v54 = l_CollectionService_0:GetInstanceRemovedSignal(v52):Connect(function(v61) --[[ Line: 151 ]]
-                -- upvalues: v51 (ref)
-                for v62 = 1, #v51 do
-                    if v51[v62] == v61 then
-                        v51[v62] = v51[#v51];
-                        table.remove(v51);
-                        return;
-                    end;
-                end;
-            end);
-        end;
-        return;
-    end;
-end;
-local function _() --[[ Line: 163 ]] --[[ Name: getIgnoreList ]]
-    -- upvalues: v51 (ref), l_LocalPlayer_0 (copy)
-    if v51 then
-        return v51;
-    else
-        v51 = {};
-        assert(v51, "");
-        table.insert(v51, l_LocalPlayer_0 and l_LocalPlayer_0.Character);
-        return v51;
-    end;
-end;
-local function _(v65, v66) --[[ Line: 173 ]] --[[ Name: minV ]]
-    return (Vector3.new(math.min(v65.X, v66.X), math.min(v65.Y, v66.Y), (math.min(v65.Z, v66.Z))));
-end;
-local function _(v68, v69) --[[ Line: 176 ]] --[[ Name: maxV ]]
-    return (Vector3.new(math.max(v68.X, v69.X), math.max(v68.Y, v69.Y), (math.max(v68.Z, v69.Z))));
-end;
-local function v85(v71) --[[ Line: 179 ]] --[[ Name: getCollidableExtentsSize ]]
-    if v71 == nil or v71.PrimaryPart == nil then
-        return;
-    else
-        assert(v71, "");
-        assert(v71.PrimaryPart, "");
-        local v72 = v71.PrimaryPart.CFrame:Inverse();
-        local v73 = Vector3.new(1e999, 1e999, 1e999, 0);
-        local v74 = Vector3.new(-1e999, -1e999, -1e999, 0);
-        for _, v76 in pairs(v71:GetDescendants()) do
-            if v76:IsA("BasePart") and v76.CanCollide then
-                local v77 = v72 * v76.CFrame;
-                local v78 = Vector3.new(v76.Size.X / 2, v76.Size.Y / 2, v76.Size.Z / 2);
-                local v79 = {
-                    Vector3.new(v78.X, v78.Y, v78.Z), 
-                    Vector3.new(v78.X, v78.Y, -v78.Z), 
-                    Vector3.new(v78.X, -v78.Y, v78.Z), 
-                    Vector3.new(v78.X, -v78.Y, -v78.Z), 
-                    Vector3.new(-v78.X, v78.Y, v78.Z), 
-                    Vector3.new(-v78.X, v78.Y, -v78.Z), 
-                    Vector3.new(-v78.X, -v78.Y, v78.Z), 
-                    (Vector3.new(-v78.X, -v78.Y, -v78.Z))
-                };
-                for _, v81 in ipairs(v79) do
-                    local v82 = v77 * v81;
-                    local l_v73_0 = v73;
-                    v73 = Vector3.new(math.min(l_v73_0.X, v82.X), math.min(l_v73_0.Y, v82.Y), (math.min(l_v73_0.Z, v82.Z)));
-                    l_v73_0 = v74;
-                    v74 = Vector3.new(math.max(l_v73_0.X, v82.X), math.max(l_v73_0.Y, v82.Y), (math.max(l_v73_0.Z, v82.Z)));
-                end;
-            end;
-        end;
-        local v84 = v74 - v73;
-        if v84.X < 0 or v84.Y < 0 or v84.Z < 0 then
-            return nil;
-        else
-            return v84;
-        end;
-    end;
-end;
-local function v149(v86, v87, v88) --[[ Line: 214 ]] --[[ Name: Pather ]]
-    -- upvalues: v18 (ref), l_LocalPlayer_0 (copy), v45 (copy), v19 (ref), v2 (copy), v85 (copy), v5 (copy), l_PathfindingService_0 (copy), v16 (ref), l_ClickToMoveDisplay_0 (copy), v20 (ref), v15 (copy), v24 (copy), v51 (ref), l_Workspace_0 (copy)
-    local v89 = {};
-    local v90 = nil;
-    local v91 = nil;
-    if v88 ~= nil then
-        v90 = v88;
-        v91 = v88;
-    else
-        v90 = v18;
-        v91 = true;
-    end;
-    v89.Cancelled = false;
-    v89.Started = false;
-    v89.Finished = Instance.new("BindableEvent");
-    v89.PathFailed = Instance.new("BindableEvent");
-    v89.PathComputing = false;
-    v89.PathComputed = false;
-    v89.OriginalTargetPoint = v86;
-    v89.TargetPoint = v86;
-    v89.TargetSurfaceNormal = v87;
-    v89.DiedConn = nil;
-    v89.SeatedConn = nil;
-    v89.BlockedConn = nil;
-    v89.TeleportedConn = nil;
-    v89.CurrentPoint = 0;
-    v89.HumanoidOffsetFromPath = Vector3.new(0, 0, 0, 0);
-    v89.CurrentWaypointPosition = nil;
-    v89.CurrentWaypointPlaneNormal = Vector3.new(0, 0, 0, 0);
-    v89.CurrentWaypointPlaneDistance = 0;
-    v89.CurrentWaypointNeedsJump = false;
-    v89.CurrentHumanoidPosition = Vector3.new(0, 0, 0, 0);
-    v89.CurrentHumanoidVelocity = 0;
-    v89.NextActionMoveDirection = Vector3.new(0, 0, 0, 0);
-    v89.NextActionJump = false;
-    v89.Timeout = 0;
-    local l_l_LocalPlayer_0_0 = l_LocalPlayer_0;
-    local v93 = l_l_LocalPlayer_0_0 and l_l_LocalPlayer_0_0.Character;
-    local v94;
-    if v93 then
-        local v95 = v45[l_l_LocalPlayer_0_0];
-        if v95 and v95.Parent == v93 then
-            v94 = v95;
-        else
-            v45[l_l_LocalPlayer_0_0] = nil;
-            local l_Humanoid_3 = v93:FindFirstChildOfClass("Humanoid");
-            if l_Humanoid_3 then
-                v45[l_l_LocalPlayer_0_0] = l_Humanoid_3;
-            end;
-            v94 = l_Humanoid_3;
-        end;
-    else
-        v94 = nil;
-    end;
-    v89.Humanoid = v94;
-    v89.OriginPoint = nil;
-    v89.AgentCanFollowPath = false;
-    v89.DirectPath = false;
-    v89.DirectPathRiseFirst = false;
-    v89.stopTraverseFunc = nil;
-    v89.setPointFunc = nil;
-    v89.pointList = nil;
-    v94 = v89.Humanoid and v89.Humanoid.RootPart;
-    if v94 then
-        v89.OriginPoint = v94.CFrame.Position;
-        l_l_LocalPlayer_0_0 = 2;
-        v93 = 5;
-        local v97 = true;
-        local l_SeatPart_0 = v89.Humanoid.SeatPart;
-        if l_SeatPart_0 and l_SeatPart_0:IsA("VehicleSeat") then
-            local l_l_SeatPart_0_FirstAncestorOfClass_0 = l_SeatPart_0:FindFirstAncestorOfClass("Model");
-            if l_l_SeatPart_0_FirstAncestorOfClass_0 then
-                local l_PrimaryPart_0 = l_l_SeatPart_0_FirstAncestorOfClass_0.PrimaryPart;
-                l_l_SeatPart_0_FirstAncestorOfClass_0.PrimaryPart = l_SeatPart_0;
-                if v91 then
-                    local l_l_l_SeatPart_0_FirstAncestorOfClass_0_ExtentsSize_0 = l_l_SeatPart_0_FirstAncestorOfClass_0:GetExtentsSize();
-                    l_l_LocalPlayer_0_0 = v19 * 0.5 * math.sqrt(l_l_l_SeatPart_0_FirstAncestorOfClass_0_ExtentsSize_0.X * l_l_l_SeatPart_0_FirstAncestorOfClass_0_ExtentsSize_0.X + l_l_l_SeatPart_0_FirstAncestorOfClass_0_ExtentsSize_0.Z * l_l_l_SeatPart_0_FirstAncestorOfClass_0_ExtentsSize_0.Z);
-                    v93 = v19 * l_l_l_SeatPart_0_FirstAncestorOfClass_0_ExtentsSize_0.Y;
-                    v97 = false;
-                    v89.AgentCanFollowPath = true;
-                    v89.DirectPath = v91;
-                end;
-                l_l_SeatPart_0_FirstAncestorOfClass_0.PrimaryPart = l_PrimaryPart_0;
-            end;
-        else
-            local v102 = nil;
-            if v2 then
-                local v103 = l_LocalPlayer_0 and l_LocalPlayer_0.Character;
-                if v103 ~= nil then
-                    v102 = v85(v103);
-                end;
-            end;
-            if v102 == nil then
-                v102 = (l_LocalPlayer_0 and l_LocalPlayer_0.Character):GetExtentsSize();
-            end;
-            assert(v102, "");
-            l_l_LocalPlayer_0_0 = v19 * 0.5 * math.sqrt(v102.X * v102.X + v102.Z * v102.Z);
-            v93 = v19 * v102.Y;
-            v97 = v89.Humanoid.JumpPower > 0;
-            v89.AgentCanFollowPath = true;
-            v89.DirectPath = v90;
-            v89.DirectPathRiseFirst = v89.Humanoid.Sit;
-        end;
-        if v5 then
-            v89.pathResult = l_PathfindingService_0:CreatePath({
-                AgentRadius = l_l_LocalPlayer_0_0, 
-                AgentHeight = v93, 
-                AgentCanJump = v97, 
-                AgentCanClimb = true
-            });
-        else
-            v89.pathResult = l_PathfindingService_0:CreatePath({
-                AgentRadius = l_l_LocalPlayer_0_0, 
-                AgentHeight = v93, 
-                AgentCanJump = v97
-            });
-        end;
-    end;
-    v89.Cleanup = function(_) --[[ Line: 332 ]] --[[ Name: Cleanup ]]
-        -- upvalues: v89 (copy)
-        if v89.stopTraverseFunc then
-            v89.stopTraverseFunc();
-            v89.stopTraverseFunc = nil;
-        end;
-        if v89.BlockedConn then
-            v89.BlockedConn:Disconnect();
-            v89.BlockedConn = nil;
-        end;
-        if v89.DiedConn then
-            v89.DiedConn:Disconnect();
-            v89.DiedConn = nil;
-        end;
-        if v89.SeatedConn then
-            v89.SeatedConn:Disconnect();
-            v89.SeatedConn = nil;
-        end;
-        if v89.TeleportedConn then
-            v89.TeleportedConn:Disconnect();
-            v89.TeleportedConn = nil;
-        end;
-        v89.Started = false;
-    end;
-    v89.Cancel = function(_) --[[ Line: 361 ]] --[[ Name: Cancel ]]
-        -- upvalues: v89 (copy)
-        v89.Cancelled = true;
-        v89:Cleanup();
-    end;
-    v89.IsActive = function(_) --[[ Line: 366 ]] --[[ Name: IsActive ]]
-        -- upvalues: v89 (copy)
-        return v89.AgentCanFollowPath and v89.Started and not v89.Cancelled;
-    end;
-    v89.OnPathInterrupted = function(_) --[[ Line: 370 ]] --[[ Name: OnPathInterrupted ]]
-        -- upvalues: v89 (copy)
-        v89.Cancelled = true;
-        v89:OnPointReached(false);
-    end;
-    v89.ComputePath = function(_) --[[ Line: 376 ]] --[[ Name: ComputePath ]]
-        -- upvalues: v89 (copy)
-        if v89.OriginPoint then
-            if v89.PathComputed or v89.PathComputing then
-                return;
-            else
-                v89.PathComputing = true;
-                if v89.AgentCanFollowPath then
-                    if v89.DirectPath then
-                        v89.pointList = {
-                            PathWaypoint.new(v89.OriginPoint, Enum.PathWaypointAction.Walk), 
-                            PathWaypoint.new(v89.TargetPoint, v89.DirectPathRiseFirst and Enum.PathWaypointAction.Jump or Enum.PathWaypointAction.Walk)
-                        };
-                        v89.PathComputed = true;
-                    else
-                        v89.pathResult:ComputeAsync(v89.OriginPoint, v89.TargetPoint);
-                        v89.pointList = v89.pathResult:GetWaypoints();
-                        v89.BlockedConn = v89.pathResult.Blocked:Connect(function(v109) --[[ Line: 390 ]]
-                            -- upvalues: v89 (ref)
-                            v89:OnPathBlocked(v109);
-                        end);
-                        v89.PathComputed = v89.pathResult.Status == Enum.PathStatus.Success;
-                    end;
-                end;
-                v89.PathComputing = false;
-            end;
-        end;
-    end;
-    v89.IsValidPath = function(_) --[[ Line: 398 ]] --[[ Name: IsValidPath ]]
-        -- upvalues: v89 (copy)
-        v89:ComputePath();
-        return v89.PathComputed and v89.AgentCanFollowPath;
-    end;
-    v89.Recomputing = false;
-    v89.OnPathBlocked = function(_, v112) --[[ Line: 404 ]] --[[ Name: OnPathBlocked ]]
-        -- upvalues: v89 (copy), v16 (ref), l_ClickToMoveDisplay_0 (ref)
-        if v89.CurrentPoint > v112 or v89.Recomputing then
-            return;
-        else
-            v89.Recomputing = true;
-            if v89.stopTraverseFunc then
-                v89.stopTraverseFunc();
-                v89.stopTraverseFunc = nil;
-            end;
-            v89.OriginPoint = v89.Humanoid.RootPart.CFrame.p;
-            v89.pathResult:ComputeAsync(v89.OriginPoint, v89.TargetPoint);
-            v89.pointList = v89.pathResult:GetWaypoints();
-            if #v89.pointList > 0 then
-                v89.HumanoidOffsetFromPath = v89.pointList[1].Position - v89.OriginPoint;
-            end;
-            v89.PathComputed = v89.pathResult.Status == Enum.PathStatus.Success;
-            if v16 then
-                local l_v89_0 = v89;
-                local l_v89_1 = v89;
-                local v115, v116 = l_ClickToMoveDisplay_0.CreatePathDisplay(v89.pointList);
-                l_v89_0.stopTraverseFunc = v115;
-                l_v89_1.setPointFunc = v116;
-            end;
-            if v89.PathComputed then
-                v89.CurrentPoint = 1;
-                v89:OnPointReached(true);
-            else
-                v89.PathFailed:Fire();
-                v89:Cleanup();
-            end;
-            v89.Recomputing = false;
-            return;
-        end;
-    end;
-    v89.OnRenderStepped = function(_, v118) --[[ Line: 440 ]] --[[ Name: OnRenderStepped ]]
-        -- upvalues: v89 (copy), v20 (ref)
-        if v89.Started and not v89.Cancelled then
-            v89.Timeout = v89.Timeout + v118;
-            if v89.Timeout > v20 then
-                v89:OnPointReached(false);
-                return;
-            else
-                v89.CurrentHumanoidPosition = v89.Humanoid.RootPart.Position + v89.HumanoidOffsetFromPath;
-                v89.CurrentHumanoidVelocity = v89.Humanoid.RootPart.Velocity;
-                while v89.Started and v89:IsCurrentWaypointReached() do
-                    v89:OnPointReached(true);
-                end;
-                if v89.Started then
-                    v89.NextActionMoveDirection = v89.CurrentWaypointPosition - v89.CurrentHumanoidPosition;
-                    if v89.NextActionMoveDirection.Magnitude > 1.0E-6 then
-                        v89.NextActionMoveDirection = v89.NextActionMoveDirection.Unit;
-                    else
-                        v89.NextActionMoveDirection = Vector3.new(0, 0, 0, 0);
-                    end;
-                    if v89.CurrentWaypointNeedsJump then
-                        v89.NextActionJump = true;
-                        v89.CurrentWaypointNeedsJump = false;
-                        return;
-                    else
-                        v89.NextActionJump = false;
-                    end;
-                end;
-            end;
-        end;
-    end;
-    v89.IsCurrentWaypointReached = function(_) --[[ Line: 478 ]] --[[ Name: IsCurrentWaypointReached ]]
-        -- upvalues: v89 (copy)
-        local v120 = false;
-        v120 = v89.CurrentWaypointPlaneNormal == Vector3.new(0, 0, 0, 0) or v89.CurrentWaypointPlaneNormal:Dot(v89.CurrentHumanoidPosition) - v89.CurrentWaypointPlaneDistance < math.max(1, 0.0625 * -v89.CurrentWaypointPlaneNormal:Dot(v89.CurrentHumanoidVelocity));
-        if v120 then
-            v89.CurrentWaypointPosition = nil;
-            v89.CurrentWaypointPlaneNormal = Vector3.new(0, 0, 0, 0);
-            v89.CurrentWaypointPlaneDistance = 0;
-        end;
-        return v120;
-    end;
-    v89.OnPointReached = function(_, v122) --[[ Line: 504 ]] --[[ Name: OnPointReached ]]
-        -- upvalues: v89 (copy)
-        if v122 and not v89.Cancelled then
-            if v89.setPointFunc then
-                v89.setPointFunc(v89.CurrentPoint);
-            end;
-            local v123 = v89.CurrentPoint + 1;
-            if #v89.pointList < v123 then
-                if v89.stopTraverseFunc then
-                    v89.stopTraverseFunc();
-                end;
-                v89.Finished:Fire();
-                v89:Cleanup();
-                return;
-            else
-                local v124 = v89.pointList[v89.CurrentPoint];
-                local v125 = v89.pointList[v123];
-                local l_State_0 = v89.Humanoid:GetState();
-                local v127 = true;
-                if l_State_0 ~= Enum.HumanoidStateType.FallingDown then
-                    v127 = true;
-                    if l_State_0 ~= Enum.HumanoidStateType.Freefall then
-                        v127 = l_State_0 == Enum.HumanoidStateType.Jumping;
-                    end;
-                end;
-                if v127 then
-                    local v128 = v125.Action == Enum.PathWaypointAction.Jump;
-                    if not v128 and v89.CurrentPoint > 1 then
-                        local v129 = v89.pointList[v89.CurrentPoint - 1];
-                        local v130 = v124.Position - v129.Position;
-                        local v131 = v125.Position - v124.Position;
-                        v128 = Vector2.new(v130.x, v130.z).Unit:Dot(Vector2.new(v131.x, v131.z).Unit) < 0.996;
-                    end;
-                    if v128 then
-                        v89.Humanoid.FreeFalling:Wait();
-                        wait(0.1);
-                    end;
-                end;
-                v89:MoveToNextWayPoint(v124, v125, v123);
-                return;
-            end;
-        else
-            v89.PathFailed:Fire();
-            v89:Cleanup();
-            return;
-        end;
-    end;
-    v89.MoveToNextWayPoint = function(_, v133, v134, v135) --[[ Line: 567 ]] --[[ Name: MoveToNextWayPoint ]]
-        -- upvalues: v89 (copy), v5 (ref)
-        v89.CurrentWaypointPlaneNormal = v133.Position - v134.Position;
-        if not v5 or v134.Label ~= "Climb" then
-            v89.CurrentWaypointPlaneNormal = Vector3.new(v89.CurrentWaypointPlaneNormal.X, 0, v89.CurrentWaypointPlaneNormal.Z);
-        end;
-        if v89.CurrentWaypointPlaneNormal.Magnitude > 1.0E-6 then
-            v89.CurrentWaypointPlaneNormal = v89.CurrentWaypointPlaneNormal.Unit;
-            v89.CurrentWaypointPlaneDistance = v89.CurrentWaypointPlaneNormal:Dot(v134.Position);
-        else
-            v89.CurrentWaypointPlaneNormal = Vector3.new(0, 0, 0, 0);
-            v89.CurrentWaypointPlaneDistance = 0;
-        end;
-        v89.CurrentWaypointNeedsJump = v134.Action == Enum.PathWaypointAction.Jump;
-        v89.CurrentWaypointPosition = v134.Position;
-        v89.CurrentPoint = v135;
-        v89.Timeout = 0;
-    end;
-    v89.Start = function(_, v137) --[[ Line: 599 ]] --[[ Name: Start ]]
-        -- upvalues: v89 (copy), l_ClickToMoveDisplay_0 (ref), v16 (ref)
-        if not v89.AgentCanFollowPath then
-            v89.PathFailed:Fire();
-            return;
-        elseif v89.Started then
-            return;
-        else
-            v89.Started = true;
-            l_ClickToMoveDisplay_0.CancelFailureAnimation();
-            if v16 and (v137 == nil or v137) then
-                local l_v89_2 = v89;
-                local l_v89_3 = v89;
-                local v140, v141 = l_ClickToMoveDisplay_0.CreatePathDisplay(v89.pointList, v89.OriginalTargetPoint);
-                l_v89_2.stopTraverseFunc = v140;
-                l_v89_3.setPointFunc = v141;
-            end;
-            if #v89.pointList > 0 then
-                v89.HumanoidOffsetFromPath = Vector3.new(0, v89.pointList[1].Position.Y - v89.OriginPoint.Y, 0);
-                v89.CurrentHumanoidPosition = v89.Humanoid.RootPart.Position + v89.HumanoidOffsetFromPath;
-                v89.CurrentHumanoidVelocity = v89.Humanoid.RootPart.Velocity;
-                v89.SeatedConn = v89.Humanoid.Seated:Connect(function(_, _) --[[ Line: 626 ]]
-                    -- upvalues: v89 (ref)
-                    v89:OnPathInterrupted();
-                end);
-                v89.DiedConn = v89.Humanoid.Died:Connect(function() --[[ Line: 627 ]]
-                    -- upvalues: v89 (ref)
-                    v89:OnPathInterrupted();
-                end);
-                v89.TeleportedConn = v89.Humanoid.RootPart:GetPropertyChangedSignal("CFrame"):Connect(function() --[[ Line: 628 ]]
-                    -- upvalues: v89 (ref)
-                    v89:OnPathInterrupted();
-                end);
-                v89.CurrentPoint = 1;
-                v89:OnPointReached(true);
-                return;
-            else
-                v89.PathFailed:Fire();
-                if v89.stopTraverseFunc then
-                    v89.stopTraverseFunc();
-                end;
-                return;
-            end;
-        end;
-    end;
-    l_l_LocalPlayer_0_0 = v89.TargetPoint + v89.TargetSurfaceNormal * 1.5;
-    if v15 then
-        v93 = v24;
-        local v144;
-        if v51 then
-            v144 = v51;
-        else
-            v51 = {};
-            assert(v51, "");
-            table.insert(v51, l_LocalPlayer_0 and l_LocalPlayer_0.Character);
-            v144 = v51;
-        end;
-        v93.FilterDescendantsInstances = v144;
-        v93 = l_Workspace_0:Raycast(l_l_LocalPlayer_0_0, Vector3.new(-0, -50, -0, -0), v24);
-        if v93 then
-            v89.TargetPoint = v93.Position;
-        end;
-    else
-        v93 = Ray.new(l_l_LocalPlayer_0_0, (Vector3.new(0, -50, 0, 0)));
-        local l_l_Workspace_0_0 = l_Workspace_0;
-        local l_v93_0 = v93;
-        local v147;
-        if v51 then
-            v147 = v51;
-        else
-            v51 = {};
-            assert(v51, "");
-            table.insert(v51, l_LocalPlayer_0 and l_LocalPlayer_0.Character);
-            v147 = v51;
-        end;
-        local v148;
-        l_l_Workspace_0_0, v148 = l_l_Workspace_0_0:FindPartOnRayWithIgnoreList(l_v93_0, v147);
-        if l_l_Workspace_0_0 then
-            v89.TargetPoint = v148;
-        end;
-    end;
-    v89:ComputePath();
-    return v89;
-end;
-local function _() --[[ Line: 664 ]] --[[ Name: CheckAlive ]]
-    -- upvalues: l_LocalPlayer_0 (copy), v45 (copy)
-    local l_l_LocalPlayer_0_1 = l_LocalPlayer_0;
-    local v151 = l_l_LocalPlayer_0_1 and l_l_LocalPlayer_0_1.Character;
-    local v152;
-    if v151 then
-        local v153 = v45[l_l_LocalPlayer_0_1];
-        if v153 and v153.Parent == v151 then
-            v152 = v153;
-        else
-            v45[l_l_LocalPlayer_0_1] = nil;
-            local l_Humanoid_4 = v151:FindFirstChildOfClass("Humanoid");
-            if l_Humanoid_4 then
-                v45[l_l_LocalPlayer_0_1] = l_Humanoid_4;
-            end;
-            v152 = l_Humanoid_4;
-        end;
-    else
-        v152 = nil;
-    end;
-    l_l_LocalPlayer_0_1 = false;
-    if v152 ~= nil then
-        l_l_LocalPlayer_0_1 = v152.Health > 0;
-    end;
-    return l_l_LocalPlayer_0_1;
-end;
-local function v159(v156) --[[ Line: 669 ]] --[[ Name: GetEquippedTool ]]
-    if v156 ~= nil then
-        for _, v158 in pairs(v156:GetChildren()) do
-            if v158:IsA("Tool") then
-                return v158;
-            end;
-        end;
-    end;
-end;
-local v160 = nil;
-local v161 = nil;
-local v162 = nil;
-local function _() --[[ Line: 684 ]] --[[ Name: CleanupPath ]]
-    -- upvalues: v160 (ref), v161 (ref), v162 (ref)
-    if v160 then
-        v160:Cancel();
-        v160 = nil;
-    end;
-    if v161 then
-        v161:Disconnect();
-        v161 = nil;
-    end;
-    if v162 then
-        v162:Disconnect();
-        v162 = nil;
-    end;
-end;
-local function v170(v164, v165, v166, v167, v168) --[[ Line: 702 ]] --[[ Name: HandleMoveTo ]]
-    -- upvalues: v160 (ref), v161 (ref), v162 (ref), v159 (copy), v17 (ref), l_ClickToMoveDisplay_0 (copy)
-    if v160 then
-        if v160 then
-            v160:Cancel();
-            v160 = nil;
-        end;
-        if v161 then
-            v161:Disconnect();
-            v161 = nil;
-        end;
-        if v162 then
-            v162:Disconnect();
-            v162 = nil;
-        end;
-    end;
-    v160 = v164;
-    v164:Start(v168);
-    v161 = v164.Finished.Event:Connect(function() --[[ Line: 709 ]]
-        -- upvalues: v160 (ref), v161 (ref), v162 (ref), v166 (copy), v159 (ref), v167 (copy)
-        if v160 then
-            v160:Cancel();
-            v160 = nil;
-        end;
-        if v161 then
-            v161:Disconnect();
-            v161 = nil;
-        end;
-        if v162 then
-            v162:Disconnect();
-            v162 = nil;
-        end;
-        if v166 then
-            local v169 = v159(v167);
-            if v169 then
-                v169:Activate();
-            end;
-        end;
-    end);
-    v162 = v164.PathFailed.Event:Connect(function() --[[ Line: 718 ]]
-        -- upvalues: v160 (ref), v161 (ref), v162 (ref), v168 (copy), v17 (ref), l_ClickToMoveDisplay_0 (ref), v165 (copy)
-        if v160 then
-            v160:Cancel();
-            v160 = nil;
-        end;
-        if v161 then
-            v161:Disconnect();
-            v161 = nil;
-        end;
-        if v162 then
-            v162:Disconnect();
-            v162 = nil;
-        end;
-        if v168 == nil or v168 then
-            if v17 and not (v160 and v160:IsActive()) then
-                l_ClickToMoveDisplay_0.PlayFailureAnimation();
-            end;
-            l_ClickToMoveDisplay_0.DisplayFailureWaypoint(v165);
-        end;
-    end);
-end;
-local function _(v171) --[[ Line: 730 ]] --[[ Name: ShowPathFailedFeedback ]]
-    -- upvalues: v160 (ref), v17 (ref), l_ClickToMoveDisplay_0 (copy)
-    if v160 and v160:IsActive() then
-        v160:Cancel();
-    end;
-    if v17 then
-        l_ClickToMoveDisplay_0.PlayFailureAnimation();
-    end;
-    l_ClickToMoveDisplay_0.DisplayFailureWaypoint(v171);
-end;
-OnTap = function(v173, v174, v175) --[[ Line: 740 ]] --[[ Name: OnTap ]]
-    -- upvalues: l_Workspace_0 (copy), l_LocalPlayer_0 (copy), v45 (copy), v15 (copy), v51 (ref), v24 (copy), l_StarterGui_0 (copy), l_Players_0 (copy), v160 (ref), v161 (ref), v162 (ref), v149 (copy), v170 (copy), v17 (ref), l_ClickToMoveDisplay_0 (copy), v25 (copy), v159 (copy)
-    local l_CurrentCamera_0 = l_Workspace_0.CurrentCamera;
-    local l_Character_0 = l_LocalPlayer_0.Character;
-    local l_l_LocalPlayer_0_2 = l_LocalPlayer_0;
-    local v179 = l_l_LocalPlayer_0_2 and l_l_LocalPlayer_0_2.Character;
-    local v180;
-    if v179 then
-        local v181 = v45[l_l_LocalPlayer_0_2];
-        if v181 and v181.Parent == v179 then
-            v180 = v181;
-        else
-            v45[l_l_LocalPlayer_0_2] = nil;
-            local l_Humanoid_5 = v179:FindFirstChildOfClass("Humanoid");
-            if l_Humanoid_5 then
-                v45[l_l_LocalPlayer_0_2] = l_Humanoid_5;
-            end;
-            v180 = l_Humanoid_5;
-        end;
-    else
-        v180 = nil;
-    end;
-    local v183 = false;
-    if v180 ~= nil then
-        v183 = v180.Health > 0;
-    end;
-    if not v183 then
-        return;
-    else
-        if #v173 == 1 or v174 then
-            if l_CurrentCamera_0 then
-                v183 = l_CurrentCamera_0:ScreenPointToRay(v173[1].X, v173[1].Y);
-                if v15 then
-                    v180 = nil;
-                    l_l_LocalPlayer_0_2 = nil;
-                    v179 = nil;
-                    local v184;
-                    if v51 then
-                        v184 = v51;
-                    else
-                        v51 = {};
-                        assert(v51, "");
-                        table.insert(v51, l_LocalPlayer_0 and l_LocalPlayer_0.Character);
-                        v184 = v51;
-                    end;
-                    if not v184 then
-                        v184 = {};
-                    end;
-                    repeat
-                        local v185 = true;
-                        v24.FilterDescendantsInstances = v184;
-                        v179 = l_Workspace_0:Raycast(v183.Origin, v183.Direction * 1000, v24);
-                        if v179 then
-                            local l_Instance_0 = v179.Instance;
-                            if not l_Instance_0.CanCollide then
-                                repeat
-                                    v180 = l_Instance_0:FindFirstChildOfClass("Humanoid");
-                                    l_l_LocalPlayer_0_2 = l_Instance_0;
-                                    l_Instance_0 = l_Instance_0.Parent;
-                                until v180 or not l_Instance_0 or l_Instance_0 == l_Workspace_0;
-                                if not v180 then
-                                    l_l_LocalPlayer_0_2 = nil;
-                                    v185 = false;
-                                    table.insert(v184, l_Instance_0);
-                                end;
-                            end;
-                        end;
-                    until v185;
-                    if v175 and v180 and l_StarterGui_0:GetCore("AvatarContextMenuEnabled") and l_Players_0:GetPlayerFromCharacter(v180.Parent) then
-                        if v160 then
-                            v160:Cancel();
-                            v160 = nil;
-                        end;
-                        if v161 then
-                            v161:Disconnect();
-                            v161 = nil;
-                        end;
-                        if v162 then
-                            v162:Disconnect();
-                            v162 = nil;
-                        end;
-                        return;
-                    elseif not v179 or not l_Character_0 then
-                        return;
-                    else
-                        local l_Position_0 = v179.Position;
-                        if v174 then
-                            l_Position_0 = v174;
-                            l_l_LocalPlayer_0_2 = nil;
-                        end;
-                        if v160 then
-                            v160:Cancel();
-                            v160 = nil;
-                        end;
-                        if v161 then
-                            v161:Disconnect();
-                            v161 = nil;
-                        end;
-                        if v162 then
-                            v162:Disconnect();
-                            v162 = nil;
-                        end;
-                        local v188 = v149(l_Position_0, v179.Normal);
-                        if v188:IsValidPath() then
-                            v170(v188, l_Position_0, l_l_LocalPlayer_0_2, l_Character_0);
-                            return;
-                        else
-                            v188:Cleanup();
-                            local l_l_Position_0_0 = l_Position_0;
-                            if v160 and v160:IsActive() then
-                                v160:Cancel();
-                            end;
-                            if v17 then
-                                l_ClickToMoveDisplay_0.PlayFailureAnimation();
-                            end;
-                            l_ClickToMoveDisplay_0.DisplayFailureWaypoint(l_l_Position_0_0);
-                            return;
-                        end;
-                    end;
-                else
-                    v180 = Ray.new(v183.Origin, v183.Direction * 1000);
-                    l_l_LocalPlayer_0_2 = v25.Raycast;
-                    v179 = v180;
-                    local v190 = true;
-                    local v191;
-                    if v51 then
-                        v191 = v51;
-                    else
-                        v51 = {};
-                        assert(v51, "");
-                        table.insert(v51, l_LocalPlayer_0 and l_LocalPlayer_0.Character);
-                        v191 = v51;
-                    end;
-                    l_l_LocalPlayer_0_2, v179, v190 = l_l_LocalPlayer_0_2(v179, v190, v191);
-                    local v192;
-                    v191, v192 = v25.FindCharacterAncestor(l_l_LocalPlayer_0_2);
-                    if v175 and v192 and l_StarterGui_0:GetCore("AvatarContextMenuEnabled") and l_Players_0:GetPlayerFromCharacter(v192.Parent) then
-                        if v160 then
-                            v160:Cancel();
-                            v160 = nil;
-                        end;
-                        if v161 then
-                            v161:Disconnect();
-                            v161 = nil;
-                        end;
-                        if v162 then
-                            v162:Disconnect();
-                            v162 = nil;
-                        end;
-                        return;
-                    else
-                        if v174 then
-                            v179 = v174;
-                            v191 = nil;
-                        end;
-                        if v179 and l_Character_0 then
-                            if v160 then
-                                v160:Cancel();
-                                v160 = nil;
-                            end;
-                            if v161 then
-                                v161:Disconnect();
-                                v161 = nil;
-                            end;
-                            if v162 then
-                                v162:Disconnect();
-                                v162 = nil;
-                            end;
-                            local v193 = v149(v179, v190);
-                            if v193:IsValidPath() then
-                                v170(v193, v179, v191, l_Character_0);
-                                return;
-                            else
-                                v193:Cleanup();
-                                local l_v179_0 = v179;
-                                if v160 and v160:IsActive() then
-                                    v160:Cancel();
-                                end;
-                                if v17 then
-                                    l_ClickToMoveDisplay_0.PlayFailureAnimation();
-                                end;
-                                l_ClickToMoveDisplay_0.DisplayFailureWaypoint(l_v179_0);
-                                return;
-                            end;
-                        end;
-                    end;
-                end;
-            end;
-        elseif #v173 >= 2 and l_CurrentCamera_0 then
-            v183 = v159(l_Character_0);
-            if v183 then
-                v183:Activate();
-            end;
-        end;
-        return;
-    end;
-end;
-local function _(v195) --[[ Line: 850 ]] --[[ Name: DisconnectEvent ]]
-    if v195 then
-        v195:Disconnect();
-    end;
-end;
-local l_Keyboard_0 = require(script.Parent:WaitForChild("Keyboard"));
-local v198 = setmetatable({}, l_Keyboard_0);
-v198.__index = v198;
-v198.new = function(v199) --[[ Line: 861 ]] --[[ Name: new ]]
-    -- upvalues: l_Keyboard_0 (copy), v198 (copy)
-    local v200 = setmetatable(l_Keyboard_0.new(v199), v198);
-    v200.fingerTouches = {};
-    v200.numUnsunkTouches = 0;
-    v200.mouse1Down = tick();
-    v200.mouse1DownPos = Vector2.new();
-    v200.mouse2DownTime = tick();
-    v200.mouse2DownPos = Vector2.new();
-    v200.mouse2UpTime = tick();
-    v200.keyboardMoveVector = Vector3.new(0, 0, 0, 0);
-    v200.tapConn = nil;
-    v200.inputBeganConn = nil;
-    v200.inputChangedConn = nil;
-    v200.inputEndedConn = nil;
-    v200.humanoidDiedConn = nil;
-    v200.characterChildAddedConn = nil;
-    v200.onCharacterAddedConn = nil;
-    v200.characterChildRemovedConn = nil;
-    v200.renderSteppedConn = nil;
-    v200.menuOpenedConnection = nil;
-    v200.running = false;
-    v200.wasdEnabled = false;
-    return v200;
-end;
-v198.DisconnectEvents = function(v201) --[[ Line: 893 ]] --[[ Name: DisconnectEvents ]]
-    local l_tapConn_0 = v201.tapConn;
-    if l_tapConn_0 then
-        l_tapConn_0:Disconnect();
-    end;
-    l_tapConn_0 = v201.inputBeganConn;
-    if l_tapConn_0 then
-        l_tapConn_0:Disconnect();
-    end;
-    l_tapConn_0 = v201.inputChangedConn;
-    if l_tapConn_0 then
-        l_tapConn_0:Disconnect();
-    end;
-    l_tapConn_0 = v201.inputEndedConn;
-    if l_tapConn_0 then
-        l_tapConn_0:Disconnect();
-    end;
-    l_tapConn_0 = v201.humanoidDiedConn;
-    if l_tapConn_0 then
-        l_tapConn_0:Disconnect();
-    end;
-    l_tapConn_0 = v201.characterChildAddedConn;
-    if l_tapConn_0 then
-        l_tapConn_0:Disconnect();
-    end;
-    l_tapConn_0 = v201.onCharacterAddedConn;
-    if l_tapConn_0 then
-        l_tapConn_0:Disconnect();
-    end;
-    l_tapConn_0 = v201.renderSteppedConn;
-    if l_tapConn_0 then
-        l_tapConn_0:Disconnect();
-    end;
-    l_tapConn_0 = v201.characterChildRemovedConn;
-    if l_tapConn_0 then
-        l_tapConn_0:Disconnect();
-    end;
-    l_tapConn_0 = v201.menuOpenedConnection;
-    if l_tapConn_0 then
-        l_tapConn_0:Disconnect();
-    end;
-end;
-v198.OnTouchBegan = function(v203, v204, v205) --[[ Line: 906 ]] --[[ Name: OnTouchBegan ]]
-    if v203.fingerTouches[v204] == nil and not v205 then
-        v203.numUnsunkTouches = v203.numUnsunkTouches + 1;
-    end;
-    v203.fingerTouches[v204] = v205;
-end;
-v198.OnTouchChanged = function(v206, v207, v208) --[[ Line: 913 ]] --[[ Name: OnTouchChanged ]]
-    if v206.fingerTouches[v207] == nil then
-        v206.fingerTouches[v207] = v208;
-        if not v208 then
-            v206.numUnsunkTouches = v206.numUnsunkTouches + 1;
-        end;
-    end;
-end;
-v198.OnTouchEnded = function(v209, v210, _) --[[ Line: 922 ]] --[[ Name: OnTouchEnded ]]
-    if v209.fingerTouches[v210] ~= nil and v209.fingerTouches[v210] == false then
-        v209.numUnsunkTouches = v209.numUnsunkTouches - 1;
-    end;
-    v209.fingerTouches[v210] = nil;
-end;
-v198.OnCharacterAdded = function(v212, v213) --[[ Line: 930 ]] --[[ Name: OnCharacterAdded ]]
-    -- upvalues: l_UserInputService_0 (copy), v21 (copy), v160 (ref), v161 (ref), v162 (ref), l_ClickToMoveDisplay_0 (copy), l_GuiService_0 (copy)
-    v212:DisconnectEvents();
-    v212.inputBeganConn = l_UserInputService_0.InputBegan:Connect(function(v214, v215) --[[ Line: 933 ]]
-        -- upvalues: v212 (copy), v21 (ref), v160 (ref), v161 (ref), v162 (ref), l_ClickToMoveDisplay_0 (ref)
-        if v214.UserInputType == Enum.UserInputType.Touch then
-            v212:OnTouchBegan(v214, v215);
-        end;
-        if v212.wasdEnabled and v215 == false and v214.UserInputType == Enum.UserInputType.Keyboard and v21[v214.KeyCode] then
-            if v160 then
-                v160:Cancel();
-                v160 = nil;
-            end;
-            if v161 then
-                v161:Disconnect();
-                v161 = nil;
-            end;
-            if v162 then
-                v162:Disconnect();
-                v162 = nil;
-            end;
-            l_ClickToMoveDisplay_0.CancelFailureAnimation();
-        end;
-        if v214.UserInputType == Enum.UserInputType.MouseButton1 then
-            v212.mouse1DownTime = tick();
-            v212.mouse1DownPos = v214.Position;
-        end;
-        if v214.UserInputType == Enum.UserInputType.MouseButton2 then
-            v212.mouse2DownTime = tick();
-            v212.mouse2DownPos = v214.Position;
-        end;
-    end);
-    v212.inputChangedConn = l_UserInputService_0.InputChanged:Connect(function(v216, v217) --[[ Line: 954 ]]
-        -- upvalues: v212 (copy)
-        if v216.UserInputType == Enum.UserInputType.Touch then
-            v212:OnTouchChanged(v216, v217);
-        end;
-    end);
-    v212.inputEndedConn = l_UserInputService_0.InputEnded:Connect(function(v218, v219) --[[ Line: 960 ]]
-        -- upvalues: v212 (copy), v160 (ref)
-        if v218.UserInputType == Enum.UserInputType.Touch then
-            v212:OnTouchEnded(v218, v219);
-        end;
-        if v218.UserInputType == Enum.UserInputType.MouseButton2 then
-            v212.mouse2UpTime = tick();
-            local l_Position_1 = v218.Position;
-            local v221 = v160 or v212.keyboardMoveVector.Magnitude <= 0;
-            if v212.mouse2UpTime - v212.mouse2DownTime < 0.25 and (l_Position_1 - v212.mouse2DownPos).magnitude < 5 and v221 then
-                OnTap({
-                    l_Position_1
-                });
-            end;
-        end;
-    end);
-    v212.tapConn = l_UserInputService_0.TouchTap:Connect(function(v222, v223) --[[ Line: 977 ]]
-        if not v223 then
-            OnTap(v222, nil, true);
-        end;
-    end);
-    v212.menuOpenedConnection = l_GuiService_0.MenuOpened:Connect(function() --[[ Line: 983 ]]
-        -- upvalues: v160 (ref), v161 (ref), v162 (ref)
-        if v160 then
-            v160:Cancel();
-            v160 = nil;
-        end;
-        if v161 then
-            v161:Disconnect();
-            v161 = nil;
-        end;
-        if v162 then
-            v162:Disconnect();
-            v162 = nil;
-        end;
-    end);
-    local function v226(v224) --[[ Line: 987 ]] --[[ Name: OnCharacterChildAdded ]]
-        -- upvalues: l_UserInputService_0 (ref), v212 (copy)
-        if l_UserInputService_0.TouchEnabled and v224:IsA("Tool") then
-            v224.ManualActivationOnly = true;
-        end;
-        if v224:IsA("Humanoid") then
-            local l_humanoidDiedConn_0 = v212.humanoidDiedConn;
-            if l_humanoidDiedConn_0 then
-                l_humanoidDiedConn_0:Disconnect();
-            end;
-            v212.humanoidDiedConn = v224.Died:Connect(function() --[[ Line: 995 ]]
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:47:34
+-- Luau version 6, Types version 3
+-- Time taken: 0.048020 seconds
 
-            end);
-        end;
-    end;
-    v212.characterChildAddedConn = v213.ChildAdded:Connect(function(v227) --[[ Line: 1003 ]]
-        -- upvalues: v226 (copy)
-        v226(v227);
-    end);
-    v212.characterChildRemovedConn = v213.ChildRemoved:Connect(function(v228) --[[ Line: 1006 ]]
-        -- upvalues: l_UserInputService_0 (ref)
-        if l_UserInputService_0.TouchEnabled and v228:IsA("Tool") then
-            v228.ManualActivationOnly = false;
-        end;
-    end);
-    for _, v230 in pairs(v213:GetChildren()) do
-        v226(v230);
-    end;
-end;
-v198.Start = function(v231) --[[ Line: 1018 ]] --[[ Name: Start ]]
-    v231:Enable(true);
-end;
-v198.Stop = function(v232) --[[ Line: 1022 ]] --[[ Name: Stop ]]
-    v232:Enable(false);
-end;
-v198.CleanupPath = function(_) --[[ Line: 1026 ]] --[[ Name: CleanupPath ]]
-    -- upvalues: v160 (ref), v161 (ref), v162 (ref)
-    if v160 then
-        v160:Cancel();
-        v160 = nil;
-    end;
-    if v161 then
-        v161:Disconnect();
-        v161 = nil;
-    end;
-    if v162 then
-        v162:Disconnect();
-        v162 = nil;
-    end;
-end;
-v198.Enable = function(v234, v235, v236, v237) --[[ Line: 1030 ]] --[[ Name: Enable ]]
-    -- upvalues: l_LocalPlayer_0 (copy), v160 (ref), v161 (ref), v162 (ref), l_UserInputService_0 (copy), l_Keyboard_0 (copy)
-    if v235 then
-        if not v234.running then
-            if l_LocalPlayer_0.Character then
-                v234:OnCharacterAdded(l_LocalPlayer_0.Character);
-            end;
-            v234.onCharacterAddedConn = l_LocalPlayer_0.CharacterAdded:Connect(function(v238) --[[ Line: 1036 ]]
-                -- upvalues: v234 (copy)
-                v234:OnCharacterAdded(v238);
-            end);
-            v234.running = true;
-        end;
-        v234.touchJumpController = v237;
-        if v234.touchJumpController then
-            v234.touchJumpController:Enable(v234.jumpEnabled);
-        end;
-    else
-        if v234.running then
-            v234:DisconnectEvents();
-            if v160 then
-                v160:Cancel();
-                v160 = nil;
-            end;
-            if v161 then
-                v161:Disconnect();
-                v161 = nil;
-            end;
-            if v162 then
-                v162:Disconnect();
-                v162 = nil;
-            end;
-            if l_UserInputService_0.TouchEnabled then
-                local l_Character_1 = l_LocalPlayer_0.Character;
-                if l_Character_1 then
-                    for _, v241 in pairs(l_Character_1:GetChildren()) do
-                        if v241:IsA("Tool") then
-                            v241.ManualActivationOnly = false;
-                        end;
-                    end;
-                end;
-            end;
-            v234.running = false;
-        end;
-        if v234.touchJumpController and not v234.jumpEnabled then
-            v234.touchJumpController:Enable(true);
-        end;
-        v234.touchJumpController = nil;
-    end;
-    l_Keyboard_0.Enable(v234, v235);
-    v234.wasdEnabled = v235 and v236 or false;
-    v234.enabled = v235;
-end;
-v198.OnRenderStepped = function(v242, v243) --[[ Line: 1075 ]] --[[ Name: OnRenderStepped ]]
-    -- upvalues: v160 (ref)
-    v242.isJumping = false;
-    if v160 then
-        v160:OnRenderStepped(v243);
-        if v160 then
-            v242.moveVector = v160.NextActionMoveDirection;
-            v242.moveVectorIsCameraRelative = false;
-            if v160.NextActionJump then
-                v242.isJumping = true;
-            end;
-        else
-            v242.moveVector = v242.keyboardMoveVector;
-            v242.moveVectorIsCameraRelative = true;
-        end;
-    else
-        v242.moveVector = v242.keyboardMoveVector;
-        v242.moveVectorIsCameraRelative = true;
-    end;
-    if v242.jumpRequested then
-        v242.isJumping = true;
-    end;
-end;
-v198.UpdateMovement = function(v244, v245) --[[ Line: 1110 ]] --[[ Name: UpdateMovement ]]
-    if v245 == Enum.UserInputState.Cancel then
-        v244.keyboardMoveVector = Vector3.new(0, 0, 0, 0);
-        return;
-    else
-        if v244.wasdEnabled then
-            v244.keyboardMoveVector = Vector3.new(v244.leftValue + v244.rightValue, 0, v244.forwardValue + v244.backwardValue);
-        end;
-        return;
-    end;
-end;
-v198.UpdateJump = function(_) --[[ Line: 1119 ]] --[[ Name: UpdateJump ]]
-
-end;
-v198.SetShowPath = function(_, v248) --[[ Line: 1124 ]] --[[ Name: SetShowPath ]]
-    -- upvalues: v16 (ref)
-    v16 = v248;
-end;
-v198.GetShowPath = function(_) --[[ Line: 1128 ]] --[[ Name: GetShowPath ]]
-    -- upvalues: v16 (ref)
-    return v16;
-end;
-v198.SetWaypointTexture = function(_, v251) --[[ Line: 1132 ]] --[[ Name: SetWaypointTexture ]]
-    -- upvalues: l_ClickToMoveDisplay_0 (copy)
-    l_ClickToMoveDisplay_0.SetWaypointTexture(v251);
-end;
-v198.GetWaypointTexture = function(_) --[[ Line: 1136 ]] --[[ Name: GetWaypointTexture ]]
-    -- upvalues: l_ClickToMoveDisplay_0 (copy)
-    return l_ClickToMoveDisplay_0.GetWaypointTexture();
-end;
-v198.SetWaypointRadius = function(_, v254) --[[ Line: 1140 ]] --[[ Name: SetWaypointRadius ]]
-    -- upvalues: l_ClickToMoveDisplay_0 (copy)
-    l_ClickToMoveDisplay_0.SetWaypointRadius(v254);
-end;
-v198.GetWaypointRadius = function(_) --[[ Line: 1144 ]] --[[ Name: GetWaypointRadius ]]
-    -- upvalues: l_ClickToMoveDisplay_0 (copy)
-    return l_ClickToMoveDisplay_0.GetWaypointRadius();
-end;
-v198.SetEndWaypointTexture = function(_, v257) --[[ Line: 1148 ]] --[[ Name: SetEndWaypointTexture ]]
-    -- upvalues: l_ClickToMoveDisplay_0 (copy)
-    l_ClickToMoveDisplay_0.SetEndWaypointTexture(v257);
-end;
-v198.GetEndWaypointTexture = function(_) --[[ Line: 1152 ]] --[[ Name: GetEndWaypointTexture ]]
-    -- upvalues: l_ClickToMoveDisplay_0 (copy)
-    return l_ClickToMoveDisplay_0.GetEndWaypointTexture();
-end;
-v198.SetWaypointsAlwaysOnTop = function(_, v260) --[[ Line: 1156 ]] --[[ Name: SetWaypointsAlwaysOnTop ]]
-    -- upvalues: l_ClickToMoveDisplay_0 (copy)
-    l_ClickToMoveDisplay_0.SetWaypointsAlwaysOnTop(v260);
-end;
-v198.GetWaypointsAlwaysOnTop = function(_) --[[ Line: 1160 ]] --[[ Name: GetWaypointsAlwaysOnTop ]]
-    -- upvalues: l_ClickToMoveDisplay_0 (copy)
-    return l_ClickToMoveDisplay_0.GetWaypointsAlwaysOnTop();
-end;
-v198.SetFailureAnimationEnabled = function(_, v263) --[[ Line: 1164 ]] --[[ Name: SetFailureAnimationEnabled ]]
-    -- upvalues: v17 (ref)
-    v17 = v263;
-end;
-v198.GetFailureAnimationEnabled = function(_) --[[ Line: 1168 ]] --[[ Name: GetFailureAnimationEnabled ]]
-    -- upvalues: v17 (ref)
-    return v17;
-end;
-v198.SetIgnoredPartsTag = function(_, v266) --[[ Line: 1172 ]] --[[ Name: SetIgnoredPartsTag ]]
-    -- upvalues: v63 (copy)
-    v63(v266);
-end;
-v198.GetIgnoredPartsTag = function(_) --[[ Line: 1176 ]] --[[ Name: GetIgnoredPartsTag ]]
-    -- upvalues: v52 (ref)
-    return v52;
-end;
-v198.SetUseDirectPath = function(_, v269) --[[ Line: 1180 ]] --[[ Name: SetUseDirectPath ]]
-    -- upvalues: v18 (ref)
-    v18 = v269;
-end;
-v198.GetUseDirectPath = function(_) --[[ Line: 1184 ]] --[[ Name: GetUseDirectPath ]]
-    -- upvalues: v18 (ref)
-    return v18;
-end;
-v198.SetAgentSizeIncreaseFactor = function(_, v272) --[[ Line: 1188 ]] --[[ Name: SetAgentSizeIncreaseFactor ]]
-    -- upvalues: v19 (ref)
-    v19 = v272 / 100 + 1;
-end;
-v198.GetAgentSizeIncreaseFactor = function(_) --[[ Line: 1192 ]] --[[ Name: GetAgentSizeIncreaseFactor ]]
-    -- upvalues: v19 (ref)
-    return (v19 - 1) * 100;
-end;
-v198.SetUnreachableWaypointTimeout = function(_, v275) --[[ Line: 1196 ]] --[[ Name: SetUnreachableWaypointTimeout ]]
-    -- upvalues: v20 (ref)
-    v20 = v275;
-end;
-v198.GetUnreachableWaypointTimeout = function(_) --[[ Line: 1200 ]] --[[ Name: GetUnreachableWaypointTimeout ]]
-    -- upvalues: v20 (ref)
-    return v20;
-end;
-v198.SetUserJumpEnabled = function(v277, v278) --[[ Line: 1204 ]] --[[ Name: SetUserJumpEnabled ]]
-    v277.jumpEnabled = v278;
-    if v277.touchJumpController then
-        v277.touchJumpController:Enable(v278);
-    end;
-end;
-v198.GetUserJumpEnabled = function(v279) --[[ Line: 1211 ]] --[[ Name: GetUserJumpEnabled ]]
-    return v279.jumpEnabled;
-end;
-v198.MoveTo = function(_, v281, v282, v283) --[[ Line: 1215 ]] --[[ Name: MoveTo ]]
-    -- upvalues: l_LocalPlayer_0 (copy), v149 (copy), v170 (copy)
-    local l_Character_2 = l_LocalPlayer_0.Character;
-    if l_Character_2 == nil then
-        return false;
-    else
-        local v285 = v149(v281, Vector3.new(0, 1, 0, 0), v283);
-        if v285 and v285:IsValidPath() then
-            v170(v285, v281, nil, l_Character_2, v282);
-            return true;
-        else
-            return false;
-        end;
-    end;
-end;
-return v198;
+local pcall_result1, pcall_result2 = pcall(function() -- Line 10
+	return UserSettings():IsUserFeatureEnabled("UserExcludeNonCollidableForPathfinding")
+end)
+local pcall_result1_2, pcall_result2_2 = pcall(function() -- Line 14
+	return UserSettings():IsUserFeatureEnabled("UserClickToMoveSupportAgentCanClimb2")
+end)
+local UserInputService_upvr = game:GetService("UserInputService")
+local Players_upvr = game:GetService("Players")
+local Workspace_upvr = game:GetService("Workspace")
+local any_getUserFlag_result1_upvr = require(script.Parent.Parent:WaitForChild("CommonUtils"):WaitForChild("FlagUtil")).getUserFlag("UserRaycastPerformanceImprovements")
+local var11_upvw = true
+local var12_upvw = true
+local var13_upvw = false
+local var14_upvw = 1
+local var15_upvw = 8
+local tbl_5_upvr = {
+	[Enum.KeyCode.W] = true;
+	[Enum.KeyCode.A] = true;
+	[Enum.KeyCode.S] = true;
+	[Enum.KeyCode.D] = true;
+	[Enum.KeyCode.Up] = true;
+	[Enum.KeyCode.Down] = true;
+}
+local LocalPlayer_upvr = Players_upvr.LocalPlayer
+local module_upvr = require(script.Parent:WaitForChild("ClickToMoveDisplay"))
+local RaycastParams_new_result1_upvr = RaycastParams.new()
+RaycastParams_new_result1_upvr.FilterType = Enum.RaycastFilterType.Exclude
+local tbl_6_upvr = {}
+if not any_getUserFlag_result1_upvr then
+	local function FindCharacterAncestor_upvr(arg1) -- Line 65, Named "FindCharacterAncestor"
+		--[[ Upvalues[1]:
+			[1]: FindCharacterAncestor_upvr (readonly)
+		]]
+		if arg1 then
+			local class_Humanoid = arg1:FindFirstChildOfClass("Humanoid")
+			if class_Humanoid then
+				return arg1, class_Humanoid
+			end
+			return FindCharacterAncestor_upvr(arg1.Parent)
+		end
+	end
+	tbl_6_upvr.FindCharacterAncestor = FindCharacterAncestor_upvr
+	local function findPlayerHumanoid_upvr(arg1, arg2, arg3) -- Line 77, Named "Raycast"
+		--[[ Upvalues[3]:
+			[1]: Workspace_upvr (readonly)
+			[2]: FindCharacterAncestor_upvr (readonly)
+			[3]: findPlayerHumanoid_upvr (readonly)
+		]]
+		local var32 = arg3
+		if not var32 then
+			var32 = {}
+		end
+		local var33 = var32
+		local any_FindPartOnRayWithIgnoreList_result1, any_FindPartOnRayWithIgnoreList_result2_2, any_FindPartOnRayWithIgnoreList_result3_2, any_FindPartOnRayWithIgnoreList_result4_2 = Workspace_upvr:FindPartOnRayWithIgnoreList(arg1, var33)
+		if any_FindPartOnRayWithIgnoreList_result1 then
+			if arg2 then
+				local var38
+				if any_FindPartOnRayWithIgnoreList_result1.CanCollide == false then
+					if any_FindPartOnRayWithIgnoreList_result1 then
+						local class_Humanoid_2 = any_FindPartOnRayWithIgnoreList_result1:FindFirstChildOfClass("Humanoid")
+						if class_Humanoid_2 then
+							var38 = class_Humanoid_2
+						else
+							local _, FindCharacterAncestor_result2 = FindCharacterAncestor_upvr(any_FindPartOnRayWithIgnoreList_result1.Parent)
+							var38 = FindCharacterAncestor_result2
+						end
+					else
+						var38 = nil
+					end
+					if var38 == nil then
+						table.insert(var33, any_FindPartOnRayWithIgnoreList_result1)
+						return findPlayerHumanoid_upvr(arg1, arg2, var33)
+					end
+				end
+			end
+			return any_FindPartOnRayWithIgnoreList_result1, any_FindPartOnRayWithIgnoreList_result2_2, any_FindPartOnRayWithIgnoreList_result3_2, any_FindPartOnRayWithIgnoreList_result4_2
+		end
+		return nil, nil
+	end
+	tbl_6_upvr.Raycast = findPlayerHumanoid_upvr
+end
+FindCharacterAncestor_upvr = {}
+local var42_upvr = FindCharacterAncestor_upvr
+function findPlayerHumanoid_upvr(arg1) -- Line 99, Named "findPlayerHumanoid"
+	--[[ Upvalues[1]:
+		[1]: var42_upvr (readonly)
+	]]
+	local var43 = arg1
+	if var43 then
+		var43 = arg1.Character
+	end
+	if var43 then
+		local var44 = var42_upvr[arg1]
+		if var44 and var44.Parent == var43 then
+			return var44
+		end
+		var42_upvr[arg1] = nil
+		local class_Humanoid_7 = var43:FindFirstChildOfClass("Humanoid")
+		if class_Humanoid_7 then
+			var42_upvr[arg1] = class_Humanoid_7
+		end
+		return class_Humanoid_7
+	end
+end
+local var46_upvw
+local var47_upvw
+local function _() -- Line 123, Named "GetCharacter"
+	--[[ Upvalues[1]:
+		[1]: LocalPlayer_upvr (readonly)
+	]]
+	local var48 = LocalPlayer_upvr
+	if var48 then
+		var48 = LocalPlayer_upvr.Character
+	end
+	return var48
+end
+local var49_upvw
+local var50_upvw
+local CollectionService_upvr = game:GetService("CollectionService")
+local function UpdateIgnoreTag_upvr(arg1) -- Line 127, Named "UpdateIgnoreTag"
+	--[[ Upvalues[6]:
+		[1]: var47_upvw (read and write)
+		[2]: var49_upvw (read and write)
+		[3]: var50_upvw (read and write)
+		[4]: var46_upvw (read and write)
+		[5]: LocalPlayer_upvr (readonly)
+		[6]: CollectionService_upvr (readonly)
+	]]
+	if arg1 == var47_upvw then
+	else
+		if var49_upvw then
+			var49_upvw:Disconnect()
+			var49_upvw = nil
+		end
+		if var50_upvw then
+			var50_upvw:Disconnect()
+			var50_upvw = nil
+		end
+		var47_upvw = arg1
+		local tbl_4 = {}
+		local var57 = LocalPlayer_upvr
+		if var57 then
+			var57 = LocalPlayer_upvr.Character
+		end
+		tbl_4[1] = var57
+		var46_upvw = tbl_4
+		if var47_upvw ~= nil then
+			for _, v_6 in ipairs(CollectionService_upvr:GetTagged(var47_upvw)) do
+				table.insert(var46_upvw, v_6)
+			end
+			var49_upvw = CollectionService_upvr:GetInstanceAddedSignal(var47_upvw):Connect(function(arg1_2) -- Line 147
+				--[[ Upvalues[1]:
+					[1]: var46_upvw (copied, read and write)
+				]]
+				table.insert(var46_upvw, arg1_2)
+			end)
+			var50_upvw = CollectionService_upvr:GetInstanceRemovedSignal(var47_upvw):Connect(function(arg1_3) -- Line 151
+				--[[ Upvalues[1]:
+					[1]: var46_upvw (copied, read and write)
+				]]
+				for i_7 = 1, #var46_upvw do
+					if var46_upvw[i_7] == arg1_3 then
+						var46_upvw[i_7] = var46_upvw[#var46_upvw]
+						table.remove(var46_upvw)
+						return
+					end
+				end
+			end)
+		end
+	end
+end
+local function _() -- Line 163, Named "getIgnoreList"
+	--[[ Upvalues[2]:
+		[1]: var46_upvw (read and write)
+		[2]: LocalPlayer_upvr (readonly)
+	]]
+	if var46_upvw then
+		return var46_upvw
+	end
+	var46_upvw = {}
+	assert(var46_upvw, "")
+	local var64 = LocalPlayer_upvr
+	if var64 then
+		var64 = LocalPlayer_upvr.Character
+	end
+	table.insert(var46_upvw, var64)
+	return var46_upvw
+end
+local function _(arg1, arg2) -- Line 173, Named "minV"
+	return Vector3.new(math.min(arg1.X, arg2.X), math.min(arg1.Y, arg2.Y), math.min(arg1.Z, arg2.Z))
+end
+local function _(arg1, arg2) -- Line 176, Named "maxV"
+	return Vector3.new(math.max(arg1.X, arg2.X), math.max(arg1.Y, arg2.Y), math.max(arg1.Z, arg2.Z))
+end
+local function getCollidableExtentsSize_upvr(arg1) -- Line 179, Named "getCollidableExtentsSize"
+	if arg1 == nil or arg1.PrimaryPart == nil then return end
+	assert(arg1, "")
+	assert(arg1.PrimaryPart, "")
+	for _, v in pairs(arg1:GetDescendants()) do
+		if v:IsA("BasePart") and v.CanCollide then
+			local vector3 = Vector3.new(v.Size.X / 2, v.Size.Y / 2, v.Size.Z / 2)
+			for _, v_2 in ipairs({Vector3.new(vector3.X, vector3.Y, vector3.Z), Vector3.new(vector3.X, vector3.Y, -vector3.Z), Vector3.new(vector3.X, -vector3.Y, vector3.Z), Vector3.new(vector3.X, -vector3.Y, -vector3.Z), Vector3.new(-vector3.X, vector3.Y, vector3.Z), Vector3.new(-vector3.X, vector3.Y, -vector3.Z), Vector3.new(-vector3.X, -vector3.Y, vector3.Z), Vector3.new(-vector3.X, -vector3.Y, -vector3.Z)}) do
+				local var81 = arg1.PrimaryPart.CFrame:Inverse() * v.CFrame * v_2
+				local const_vector = Vector3.new(math.huge, math.huge, math.huge)
+				local const_vector_2 = Vector3.new((-math.huge), (-math.huge), (-math.huge))
+				local var84
+			end
+		end
+	end
+	local var85 = Vector3.new(math.max(const_vector_2.X, var81.X), math.max(const_vector_2.Y, var81.Y), math.max(const_vector_2.Z, var81.Z)) - Vector3.new(math.min(const_vector.X, var81.X), math.min(const_vector.Y, var81.Y), math.min(const_vector.Z, var81.Z))
+	if var85.X < 0 or var85.Y < 0 or var85.Z < 0 then
+		return nil
+	end
+	return var85
+end
+local var86_upvr = pcall_result1 and pcall_result2
+local var87_upvr = pcall_result1_2 and pcall_result2_2
+local PathfindingService_upvr = game:GetService("PathfindingService")
+local function Pather_upvr(arg1, arg2, arg3) -- Line 214, Named "Pather"
+	--[[ Upvalues[15]:
+		[1]: var13_upvw (read and write)
+		[2]: LocalPlayer_upvr (readonly)
+		[3]: var42_upvr (readonly)
+		[4]: var14_upvw (read and write)
+		[5]: var86_upvr (readonly)
+		[6]: getCollidableExtentsSize_upvr (readonly)
+		[7]: var87_upvr (readonly)
+		[8]: PathfindingService_upvr (readonly)
+		[9]: var11_upvw (read and write)
+		[10]: module_upvr (readonly)
+		[11]: var15_upvw (read and write)
+		[12]: any_getUserFlag_result1_upvr (readonly)
+		[13]: RaycastParams_new_result1_upvr (readonly)
+		[14]: var46_upvw (read and write)
+		[15]: Workspace_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	-- KONSTANTERROR: [0] 1. Error Block 112 start (CF ANALYSIS FAILED)
+	local module_upvr_2 = {}
+	local var141
+	if arg3 ~= nil then
+		local _ = arg3
+	else
+	end
+	module_upvr_2.Cancelled = false
+	module_upvr_2.Started = false
+	module_upvr_2.Finished = Instance.new("BindableEvent")
+	module_upvr_2.PathFailed = Instance.new("BindableEvent")
+	module_upvr_2.PathComputing = false
+	module_upvr_2.PathComputed = false
+	module_upvr_2.OriginalTargetPoint = arg1
+	module_upvr_2.TargetPoint = arg1
+	module_upvr_2.TargetSurfaceNormal = arg2
+	module_upvr_2.DiedConn = nil
+	module_upvr_2.SeatedConn = nil
+	module_upvr_2.BlockedConn = nil
+	module_upvr_2.TeleportedConn = nil
+	module_upvr_2.CurrentPoint = 0
+	module_upvr_2.HumanoidOffsetFromPath = Vector3.new(0, 0, 0)
+	module_upvr_2.CurrentWaypointPosition = nil
+	module_upvr_2.CurrentWaypointPlaneNormal = Vector3.new(0, 0, 0)
+	module_upvr_2.CurrentWaypointPlaneDistance = 0
+	module_upvr_2.CurrentWaypointNeedsJump = false
+	module_upvr_2.CurrentHumanoidPosition = Vector3.new(0, 0, 0)
+	module_upvr_2.CurrentHumanoidVelocity = 0
+	module_upvr_2.NextActionMoveDirection = Vector3.new(0, 0, 0)
+	module_upvr_2.NextActionJump = false
+	module_upvr_2.Timeout = 0
+	local var143 = LocalPlayer_upvr
+	var141 = var143
+	if var141 then
+		var141 = var143.Character
+	end
+	if var141 then
+		local var144 = var42_upvr[var143]
+		if var144 and var144.Parent == var141 then
+		else
+			var42_upvr[var143] = nil
+			local class_Humanoid_8 = var141:FindFirstChildOfClass("Humanoid")
+			if class_Humanoid_8 then
+				var42_upvr[var143] = class_Humanoid_8
+			end
+		end
+	else
+	end
+	module_upvr_2.Humanoid = nil
+	module_upvr_2.OriginPoint = nil
+	module_upvr_2.AgentCanFollowPath = false
+	module_upvr_2.DirectPath = false
+	module_upvr_2.DirectPathRiseFirst = false
+	module_upvr_2.stopTraverseFunc = nil
+	module_upvr_2.setPointFunc = nil
+	module_upvr_2.pointList = nil
+	if module_upvr_2.Humanoid then
+		local RootPart_2 = module_upvr_2.Humanoid.RootPart
+		local var147
+	end
+	if RootPart_2 then
+		var141 = RootPart_2.CFrame
+		module_upvr_2.OriginPoint = var141.Position
+		var141 = 5
+		var147 = module_upvr_2.Humanoid
+		local SeatPart = var147.SeatPart
+		if SeatPart then
+			var147 = SeatPart:IsA("VehicleSeat")
+			if var147 then
+				var147 = SeatPart:FindFirstAncestorOfClass("Model")
+				if var147 then
+					var147.PrimaryPart = SeatPart
+					if true then
+						var141 = var14_upvw * var147:GetExtentsSize().Y
+						module_upvr_2.AgentCanFollowPath = true
+						-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+						module_upvr_2.DirectPath = true
+					end
+					var147.PrimaryPart = var147.PrimaryPart
+					-- KONSTANTWARNING: GOTO [282] #200
+				end
+				-- KONSTANTWARNING: GOTO [282] #200
+			end
+		end
+		var147 = nil
+		local var150
+		if var86_upvr then
+			local var151 = LocalPlayer_upvr
+			if var151 then
+				var151 = LocalPlayer_upvr.Character
+			end
+			if var151 ~= nil then
+				var147 = getCollidableExtentsSize_upvr(var151)
+			end
+		end
+		if var147 == nil then
+			var151 = LocalPlayer_upvr
+			local var152 = var151
+			if var152 then
+				var152 = LocalPlayer_upvr.Character
+			end
+			var147 = var152:GetExtentsSize()
+		end
+		assert(var147, "")
+		var141 = var14_upvw * var147.Y
+		if 0 >= module_upvr_2.Humanoid.JumpPower then
+		else
+		end
+		module_upvr_2.AgentCanFollowPath = true
+		module_upvr_2.DirectPath = var13_upvw
+		module_upvr_2.DirectPathRiseFirst = module_upvr_2.Humanoid.Sit
+		var147 = var87_upvr
+		if var147 then
+			var147 = PathfindingService_upvr
+			var147 = var147:CreatePath({
+				AgentRadius = var14_upvw * 0.5 * math.sqrt(var147.X * var147.X + var147.Z * var147.Z);
+				AgentHeight = var141;
+				AgentCanJump = true;
+				AgentCanClimb = true;
+			})
+			module_upvr_2.pathResult = var147
+		else
+			var147 = PathfindingService_upvr
+			local tbl = {}
+			-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+			tbl.AgentRadius = var14_upvw * 0.5 * math.sqrt(var147.X * var147.X + var147.Z * var147.Z)
+			tbl.AgentHeight = var141
+			-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+			tbl.AgentCanJump = true
+			var147 = var147:CreatePath(tbl)
+			module_upvr_2.pathResult = var147
+		end
+	end
+	function module_upvr_2.Cleanup(arg1_18) -- Line 332
+		--[[ Upvalues[1]:
+			[1]: module_upvr_2 (readonly)
+		]]
+		if module_upvr_2.stopTraverseFunc then
+			module_upvr_2.stopTraverseFunc()
+			module_upvr_2.stopTraverseFunc = nil
+		end
+		if module_upvr_2.BlockedConn then
+			module_upvr_2.BlockedConn:Disconnect()
+			module_upvr_2.BlockedConn = nil
+		end
+		if module_upvr_2.DiedConn then
+			module_upvr_2.DiedConn:Disconnect()
+			module_upvr_2.DiedConn = nil
+		end
+		if module_upvr_2.SeatedConn then
+			module_upvr_2.SeatedConn:Disconnect()
+			module_upvr_2.SeatedConn = nil
+		end
+		if module_upvr_2.TeleportedConn then
+			module_upvr_2.TeleportedConn:Disconnect()
+			module_upvr_2.TeleportedConn = nil
+		end
+		module_upvr_2.Started = false
+	end
+	function module_upvr_2.Cancel(arg1_19) -- Line 361
+		--[[ Upvalues[1]:
+			[1]: module_upvr_2 (readonly)
+		]]
+		module_upvr_2.Cancelled = true
+		module_upvr_2:Cleanup()
+	end
+	function module_upvr_2.IsActive(arg1_20) -- Line 366
+		--[[ Upvalues[1]:
+			[1]: module_upvr_2 (readonly)
+		]]
+		local AgentCanFollowPath = module_upvr_2.AgentCanFollowPath
+		if AgentCanFollowPath then
+			AgentCanFollowPath = module_upvr_2.Started
+			if AgentCanFollowPath then
+				AgentCanFollowPath = not module_upvr_2.Cancelled
+			end
+		end
+		return AgentCanFollowPath
+	end
+	function module_upvr_2.OnPathInterrupted(arg1_21) -- Line 370
+		--[[ Upvalues[1]:
+			[1]: module_upvr_2 (readonly)
+		]]
+		module_upvr_2.Cancelled = true
+		module_upvr_2:OnPointReached(false)
+	end
+	function module_upvr_2.ComputePath(arg1_22) -- Line 376
+		--[[ Upvalues[1]:
+			[1]: module_upvr_2 (readonly)
+		]]
+		-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+		if module_upvr_2.OriginPoint then
+			if module_upvr_2.PathComputed or module_upvr_2.PathComputing then return end
+			module_upvr_2.PathComputing = true
+			if module_upvr_2.AgentCanFollowPath then
+				local var156
+				if module_upvr_2.DirectPath then
+					var156 = {}
+					if not module_upvr_2.DirectPathRiseFirst or not Enum.PathWaypointAction.Jump then
+					end
+					var156[1] = PathWaypoint.new(module_upvr_2.OriginPoint, Enum.PathWaypointAction.Walk)
+					var156[2] = PathWaypoint.new(module_upvr_2.TargetPoint, Enum.PathWaypointAction.Walk)
+					module_upvr_2.pointList = var156
+					var156 = true
+					module_upvr_2.PathComputed = var156
+				else
+					var156 = module_upvr_2
+					var156.pathResult:ComputeAsync(module_upvr_2.OriginPoint, module_upvr_2.TargetPoint)
+					var156 = module_upvr_2.pathResult:GetWaypoints()
+					module_upvr_2.pointList = var156
+					var156 = module_upvr_2.pathResult.Blocked
+					var156 = var156:Connect(function(arg1_23) -- Line 390
+						--[[ Upvalues[1]:
+							[1]: module_upvr_2 (copied, readonly)
+						]]
+						module_upvr_2:OnPathBlocked(arg1_23)
+					end)
+					module_upvr_2.BlockedConn = var156
+					if module_upvr_2.pathResult.Status ~= Enum.PathStatus.Success then
+						var156 = false
+					else
+						var156 = true
+					end
+					module_upvr_2.PathComputed = var156
+				end
+			end
+			module_upvr_2.PathComputing = false
+		end
+	end
+	function module_upvr_2.IsValidPath(arg1_24) -- Line 398
+		--[[ Upvalues[1]:
+			[1]: module_upvr_2 (readonly)
+		]]
+		module_upvr_2:ComputePath()
+		local PathComputed_2 = module_upvr_2.PathComputed
+		if PathComputed_2 then
+			PathComputed_2 = module_upvr_2.AgentCanFollowPath
+		end
+		return PathComputed_2
+	end
+	module_upvr_2.Recomputing = false
+	function module_upvr_2.OnPathBlocked(arg1_25, arg2_8) -- Line 404
+		--[[ Upvalues[3]:
+			[1]: module_upvr_2 (readonly)
+			[2]: var11_upvw (copied, read and write)
+			[3]: module_upvr (copied, readonly)
+		]]
+		-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+		local var159
+		if module_upvr_2.CurrentPoint > arg2_8 then
+			var159 = false
+		else
+			var159 = true
+		end
+		if not var159 or module_upvr_2.Recomputing then
+		else
+			module_upvr_2.Recomputing = true
+			if module_upvr_2.stopTraverseFunc then
+				module_upvr_2.stopTraverseFunc()
+				module_upvr_2.stopTraverseFunc = nil
+			end
+			module_upvr_2.OriginPoint = module_upvr_2.Humanoid.RootPart.CFrame.p
+			module_upvr_2.pathResult:ComputeAsync(module_upvr_2.OriginPoint, module_upvr_2.TargetPoint)
+			module_upvr_2.pointList = module_upvr_2.pathResult:GetWaypoints()
+			if 0 < #module_upvr_2.pointList then
+				module_upvr_2.HumanoidOffsetFromPath = module_upvr_2.pointList[1].Position - module_upvr_2.OriginPoint
+			end
+			if module_upvr_2.pathResult.Status ~= Enum.PathStatus.Success then
+			else
+			end
+			module_upvr_2.PathComputed = true
+			if var11_upvw then
+				local any_CreatePathDisplay_result1_4, any_CreatePathDisplay_result2 = module_upvr.CreatePathDisplay(module_upvr_2.pointList)
+				module_upvr_2.stopTraverseFunc = any_CreatePathDisplay_result1_4
+				module_upvr_2.setPointFunc = any_CreatePathDisplay_result2
+			end
+			if module_upvr_2.PathComputed then
+				module_upvr_2.CurrentPoint = 1
+				module_upvr_2:OnPointReached(true)
+			else
+				module_upvr_2.PathFailed:Fire()
+				module_upvr_2:Cleanup()
+			end
+			module_upvr_2.Recomputing = false
+		end
+	end
+	local function OnRenderStepped(arg1_26, arg2_9) -- Line 440
+		--[[ Upvalues[2]:
+			[1]: module_upvr_2 (readonly)
+			[2]: var15_upvw (copied, read and write)
+		]]
+		if module_upvr_2.Started then
+			if not module_upvr_2.Cancelled then
+				module_upvr_2.Timeout += arg2_9
+				if var15_upvw < module_upvr_2.Timeout then
+					module_upvr_2:OnPointReached(false)
+					return
+				end
+				module_upvr_2.CurrentHumanoidPosition = module_upvr_2.Humanoid.RootPart.Position + module_upvr_2.HumanoidOffsetFromPath
+				module_upvr_2.CurrentHumanoidVelocity = module_upvr_2.Humanoid.RootPart.Velocity
+				while module_upvr_2.Started and module_upvr_2:IsCurrentWaypointReached() do
+					module_upvr_2:OnPointReached(true)
+				end
+				if module_upvr_2.Started then
+					module_upvr_2.NextActionMoveDirection = module_upvr_2.CurrentWaypointPosition - module_upvr_2.CurrentHumanoidPosition
+					if 0.000001 < module_upvr_2.NextActionMoveDirection.Magnitude then
+						module_upvr_2.NextActionMoveDirection = module_upvr_2.NextActionMoveDirection.Unit
+					else
+						module_upvr_2.NextActionMoveDirection = Vector3.new(0, 0, 0)
+					end
+					if module_upvr_2.CurrentWaypointNeedsJump then
+						module_upvr_2.NextActionJump = true
+						module_upvr_2.CurrentWaypointNeedsJump = false
+						return
+					end
+					module_upvr_2.NextActionJump = false
+				end
+			end
+		end
+	end
+	module_upvr_2.OnRenderStepped = OnRenderStepped
+	function module_upvr_2.IsCurrentWaypointReached(arg1_27) -- Line 478
+		--[[ Upvalues[1]:
+			[1]: module_upvr_2 (readonly)
+		]]
+		local var162 = false
+		if module_upvr_2.CurrentWaypointPlaneNormal ~= Vector3.new(0, 0, 0) then
+			if module_upvr_2.CurrentWaypointPlaneNormal:Dot(module_upvr_2.CurrentHumanoidPosition) - module_upvr_2.CurrentWaypointPlaneDistance >= math.max(1, 0.0625 * -module_upvr_2.CurrentWaypointPlaneNormal:Dot(module_upvr_2.CurrentHumanoidVelocity)) then
+				var162 = false
+			else
+				var162 = true
+			end
+		else
+			var162 = true
+		end
+		if var162 then
+			module_upvr_2.CurrentWaypointPosition = nil
+			module_upvr_2.CurrentWaypointPlaneNormal = Vector3.new(0, 0, 0)
+			module_upvr_2.CurrentWaypointPlaneDistance = 0
+		end
+		return var162
+	end
+	function module_upvr_2.OnPointReached(arg1_28, arg2_10) -- Line 504
+		--[[ Upvalues[1]:
+			[1]: module_upvr_2 (readonly)
+		]]
+		if arg2_10 and not module_upvr_2.Cancelled then
+			if module_upvr_2.setPointFunc then
+				module_upvr_2.setPointFunc(module_upvr_2.CurrentPoint)
+			end
+			local var163 = module_upvr_2.CurrentPoint + 1
+			if #module_upvr_2.pointList < var163 then
+				if module_upvr_2.stopTraverseFunc then
+					module_upvr_2.stopTraverseFunc()
+				end
+				module_upvr_2.Finished:Fire()
+				module_upvr_2:Cleanup()
+			else
+				local var164 = module_upvr_2.pointList[module_upvr_2.CurrentPoint]
+				local var165 = module_upvr_2.pointList[var163]
+				local any_GetState_result1_3 = module_upvr_2.Humanoid:GetState()
+				local var167 = true
+				if any_GetState_result1_3 ~= Enum.HumanoidStateType.FallingDown then
+					var167 = true
+					if any_GetState_result1_3 ~= Enum.HumanoidStateType.Freefall then
+						if any_GetState_result1_3 ~= Enum.HumanoidStateType.Jumping then
+							var167 = false
+						else
+							var167 = true
+						end
+					end
+				end
+				if var167 then
+					local var168
+					if var165.Action ~= Enum.PathWaypointAction.Jump then
+						var168 = false
+					else
+						var168 = true
+					end
+					if not var168 and 1 < module_upvr_2.CurrentPoint then
+						local var169 = var164.Position - module_upvr_2.pointList[module_upvr_2.CurrentPoint - 1].Position
+						local var170 = var165.Position - var164.Position
+						if Vector2.new(var169.x, var169.z).Unit:Dot(Vector2.new(var170.x, var170.z).Unit) >= 0.996 then
+							var168 = false
+						else
+							var168 = true
+						end
+					end
+					if var168 then
+						module_upvr_2.Humanoid.FreeFalling:Wait()
+						wait(0.1)
+					end
+				end
+				module_upvr_2:MoveToNextWayPoint(var164, var165, var163)
+			end
+		end
+		module_upvr_2.PathFailed:Fire()
+		module_upvr_2:Cleanup()
+	end
+	function module_upvr_2.MoveToNextWayPoint(arg1_29, arg2_11, arg3_3, arg4) -- Line 567
+		--[[ Upvalues[2]:
+			[1]: module_upvr_2 (readonly)
+			[2]: var87_upvr (copied, readonly)
+		]]
+		module_upvr_2.CurrentWaypointPlaneNormal = arg2_11.Position - arg3_3.Position
+		local var171
+		if not var87_upvr or arg3_3.Label ~= "Climb" then
+			var171 = Vector3.new(module_upvr_2.CurrentWaypointPlaneNormal.X, 0, module_upvr_2.CurrentWaypointPlaneNormal.Z)
+			module_upvr_2.CurrentWaypointPlaneNormal = var171
+		end
+		var171 = module_upvr_2.CurrentWaypointPlaneNormal
+		var171 = 0.000001
+		if var171 < var171.Magnitude then
+			var171 = module_upvr_2.CurrentWaypointPlaneNormal.Unit
+			module_upvr_2.CurrentWaypointPlaneNormal = var171
+			var171 = module_upvr_2.CurrentWaypointPlaneNormal:Dot(arg3_3.Position)
+			module_upvr_2.CurrentWaypointPlaneDistance = var171
+		else
+			var171 = Vector3.new(0, 0, 0)
+			module_upvr_2.CurrentWaypointPlaneNormal = var171
+			var171 = 0
+			module_upvr_2.CurrentWaypointPlaneDistance = var171
+		end
+		if arg3_3.Action ~= Enum.PathWaypointAction.Jump then
+			var171 = false
+		else
+			var171 = true
+		end
+		module_upvr_2.CurrentWaypointNeedsJump = var171
+		var171 = arg3_3.Position
+		module_upvr_2.CurrentWaypointPosition = var171
+		module_upvr_2.CurrentPoint = arg4
+		var171 = 0
+		module_upvr_2.Timeout = var171
+	end
+	local function Start(arg1_30, arg2_12) -- Line 599
+		--[[ Upvalues[3]:
+			[1]: module_upvr_2 (readonly)
+			[2]: module_upvr (copied, readonly)
+			[3]: var11_upvw (copied, read and write)
+		]]
+		if not module_upvr_2.AgentCanFollowPath then
+			module_upvr_2.PathFailed:Fire()
+		else
+			if module_upvr_2.Started then return end
+			module_upvr_2.Started = true
+			module_upvr.CancelFailureAnimation()
+			if var11_upvw and (arg2_12 == nil or arg2_12) then
+				local any_CreatePathDisplay_result1, any_CreatePathDisplay_result2_2 = module_upvr.CreatePathDisplay(module_upvr_2.pointList, module_upvr_2.OriginalTargetPoint)
+				module_upvr_2.stopTraverseFunc = any_CreatePathDisplay_result1
+				module_upvr_2.setPointFunc = any_CreatePathDisplay_result2_2
+			end
+			if 0 < #module_upvr_2.pointList then
+				module_upvr_2.HumanoidOffsetFromPath = Vector3.new(0, module_upvr_2.pointList[1].Position.Y - module_upvr_2.OriginPoint.Y, 0)
+				module_upvr_2.CurrentHumanoidPosition = module_upvr_2.Humanoid.RootPart.Position + module_upvr_2.HumanoidOffsetFromPath
+				module_upvr_2.CurrentHumanoidVelocity = module_upvr_2.Humanoid.RootPart.Velocity
+				module_upvr_2.SeatedConn = module_upvr_2.Humanoid.Seated:Connect(function(arg1_31, arg2_13) -- Line 626
+					--[[ Upvalues[1]:
+						[1]: module_upvr_2 (copied, readonly)
+					]]
+					module_upvr_2:OnPathInterrupted()
+				end)
+				module_upvr_2.DiedConn = module_upvr_2.Humanoid.Died:Connect(function() -- Line 627
+					--[[ Upvalues[1]:
+						[1]: module_upvr_2 (copied, readonly)
+					]]
+					module_upvr_2:OnPathInterrupted()
+				end)
+				module_upvr_2.TeleportedConn = module_upvr_2.Humanoid.RootPart:GetPropertyChangedSignal("CFrame"):Connect(function() -- Line 628
+					--[[ Upvalues[1]:
+						[1]: module_upvr_2 (copied, readonly)
+					]]
+					module_upvr_2:OnPathInterrupted()
+				end)
+				module_upvr_2.CurrentPoint = 1
+				module_upvr_2:OnPointReached(true)
+				return
+			end
+			module_upvr_2.PathFailed:Fire()
+			if module_upvr_2.stopTraverseFunc then
+				module_upvr_2.stopTraverseFunc()
+			end
+		end
+	end
+	module_upvr_2.Start = Start
+	var141 = module_upvr_2.TargetPoint
+	var141 = any_getUserFlag_result1_upvr
+	local var177
+	if var141 then
+		var141 = RaycastParams_new_result1_upvr
+		if var46_upvw then
+		else
+			var46_upvw = {}
+			var147 = var46_upvw
+			var177 = ""
+			assert(var147, var177)
+			var147 = var46_upvw
+			var177 = LocalPlayer_upvr
+			if var177 then
+				var177 = LocalPlayer_upvr.Character
+			end
+			table.insert(var147, var177)
+		end
+		var141.FilterDescendantsInstances = var46_upvw
+		var141 = Workspace_upvr
+		var147 = Vector3.new(-0, -50, -0)
+		var141 = var141:Raycast(var141 + module_upvr_2.TargetSurfaceNormal * 1.5, var147, RaycastParams_new_result1_upvr)
+		if var141 then
+			module_upvr_2.TargetPoint = var141.Position
+			-- KONSTANTWARNING: GOTO [460] #333
+		end
+	else
+		var141 = Ray.new
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		var141 = var141(var141 + module_upvr_2.TargetSurfaceNormal * 1.5, Vector3.new(0, -50, 0))
+		var147 = var141
+		if var46_upvw then
+		else
+			var46_upvw = {}
+			assert(var46_upvw, "")
+			local var178 = LocalPlayer_upvr
+			if var178 then
+				var178 = LocalPlayer_upvr.Character
+			end
+			table.insert(var46_upvw, var178)
+		end
+		local any_FindPartOnRayWithIgnoreList_result1_4, any_FindPartOnRayWithIgnoreList_result2_4 = Workspace_upvr:FindPartOnRayWithIgnoreList(var147, var46_upvw)
+		if any_FindPartOnRayWithIgnoreList_result1_4 then
+			module_upvr_2.TargetPoint = any_FindPartOnRayWithIgnoreList_result2_4
+		end
+	end
+	-- KONSTANTERROR: [0] 1. Error Block 112 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [460] 333. Error Block 63 start (CF ANALYSIS FAILED)
+	var141 = module_upvr_2:ComputePath
+	var141()
+	do
+		return module_upvr_2
+	end
+	-- KONSTANTERROR: [460] 333. Error Block 63 end (CF ANALYSIS FAILED)
+end
+local function _() -- Line 664, Named "CheckAlive"
+	--[[ Upvalues[2]:
+		[1]: LocalPlayer_upvr (readonly)
+		[2]: var42_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local var181 = LocalPlayer_upvr
+	local var182 = var181
+	if var182 then
+		var182 = var181.Character
+	end
+	if var182 then
+		local var183 = var42_upvr[var181]
+		if var183 and var183.Parent == var182 then
+			local _ = var183
+		else
+			var42_upvr[var181] = nil
+			local class_Humanoid_5 = var182:FindFirstChildOfClass("Humanoid")
+			if class_Humanoid_5 then
+				var42_upvr[var181] = class_Humanoid_5
+			end
+		end
+	else
+	end
+	var181 = false
+	local var186 = var181
+	if nil ~= nil then
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		if 0 >= nil.Health then
+			var186 = false
+		else
+			var186 = true
+		end
+	end
+	return var186
+end
+local function GetEquippedTool_upvr(arg1) -- Line 669, Named "GetEquippedTool"
+	if arg1 ~= nil then
+		for _, v_3 in pairs(arg1:GetChildren()) do
+			if v_3:IsA("Tool") then
+				return v_3
+			end
+		end
+	end
+end
+local var192_upvw
+local var193_upvw
+local var194_upvw
+local function CleanupPath() -- Line 684
+	--[[ Upvalues[3]:
+		[1]: var192_upvw (read and write)
+		[2]: var193_upvw (read and write)
+		[3]: var194_upvw (read and write)
+	]]
+	if var192_upvw then
+		var192_upvw:Cancel()
+		var192_upvw = nil
+	end
+	if var193_upvw then
+		var193_upvw:Disconnect()
+		var193_upvw = nil
+	end
+	if var194_upvw then
+		var194_upvw:Disconnect()
+		var194_upvw = nil
+	end
+end
+local function HandleMoveTo_upvr(arg1, arg2, arg3, arg4, arg5) -- Line 702, Named "HandleMoveTo"
+	--[[ Upvalues[6]:
+		[1]: var192_upvw (read and write)
+		[2]: var193_upvw (read and write)
+		[3]: var194_upvw (read and write)
+		[4]: GetEquippedTool_upvr (readonly)
+		[5]: var12_upvw (read and write)
+		[6]: module_upvr (readonly)
+	]]
+	if var192_upvw then
+		if var192_upvw then
+			var192_upvw:Cancel()
+			var192_upvw = nil
+		end
+		if var193_upvw then
+			var193_upvw:Disconnect()
+			var193_upvw = nil
+		end
+		if var194_upvw then
+			var194_upvw:Disconnect()
+			var194_upvw = nil
+		end
+	end
+	var192_upvw = arg1
+	arg1:Start(arg5)
+	var193_upvw = arg1.Finished.Event:Connect(function() -- Line 709
+		--[[ Upvalues[6]:
+			[1]: var192_upvw (copied, read and write)
+			[2]: var193_upvw (copied, read and write)
+			[3]: var194_upvw (copied, read and write)
+			[4]: arg3 (readonly)
+			[5]: GetEquippedTool_upvr (copied, readonly)
+			[6]: arg4 (readonly)
+		]]
+		if var192_upvw then
+			var192_upvw:Cancel()
+			var192_upvw = nil
+		end
+		if var193_upvw then
+			var193_upvw:Disconnect()
+			var193_upvw = nil
+		end
+		if var194_upvw then
+			var194_upvw:Disconnect()
+			var194_upvw = nil
+		end
+		if arg3 then
+			local GetEquippedTool_upvr_result1 = GetEquippedTool_upvr(arg4)
+			if GetEquippedTool_upvr_result1 then
+				GetEquippedTool_upvr_result1:Activate()
+			end
+		end
+	end)
+	var194_upvw = arg1.PathFailed.Event:Connect(function() -- Line 718
+		--[[ Upvalues[7]:
+			[1]: var192_upvw (copied, read and write)
+			[2]: var193_upvw (copied, read and write)
+			[3]: var194_upvw (copied, read and write)
+			[4]: arg5 (readonly)
+			[5]: var12_upvw (copied, read and write)
+			[6]: module_upvr (copied, readonly)
+			[7]: arg2 (readonly)
+		]]
+		-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [2] 3. Error Block 2 start (CF ANALYSIS FAILED)
+		var192_upvw:Cancel()
+		var192_upvw = nil
+		-- KONSTANTERROR: [2] 3. Error Block 2 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [8] 8. Error Block 3 start (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [8] 8. Error Block 3 end (CF ANALYSIS FAILED)
+	end)
+end
+local function _(arg1) -- Line 730, Named "ShowPathFailedFeedback"
+	--[[ Upvalues[3]:
+		[1]: var192_upvw (read and write)
+		[2]: var12_upvw (read and write)
+		[3]: module_upvr (readonly)
+	]]
+	if var192_upvw and var192_upvw:IsActive() then
+		var192_upvw:Cancel()
+	end
+	if var12_upvw then
+		module_upvr.PlayFailureAnimation()
+	end
+	module_upvr.DisplayFailureWaypoint(arg1)
+end
+local StarterGui_upvr = game:GetService("StarterGui")
+function OnTap(arg1, arg2, arg3) -- Line 740
+	--[[ Upvalues[17]:
+		[1]: Workspace_upvr (readonly)
+		[2]: LocalPlayer_upvr (readonly)
+		[3]: var42_upvr (readonly)
+		[4]: any_getUserFlag_result1_upvr (readonly)
+		[5]: var46_upvw (read and write)
+		[6]: RaycastParams_new_result1_upvr (readonly)
+		[7]: StarterGui_upvr (readonly)
+		[8]: Players_upvr (readonly)
+		[9]: var192_upvw (read and write)
+		[10]: var193_upvw (read and write)
+		[11]: var194_upvw (read and write)
+		[12]: Pather_upvr (readonly)
+		[13]: HandleMoveTo_upvr (readonly)
+		[14]: var12_upvw (read and write)
+		[15]: module_upvr (readonly)
+		[16]: tbl_6_upvr (readonly)
+		[17]: GetEquippedTool_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	-- KONSTANTERROR: [0] 1. Error Block 176 start (CF ANALYSIS FAILED)
+	local var200 = LocalPlayer_upvr
+	local var201 = var200
+	if var201 then
+		var201 = var200.Character
+	end
+	if var201 then
+		local var202 = var42_upvr[var200]
+		if var202 and var202.Parent == var201 then
+			local _ = var202
+		else
+			var42_upvr[var200] = nil
+			local class_Humanoid_4 = var201:FindFirstChildOfClass("Humanoid")
+			if class_Humanoid_4 then
+				var42_upvr[var200] = class_Humanoid_4
+			end
+		end
+	else
+	end
+	-- KONSTANTERROR: [0] 1. Error Block 176 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [37] 31. Error Block 166 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+	if 0 >= nil.Health then
+	else
+	end
+	-- KONSTANTERROR: [37] 31. Error Block 166 end (CF ANALYSIS FAILED)
+end
+local function _(arg1) -- Line 850, Named "DisconnectEvent"
+	if arg1 then
+		arg1:Disconnect()
+	end
+end
+local module_upvr_4 = require(script.Parent:WaitForChild("Keyboard"))
+local setmetatable_result1_2_upvr = setmetatable({}, module_upvr_4)
+setmetatable_result1_2_upvr.__index = setmetatable_result1_2_upvr
+function setmetatable_result1_2_upvr.new(arg1) -- Line 861
+	--[[ Upvalues[2]:
+		[1]: module_upvr_4 (readonly)
+		[2]: setmetatable_result1_2_upvr (readonly)
+	]]
+	local setmetatable_result1 = setmetatable(module_upvr_4.new(arg1), setmetatable_result1_2_upvr)
+	setmetatable_result1.fingerTouches = {}
+	setmetatable_result1.numUnsunkTouches = 0
+	setmetatable_result1.mouse1Down = tick()
+	setmetatable_result1.mouse1DownPos = Vector2.new()
+	setmetatable_result1.mouse2DownTime = tick()
+	setmetatable_result1.mouse2DownPos = Vector2.new()
+	setmetatable_result1.mouse2UpTime = tick()
+	setmetatable_result1.keyboardMoveVector = Vector3.new(0, 0, 0)
+	setmetatable_result1.tapConn = nil
+	setmetatable_result1.inputBeganConn = nil
+	setmetatable_result1.inputChangedConn = nil
+	setmetatable_result1.inputEndedConn = nil
+	setmetatable_result1.humanoidDiedConn = nil
+	setmetatable_result1.characterChildAddedConn = nil
+	setmetatable_result1.onCharacterAddedConn = nil
+	setmetatable_result1.characterChildRemovedConn = nil
+	setmetatable_result1.renderSteppedConn = nil
+	setmetatable_result1.menuOpenedConnection = nil
+	setmetatable_result1.running = false
+	setmetatable_result1.wasdEnabled = false
+	return setmetatable_result1
+end
+function setmetatable_result1_2_upvr.DisconnectEvents(arg1) -- Line 893
+	local tapConn = arg1.tapConn
+	if tapConn then
+		tapConn:Disconnect()
+	end
+	local inputBeganConn = arg1.inputBeganConn
+	if inputBeganConn then
+		inputBeganConn:Disconnect()
+	end
+	local inputChangedConn = arg1.inputChangedConn
+	if inputChangedConn then
+		inputChangedConn:Disconnect()
+	end
+	local inputEndedConn = arg1.inputEndedConn
+	if inputEndedConn then
+		inputEndedConn:Disconnect()
+	end
+	local humanoidDiedConn_2 = arg1.humanoidDiedConn
+	if humanoidDiedConn_2 then
+		humanoidDiedConn_2:Disconnect()
+	end
+	local characterChildAddedConn = arg1.characterChildAddedConn
+	if characterChildAddedConn then
+		characterChildAddedConn:Disconnect()
+	end
+	local onCharacterAddedConn = arg1.onCharacterAddedConn
+	if onCharacterAddedConn then
+		onCharacterAddedConn:Disconnect()
+	end
+	local renderSteppedConn = arg1.renderSteppedConn
+	if renderSteppedConn then
+		renderSteppedConn:Disconnect()
+	end
+	local characterChildRemovedConn = arg1.characterChildRemovedConn
+	if characterChildRemovedConn then
+		characterChildRemovedConn:Disconnect()
+	end
+	local menuOpenedConnection = arg1.menuOpenedConnection
+	if menuOpenedConnection then
+		menuOpenedConnection:Disconnect()
+	end
+end
+function setmetatable_result1_2_upvr.OnTouchBegan(arg1, arg2, arg3) -- Line 906
+	if arg1.fingerTouches[arg2] == nil then
+		if not arg3 then
+			arg1.numUnsunkTouches += 1
+		end
+	end
+	arg1.fingerTouches[arg2] = arg3
+end
+function setmetatable_result1_2_upvr.OnTouchChanged(arg1, arg2, arg3) -- Line 913
+	if arg1.fingerTouches[arg2] == nil then
+		arg1.fingerTouches[arg2] = arg3
+		if not arg3 then
+			arg1.numUnsunkTouches += 1
+		end
+	end
+end
+function setmetatable_result1_2_upvr.OnTouchEnded(arg1, arg2, arg3) -- Line 922
+	if arg1.fingerTouches[arg2] ~= nil then
+		if arg1.fingerTouches[arg2] == false then
+			arg1.numUnsunkTouches -= 1
+		end
+	end
+	arg1.fingerTouches[arg2] = nil
+end
+local GuiService_upvr = game:GetService("GuiService")
+function setmetatable_result1_2_upvr.OnCharacterAdded(arg1, arg2) -- Line 930
+	--[[ Upvalues[7]:
+		[1]: UserInputService_upvr (readonly)
+		[2]: tbl_5_upvr (readonly)
+		[3]: var192_upvw (read and write)
+		[4]: var193_upvw (read and write)
+		[5]: var194_upvw (read and write)
+		[6]: module_upvr (readonly)
+		[7]: GuiService_upvr (readonly)
+	]]
+	arg1:DisconnectEvents()
+	arg1.inputBeganConn = UserInputService_upvr.InputBegan:Connect(function(arg1_32, arg2_14) -- Line 933
+		--[[ Upvalues[6]:
+			[1]: arg1 (readonly)
+			[2]: tbl_5_upvr (copied, readonly)
+			[3]: var192_upvw (copied, read and write)
+			[4]: var193_upvw (copied, read and write)
+			[5]: var194_upvw (copied, read and write)
+			[6]: module_upvr (copied, readonly)
+		]]
+		if arg1_32.UserInputType == Enum.UserInputType.Touch then
+			arg1:OnTouchBegan(arg1_32, arg2_14)
+		end
+		if arg1.wasdEnabled then
+			if arg2_14 == false and arg1_32.UserInputType == Enum.UserInputType.Keyboard and tbl_5_upvr[arg1_32.KeyCode] then
+				if var192_upvw then
+					var192_upvw:Cancel()
+					var192_upvw = nil
+				end
+				if var193_upvw then
+					var193_upvw:Disconnect()
+					var193_upvw = nil
+				end
+				if var194_upvw then
+					var194_upvw:Disconnect()
+					var194_upvw = nil
+				end
+				module_upvr.CancelFailureAnimation()
+			end
+		end
+		if arg1_32.UserInputType == Enum.UserInputType.MouseButton1 then
+			arg1.mouse1DownTime = tick()
+			arg1.mouse1DownPos = arg1_32.Position
+		end
+		if arg1_32.UserInputType == Enum.UserInputType.MouseButton2 then
+			arg1.mouse2DownTime = tick()
+			arg1.mouse2DownPos = arg1_32.Position
+		end
+	end)
+	arg1.inputChangedConn = UserInputService_upvr.InputChanged:Connect(function(arg1_33, arg2_15) -- Line 954
+		--[[ Upvalues[1]:
+			[1]: arg1 (readonly)
+		]]
+		if arg1_33.UserInputType == Enum.UserInputType.Touch then
+			arg1:OnTouchChanged(arg1_33, arg2_15)
+		end
+	end)
+	arg1.inputEndedConn = UserInputService_upvr.InputEnded:Connect(function(arg1_34, arg2_16) -- Line 960
+		--[[ Upvalues[2]:
+			[1]: arg1 (readonly)
+			[2]: var192_upvw (copied, read and write)
+		]]
+		if arg1_34.UserInputType == Enum.UserInputType.Touch then
+			arg1:OnTouchEnded(arg1_34, arg2_16)
+		end
+		local var226
+		if arg1_34.UserInputType == var226 then
+			var226 = tick()
+			arg1.mouse2UpTime = var226
+			local Position = arg1_34.Position
+			var226 = var192_upvw
+			if not var226 then
+				if arg1.keyboardMoveVector.Magnitude > 0 then
+					var226 = false
+				else
+					var226 = true
+				end
+			end
+			if arg1.mouse2UpTime - arg1.mouse2DownTime < 0.25 and (Position - arg1.mouse2DownPos).magnitude < 5 and var226 then
+				OnTap({Position})
+			end
+		end
+	end)
+	arg1.tapConn = UserInputService_upvr.TouchTap:Connect(function(arg1_35, arg2_17) -- Line 977
+		if not arg2_17 then
+			OnTap(arg1_35, nil, true)
+		end
+	end)
+	arg1.menuOpenedConnection = GuiService_upvr.MenuOpened:Connect(function() -- Line 983
+		--[[ Upvalues[3]:
+			[1]: var192_upvw (copied, read and write)
+			[2]: var193_upvw (copied, read and write)
+			[3]: var194_upvw (copied, read and write)
+		]]
+		if var192_upvw then
+			var192_upvw:Cancel()
+			var192_upvw = nil
+		end
+		if var193_upvw then
+			var193_upvw:Disconnect()
+			var193_upvw = nil
+		end
+		if var194_upvw then
+			var194_upvw:Disconnect()
+			var194_upvw = nil
+		end
+	end)
+	local function OnCharacterChildAdded_upvr(arg1_36) -- Line 987, Named "OnCharacterChildAdded"
+		--[[ Upvalues[2]:
+			[1]: UserInputService_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+		]]
+		if UserInputService_upvr.TouchEnabled then
+			if arg1_36:IsA("Tool") then
+				arg1_36.ManualActivationOnly = true
+			end
+		end
+		if arg1_36:IsA("Humanoid") then
+			local humanoidDiedConn = arg1.humanoidDiedConn
+			if humanoidDiedConn then
+				humanoidDiedConn:Disconnect()
+			end
+			arg1.humanoidDiedConn = arg1_36.Died:Connect(function() -- Line 995
+			end)
+		end
+	end
+	arg1.characterChildAddedConn = arg2.ChildAdded:Connect(function(arg1_37) -- Line 1003
+		--[[ Upvalues[1]:
+			[1]: OnCharacterChildAdded_upvr (readonly)
+		]]
+		OnCharacterChildAdded_upvr(arg1_37)
+	end)
+	arg1.characterChildRemovedConn = arg2.ChildRemoved:Connect(function(arg1_38) -- Line 1006
+		--[[ Upvalues[1]:
+			[1]: UserInputService_upvr (copied, readonly)
+		]]
+		if UserInputService_upvr.TouchEnabled then
+			if arg1_38:IsA("Tool") then
+				arg1_38.ManualActivationOnly = false
+			end
+		end
+	end)
+	for _, v_4 in pairs(arg2:GetChildren()) do
+		OnCharacterChildAdded_upvr(v_4)
+	end
+end
+function setmetatable_result1_2_upvr.Start(arg1) -- Line 1018
+	arg1:Enable(true)
+end
+function setmetatable_result1_2_upvr.Stop(arg1) -- Line 1022
+	arg1:Enable(false)
+end
+function setmetatable_result1_2_upvr.CleanupPath(arg1) -- Line 1026
+	--[[ Upvalues[3]:
+		[1]: var192_upvw (read and write)
+		[2]: var193_upvw (read and write)
+		[3]: var194_upvw (read and write)
+	]]
+	if var192_upvw then
+		var192_upvw:Cancel()
+		var192_upvw = nil
+	end
+	if var193_upvw then
+		var193_upvw:Disconnect()
+		var193_upvw = nil
+	end
+	if var194_upvw then
+		var194_upvw:Disconnect()
+		var194_upvw = nil
+	end
+end
+function setmetatable_result1_2_upvr.Enable(arg1, arg2, arg3, arg4) -- Line 1030
+	--[[ Upvalues[6]:
+		[1]: LocalPlayer_upvr (readonly)
+		[2]: var192_upvw (read and write)
+		[3]: var193_upvw (read and write)
+		[4]: var194_upvw (read and write)
+		[5]: UserInputService_upvr (readonly)
+		[6]: module_upvr_4 (readonly)
+	]]
+	if arg2 then
+		if not arg1.running then
+			if LocalPlayer_upvr.Character then
+				arg1:OnCharacterAdded(LocalPlayer_upvr.Character)
+			end
+			arg1.onCharacterAddedConn = LocalPlayer_upvr.CharacterAdded:Connect(function(arg1_40) -- Line 1036
+				--[[ Upvalues[1]:
+					[1]: arg1 (readonly)
+				]]
+				arg1:OnCharacterAdded(arg1_40)
+			end)
+			arg1.running = true
+		end
+		arg1.touchJumpController = arg4
+		if arg1.touchJumpController then
+			arg1.touchJumpController:Enable(arg1.jumpEnabled)
+			-- KONSTANTWARNING: GOTO [113] #83
+		end
+	else
+		if arg1.running then
+			arg1:DisconnectEvents()
+			if var192_upvw then
+				var192_upvw:Cancel()
+				var192_upvw = nil
+			end
+			if var193_upvw then
+				var193_upvw:Disconnect()
+				var193_upvw = nil
+			end
+			if var194_upvw then
+				var194_upvw:Disconnect()
+				var194_upvw = nil
+			end
+			if UserInputService_upvr.TouchEnabled then
+				local Character = LocalPlayer_upvr.Character
+				if Character then
+					for _, v_5 in pairs(Character:GetChildren()) do
+						if v_5:IsA("Tool") then
+							v_5.ManualActivationOnly = false
+						end
+					end
+				end
+			end
+			arg1.running = false
+		end
+		if arg1.touchJumpController and not arg1.jumpEnabled then
+			arg1.touchJumpController:Enable(true)
+		end
+		arg1.touchJumpController = nil
+	end
+	module_upvr_4.Enable(arg1, arg2)
+	if not arg2 or not arg3 then
+	end
+	arg1.wasdEnabled = false
+	arg1.enabled = arg2
+end
+function setmetatable_result1_2_upvr.OnRenderStepped(arg1, arg2) -- Line 1075
+	--[[ Upvalues[1]:
+		[1]: var192_upvw (read and write)
+	]]
+	arg1.isJumping = false
+	if var192_upvw then
+		var192_upvw:OnRenderStepped(arg2)
+		if var192_upvw then
+			arg1.moveVector = var192_upvw.NextActionMoveDirection
+			arg1.moveVectorIsCameraRelative = false
+			if var192_upvw.NextActionJump then
+				arg1.isJumping = true
+				-- KONSTANTWARNING: GOTO [43] #31
+			end
+		else
+			arg1.moveVector = arg1.keyboardMoveVector
+			arg1.moveVectorIsCameraRelative = true
+		end
+	else
+		arg1.moveVector = arg1.keyboardMoveVector
+		arg1.moveVectorIsCameraRelative = true
+	end
+	if arg1.jumpRequested then
+		arg1.isJumping = true
+	end
+end
+function setmetatable_result1_2_upvr.UpdateMovement(arg1, arg2) -- Line 1110
+	if arg2 == Enum.UserInputState.Cancel then
+		arg1.keyboardMoveVector = Vector3.new(0, 0, 0)
+	elseif arg1.wasdEnabled then
+		arg1.keyboardMoveVector = Vector3.new(arg1.leftValue + arg1.rightValue, 0, arg1.forwardValue + arg1.backwardValue)
+	end
+end
+function setmetatable_result1_2_upvr.UpdateJump(arg1) -- Line 1119
+end
+function setmetatable_result1_2_upvr.SetShowPath(arg1, arg2) -- Line 1124
+	--[[ Upvalues[1]:
+		[1]: var11_upvw (read and write)
+	]]
+	var11_upvw = arg2
+end
+function setmetatable_result1_2_upvr.GetShowPath(arg1) -- Line 1128
+	--[[ Upvalues[1]:
+		[1]: var11_upvw (read and write)
+	]]
+	return var11_upvw
+end
+function setmetatable_result1_2_upvr.SetWaypointTexture(arg1, arg2) -- Line 1132
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	module_upvr.SetWaypointTexture(arg2)
+end
+function setmetatable_result1_2_upvr.GetWaypointTexture(arg1) -- Line 1136
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	return module_upvr.GetWaypointTexture()
+end
+function setmetatable_result1_2_upvr.SetWaypointRadius(arg1, arg2) -- Line 1140
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	module_upvr.SetWaypointRadius(arg2)
+end
+function setmetatable_result1_2_upvr.GetWaypointRadius(arg1) -- Line 1144
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	return module_upvr.GetWaypointRadius()
+end
+function setmetatable_result1_2_upvr.SetEndWaypointTexture(arg1, arg2) -- Line 1148
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	module_upvr.SetEndWaypointTexture(arg2)
+end
+function setmetatable_result1_2_upvr.GetEndWaypointTexture(arg1) -- Line 1152
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	return module_upvr.GetEndWaypointTexture()
+end
+function setmetatable_result1_2_upvr.SetWaypointsAlwaysOnTop(arg1, arg2) -- Line 1156
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	module_upvr.SetWaypointsAlwaysOnTop(arg2)
+end
+function setmetatable_result1_2_upvr.GetWaypointsAlwaysOnTop(arg1) -- Line 1160
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	return module_upvr.GetWaypointsAlwaysOnTop()
+end
+function setmetatable_result1_2_upvr.SetFailureAnimationEnabled(arg1, arg2) -- Line 1164
+	--[[ Upvalues[1]:
+		[1]: var12_upvw (read and write)
+	]]
+	var12_upvw = arg2
+end
+function setmetatable_result1_2_upvr.GetFailureAnimationEnabled(arg1) -- Line 1168
+	--[[ Upvalues[1]:
+		[1]: var12_upvw (read and write)
+	]]
+	return var12_upvw
+end
+function setmetatable_result1_2_upvr.SetIgnoredPartsTag(arg1, arg2) -- Line 1172
+	--[[ Upvalues[1]:
+		[1]: UpdateIgnoreTag_upvr (readonly)
+	]]
+	UpdateIgnoreTag_upvr(arg2)
+end
+function setmetatable_result1_2_upvr.GetIgnoredPartsTag(arg1) -- Line 1176
+	--[[ Upvalues[1]:
+		[1]: var47_upvw (read and write)
+	]]
+	return var47_upvw
+end
+function setmetatable_result1_2_upvr.SetUseDirectPath(arg1, arg2) -- Line 1180
+	--[[ Upvalues[1]:
+		[1]: var13_upvw (read and write)
+	]]
+	var13_upvw = arg2
+end
+function setmetatable_result1_2_upvr.GetUseDirectPath(arg1) -- Line 1184
+	--[[ Upvalues[1]:
+		[1]: var13_upvw (read and write)
+	]]
+	return var13_upvw
+end
+function setmetatable_result1_2_upvr.SetAgentSizeIncreaseFactor(arg1, arg2) -- Line 1188
+	--[[ Upvalues[1]:
+		[1]: var14_upvw (read and write)
+	]]
+	var14_upvw = arg2 / 100 + 1
+end
+function setmetatable_result1_2_upvr.GetAgentSizeIncreaseFactor(arg1) -- Line 1192
+	--[[ Upvalues[1]:
+		[1]: var14_upvw (read and write)
+	]]
+	return (var14_upvw - 1) * 100
+end
+function setmetatable_result1_2_upvr.SetUnreachableWaypointTimeout(arg1, arg2) -- Line 1196
+	--[[ Upvalues[1]:
+		[1]: var15_upvw (read and write)
+	]]
+	var15_upvw = arg2
+end
+function setmetatable_result1_2_upvr.GetUnreachableWaypointTimeout(arg1) -- Line 1200
+	--[[ Upvalues[1]:
+		[1]: var15_upvw (read and write)
+	]]
+	return var15_upvw
+end
+function setmetatable_result1_2_upvr.SetUserJumpEnabled(arg1, arg2) -- Line 1204
+	arg1.jumpEnabled = arg2
+	if arg1.touchJumpController then
+		arg1.touchJumpController:Enable(arg2)
+	end
+end
+function setmetatable_result1_2_upvr.GetUserJumpEnabled(arg1) -- Line 1211
+	return arg1.jumpEnabled
+end
+function setmetatable_result1_2_upvr.MoveTo(arg1, arg2, arg3, arg4) -- Line 1215
+	--[[ Upvalues[3]:
+		[1]: LocalPlayer_upvr (readonly)
+		[2]: Pather_upvr (readonly)
+		[3]: HandleMoveTo_upvr (readonly)
+	]]
+	local Character_2 = LocalPlayer_upvr.Character
+	if Character_2 == nil then
+		return false
+	end
+	local Pather_result1 = Pather_upvr(arg2, Vector3.new(0, 1, 0), arg4)
+	if Pather_result1 then
+		if Pather_result1:IsValidPath() then
+			HandleMoveTo_upvr(Pather_result1, arg2, nil, Character_2, arg3)
+			return true
+		end
+	end
+	return false
+end
+return setmetatable_result1_2_upvr

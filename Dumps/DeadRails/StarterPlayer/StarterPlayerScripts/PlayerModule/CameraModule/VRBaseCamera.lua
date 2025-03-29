@@ -1,331 +1,370 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.PlayerModule.CameraModule.VRBaseCamera
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = nil;
-local l_status_0, l_result_0 = pcall(function() --[[ Line: 17 ]]
-    return UserSettings():IsUserFeatureEnabled("UserVRVehicleCamera2");
-end);
-v0 = l_status_0 and l_result_0;
-l_status_0 = game:GetService("VRService");
-local l_LocalPlayer_0 = game:GetService("Players").LocalPlayer;
-local l_Lighting_0 = game:GetService("Lighting");
-local l_RunService_0 = game:GetService("RunService");
-local l_UserGameSettings_0 = UserSettings():GetService("UserGameSettings");
-local l_CameraInput_0 = require(script.Parent:WaitForChild("CameraInput"));
-local l_ZoomController_0 = require(script.Parent:WaitForChild("ZoomController"));
-local l_CommonUtils_0 = script.Parent.Parent:WaitForChild("CommonUtils");
-local v10 = require(l_CommonUtils_0:WaitForChild("FlagUtil")).getUserFlag("UserCameraInputDt");
-local l_BaseCamera_0 = require(script.Parent:WaitForChild("BaseCamera"));
-local v12 = setmetatable({}, l_BaseCamera_0);
-v12.__index = v12;
-v12.new = function() --[[ Line: 41 ]] --[[ Name: new ]]
-    -- upvalues: l_BaseCamera_0 (copy), v12 (copy)
-    local v13 = setmetatable(l_BaseCamera_0.new(), v12);
-    v13.gamepadZoomLevels = {
-        0, 
-        7
-    };
-    v13.headScale = 1;
-    v13:SetCameraToSubjectDistance(7);
-    v13.VRFadeResetTimer = 0;
-    v13.VREdgeBlurTimer = 0;
-    v13.gamepadResetConnection = nil;
-    v13.needsReset = true;
-    v13.recentered = false;
-    v13:Reset();
-    return v13;
-end;
-v12.Reset = function(v14) --[[ Line: 67 ]] --[[ Name: Reset ]]
-    v14.stepRotateTimeout = 0;
-end;
-v12.GetModuleName = function(_) --[[ Line: 71 ]] --[[ Name: GetModuleName ]]
-    return "VRBaseCamera";
-end;
-v12.GamepadZoomPress = function(v16) --[[ Line: 75 ]] --[[ Name: GamepadZoomPress ]]
-    -- upvalues: l_BaseCamera_0 (copy)
-    l_BaseCamera_0.GamepadZoomPress(v16);
-    v16:GamepadReset();
-    v16:ResetZoom();
-end;
-v12.GamepadReset = function(v17) --[[ Line: 83 ]] --[[ Name: GamepadReset ]]
-    v17.stepRotateTimeout = 0;
-    v17.needsReset = true;
-end;
-v12.ResetZoom = function(v18) --[[ Line: 88 ]] --[[ Name: ResetZoom ]]
-    -- upvalues: l_ZoomController_0 (copy)
-    l_ZoomController_0.SetZoomParameters(v18.currentSubjectDistance, 0);
-    l_ZoomController_0.ReleaseSpring();
-end;
-v12.OnEnabledChanged = function(v19) --[[ Line: 93 ]] --[[ Name: OnEnabledChanged ]]
-    -- upvalues: l_BaseCamera_0 (copy), l_CameraInput_0 (copy), l_status_0 (copy), v0 (ref), l_LocalPlayer_0 (copy), l_Lighting_0 (copy)
-    l_BaseCamera_0.OnEnabledChanged(v19);
-    if v19.enabled then
-        v19.gamepadResetConnection = l_CameraInput_0.gamepadReset:Connect(function() --[[ Line: 97 ]]
-            -- upvalues: v19 (copy)
-            v19:GamepadReset();
-        end);
-        v19.thirdPersonOptionChanged = l_status_0:GetPropertyChangedSignal("ThirdPersonFollowCamEnabled"):Connect(function() --[[ Line: 102 ]]
-            -- upvalues: v0 (ref), v19 (copy)
-            if v0 then
-                v19:Reset();
-                return;
-            else
-                if not v19:IsInFirstPerson() then
-                    v19:Reset();
-                end;
-                return;
-            end;
-        end);
-        v19.vrRecentered = l_status_0.UserCFrameChanged:Connect(function(v20, _) --[[ Line: 113 ]]
-            -- upvalues: v19 (copy)
-            if v20 == Enum.UserCFrame.Floor then
-                v19.recentered = true;
-            end;
-        end);
-        return;
-    else
-        if v19.inFirstPerson then
-            v19:GamepadZoomPress();
-        end;
-        if v19.thirdPersonOptionChanged then
-            v19.thirdPersonOptionChanged:Disconnect();
-            v19.thirdPersonOptionChanged = nil;
-        end;
-        if v19.vrRecentered then
-            v19.vrRecentered:Disconnect();
-            v19.vrRecentered = nil;
-        end;
-        if v19.cameraHeadScaleChangedConn then
-            v19.cameraHeadScaleChangedConn:Disconnect();
-            v19.cameraHeadScaleChangedConn = nil;
-        end;
-        if v19.gamepadResetConnection then
-            v19.gamepadResetConnection:Disconnect();
-            v19.gamepadResetConnection = nil;
-        end;
-        v19.VREdgeBlurTimer = 0;
-        v19:UpdateEdgeBlur(l_LocalPlayer_0, 1);
-        local l_VRFade_0 = l_Lighting_0:FindFirstChild("VRFade");
-        if l_VRFade_0 then
-            l_VRFade_0.Brightness = 0;
-        end;
-        return;
-    end;
-end;
-v12.OnCurrentCameraChanged = function(v23) --[[ Line: 155 ]] --[[ Name: OnCurrentCameraChanged ]]
-    -- upvalues: l_BaseCamera_0 (copy)
-    l_BaseCamera_0.OnCurrentCameraChanged(v23);
-    if v23.cameraHeadScaleChangedConn then
-        v23.cameraHeadScaleChangedConn:Disconnect();
-        v23.cameraHeadScaleChangedConn = nil;
-    end;
-    local l_CurrentCamera_0 = workspace.CurrentCamera;
-    if l_CurrentCamera_0 then
-        v23.cameraHeadScaleChangedConn = l_CurrentCamera_0:GetPropertyChangedSignal("HeadScale"):Connect(function() --[[ Line: 167 ]]
-            -- upvalues: v23 (copy)
-            v23:OnHeadScaleChanged();
-        end);
-        v23:OnHeadScaleChanged();
-    end;
-end;
-v12.OnHeadScaleChanged = function(v25) --[[ Line: 172 ]] --[[ Name: OnHeadScaleChanged ]]
-    local l_HeadScale_0 = workspace.CurrentCamera.HeadScale;
-    for v27, v28 in v25.gamepadZoomLevels do
-        v25.gamepadZoomLevels[v27] = v28 * l_HeadScale_0 / v25.headScale;
-    end;
-    v25:SetCameraToSubjectDistance(v25:GetCameraToSubjectDistance() * l_HeadScale_0 / v25.headScale);
-    v25.headScale = l_HeadScale_0;
-end;
-v12.GetVRFocus = function(v29, v30, v31) --[[ Line: 188 ]] --[[ Name: GetVRFocus ]]
-    local v32 = v29.lastCameraFocus or v30;
-    v29.cameraTranslationConstraints = Vector3.new(v29.cameraTranslationConstraints.x, math.min(1, v29.cameraTranslationConstraints.y + v31), v29.cameraTranslationConstraints.z);
-    local v33 = Vector3.new(0, v29:GetCameraHeight(), 0);
-    return (CFrame.new(Vector3.new(v30.x, v32.y, v30.z):Lerp(v30 + v33, v29.cameraTranslationConstraints.y)));
-end;
-v12.StartFadeFromBlack = function(v34) --[[ Line: 204 ]] --[[ Name: StartFadeFromBlack ]]
-    -- upvalues: l_UserGameSettings_0 (copy), l_Lighting_0 (copy)
-    if l_UserGameSettings_0.VignetteEnabled == false then
-        return;
-    else
-        local l_VRFade_1 = l_Lighting_0:FindFirstChild("VRFade");
-        if not l_VRFade_1 then
-            l_VRFade_1 = Instance.new("ColorCorrectionEffect");
-            l_VRFade_1.Name = "VRFade";
-            l_VRFade_1.Parent = l_Lighting_0;
-        end;
-        l_VRFade_1.Brightness = -1;
-        v34.VRFadeResetTimer = 0.1;
-        return;
-    end;
-end;
-v12.UpdateFadeFromBlack = function(v36, v37) --[[ Line: 219 ]] --[[ Name: UpdateFadeFromBlack ]]
-    -- upvalues: l_Lighting_0 (copy)
-    local l_VRFade_2 = l_Lighting_0:FindFirstChild("VRFade");
-    if v36.VRFadeResetTimer > 0 then
-        v36.VRFadeResetTimer = math.max(v36.VRFadeResetTimer - v37, 0);
-        local l_VRFade_3 = l_Lighting_0:FindFirstChild("VRFade");
-        if l_VRFade_3 and l_VRFade_3.Brightness < 0 then
-            l_VRFade_3.Brightness = math.min(l_VRFade_3.Brightness + v37 * 10, 0);
-            return;
-        end;
-    elseif l_VRFade_2 then
-        l_VRFade_2.Brightness = 0;
-    end;
-end;
-v12.StartVREdgeBlur = function(v40, v41) --[[ Line: 235 ]] --[[ Name: StartVREdgeBlur ]]
-    -- upvalues: l_UserGameSettings_0 (copy), l_RunService_0 (copy), l_status_0 (copy)
-    if l_UserGameSettings_0.VignetteEnabled == false then
-        return;
-    else
-        local v42 = nil;
-        v42 = workspace.CurrentCamera:FindFirstChild("VRBlurPart");
-        if not v42 then
-            v42 = Instance.new("Part");
-            v42.Name = "VRBlurPart";
-            v42.Parent = workspace.CurrentCamera;
-            v42.CanTouch = false;
-            v42.CanCollide = false;
-            v42.CanQuery = false;
-            v42.Anchored = true;
-            v42.Size = Vector3.new(0.4399999976158142, 0.4699999988079071, 1, 0);
-            v42.Transparency = 1;
-            v42.CastShadow = false;
-            l_RunService_0.RenderStepped:Connect(function(_) --[[ Line: 255 ]]
-                -- upvalues: l_status_0 (ref), v42 (ref)
-                local l_l_status_0_UserCFrame_0 = l_status_0:GetUserCFrame(Enum.UserCFrame.Head);
-                local v45 = workspace.CurrentCamera.CFrame * (CFrame.new(l_l_status_0_UserCFrame_0.p * workspace.CurrentCamera.HeadScale) * (l_l_status_0_UserCFrame_0 - l_l_status_0_UserCFrame_0.p));
-                v42.CFrame = v45 * CFrame.Angles(0, 3.141592653589793, 0) + v45.LookVector * (1.05 * workspace.CurrentCamera.HeadScale);
-                v42.Size = Vector3.new(0.4399999976158142, 0.4699999988079071, 1, 0) * workspace.CurrentCamera.HeadScale;
-            end);
-        end;
-        local l_VRBlurScreen_0 = v41.PlayerGui:FindFirstChild("VRBlurScreen");
-        local v47 = nil;
-        if l_VRBlurScreen_0 then
-            v47 = l_VRBlurScreen_0:FindFirstChild("VRBlur");
-        end;
-        if not v47 then
-            if not l_VRBlurScreen_0 then
-                l_VRBlurScreen_0 = Instance.new("SurfaceGui") or Instance.new("ScreenGui");
-            end;
-            l_VRBlurScreen_0.Name = "VRBlurScreen";
-            l_VRBlurScreen_0.Parent = v41.PlayerGui;
-            l_VRBlurScreen_0.Adornee = v42;
-            v47 = Instance.new("ImageLabel");
-            v47.Name = "VRBlur";
-            v47.Parent = l_VRBlurScreen_0;
-            v47.Image = "rbxasset://textures/ui/VR/edgeBlur.png";
-            v47.AnchorPoint = Vector2.new(0.5, 0.5);
-            v47.Position = UDim2.new(0.5, 0, 0.5, 0);
-            local v48 = workspace.CurrentCamera.ViewportSize.X * 2.3 / 512;
-            local v49 = workspace.CurrentCamera.ViewportSize.Y * 2.3 / 512;
-            v47.Size = UDim2.fromScale(v48, v49);
-            v47.BackgroundTransparency = 1;
-            v47.Active = true;
-            v47.ScaleType = Enum.ScaleType.Stretch;
-        end;
-        v47.Visible = true;
-        v47.ImageTransparency = 0;
-        v40.VREdgeBlurTimer = 0.14;
-        return;
-    end;
-end;
-v12.UpdateEdgeBlur = function(v50, v51, v52) --[[ Line: 304 ]] --[[ Name: UpdateEdgeBlur ]]
-    local l_VRBlurScreen_1 = v51.PlayerGui:FindFirstChild("VRBlurScreen");
-    local v54 = nil;
-    if l_VRBlurScreen_1 then
-        v54 = l_VRBlurScreen_1:FindFirstChild("VRBlur");
-    end;
-    if v54 then
-        if v50.VREdgeBlurTimer > 0 then
-            v50.VREdgeBlurTimer = v50.VREdgeBlurTimer - v52;
-            local l_VRBlurScreen_2 = v51.PlayerGui:FindFirstChild("VRBlurScreen");
-            if l_VRBlurScreen_2 then
-                local l_VRBlur_0 = l_VRBlurScreen_2:FindFirstChild("VRBlur");
-                if l_VRBlur_0 then
-                    l_VRBlur_0.ImageTransparency = 1 - math.clamp(v50.VREdgeBlurTimer, 0.01, 0.14) * 7.142857142857142;
-                    return;
-                end;
-            end;
-        else
-            v54.Visible = false;
-        end;
-    end;
-end;
-v12.GetCameraHeight = function(v57) --[[ Line: 329 ]] --[[ Name: GetCameraHeight ]]
-    if not v57.inFirstPerson then
-        return 0.25881904510252074 * v57.currentSubjectDistance;
-    else
-        return 0;
-    end;
-end;
-v12.GetSubjectCFrame = function(v58) --[[ Line: 336 ]] --[[ Name: GetSubjectCFrame ]]
-    -- upvalues: l_BaseCamera_0 (copy)
-    local v59 = l_BaseCamera_0.GetSubjectCFrame(v58);
-    local l_CurrentCamera_1 = workspace.CurrentCamera;
-    local v61 = l_CurrentCamera_1 and l_CurrentCamera_1.CameraSubject;
-    if not v61 then
-        return v59;
-    else
-        if v61:IsA("Humanoid") and v61:GetState() == Enum.HumanoidStateType.Dead and v61 == v58.lastSubject then
-            v59 = v58.lastSubjectCFrame;
-        end;
-        if v59 then
-            v58.lastSubjectCFrame = v59;
-        end;
-        return v59;
-    end;
-end;
-v12.GetSubjectPosition = function(v62) --[[ Line: 362 ]] --[[ Name: GetSubjectPosition ]]
-    -- upvalues: l_BaseCamera_0 (copy)
-    local v63 = l_BaseCamera_0.GetSubjectPosition(v62);
-    local l_CurrentCamera_2 = game.Workspace.CurrentCamera;
-    local v65 = l_CurrentCamera_2 and l_CurrentCamera_2.CameraSubject;
-    if v65 then
-        if v65:IsA("Humanoid") then
-            if v65:GetState() == Enum.HumanoidStateType.Dead and v65 == v62.lastSubject then
-                v63 = v62.lastSubjectPosition;
-            end;
-        elseif v65:IsA("VehicleSeat") then
-            v63 = v65.CFrame.p + v65.CFrame:vectorToWorldSpace((Vector3.new(0, 4, 0, 0)));
-        end;
-        v62.lastSubjectPosition = v63;
-        return v63;
-    else
-        return nil;
-    end;
-end;
-v12.getRotation = function(v66, v67) --[[ Line: 391 ]] --[[ Name: getRotation ]]
-    -- upvalues: l_CameraInput_0 (copy), l_UserGameSettings_0 (copy), v10 (copy)
-    local v68 = l_CameraInput_0.getRotation(v67);
-    local v69 = 0;
-    if l_UserGameSettings_0.VRSmoothRotationEnabled then
-        if v10 then
-            return v68.X;
-        else
-            return v68.X * 40 * v67;
-        end;
-    else
-        if math.abs(v68.X) > 0.03 then
-            if v66.stepRotateTimeout > 0 then
-                v66.stepRotateTimeout = v66.stepRotateTimeout - v67;
-            end;
-            if v66.stepRotateTimeout <= 0 then
-                v69 = 1;
-                if v68.X < 0 then
-                    v69 = -1;
-                end;
-                v69 = v69 * 0.5235987755982988;
-                v66:StartFadeFromBlack();
-                v66.stepRotateTimeout = 0.25;
-                return v69;
-            end;
-        elseif math.abs(v68.X) < 0.02 then
-            v66.stepRotateTimeout = 0;
-        end;
-        return v69;
-    end;
-end;
-return v12;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:47:50
+-- Luau version 6, Types version 3
+-- Time taken: 0.007616 seconds
+
+local pcall_result1, pcall_result2 = pcall(function() -- Line 17
+	return UserSettings():IsUserFeatureEnabled("UserVRVehicleCamera2")
+end)
+local VRService_upvr = game:GetService("VRService")
+local Lighting_upvr = game:GetService("Lighting")
+local UserGameSettings_upvr = UserSettings():GetService("UserGameSettings")
+local module_upvr_3 = require(script.Parent:WaitForChild("CameraInput"))
+local module_upvr_2 = require(script.Parent:WaitForChild("BaseCamera"))
+local setmetatable_result1_2_upvr = setmetatable({}, module_upvr_2)
+setmetatable_result1_2_upvr.__index = setmetatable_result1_2_upvr
+function setmetatable_result1_2_upvr.new() -- Line 41
+	--[[ Upvalues[2]:
+		[1]: module_upvr_2 (readonly)
+		[2]: setmetatable_result1_2_upvr (readonly)
+	]]
+	local setmetatable_result1 = setmetatable(module_upvr_2.new(), setmetatable_result1_2_upvr)
+	setmetatable_result1.gamepadZoomLevels = {0, 7}
+	setmetatable_result1.headScale = 1
+	setmetatable_result1:SetCameraToSubjectDistance(7)
+	setmetatable_result1.VRFadeResetTimer = 0
+	setmetatable_result1.VREdgeBlurTimer = 0
+	setmetatable_result1.gamepadResetConnection = nil
+	setmetatable_result1.needsReset = true
+	setmetatable_result1.recentered = false
+	setmetatable_result1:Reset()
+	return setmetatable_result1
+end
+function setmetatable_result1_2_upvr.Reset(arg1) -- Line 67
+	arg1.stepRotateTimeout = 0
+end
+function setmetatable_result1_2_upvr.GetModuleName(arg1) -- Line 71
+	return "VRBaseCamera"
+end
+function setmetatable_result1_2_upvr.GamepadZoomPress(arg1) -- Line 75
+	--[[ Upvalues[1]:
+		[1]: module_upvr_2 (readonly)
+	]]
+	module_upvr_2.GamepadZoomPress(arg1)
+	arg1:GamepadReset()
+	arg1:ResetZoom()
+end
+function setmetatable_result1_2_upvr.GamepadReset(arg1) -- Line 83
+	arg1.stepRotateTimeout = 0
+	arg1.needsReset = true
+end
+local module_upvr = require(script.Parent:WaitForChild("ZoomController"))
+function setmetatable_result1_2_upvr.ResetZoom(arg1) -- Line 88
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	module_upvr.SetZoomParameters(arg1.currentSubjectDistance, 0)
+	module_upvr.ReleaseSpring()
+end
+local var13_upvw = pcall_result1 and pcall_result2
+local LocalPlayer_upvr = game:GetService("Players").LocalPlayer
+function setmetatable_result1_2_upvr.OnEnabledChanged(arg1) -- Line 93
+	--[[ Upvalues[6]:
+		[1]: module_upvr_2 (readonly)
+		[2]: module_upvr_3 (readonly)
+		[3]: VRService_upvr (readonly)
+		[4]: var13_upvw (read and write)
+		[5]: LocalPlayer_upvr (readonly)
+		[6]: Lighting_upvr (readonly)
+	]]
+	module_upvr_2.OnEnabledChanged(arg1)
+	if arg1.enabled then
+		arg1.gamepadResetConnection = module_upvr_3.gamepadReset:Connect(function() -- Line 97
+			--[[ Upvalues[1]:
+				[1]: arg1 (readonly)
+			]]
+			arg1:GamepadReset()
+		end)
+		arg1.thirdPersonOptionChanged = VRService_upvr:GetPropertyChangedSignal("ThirdPersonFollowCamEnabled"):Connect(function() -- Line 102
+			--[[ Upvalues[2]:
+				[1]: var13_upvw (copied, read and write)
+				[2]: arg1 (readonly)
+			]]
+			if var13_upvw then
+				arg1:Reset()
+			elseif not arg1:IsInFirstPerson() then
+				arg1:Reset()
+			end
+		end)
+		arg1.vrRecentered = VRService_upvr.UserCFrameChanged:Connect(function(arg1_2, arg2) -- Line 113
+			--[[ Upvalues[1]:
+				[1]: arg1 (readonly)
+			]]
+			if arg1_2 == Enum.UserCFrame.Floor then
+				arg1.recentered = true
+			end
+		end)
+	else
+		if arg1.inFirstPerson then
+			arg1:GamepadZoomPress()
+		end
+		if arg1.thirdPersonOptionChanged then
+			arg1.thirdPersonOptionChanged:Disconnect()
+			arg1.thirdPersonOptionChanged = nil
+		end
+		if arg1.vrRecentered then
+			arg1.vrRecentered:Disconnect()
+			arg1.vrRecentered = nil
+		end
+		if arg1.cameraHeadScaleChangedConn then
+			arg1.cameraHeadScaleChangedConn:Disconnect()
+			arg1.cameraHeadScaleChangedConn = nil
+		end
+		if arg1.gamepadResetConnection then
+			arg1.gamepadResetConnection:Disconnect()
+			arg1.gamepadResetConnection = nil
+		end
+		arg1.VREdgeBlurTimer = 0
+		arg1:UpdateEdgeBlur(LocalPlayer_upvr, 1)
+		local VRFade = Lighting_upvr:FindFirstChild("VRFade")
+		if VRFade then
+			VRFade.Brightness = 0
+		end
+	end
+end
+function setmetatable_result1_2_upvr.OnCurrentCameraChanged(arg1) -- Line 155
+	--[[ Upvalues[1]:
+		[1]: module_upvr_2 (readonly)
+	]]
+	module_upvr_2.OnCurrentCameraChanged(arg1)
+	if arg1.cameraHeadScaleChangedConn then
+		arg1.cameraHeadScaleChangedConn:Disconnect()
+		arg1.cameraHeadScaleChangedConn = nil
+	end
+	local CurrentCamera = workspace.CurrentCamera
+	if CurrentCamera then
+		arg1.cameraHeadScaleChangedConn = CurrentCamera:GetPropertyChangedSignal("HeadScale"):Connect(function() -- Line 167
+			--[[ Upvalues[1]:
+				[1]: arg1 (readonly)
+			]]
+			arg1:OnHeadScaleChanged()
+		end)
+		arg1:OnHeadScaleChanged()
+	end
+end
+function setmetatable_result1_2_upvr.OnHeadScaleChanged(arg1) -- Line 172
+	local HeadScale = workspace.CurrentCamera.HeadScale
+	for i, v in arg1.gamepadZoomLevels do
+		arg1.gamepadZoomLevels[i] = v * HeadScale / arg1.headScale
+	end
+	arg1:SetCameraToSubjectDistance(arg1:GetCameraToSubjectDistance() * HeadScale / arg1.headScale)
+	arg1.headScale = HeadScale
+end
+function setmetatable_result1_2_upvr.GetVRFocus(arg1, arg2, arg3) -- Line 188
+	arg1.cameraTranslationConstraints = Vector3.new(arg1.cameraTranslationConstraints.x, math.min(1, arg1.cameraTranslationConstraints.y + arg3), arg1.cameraTranslationConstraints.z)
+	return CFrame.new(Vector3.new(arg2.x, (arg1.lastCameraFocus or arg2).y, arg2.z):Lerp(arg2 + Vector3.new(0, arg1:GetCameraHeight(), 0), arg1.cameraTranslationConstraints.y))
+end
+function setmetatable_result1_2_upvr.StartFadeFromBlack(arg1) -- Line 204
+	--[[ Upvalues[2]:
+		[1]: UserGameSettings_upvr (readonly)
+		[2]: Lighting_upvr (readonly)
+	]]
+	if UserGameSettings_upvr.VignetteEnabled == false then
+	else
+		if not Lighting_upvr:FindFirstChild("VRFade") then
+			local ColorCorrectionEffect = Instance.new("ColorCorrectionEffect")
+			ColorCorrectionEffect.Name = "VRFade"
+			ColorCorrectionEffect.Parent = Lighting_upvr
+		end
+		ColorCorrectionEffect.Brightness = -1
+		arg1.VRFadeResetTimer = 0.1
+	end
+end
+function setmetatable_result1_2_upvr.UpdateFadeFromBlack(arg1, arg2) -- Line 219
+	--[[ Upvalues[1]:
+		[1]: Lighting_upvr (readonly)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+	local VRFade_2 = Lighting_upvr:FindFirstChild("VRFade")
+	local VRFadeResetTimer = arg1.VRFadeResetTimer
+	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [32] 23. Error Block 4 start (CF ANALYSIS FAILED)
+	VRFadeResetTimer.Brightness = math.min(VRFadeResetTimer.Brightness + arg2 * 10, 0)
+	do
+		return
+	end
+	-- KONSTANTERROR: [32] 23. Error Block 4 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [45] 32. Error Block 8 start (CF ANALYSIS FAILED)
+	if VRFade_2 then
+		VRFade_2.Brightness = 0
+	end
+	-- KONSTANTERROR: [45] 32. Error Block 8 end (CF ANALYSIS FAILED)
+end
+local RunService_upvr = game:GetService("RunService")
+function setmetatable_result1_2_upvr.StartVREdgeBlur(arg1, arg2) -- Line 235
+	--[[ Upvalues[3]:
+		[1]: UserGameSettings_upvr (readonly)
+		[2]: RunService_upvr (readonly)
+		[3]: VRService_upvr (readonly)
+	]]
+	if UserGameSettings_upvr.VignetteEnabled == false then
+	else
+		if not workspace.CurrentCamera:FindFirstChild("VRBlurPart") then
+			local Part_upvw = Instance.new("Part")
+			Part_upvw.Name = "VRBlurPart"
+			Part_upvw.Parent = workspace.CurrentCamera
+			Part_upvw.CanTouch = false
+			Part_upvw.CanCollide = false
+			Part_upvw.CanQuery = false
+			Part_upvw.Anchored = true
+			Part_upvw.Size = Vector3.new(0.43999, 0.46999, 1)
+			Part_upvw.Transparency = 1
+			Part_upvw.CastShadow = false
+			RunService_upvr.RenderStepped:Connect(function(arg1_3) -- Line 255
+				--[[ Upvalues[2]:
+					[1]: VRService_upvr (copied, readonly)
+					[2]: Part_upvw (read and write)
+				]]
+				local any_GetUserCFrame_result1 = VRService_upvr:GetUserCFrame(Enum.UserCFrame.Head)
+				local var33 = (workspace.CurrentCamera.CFrame) * (CFrame.new(any_GetUserCFrame_result1.p * workspace.CurrentCamera.HeadScale) * (any_GetUserCFrame_result1 - any_GetUserCFrame_result1.p))
+				Part_upvw.CFrame = var33 * CFrame.Angles(0, math.pi, 0) + (var33.LookVector) * (1.05 * workspace.CurrentCamera.HeadScale)
+				Part_upvw.Size = Vector3.new(0.43999, 0.46999, 1) * workspace.CurrentCamera.HeadScale
+			end)
+		end
+		local VRBlurScreen = arg2.PlayerGui:FindFirstChild("VRBlurScreen")
+		local var35
+		if VRBlurScreen then
+			var35 = VRBlurScreen:FindFirstChild("VRBlur")
+			local var36
+		end
+		if not var35 then
+			if not var36 then
+				local SurfaceGui = Instance.new("SurfaceGui")
+				if not SurfaceGui then
+					SurfaceGui = Instance.new("ScreenGui")
+				end
+				var36 = SurfaceGui
+			end
+			var36.Name = "VRBlurScreen"
+			var36.Parent = arg2.PlayerGui
+			var36.Adornee = Part_upvw
+			local ImageLabel = Instance.new("ImageLabel")
+			ImageLabel.Name = "VRBlur"
+			ImageLabel.Parent = var36
+			ImageLabel.Image = "rbxasset://textures/ui/VR/edgeBlur.png"
+			ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+			ImageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+			ImageLabel.Size = UDim2.fromScale(workspace.CurrentCamera.ViewportSize.X * 2.3 / 512, workspace.CurrentCamera.ViewportSize.Y * 2.3 / 512)
+			ImageLabel.BackgroundTransparency = 1
+			ImageLabel.Active = true
+			ImageLabel.ScaleType = Enum.ScaleType.Stretch
+		end
+		ImageLabel.Visible = true
+		ImageLabel.ImageTransparency = 0
+		arg1.VREdgeBlurTimer = 0.14
+	end
+end
+function setmetatable_result1_2_upvr.UpdateEdgeBlur(arg1, arg2, arg3) -- Line 304
+	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+	local VRBlurScreen_2 = arg2.PlayerGui:FindFirstChild("VRBlurScreen")
+	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [8] 7. Error Block 2 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [8] 7. Error Block 2 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [13] 11. Error Block 3 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [13] 11. Error Block 3 end (CF ANALYSIS FAILED)
+end
+function setmetatable_result1_2_upvr.GetCameraHeight(arg1) -- Line 329
+	if not arg1.inFirstPerson then
+		return 0.25881904510252074 * arg1.currentSubjectDistance
+	end
+	return 0
+end
+function setmetatable_result1_2_upvr.GetSubjectCFrame(arg1) -- Line 336
+	--[[ Upvalues[1]:
+		[1]: module_upvr_2 (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local CurrentCamera_3 = workspace.CurrentCamera
+	local var41 = CurrentCamera_3
+	if var41 then
+		var41 = CurrentCamera_3.CameraSubject
+	end
+	if not var41 then
+		return module_upvr_2.GetSubjectCFrame(arg1)
+	end
+	local var42
+	if var42 then
+		if var41:GetState() ~= Enum.HumanoidStateType.Dead then
+			var42 = false
+		else
+			var42 = true
+		end
+		if var42 and var41 == arg1.lastSubject then
+			local lastSubjectCFrame = arg1.lastSubjectCFrame
+		end
+	end
+	if lastSubjectCFrame then
+		arg1.lastSubjectCFrame = lastSubjectCFrame
+	end
+	return lastSubjectCFrame
+end
+function setmetatable_result1_2_upvr.GetSubjectPosition(arg1) -- Line 362
+	--[[ Upvalues[1]:
+		[1]: module_upvr_2 (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	-- KONSTANTERROR: [0] 1. Error Block 26 start (CF ANALYSIS FAILED)
+	local CurrentCamera_2 = game.Workspace.CurrentCamera
+	local var45 = CurrentCamera_2
+	if var45 then
+		var45 = CurrentCamera_2.CameraSubject
+	end
+	if var45 then
+		local var46
+		if var46 then
+			if var45:GetState() ~= Enum.HumanoidStateType.Dead then
+				var46 = false
+			else
+				var46 = true
+			end
+			if var46 and var45 == arg1.lastSubject then
+				local lastSubjectPosition = arg1.lastSubjectPosition
+				-- KONSTANTWARNING: GOTO [57] #41
+			end
+		else
+			var46 = var45:IsA("VehicleSeat")
+			if var46 then
+				var46 = var45.CFrame.p
+				-- KONSTANTWARNING: GOTO [57] #41
+			end
+		end
+	else
+		var46 = nil
+		return var46
+	end
+	-- KONSTANTERROR: [0] 1. Error Block 26 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [57] 41. Error Block 16 start (CF ANALYSIS FAILED)
+	arg1.lastSubjectPosition = var46 + var45.CFrame:vectorToWorldSpace(Vector3.new(0, 4, 0))
+	-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+	do
+		return var46 + var45.CFrame:vectorToWorldSpace(Vector3.new(0, 4, 0))
+	end
+	-- KONSTANTERROR: [57] 41. Error Block 16 end (CF ANALYSIS FAILED)
+end
+local any_getUserFlag_result1_upvr = require(script.Parent.Parent:WaitForChild("CommonUtils"):WaitForChild("FlagUtil")).getUserFlag("UserCameraInputDt")
+function setmetatable_result1_2_upvr.getRotation(arg1, arg2) -- Line 391
+	--[[ Upvalues[3]:
+		[1]: module_upvr_3 (readonly)
+		[2]: UserGameSettings_upvr (readonly)
+		[3]: any_getUserFlag_result1_upvr (readonly)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+	local any_getRotation_result1 = module_upvr_3.getRotation(arg2)
+	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [10] 9. Error Block 18 start (CF ANALYSIS FAILED)
+	if any_getUserFlag_result1_upvr then
+		return any_getRotation_result1.X
+	end
+	do
+		return any_getRotation_result1.X * 40 * arg2
+	end
+	-- KONSTANTERROR: [10] 9. Error Block 18 end (CF ANALYSIS FAILED)
+end
+return setmetatable_result1_2_upvr

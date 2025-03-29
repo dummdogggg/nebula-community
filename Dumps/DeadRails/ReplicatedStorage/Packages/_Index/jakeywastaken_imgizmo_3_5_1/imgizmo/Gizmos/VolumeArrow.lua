@@ -1,63 +1,66 @@
 --[[
     Script: ReplicatedStorage.Packages._Index.jakeywastaken_imgizmo@3.5.1.imgizmo.Gizmos.VolumeArrow
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = {};
-v0.__index = v0;
-v0.Init = function(v1, v2, v3, v4, v5, v6) --[[ Line: 6 ]] --[[ Name: Init ]]
-    -- upvalues: v0 (copy)
-    local v7 = setmetatable({}, v0);
-    v7.Ceive = v1;
-    v7.Propertys = v2;
-    v7.Request = v3;
-    v7.Release = v4;
-    v7.Retain = v5;
-    v7.Register = v6;
-    return v7;
-end;
-v0.Draw = function(v8, v9, v10, v11, v12, v13, v14) --[[ Line: 27 ]] --[[ Name: Draw ]]
-    local l_Ceive_0 = v8.Ceive;
-    if not l_Ceive_0.Enabled then
-        return;
-    else
-        local v16 = CFrame.lookAt(v10 - (v10 - v9).Unit * (v13 / 2), v10);
-        if v14 == true then
-            local l_Position_0 = v16.Position;
-            local l_Magnitude_0 = (l_Position_0 - v9).Magnitude;
-            local v19 = CFrame.lookAt((v9 + l_Position_0) / 2, v10);
-            l_Ceive_0.VolumeCylinder:Draw(v19, v11, l_Magnitude_0);
-        else
-            l_Ceive_0.Ray:Draw(v9, v10);
-        end;
-        l_Ceive_0.VolumeCone:Draw(v16, v12, v13);
-        v8.Ceive.ScheduleCleaning();
-        return;
-    end;
-end;
-v0.Create = function(v20, v21, v22, v23, v24, v25, v26) --[[ Line: 59 ]] --[[ Name: Create ]]
-    local v27 = {
-        Origin = v21, 
-        End = v22, 
-        CylinderRadius = v23, 
-        ConeRadius = v24, 
-        Length = v25, 
-        UseCylinder = v26, 
-        AlwaysOnTop = v20.Propertys.AlwaysOnTop, 
-        Transparency = v20.Propertys.Transparency, 
-        Color3 = v20.Propertys.Color3, 
-        Enabled = true, 
-        Destroy = false
-    };
-    v20:Retain(v27);
-    return v27;
-end;
-v0.Update = function(v28, v29) --[[ Line: 79 ]] --[[ Name: Update ]]
-    local l_Ceive_1 = v28.Ceive;
-    l_Ceive_1.PushProperty("AlwaysOnTop", v29.AlwaysOnTop);
-    l_Ceive_1.PushProperty("Transparency", v29.Transparency);
-    l_Ceive_1.PushProperty("Color3", v29.Color3);
-    v28:Draw(v29.Origin, v29.End, v29.Radius, v29.Length, v29.UseCylinder);
-end;
-return v0;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:17
+-- Luau version 6, Types version 3
+-- Time taken: 0.001366 seconds
+
+local module_upvr = {}
+module_upvr.__index = module_upvr
+function module_upvr.Init(arg1, arg2, arg3, arg4, arg5, arg6) -- Line 6
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	local setmetatable_result1 = setmetatable({}, module_upvr)
+	setmetatable_result1.Ceive = arg1
+	setmetatable_result1.Propertys = arg2
+	setmetatable_result1.Request = arg3
+	setmetatable_result1.Release = arg4
+	setmetatable_result1.Retain = arg5
+	setmetatable_result1.Register = arg6
+	return setmetatable_result1
+end
+function module_upvr.Draw(arg1, arg2, arg3, arg4, arg5, arg6, arg7) -- Line 27
+	local Ceive_2 = arg1.Ceive
+	if not Ceive_2.Enabled then
+	else
+		if arg7 == true then
+			local Position = CFrame.lookAt(arg3 - ((arg3 - arg2).Unit) * (arg6 / 2), arg3).Position
+			Ceive_2.VolumeCylinder:Draw(CFrame.lookAt((arg2 + Position) / 2, arg3), arg4, (Position - arg2).Magnitude)
+		else
+			Ceive_2.Ray:Draw(arg2, arg3)
+		end
+		-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+		Ceive_2.VolumeCone:Draw(CFrame.lookAt(arg3 - ((arg3 - arg2).Unit) * (arg6 / 2), arg3), arg5, arg6)
+		arg1.Ceive.ScheduleCleaning()
+	end
+end
+function module_upvr.Create(arg1, arg2, arg3, arg4, arg5, arg6, arg7) -- Line 59
+	local module = {}
+	module.Origin = arg2
+	module.End = arg3
+	module.CylinderRadius = arg4
+	module.ConeRadius = arg5
+	module.Length = arg6
+	module.UseCylinder = arg7
+	module.AlwaysOnTop = arg1.Propertys.AlwaysOnTop
+	module.Transparency = arg1.Propertys.Transparency
+	module.Color3 = arg1.Propertys.Color3
+	module.Enabled = true
+	module.Destroy = false
+	arg1.Retain(arg1, module)
+	return module
+end
+function module_upvr.Update(arg1, arg2) -- Line 79
+	local Ceive = arg1.Ceive
+	Ceive.PushProperty("AlwaysOnTop", arg2.AlwaysOnTop)
+	Ceive.PushProperty("Transparency", arg2.Transparency)
+	Ceive.PushProperty("Color3", arg2.Color3)
+	arg1:Draw(arg2.Origin, arg2.End, arg2.Radius, arg2.Length, arg2.UseCylinder)
+end
+return module_upvr

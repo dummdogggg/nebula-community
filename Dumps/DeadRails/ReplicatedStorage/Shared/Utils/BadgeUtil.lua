@@ -1,57 +1,85 @@
 --[[
     Script: ReplicatedStorage.Shared.Utils.BadgeUtil
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local l_BadgeService_0 = game:GetService("BadgeService");
-local l_Shared_0 = l_ReplicatedStorage_0.Shared;
-local v3 = require(l_Shared_0.Utils.retryAsync);
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:46
+-- Luau version 6, Types version 3
+-- Time taken: 0.001811 seconds
+
+local BadgeService_upvr = game:GetService("BadgeService")
+local retryAsync_upvr = require(game:GetService("ReplicatedStorage").Shared.Utils.retryAsync)
 return {
-    safeGetBadgeInfoAsync = function(v4) --[[ Line: 11 ]] --[[ Name: safeGetBadgeInfoAsync ]]
-        -- upvalues: v3 (copy), l_BadgeService_0 (copy)
-        return v3(function() --[[ Line: 12 ]]
-            -- upvalues: l_BadgeService_0 (ref), v4 (copy)
-            return l_BadgeService_0:GetBadgeInfoAsync(v4);
-        end, 3, 3, 2);
-    end, 
-    safeUserHasBadgeAsync = function(v5, v6) --[[ Line: 17 ]] --[[ Name: safeUserHasBadgeAsync ]]
-        -- upvalues: v3 (copy), l_BadgeService_0 (copy)
-        return v3(function() --[[ Line: 18 ]]
-            -- upvalues: l_BadgeService_0 (ref), v5 (copy), v6 (copy)
-            return l_BadgeService_0:UserHasBadgeAsync(v5, v6);
-        end, 3, 3, 2);
-    end, 
-    safeAwardBadgeAsync = function(v7, v8) --[[ Line: 23 ]] --[[ Name: safeAwardBadgeAsync ]]
-        -- upvalues: v3 (copy), l_BadgeService_0 (copy)
-        local v9, v10 = v3(function() --[[ Line: 12 ]]
-            -- upvalues: l_BadgeService_0 (ref), v8 (copy)
-            return l_BadgeService_0:GetBadgeInfoAsync(v8);
-        end, 3, 3, 2);
-        local l_v9_0 = v9;
-        local l_v10_0 = v10;
-        if not l_v9_0 then
-            return false, "Failed to retrieve badge information";
-        elseif l_v10_0 and l_v10_0.IsEnabled ~= true then
-            return false, "Badge is not awardable";
-        else
-            local v13, v14 = v3(function() --[[ Line: 18 ]]
-                -- upvalues: l_BadgeService_0 (ref), v7 (copy), v8 (copy)
-                return l_BadgeService_0:UserHasBadgeAsync(v7, v8);
-            end, 3, 3, 2);
-            v9 = v13;
-            v10 = v14;
-            if not v9 then
-                return false, "Failed to check user's badge status";
-            elseif v10 then
-                return false, "User already owns this badge";
-            else
-                return (v3(function() --[[ Line: 45 ]]
-                    -- upvalues: l_BadgeService_0 (ref), v7 (copy), v8 (copy)
-                    return l_BadgeService_0:AwardBadge(v7, v8);
-                end, 3, 3, 2));
-            end;
-        end;
-    end
-};
+	safeGetBadgeInfoAsync = function(arg1) -- Line 11, Named "safeGetBadgeInfoAsync"
+		--[[ Upvalues[2]:
+			[1]: retryAsync_upvr (readonly)
+			[2]: BadgeService_upvr (readonly)
+		]]
+		return retryAsync_upvr(function() -- Line 12
+			--[[ Upvalues[2]:
+				[1]: BadgeService_upvr (copied, readonly)
+				[2]: arg1 (readonly)
+			]]
+			return BadgeService_upvr:GetBadgeInfoAsync(arg1)
+		end, 3, 3, 2)
+	end;
+	safeUserHasBadgeAsync = function(arg1, arg2) -- Line 17, Named "safeUserHasBadgeAsync"
+		--[[ Upvalues[2]:
+			[1]: retryAsync_upvr (readonly)
+			[2]: BadgeService_upvr (readonly)
+		]]
+		return retryAsync_upvr(function() -- Line 18
+			--[[ Upvalues[3]:
+				[1]: BadgeService_upvr (copied, readonly)
+				[2]: arg1 (readonly)
+				[3]: arg2 (readonly)
+			]]
+			return BadgeService_upvr:UserHasBadgeAsync(arg1, arg2)
+		end, 3, 3, 2)
+	end;
+	safeAwardBadgeAsync = function(arg1, arg2) -- Line 23, Named "safeAwardBadgeAsync"
+		--[[ Upvalues[2]:
+			[1]: retryAsync_upvr (readonly)
+			[2]: BadgeService_upvr (readonly)
+		]]
+		local retryAsync_upvr_result1_2, retryAsync_upvr_result2 = retryAsync_upvr(function() -- Line 12
+			--[[ Upvalues[2]:
+				[1]: BadgeService_upvr (copied, readonly)
+				[2]: arg2 (readonly)
+			]]
+			return BadgeService_upvr:GetBadgeInfoAsync(arg2)
+		end, 3, 3, 2)
+		local var8 = retryAsync_upvr_result2
+		if not retryAsync_upvr_result1_2 then
+			return false, "Failed to retrieve badge information"
+		end
+		if var8 and var8.IsEnabled ~= true then
+			return false, "Badge is not awardable"
+		end
+		local retryAsync_upvr_result1, var2_result2 = retryAsync_upvr(function() -- Line 18
+			--[[ Upvalues[3]:
+				[1]: BadgeService_upvr (copied, readonly)
+				[2]: arg1 (readonly)
+				[3]: arg2 (readonly)
+			]]
+			return BadgeService_upvr:UserHasBadgeAsync(arg1, arg2)
+		end, 3, 3, 2)
+		if not retryAsync_upvr_result1 then
+			return false, "Failed to check user's badge status"
+		end
+		if var2_result2 then
+			return false, "User already owns this badge"
+		end
+		return retryAsync_upvr(function() -- Line 45
+			--[[ Upvalues[3]:
+				[1]: BadgeService_upvr (copied, readonly)
+				[2]: arg1 (readonly)
+				[3]: arg2 (readonly)
+			]]
+			return BadgeService_upvr:AwardBadge(arg1, arg2)
+		end, 3, 3, 2)
+	end;
+}

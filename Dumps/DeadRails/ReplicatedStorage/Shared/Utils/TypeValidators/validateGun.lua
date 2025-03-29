@@ -1,19 +1,27 @@
 --[[
     Script: ReplicatedStorage.Shared.Utils.TypeValidators.validateGun
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_Shared_0 = game:GetService("ReplicatedStorage").Shared;
-local v1 = require(l_Shared_0.DataBanks.WeaponConstants);
-local v2 = require("./validateWeapon");
-return function(v3) --[[ Line: 11 ]] --[[ Name: validateGun ]]
-    -- upvalues: v2 (copy), v1 (copy)
-    if not v2(v3) then
-        return false;
-    elseif v3:FindFirstChild(v1.WEAPON_CONFIURATION_FOLDER):FindFirstChild(v1.CONFIGURATION_VALUES.WEAPON_TYPE).Value ~= v1.WEAPON_TYPE.GUN then
-        return false;
-    else
-        return true;
-    end;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:45:11
+-- Luau version 6, Types version 3
+-- Time taken: 0.000574 seconds
+
+local ._validateWeapon_upvr = require("./validateWeapon")
+local WeaponConstants_upvr = require(game:GetService("ReplicatedStorage").Shared.DataBanks.WeaponConstants)
+return function(arg1) -- Line 11, Named "validateGun"
+	--[[ Upvalues[2]:
+		[1]: ._validateWeapon_upvr (readonly)
+		[2]: WeaponConstants_upvr (readonly)
+	]]
+	if not ._validateWeapon_upvr(arg1) then
+		return false
+	end
+	if arg1:FindFirstChild(WeaponConstants_upvr.WEAPON_CONFIURATION_FOLDER):FindFirstChild(WeaponConstants_upvr.CONFIGURATION_VALUES.WEAPON_TYPE).Value ~= WeaponConstants_upvr.WEAPON_TYPE.GUN then
+		return false
+	end
+	return true
+end

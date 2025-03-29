@@ -1,25 +1,23 @@
 --[[
     Script: ReplicatedStorage.Shared.Utils.TagUtil
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:45
+-- Luau version 6, Types version 3
+-- Time taken: 0.000570 seconds
+
 return {
-    findFirstAncestorOfClassWithTag = function(v0, v1, v2, v3) --[[ Line: 3 ]] --[[ Name: findFirstAncestorOfClassWithTag ]]
-        local v4 = v3 or 10;
-        local l_v0_FirstAncestorOfClass_0 = v0:FindFirstAncestorOfClass(v1);
-        local v6 = 0;
-        while true do
-            if l_v0_FirstAncestorOfClass_0 and v6 < v4 then
-                if l_v0_FirstAncestorOfClass_0:HasTag(v2) then
-                    return l_v0_FirstAncestorOfClass_0;
-                else
-                    l_v0_FirstAncestorOfClass_0 = l_v0_FirstAncestorOfClass_0:FindFirstAncestorOfClass(v1);
-                    v6 = v6 + 1;
-                end;
-            else
-                return nil;
-            end;
-        end;
-    end
-};
+	findFirstAncestorOfClassWithTag = function(arg1, arg2, arg3, arg4) -- Line 3, Named "findFirstAncestorOfClassWithTag"
+		local instance = arg1:FindFirstAncestorOfClass(arg2)
+		while instance and 0 < (arg4 or 10) do
+			if instance:HasTag(arg3) then
+				return instance
+			end
+		end
+		return nil
+	end;
+}

@@ -1,47 +1,77 @@
 --[[
     Script: ReplicatedStorage.Shared.InteractableObjectValidation
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local _ = game:GetService("RunService");
-local _ = game:GetService("ServerScriptService");
-local v3 = require(l_ReplicatedStorage_0.Shared.SharedConstants.Attribute);
-local v4 = require(l_ReplicatedStorage_0.Shared.SharedConstants.CollectionServiceTag.InteractableObjectTags);
-local v6 = {
-    isObject = function(v5) --[[ Line: 19 ]] --[[ Name: isObject ]]
-        -- upvalues: v4 (copy)
-        if not v5 or typeof(v5) ~= "Instance" or not v5:IsA("Model") or not v5:HasTag(v4.InteractableObject) or not v5.PrimaryPart then
-            return false;
-        else
-            return true;
-        end;
-    end
-};
-v6.isBeingDragged = function(v7) --[[ Line: 32 ]] --[[ Name: isBeingDragged ]]
-    -- upvalues: v6 (copy), v4 (copy)
-    assert(v6.isObject(v7), "Invalid object");
-    return v7:HasTag(v4.IsBeingDragged);
-end;
-v6.isWelded = function(v8) --[[ Line: 38 ]] --[[ Name: isWelded ]]
-    -- upvalues: v6 (copy), v4 (copy)
-    assert(v6.isObject(v8), "Invalid object");
-    return v8:HasTag(v4.Welded);
-end;
-v6.canWeldTo = function(v9) --[[ Line: 44 ]] --[[ Name: canWeldTo ]]
-    -- upvalues: v4 (copy)
-    if not v9 or typeof(v9) ~= "Instance" or not v9:HasTag(v4.CanWeldTo) then
-        return false;
-    else
-        return true;
-    end;
-end;
-v6.isPlayerOwner = function(v10, v11) --[[ Line: 58 ]] --[[ Name: isPlayerOwner ]]
-    -- upvalues: v6 (copy), v3 (copy)
-    assert(typeof(v10) == "Player", "First argument must be a player");
-    assert(v6.isObject(v11), "Invalid object");
-    local l_v11_Attribute_0 = v11:GetAttribute(v3.OwnerId);
-    return not l_v11_Attribute_0 or l_v11_Attribute_0 == v10.UserId;
-end;
-return v6;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:44:40
+-- Luau version 6, Types version 3
+-- Time taken: 0.001609 seconds
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local InteractableObjectTags_upvr = require(ReplicatedStorage.Shared.SharedConstants.CollectionServiceTag.InteractableObjectTags)
+local module_upvr = {
+	isObject = function(arg1) -- Line 19, Named "isObject"
+		--[[ Upvalues[1]:
+			[1]: InteractableObjectTags_upvr (readonly)
+		]]
+		if not arg1 or typeof(arg1) ~= "Instance" or not arg1:IsA("Model") or not arg1:HasTag(InteractableObjectTags_upvr.InteractableObject) or not arg1.PrimaryPart then
+			return false
+		end
+		return true
+	end;
+}
+function module_upvr.isBeingDragged(arg1) -- Line 32
+	--[[ Upvalues[2]:
+		[1]: module_upvr (readonly)
+		[2]: InteractableObjectTags_upvr (readonly)
+	]]
+	assert(module_upvr.isObject(arg1), "Invalid object")
+	return arg1:HasTag(InteractableObjectTags_upvr.IsBeingDragged)
+end
+function module_upvr.isWelded(arg1) -- Line 38
+	--[[ Upvalues[2]:
+		[1]: module_upvr (readonly)
+		[2]: InteractableObjectTags_upvr (readonly)
+	]]
+	assert(module_upvr.isObject(arg1), "Invalid object")
+	return arg1:HasTag(InteractableObjectTags_upvr.Welded)
+end
+function module_upvr.canWeldTo(arg1) -- Line 44
+	--[[ Upvalues[1]:
+		[1]: InteractableObjectTags_upvr (readonly)
+	]]
+	if not arg1 or typeof(arg1) ~= "Instance" or not arg1:HasTag(InteractableObjectTags_upvr.CanWeldTo) then
+		return false
+	end
+	return true
+end
+local Attribute_upvr = require(ReplicatedStorage.Shared.SharedConstants.Attribute)
+function module_upvr.isPlayerOwner(arg1, arg2) -- Line 58
+	--[[ Upvalues[2]:
+		[1]: module_upvr (readonly)
+		[2]: Attribute_upvr (readonly)
+	]]
+	local var5
+	if typeof(arg1) ~= "Player" then
+		var5 = false
+	else
+		var5 = true
+	end
+	assert(var5, "First argument must be a player")
+	var5 = module_upvr.isObject(arg2)
+	assert(var5, "Invalid object")
+	local attribute = arg2:GetAttribute(Attribute_upvr.OwnerId)
+	var5 = not attribute
+	if not var5 then
+		if attribute ~= arg1.UserId then
+			var5 = false
+		else
+			var5 = true
+		end
+	end
+	return var5
+end
+return module_upvr

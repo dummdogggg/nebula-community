@@ -1,62 +1,70 @@
 --[[
     Script: StarterPlayer.StarterCharacterScripts.InertiaJump
     Type: LocalScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local l_RunService_0 = game:GetService("RunService");
-local l_Players_0 = game:GetService("Players");
-local l_Packages_0 = l_ReplicatedStorage_0.Packages;
-local _ = require(l_Packages_0.Gizmo);
-local _ = l_Players_0.LocalPlayer;
-local l_Parent_0 = script.Parent;
-local l_Humanoid_0 = l_Parent_0:WaitForChild("Humanoid");
-local v8 = nil;
-local v9 = nil;
-local v10 = RaycastParams.new();
-v10.FilterType = Enum.RaycastFilterType.Exclude;
-v10.FilterDescendantsInstances = {
-    l_Parent_0
-};
-l_RunService_0.PreSimulation:Connect(function() --[[ Line: 22 ]]
-    -- upvalues: l_Parent_0 (copy), v10 (copy), l_Humanoid_0 (copy), v9 (ref), v8 (ref)
-    local l_HumanoidRootPart_0 = l_Parent_0:FindFirstChild("HumanoidRootPart");
-    if not l_HumanoidRootPart_0 then
-        return;
-    else
-        local v12 = workspace:Raycast(l_HumanoidRootPart_0.Position, Vector3.new(0, -50, 0, 0), v10);
-        if not v12 then
-            return;
-        else
-            local l_Instance_0 = v12.Instance;
-            if l_Instance_0 and l_Instance_0:IsA("BasePart") then
-                local l_l_Humanoid_0_State_0 = l_Humanoid_0:GetState();
-                local v15 = true;
-                if l_l_Humanoid_0_State_0 ~= Enum.HumanoidStateType.Jumping then
-                    v15 = l_l_Humanoid_0_State_0 == Enum.HumanoidStateType.Freefall;
-                end;
-                local v16 = v9 == l_Instance_0;
-                if v15 then
-                    if v16 then
-                        l_HumanoidRootPart_0.CFrame = l_Instance_0.CFrame * v8:inverse() * l_HumanoidRootPart_0.CFrame;
-                        v8 = l_Instance_0.CFrame;
-                        return;
-                    else
-                        v9 = l_Instance_0;
-                        v8 = l_Instance_0.CFrame;
-                        return;
-                    end;
-                else
-                    v9 = nil;
-                    v8 = nil;
-                    return;
-                end;
-            else
-                v9 = nil;
-                v8 = nil;
-                return;
-            end;
-        end;
-    end;
-end);
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:48:42
+-- Luau version 6, Types version 3
+-- Time taken: 0.001902 seconds
+
+local Parent_upvr = script.Parent
+local RaycastParams_new_result1_upvr = RaycastParams.new()
+RaycastParams_new_result1_upvr.FilterType = Enum.RaycastFilterType.Exclude
+RaycastParams_new_result1_upvr.FilterDescendantsInstances = {Parent_upvr}
+local Humanoid_upvr = Parent_upvr:WaitForChild("Humanoid")
+local var6_upvw
+local var7_upvw
+game:GetService("RunService").PreSimulation:Connect(function() -- Line 22
+	--[[ Upvalues[5]:
+		[1]: Parent_upvr (readonly)
+		[2]: RaycastParams_new_result1_upvr (readonly)
+		[3]: Humanoid_upvr (readonly)
+		[4]: var6_upvw (read and write)
+		[5]: var7_upvw (read and write)
+	]]
+	local HumanoidRootPart_2 = Parent_upvr:FindFirstChild("HumanoidRootPart")
+	if not HumanoidRootPart_2 then
+	else
+		local workspace_Raycast_result1 = workspace:Raycast(HumanoidRootPart_2.Position, Vector3.new(0, -50, 0), RaycastParams_new_result1_upvr)
+		if not workspace_Raycast_result1 then return end
+		local Instance_2 = workspace_Raycast_result1.Instance
+		if Instance_2 then
+			local var17
+			if Instance_2:IsA("BasePart") then
+				local any_GetState_result1 = Humanoid_upvr:GetState()
+				local var19 = true
+				var17 = Enum.HumanoidStateType.Jumping
+				if any_GetState_result1 ~= var17 then
+					var17 = Enum.HumanoidStateType.Freefall
+					if any_GetState_result1 ~= var17 then
+						var19 = false
+					else
+						var19 = true
+					end
+				end
+				if var6_upvw ~= Instance_2 then
+					var17 = false
+				else
+					var17 = true
+				end
+				if var19 then
+					if var17 then
+						HumanoidRootPart_2.CFrame = Instance_2.CFrame * var7_upvw:inverse() * HumanoidRootPart_2.CFrame
+						var7_upvw = Instance_2.CFrame
+					else
+						var6_upvw = Instance_2
+						var7_upvw = Instance_2.CFrame
+					end
+				end
+				var6_upvw = nil
+				var7_upvw = nil
+				return
+			end
+		end
+		var6_upvw = nil
+		var7_upvw = nil
+	end
+end)

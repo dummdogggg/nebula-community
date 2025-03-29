@@ -1,102 +1,142 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.PlayerModule.CommonUtils.CharacterUtil
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_Players_0 = game:GetService("Players");
-local l_Parent_0 = script.Parent;
-local l_ConnectionUtil_0 = require(l_Parent_0:WaitForChild("ConnectionUtil"));
-local v3 = {
-    LOCAL_PLAYER = "LOCAL_PLAYER", 
-    ON_LOCAL_PLAYER = "ON_LOCAL_PLAYER", 
-    CHARACTER_ADDED = "CHARACTER_ADDED", 
-    ON_CHARACTER = "ON_CHARACTER", 
-    CHARACTER_CHILD_ADDED = "CHARACTER_CHILD_ADDED"
-};
-local v4 = {
-    _connectionUtil = l_ConnectionUtil_0.new(), 
-    _boundEvents = {}, 
-    getLocalPlayer = function() --[[ Line: 53 ]] --[[ Name: getLocalPlayer ]]
-        -- upvalues: l_Players_0 (copy)
-        return l_Players_0.LocalPlayer;
-    end
-};
-v4.onLocalPlayer = function(v5) --[[ Line: 57 ]] --[[ Name: onLocalPlayer ]]
-    -- upvalues: v4 (copy), v3 (copy), l_Players_0 (copy)
-    local v6 = v4.getLocalPlayer();
-    if v6 then
-        v5(v6);
-    end;
-    v4._connectionUtil:trackConnection(v3.LOCAL_PLAYER, l_Players_0:GetPropertyChangedSignal("LocalPlayer"):Connect(function() --[[ Line: 66 ]]
-        -- upvalues: v4 (ref), v3 (ref)
-        local v7 = v4.getLocalPlayer();
-        assert(v7);
-        v4._getOrCreateBoundEvent(v3.LOCAL_PLAYER):Fire(v7);
-    end));
-    return v4._getOrCreateBoundEvent(v3.LOCAL_PLAYER).Event:Connect(v5);
-end;
-v4.getCharacter = function() --[[ Line: 77 ]] --[[ Name: getCharacter ]]
-    -- upvalues: v4 (copy)
-    local v8 = v4.getLocalPlayer();
-    if not v8 then
-        return nil;
-    else
-        return v8.Character;
-    end;
-end;
-v4.onCharacter = function(v9) --[[ Line: 85 ]] --[[ Name: onCharacter ]]
-    -- upvalues: v4 (copy), v3 (copy)
-    v4._connectionUtil:trackConnection(v3.ON_LOCAL_PLAYER, v4.onLocalPlayer(function(v10) --[[ Line: 89 ]]
-        -- upvalues: v4 (ref), v9 (copy), v3 (ref)
-        local v11 = v4.getCharacter();
-        if v11 then
-            v9(v11);
-        end;
-        v4._connectionUtil:trackConnection(v3.CHARACTER_ADDED, v10.CharacterAdded:Connect(function(v12) --[[ Line: 98 ]]
-            -- upvalues: v4 (ref), v3 (ref)
-            assert(v12);
-            v4._getOrCreateBoundEvent(v3.CHARACTER_ADDED):Fire(v12);
-        end));
-    end));
-    return v4._getOrCreateBoundEvent(v3.CHARACTER_ADDED).Event:Connect(v9);
-end;
-v4.getChild = function(v13, v14) --[[ Line: 110 ]] --[[ Name: getChild ]]
-    -- upvalues: v4 (copy)
-    local v15 = v4.getCharacter();
-    if not v15 then
-        return nil;
-    else
-        local l_v15_FirstChild_0 = v15:FindFirstChild(v13);
-        if l_v15_FirstChild_0 and l_v15_FirstChild_0:IsA(v14) then
-            return l_v15_FirstChild_0;
-        else
-            return nil;
-        end;
-    end;
-end;
-v4.onChild = function(v17, v18, v19) --[[ Line: 122 ]] --[[ Name: onChild ]]
-    -- upvalues: v4 (copy), v3 (copy)
-    v4._connectionUtil:trackConnection(v3.ON_CHARACTER, v4.onCharacter(function(v20) --[[ Line: 126 ]]
-        -- upvalues: v4 (ref), v17 (copy), v18 (copy), v19 (copy), v3 (ref)
-        local v21 = v4.getChild(v17, v18);
-        if v21 then
-            v19(v21);
-        end;
-        v4._connectionUtil:trackConnection(v3.CHARACTER_CHILD_ADDED, v20.ChildAdded:Connect(function(v22) --[[ Line: 135 ]]
-            -- upvalues: v17 (ref), v18 (ref), v4 (ref), v3 (ref)
-            if v22.Name == v17 and v22:IsA(v18) then
-                v4._getOrCreateBoundEvent(v3.CHARACTER_CHILD_ADDED .. v17 .. v18):Fire(v22);
-            end;
-        end));
-    end));
-    return v4._getOrCreateBoundEvent(v3.CHARACTER_CHILD_ADDED .. v17 .. v18).Event:Connect(v19);
-end;
-v4._getOrCreateBoundEvent = function(v23) --[[ Line: 149 ]] --[[ Name: _getOrCreateBoundEvent ]]
-    -- upvalues: v4 (copy)
-    if not v4._boundEvents[v23] then
-        v4._boundEvents[v23] = Instance.new("BindableEvent");
-    end;
-    return v4._boundEvents[v23];
-end;
-return v4;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:48:27
+-- Luau version 6, Types version 3
+-- Time taken: 0.002527 seconds
+
+local Players_upvr = game:GetService("Players")
+local module_upvr = {
+	LOCAL_PLAYER = "LOCAL_PLAYER";
+	ON_LOCAL_PLAYER = "ON_LOCAL_PLAYER";
+	CHARACTER_ADDED = "CHARACTER_ADDED";
+	ON_CHARACTER = "ON_CHARACTER";
+	CHARACTER_CHILD_ADDED = "CHARACTER_CHILD_ADDED";
+}
+local module_upvr_2 = {
+	_connectionUtil = require(script.Parent:WaitForChild("ConnectionUtil")).new();
+	_boundEvents = {};
+	getLocalPlayer = function() -- Line 53, Named "getLocalPlayer"
+		--[[ Upvalues[1]:
+			[1]: Players_upvr (readonly)
+		]]
+		return Players_upvr.LocalPlayer
+	end;
+}
+function module_upvr_2.onLocalPlayer(arg1) -- Line 57
+	--[[ Upvalues[3]:
+		[1]: module_upvr_2 (readonly)
+		[2]: module_upvr (readonly)
+		[3]: Players_upvr (readonly)
+	]]
+	local any_getLocalPlayer_result1 = module_upvr_2.getLocalPlayer()
+	if any_getLocalPlayer_result1 then
+		arg1(any_getLocalPlayer_result1)
+	end
+	module_upvr_2._connectionUtil:trackConnection(module_upvr.LOCAL_PLAYER, Players_upvr:GetPropertyChangedSignal("LocalPlayer"):Connect(function() -- Line 66
+		--[[ Upvalues[2]:
+			[1]: module_upvr_2 (copied, readonly)
+			[2]: module_upvr (copied, readonly)
+		]]
+		local any_getLocalPlayer_result1_2 = module_upvr_2.getLocalPlayer()
+		assert(any_getLocalPlayer_result1_2)
+		module_upvr_2._getOrCreateBoundEvent(module_upvr.LOCAL_PLAYER):Fire(any_getLocalPlayer_result1_2)
+	end))
+	return module_upvr_2._getOrCreateBoundEvent(module_upvr.LOCAL_PLAYER).Event:Connect(arg1)
+end
+function module_upvr_2.getCharacter() -- Line 77
+	--[[ Upvalues[1]:
+		[1]: module_upvr_2 (readonly)
+	]]
+	local any_getLocalPlayer_result1_3 = module_upvr_2.getLocalPlayer()
+	if not any_getLocalPlayer_result1_3 then
+		return nil
+	end
+	return any_getLocalPlayer_result1_3.Character
+end
+function module_upvr_2.onCharacter(arg1) -- Line 85
+	--[[ Upvalues[2]:
+		[1]: module_upvr_2 (readonly)
+		[2]: module_upvr (readonly)
+	]]
+	module_upvr_2._connectionUtil:trackConnection(module_upvr.ON_LOCAL_PLAYER, module_upvr_2.onLocalPlayer(function(arg1_2) -- Line 89
+		--[[ Upvalues[3]:
+			[1]: module_upvr_2 (copied, readonly)
+			[2]: arg1 (readonly)
+			[3]: module_upvr (copied, readonly)
+		]]
+		local any_getCharacter_result1 = module_upvr_2.getCharacter()
+		if any_getCharacter_result1 then
+			arg1(any_getCharacter_result1)
+		end
+		module_upvr_2._connectionUtil:trackConnection(module_upvr.CHARACTER_ADDED, arg1_2.CharacterAdded:Connect(function(arg1_3) -- Line 98
+			--[[ Upvalues[2]:
+				[1]: module_upvr_2 (copied, readonly)
+				[2]: module_upvr (copied, readonly)
+			]]
+			assert(arg1_3)
+			module_upvr_2._getOrCreateBoundEvent(module_upvr.CHARACTER_ADDED):Fire(arg1_3)
+		end))
+	end))
+	return module_upvr_2._getOrCreateBoundEvent(module_upvr.CHARACTER_ADDED).Event:Connect(arg1)
+end
+function module_upvr_2.getChild(arg1, arg2) -- Line 110
+	--[[ Upvalues[1]:
+		[1]: module_upvr_2 (readonly)
+	]]
+	local any_getCharacter_result1_2 = module_upvr_2.getCharacter()
+	if not any_getCharacter_result1_2 then
+		return nil
+	end
+	local SOME = any_getCharacter_result1_2:FindFirstChild(arg1)
+	if SOME and SOME:IsA(arg2) then
+		return SOME
+	end
+	return nil
+end
+function module_upvr_2.onChild(arg1, arg2, arg3) -- Line 122
+	--[[ Upvalues[2]:
+		[1]: module_upvr_2 (readonly)
+		[2]: module_upvr (readonly)
+	]]
+	module_upvr_2._connectionUtil:trackConnection(module_upvr.ON_CHARACTER, module_upvr_2.onCharacter(function(arg1_4) -- Line 126
+		--[[ Upvalues[5]:
+			[1]: module_upvr_2 (copied, readonly)
+			[2]: arg1 (readonly)
+			[3]: arg2 (readonly)
+			[4]: arg3 (readonly)
+			[5]: module_upvr (copied, readonly)
+		]]
+		local any_getChild_result1 = module_upvr_2.getChild(arg1, arg2)
+		if any_getChild_result1 then
+			arg3(any_getChild_result1)
+		end
+		module_upvr_2._connectionUtil:trackConnection(module_upvr.CHARACTER_CHILD_ADDED, arg1_4.ChildAdded:Connect(function(arg1_5) -- Line 135
+			--[[ Upvalues[4]:
+				[1]: arg1 (copied, readonly)
+				[2]: arg2 (copied, readonly)
+				[3]: module_upvr_2 (copied, readonly)
+				[4]: module_upvr (copied, readonly)
+			]]
+			if arg1_5.Name == arg1 and arg1_5:IsA(arg2) then
+				module_upvr_2._getOrCreateBoundEvent(module_upvr.CHARACTER_CHILD_ADDED..arg1..arg2):Fire(arg1_5)
+			end
+		end))
+	end))
+	return module_upvr_2._getOrCreateBoundEvent(module_upvr.CHARACTER_CHILD_ADDED..arg1..arg2).Event:Connect(arg3)
+end
+function module_upvr_2._getOrCreateBoundEvent(arg1) -- Line 149
+	--[[ Upvalues[1]:
+		[1]: module_upvr_2 (readonly)
+	]]
+	if not module_upvr_2._boundEvents[arg1] then
+		module_upvr_2._boundEvents[arg1] = Instance.new("BindableEvent")
+	end
+	return module_upvr_2._boundEvents[arg1]
+end
+return module_upvr_2
