@@ -1,16 +1,23 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.Dictionary.find
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.Parent.utils.findPair);
-return function(v1, v2, v3) --[[ Line: 16 ]] --[[ Name: find ]]
-    -- upvalues: v0 (copy)
-    local _, v5 = v0(v1, v2);
-    if v5 == nil then
-        return v3;
-    else
-        return v5;
-    end;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:35:51
+-- Luau version 6, Types version 3
+-- Time taken: 0.000471 seconds
+
+local findPair_upvr = require(script.Parent.Parent.utils.findPair)
+return function(arg1, arg2, arg3) -- Line 16, Named "find"
+	--[[ Upvalues[1]:
+		[1]: findPair_upvr (readonly)
+	]]
+	local findPair_upvr_result1, findPair_upvr_result2 = findPair_upvr(arg1, arg2)
+	if findPair_upvr_result2 == nil then
+		return arg3
+	end
+	return findPair_upvr_result2
+end

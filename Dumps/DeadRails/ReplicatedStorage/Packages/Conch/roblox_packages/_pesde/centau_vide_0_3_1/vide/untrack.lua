@@ -1,26 +1,32 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.centau_vide@0.3.1.vide.untrack
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:34:38
+-- Luau version 6, Types version 3
+-- Time taken: 0.000578 seconds
+
 if not game then
-    script = require("test/relative-string");
-end;
-local l_get_scope_0 = require(script.Parent.graph).get_scope;
-return function(v1) --[[ Line: 7 ]] --[[ Name: untrack ]]
-    -- upvalues: l_get_scope_0 (copy)
-    local v2 = l_get_scope_0();
-    if v2 then
-        local l_effect_0 = v2.effect;
-        v2.effect = false;
-        local l_status_0, l_result_0 = pcall(v1);
-        v2.effect = l_effect_0;
-        if not l_status_0 then
-            error(l_result_0, 0);
-        end;
-        return l_result_0;
-    else
-        return v1();
-    end;
-end;
+	script = require("test/relative-string") -- Setting global
+end
+local get_scope_upvr = require(script.Parent.graph).get_scope
+return function(arg1) -- Line 7, Named "untrack"
+	--[[ Upvalues[1]:
+		[1]: get_scope_upvr (readonly)
+	]]
+	local get_scope_upvr_result1 = get_scope_upvr()
+	if get_scope_upvr_result1 then
+		get_scope_upvr_result1.effect = false
+		local pcall_result1, pcall_result2 = pcall(arg1)
+		get_scope_upvr_result1.effect = get_scope_upvr_result1.effect
+		if not pcall_result1 then
+			error(pcall_result2, 0)
+		end
+		return pcall_result2
+	end
+	return arg1()
+end

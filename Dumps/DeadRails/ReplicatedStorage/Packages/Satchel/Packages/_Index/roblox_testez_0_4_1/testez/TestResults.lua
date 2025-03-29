@@ -1,69 +1,82 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.roblox_testez@0.4.1.testez.TestResults
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.TestEnum);
-local v1 = {
-    [v0.TestStatus.Success] = "+", 
-    [v0.TestStatus.Failure] = "-", 
-    [v0.TestStatus.Skipped] = "~"
-};
-local v2 = {};
-v2.__index = v2;
-v2.new = function(v3) --[[ Line: 25 ]] --[[ Name: new ]]
-    -- upvalues: v2 (copy)
-    local v4 = {
-        successCount = 0, 
-        failureCount = 0, 
-        skippedCount = 0, 
-        planNode = v3, 
-        children = {}, 
-        errors = {}
-    };
-    setmetatable(v4, v2);
-    return v4;
-end;
-v2.createNode = function(v5) --[[ Line: 43 ]] --[[ Name: createNode ]]
-    return {
-        planNode = v5, 
-        children = {}, 
-        errors = {}, 
-        status = nil
-    };
-end;
-v2.visitAllNodes = function(v6, v7, v8) --[[ Line: 57 ]] --[[ Name: visitAllNodes ]]
-    v8 = v8 or v6;
-    for _, v10 in ipairs(v8.children) do
-        v7(v10);
-        v6:visitAllNodes(v7, v10);
-    end;
-end;
-v2.visualize = function(v11, v12, v13) --[[ Line: 70 ]] --[[ Name: visualize ]]
-    -- upvalues: v0 (copy), v1 (copy)
-    v12 = v12 or v11;
-    v13 = v13 or 0;
-    local v14 = {};
-    for _, v16 in ipairs(v12.children) do
-        if v16.planNode.type == v0.NodeType.It then
-            local v17 = v1[v16.status] or "?";
-            local v18 = ("%s[%s] %s"):format((" "):rep(3 * v13), v17, v16.planNode.phrase);
-            if v16.messages and #v16.messages > 0 then
-                v18 = v18 .. "\n " .. (" "):rep(3 * v13) .. table.concat(v16.messages, "\n " .. (" "):rep(3 * v13));
-            end;
-            table.insert(v14, v18);
-        else
-            local v19 = ("%s%s"):format((" "):rep(3 * v13), v16.planNode.phrase or "");
-            if v16.status then
-                v19 = v19 .. (" (%s)"):format(v16.status);
-            end;
-            table.insert(v14, v19);
-            if #v16.children > 0 then
-                table.insert(v14, (v11:visualize(v16, v13 + 1)));
-            end;
-        end;
-    end;
-    return table.concat(v14, "\n");
-end;
-return v2;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:36:35
+-- Luau version 6, Types version 3
+-- Time taken: 0.001968 seconds
+
+local TestEnum_upvr = require(script.Parent.TestEnum)
+local tbl_upvr = {
+	[TestEnum_upvr.TestStatus.Success] = '+';
+	[TestEnum_upvr.TestStatus.Failure] = '-';
+	[TestEnum_upvr.TestStatus.Skipped] = '~';
+}
+local module_3_upvr = {}
+module_3_upvr.__index = module_3_upvr
+function module_3_upvr.new(arg1) -- Line 25
+	--[[ Upvalues[1]:
+		[1]: module_3_upvr (readonly)
+	]]
+	local module_4 = {
+		successCount = 0;
+		failureCount = 0;
+		skippedCount = 0;
+	}
+	module_4.planNode = arg1
+	module_4.children = {}
+	module_4.errors = {}
+	setmetatable(module_4, module_3_upvr)
+	return module_4
+end
+function module_3_upvr.createNode(arg1) -- Line 43
+	local module = {}
+	module.planNode = arg1
+	module.children = {}
+	module.errors = {}
+	module.status = nil
+	return module
+end
+function module_3_upvr.visitAllNodes(arg1, arg2, arg3) -- Line 57
+	for _, v in ipairs((arg3 or arg1).children) do
+		arg2(v)
+		arg1:visitAllNodes(arg2, v)
+	end
+end
+function module_3_upvr.visualize(arg1, arg2, arg3) -- Line 70
+	--[[ Upvalues[2]:
+		[1]: TestEnum_upvr (readonly)
+		[2]: tbl_upvr (readonly)
+	]]
+	local var15 = arg3 or 0
+	local module_2 = {}
+	for _, v_2 in ipairs((arg2 or arg1).children) do
+		if v_2.planNode.type == TestEnum_upvr.NodeType.It then
+			local var20
+			if v_2.messages and 0 < #v_2.messages then
+				var20 = var20.."\n "..' ':rep(3 * var15)..table.concat(v_2.messages, "\n "..' ':rep(3 * var15))
+			end
+			table.insert(module_2, var20)
+		else
+			local formatted = "%s%s":format(' ':rep(3 * var15), v_2.planNode.phrase or "")
+			var20 = v_2.status
+			if var20 then
+				var20 = formatted
+				formatted = var20.." (%s)":format(v_2.status)
+			end
+			var20 = table.insert
+			var20(module_2, formatted)
+			var20 = #v_2.children
+			if 0 < var20 then
+				var20 = arg1:visualize(v_2, var15 + 1)
+				table.insert(module_2, var20)
+			end
+		end
+	end
+	return table.concat(module_2, '\n')
+end
+return module_3_upvr

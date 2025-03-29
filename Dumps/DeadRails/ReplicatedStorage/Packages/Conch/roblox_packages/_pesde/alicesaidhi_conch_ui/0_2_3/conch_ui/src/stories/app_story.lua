@@ -1,20 +1,33 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.alicesaidhi+conch_ui.0.2.3.conch_ui.src.stories.app.story
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require("../../roblox_packages/conch");
-local v1 = require("../../roblox_packages/vide");
-local v2 = require("../app");
-local v3 = require("../state");
-return function(v4) --[[ Line: 7 ]]
-    -- upvalues: v3 (copy), v0 (copy), v1 (copy), v2 (copy)
-    v3.opened(true);
-    v0.register_default_commands();
-    v0._.create_local_user();
-    return v1.mount(function() --[[ Line: 11 ]]
-        -- upvalues: v2 (ref)
-        return v2();
-    end, v4);
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:37:30
+-- Luau version 6, Types version 3
+-- Time taken: 0.000612 seconds
+
+local .__state_upvr = require("../state")
+local ._____roblox_packages_conch_upvr = require("../../roblox_packages/conch")
+local ._____roblox_packages_vide_upvr = require("../../roblox_packages/vide")
+local .__app_upvr = require("../app")
+return function(arg1) -- Line 7
+	--[[ Upvalues[4]:
+		[1]: .__state_upvr (readonly)
+		[2]: ._____roblox_packages_conch_upvr (readonly)
+		[3]: ._____roblox_packages_vide_upvr (readonly)
+		[4]: .__app_upvr (readonly)
+	]]
+	.__state_upvr.opened(true)
+	._____roblox_packages_conch_upvr.register_default_commands()
+	._____roblox_packages_conch_upvr._.create_local_user()
+	return ._____roblox_packages_vide_upvr.mount(function() -- Line 11
+		--[[ Upvalues[1]:
+			[1]: .__app_upvr (copied, readonly)
+		]]
+		return .__app_upvr()
+	end, arg1)
+end

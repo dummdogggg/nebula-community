@@ -1,11 +1,10 @@
 --[[
+    STUB SCRIPT (Original could not be decompiled)
     Script: ReplicatedStorage.Packages.Freeze.Dictionary.max
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Error: API Error - Falha na decompilação
 --]]
 
-local v0 = require(script.Parent.Parent.utils.max);
-return function(v1, v2) --[[ Line: 23 ]] --[[ Name: max ]]
-    -- upvalues: v0 (copy)
-    return v0(v1, v2);
-end;
+return {
+    -- Module content not available
+}

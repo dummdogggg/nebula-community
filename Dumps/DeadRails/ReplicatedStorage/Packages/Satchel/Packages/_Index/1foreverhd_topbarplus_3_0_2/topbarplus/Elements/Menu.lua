@@ -1,215 +1,211 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.1foreverhd_topbarplus@3.0.2.topbarplus.Elements.Menu
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-return function(v0) --[[ Line: 1 ]]
-    local l_ScrollingFrame_0 = Instance.new("ScrollingFrame");
-    l_ScrollingFrame_0.Name = "Menu";
-    l_ScrollingFrame_0.BackgroundTransparency = 1;
-    l_ScrollingFrame_0.Visible = true;
-    l_ScrollingFrame_0.ZIndex = 1;
-    l_ScrollingFrame_0.Size = UDim2.fromScale(1, 1);
-    l_ScrollingFrame_0.ClipsDescendants = true;
-    l_ScrollingFrame_0.TopImage = "";
-    l_ScrollingFrame_0.BottomImage = "";
-    l_ScrollingFrame_0.HorizontalScrollBarInset = Enum.ScrollBarInset.Always;
-    l_ScrollingFrame_0.CanvasSize = UDim2.new(0, 0, 1, -1);
-    l_ScrollingFrame_0.ScrollingEnabled = true;
-    l_ScrollingFrame_0.ScrollingDirection = Enum.ScrollingDirection.X;
-    l_ScrollingFrame_0.ZIndex = 20;
-    l_ScrollingFrame_0.ScrollBarThickness = 3;
-    l_ScrollingFrame_0.ScrollBarImageColor3 = Color3.fromRGB(255, 255, 255);
-    l_ScrollingFrame_0.ScrollBarImageTransparency = 0.8;
-    l_ScrollingFrame_0.BorderSizePixel = 0;
-    l_ScrollingFrame_0.Selectable = false;
-    local v2 = require(v0.iconModule);
-    local v3 = v2.container.TopbarStandard:FindFirstChild("UIListLayout", true):Clone();
-    v3.Name = "MenuUIListLayout";
-    v3.VerticalAlignment = Enum.VerticalAlignment.Center;
-    v3.Parent = l_ScrollingFrame_0;
-    local l_Frame_0 = Instance.new("Frame");
-    l_Frame_0.Name = "MenuGap";
-    l_Frame_0.BackgroundTransparency = 1;
-    l_Frame_0.Visible = false;
-    l_Frame_0.AnchorPoint = Vector2.new(0, 0.5);
-    l_Frame_0.ZIndex = 5;
-    l_Frame_0.Parent = l_ScrollingFrame_0;
-    local v5 = false;
-    local v6 = require(script.Parent.Parent.Features.Themes);
-    local function v33() --[[ Line: 39 ]] --[[ Name: totalChildrenChanged ]]
-        -- upvalues: v0 (copy), v5 (ref), l_ScrollingFrame_0 (copy), v6 (copy), v3 (copy)
-        local l_menuJanitor_0 = v0.menuJanitor;
-        local v8 = #v0.menuIcons;
-        if v5 then
-            if v8 <= 0 then
-                l_menuJanitor_0:clean();
-                v5 = false;
-            end;
-            return;
-        else
-            v5 = true;
-            l_menuJanitor_0:add(v0.toggled:Connect(function() --[[ Line: 53 ]]
-                -- upvalues: v0 (ref)
-                if #v0.menuIcons > 0 then
-                    v0.updateSize:Fire();
-                end;
-            end));
-            local _, v10 = v0:modifyTheme({
-                {
-                    "Menu", 
-                    "Active", 
-                    true
-                }
-            });
-            task.defer(function() --[[ Line: 63 ]]
-                -- upvalues: l_menuJanitor_0 (copy), v0 (ref), v10 (copy)
-                l_menuJanitor_0:add(function() --[[ Line: 64 ]]
-                    -- upvalues: v0 (ref), v10 (ref)
-                    v0:removeModification(v10);
-                end);
-            end);
-            local l_X_0 = l_ScrollingFrame_0.AbsoluteCanvasSize.X;
-            local function v14() --[[ Line: 73 ]] --[[ Name: rightAlignCanvas ]]
-                -- upvalues: v0 (ref), l_ScrollingFrame_0 (ref), l_X_0 (ref)
-                if v0.alignment == "Right" then
-                    local l_X_1 = l_ScrollingFrame_0.AbsoluteCanvasSize.X;
-                    local v13 = l_X_0 - l_X_1;
-                    l_X_0 = l_X_1;
-                    l_ScrollingFrame_0.CanvasPosition = Vector2.new(l_ScrollingFrame_0.CanvasPosition.X - v13, 0);
-                end;
-            end;
-            l_menuJanitor_0:add(v0.selected:Connect(v14));
-            l_menuJanitor_0:add(l_ScrollingFrame_0:GetPropertyChangedSignal("AbsoluteCanvasSize"):Connect(v14));
-            local v15 = v0:getStateGroup();
-            if v6.getThemeValue(v15, "IconImage", "Image", "Deselected") == v6.getThemeValue(v15, "IconImage", "Image", "Selected") then
-                local v16 = Font.new("rbxasset://fonts/families/FredokaOne.json", Enum.FontWeight.Light, Enum.FontStyle.Normal);
-                v0:removeModificationWith("IconLabel", "Text", "Viewing");
-                v0:removeModificationWith("IconLabel", "Image", "Viewing");
-                v0:modifyTheme({
-                    {
-                        "IconLabel", 
-                        "FontFace", 
-                        v16, 
-                        "Selected"
-                    }, 
-                    {
-                        "IconLabel", 
-                        "Text", 
-                        "X", 
-                        "Selected"
-                    }, 
-                    {
-                        "IconLabel", 
-                        "TextSize", 
-                        20, 
-                        "Selected"
-                    }, 
-                    {
-                        "IconLabel", 
-                        "TextStrokeTransparency", 
-                        0.8, 
-                        "Selected"
-                    }, 
-                    {
-                        "IconImage", 
-                        "Image", 
-                        "", 
-                        "Selected"
-                    }
-                });
-            end;
-            local v17 = v0:getInstance("IconSpot");
-            local v18 = v0:getInstance("MenuGap");
-            local function v19() --[[ Line: 105 ]] --[[ Name: updateAlignent ]]
-                -- upvalues: v0 (ref), v17 (copy), v18 (copy)
-                if v0.alignment == "Right" then
-                    v17.LayoutOrder = 99999;
-                    v18.LayoutOrder = 99998;
-                    return;
-                else
-                    v17.LayoutOrder = -99999;
-                    v18.LayoutOrder = -99998;
-                    return;
-                end;
-            end;
-            l_menuJanitor_0:add(v0.alignmentChanged:Connect(v19));
-            if v0.alignment == "Right" then
-                v17.LayoutOrder = 99999;
-                v18.LayoutOrder = 99998;
-            else
-                v17.LayoutOrder = -99999;
-                v18.LayoutOrder = -99998;
-            end;
-            l_ScrollingFrame_0:GetAttributeChangedSignal("MenuCanvasWidth"):Connect(function() --[[ Line: 120 ]]
-                -- upvalues: l_ScrollingFrame_0 (ref)
-                local l_l_ScrollingFrame_0_Attribute_0 = l_ScrollingFrame_0:GetAttribute("MenuCanvasWidth");
-                local l_Y_0 = l_ScrollingFrame_0.CanvasSize.Y;
-                l_ScrollingFrame_0.CanvasSize = UDim2.new(0, l_l_ScrollingFrame_0_Attribute_0, l_Y_0.Scale, l_Y_0.Offset);
-            end);
-            l_menuJanitor_0:add(v0.updateMenu:Connect(function() --[[ Line: 125 ]]
-                -- upvalues: l_ScrollingFrame_0 (ref), v3 (ref)
-                local l_l_ScrollingFrame_0_Attribute_1 = l_ScrollingFrame_0:GetAttribute("MaxIcons");
-                if not l_l_ScrollingFrame_0_Attribute_1 then
-                    return;
-                else
-                    local v23 = {};
-                    for _, v25 in pairs(l_ScrollingFrame_0:GetChildren()) do
-                        if v25:GetAttribute("WidgetUID") and v25.Visible then
-                            table.insert(v23, {
-                                v25, 
-                                v25.AbsolutePosition.X
-                            });
-                        end;
-                    end;
-                    table.sort(v23, function(v26, v27) --[[ Line: 137 ]]
-                        return v26[2] < v27[2];
-                    end);
-                    local v28 = 0;
-                    for v29 = 1, l_l_ScrollingFrame_0_Attribute_1 do
-                        local v30 = v23[v29];
-                        if v30 then
-                            v28 = v28 + (v30[1].AbsoluteSize.X + v3.Padding.Offset);
-                        else
-                            break;
-                        end;
-                    end;
-                    l_ScrollingFrame_0:SetAttribute("MenuWidth", v28);
-                    return;
-                end;
-            end));
-            local function v31() --[[ Line: 152 ]] --[[ Name: startMenuUpdate ]]
-                -- upvalues: v0 (ref)
-                task.delay(0.1, function() --[[ Line: 153 ]]
-                    -- upvalues: v0 (ref)
-                    v0.startMenuUpdate:Fire();
-                end);
-            end;
-            local _ = v0:getInstance("IconButton").AbsoluteSize.X;
-            l_menuJanitor_0:add(l_ScrollingFrame_0.ChildAdded:Connect(v31));
-            l_menuJanitor_0:add(l_ScrollingFrame_0.ChildRemoved:Connect(v31));
-            l_menuJanitor_0:add(l_ScrollingFrame_0:GetAttributeChangedSignal("MaxIcons"):Connect(v31));
-            l_menuJanitor_0:add(l_ScrollingFrame_0:GetAttributeChangedSignal("MaxWidth"):Connect(v31));
-            task.delay(0.1, function() --[[ Line: 153 ]]
-                -- upvalues: v0 (ref)
-                v0.startMenuUpdate:Fire();
-            end);
-            return;
-        end;
-    end;
-    v0.menuChildAdded:Connect(v33);
-    v0.menuSet:Connect(function(v34) --[[ Line: 167 ]]
-        -- upvalues: v0 (copy), v2 (copy)
-        for _, v36 in pairs(v0.menuIcons) do
-            v2.getIconByUID(v36):destroy();
-        end;
-        local _ = #v34;
-        if type(v34) == "table" then
-            for _, v39 in pairs(v34) do
-                v39:joinMenu(v0);
-            end;
-        end;
-    end);
-    return l_ScrollingFrame_0;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:35:18
+-- Luau version 6, Types version 3
+-- Time taken: 0.005102 seconds
+
+return function(arg1) -- Line 1
+	local ScrollingFrame_upvr = Instance.new("ScrollingFrame")
+	ScrollingFrame_upvr.Name = "Menu"
+	ScrollingFrame_upvr.BackgroundTransparency = 1
+	ScrollingFrame_upvr.Visible = true
+	ScrollingFrame_upvr.ZIndex = 1
+	ScrollingFrame_upvr.Size = UDim2.fromScale(1, 1)
+	ScrollingFrame_upvr.ClipsDescendants = true
+	ScrollingFrame_upvr.TopImage = ""
+	ScrollingFrame_upvr.BottomImage = ""
+	ScrollingFrame_upvr.HorizontalScrollBarInset = Enum.ScrollBarInset.Always
+	ScrollingFrame_upvr.CanvasSize = UDim2.new(0, 0, 1, -1)
+	ScrollingFrame_upvr.ScrollingEnabled = true
+	ScrollingFrame_upvr.ScrollingDirection = Enum.ScrollingDirection.X
+	ScrollingFrame_upvr.ZIndex = 20
+	ScrollingFrame_upvr.ScrollBarThickness = 3
+	ScrollingFrame_upvr.ScrollBarImageColor3 = Color3.fromRGB(255, 255, 255)
+	ScrollingFrame_upvr.ScrollBarImageTransparency = 0.8
+	ScrollingFrame_upvr.BorderSizePixel = 0
+	ScrollingFrame_upvr.Selectable = false
+	local iconModule_upvr = require(arg1.iconModule)
+	local clone_upvr = iconModule_upvr.container.TopbarStandard:FindFirstChild("UIListLayout", true):Clone()
+	clone_upvr.Name = "MenuUIListLayout"
+	clone_upvr.VerticalAlignment = Enum.VerticalAlignment.Center
+	clone_upvr.Parent = ScrollingFrame_upvr
+	local Frame = Instance.new("Frame")
+	Frame.Name = "MenuGap"
+	Frame.BackgroundTransparency = 1
+	Frame.Visible = false
+	Frame.AnchorPoint = Vector2.new(0, 0.5)
+	Frame.ZIndex = 5
+	Frame.Parent = ScrollingFrame_upvr
+	local var6_upvw = false
+	local Themes_upvr = require(script.Parent.Parent.Features.Themes)
+	arg1.menuChildAdded:Connect(function() -- Line 39, Named "totalChildrenChanged"
+		--[[ Upvalues[5]:
+			[1]: arg1 (readonly)
+			[2]: var6_upvw (read and write)
+			[3]: ScrollingFrame_upvr (readonly)
+			[4]: Themes_upvr (readonly)
+			[5]: clone_upvr (readonly)
+		]]
+		local menuJanitor_upvr = arg1.menuJanitor
+		if var6_upvw then
+			if #arg1.menuIcons <= 0 then
+				menuJanitor_upvr:clean()
+				var6_upvw = false
+			end
+		else
+			var6_upvw = true
+			menuJanitor_upvr:add(arg1.toggled:Connect(function() -- Line 53
+				--[[ Upvalues[1]:
+					[1]: arg1 (copied, readonly)
+				]]
+				if 0 < #arg1.menuIcons then
+					arg1.updateSize:Fire()
+				end
+			end))
+			local _, any_modifyTheme_result2_upvr = arg1:modifyTheme({{"Menu", "Active", true}})
+			task.defer(function() -- Line 63
+				--[[ Upvalues[3]:
+					[1]: menuJanitor_upvr (readonly)
+					[2]: arg1 (copied, readonly)
+					[3]: any_modifyTheme_result2_upvr (readonly)
+				]]
+				menuJanitor_upvr:add(function() -- Line 64
+					--[[ Upvalues[2]:
+						[1]: arg1 (copied, readonly)
+						[2]: any_modifyTheme_result2_upvr (copied, readonly)
+					]]
+					arg1:removeModification(any_modifyTheme_result2_upvr)
+				end)
+			end)
+			local X_upvw = ScrollingFrame_upvr.AbsoluteCanvasSize.X
+			local function rightAlignCanvas() -- Line 73
+				--[[ Upvalues[3]:
+					[1]: arg1 (copied, readonly)
+					[2]: ScrollingFrame_upvr (copied, readonly)
+					[3]: X_upvw (read and write)
+				]]
+				if arg1.alignment == "Right" then
+					local X = ScrollingFrame_upvr.AbsoluteCanvasSize.X
+					X_upvw = X
+					ScrollingFrame_upvr.CanvasPosition = Vector2.new((ScrollingFrame_upvr.CanvasPosition.X) - (X_upvw - X), 0)
+				end
+			end
+			menuJanitor_upvr:add(arg1.selected:Connect(rightAlignCanvas))
+			menuJanitor_upvr:add(ScrollingFrame_upvr:GetPropertyChangedSignal("AbsoluteCanvasSize"):Connect(rightAlignCanvas))
+			local any_getStateGroup_result1 = arg1:getStateGroup()
+			if Themes_upvr.getThemeValue(any_getStateGroup_result1, "IconImage", "Image", "Deselected") == Themes_upvr.getThemeValue(any_getStateGroup_result1, "IconImage", "Image", "Selected") then
+				arg1:removeModificationWith("IconLabel", "Text", "Viewing")
+				arg1:removeModificationWith("IconLabel", "Image", "Viewing")
+				arg1:modifyTheme({{"IconLabel", "FontFace", Font.new("rbxasset://fonts/families/FredokaOne.json", Enum.FontWeight.Light, Enum.FontStyle.Normal), "Selected"}, {"IconLabel", "Text", 'X', "Selected"}, {"IconLabel", "TextSize", 20, "Selected"}, {"IconLabel", "TextStrokeTransparency", 0.8, "Selected"}, {"IconImage", "Image", "", "Selected"}})
+			end
+			local any_getInstance_result1_upvr_2 = arg1:getInstance("IconSpot")
+			local any_getInstance_result1_upvr = arg1:getInstance("MenuGap")
+			menuJanitor_upvr:add(arg1.alignmentChanged:Connect(function() -- Line 105, Named "updateAlignent"
+				--[[ Upvalues[3]:
+					[1]: arg1 (copied, readonly)
+					[2]: any_getInstance_result1_upvr_2 (readonly)
+					[3]: any_getInstance_result1_upvr (readonly)
+				]]
+				if arg1.alignment == "Right" then
+					any_getInstance_result1_upvr_2.LayoutOrder = 99999
+					any_getInstance_result1_upvr.LayoutOrder = 99998
+				else
+					any_getInstance_result1_upvr_2.LayoutOrder = -99999
+					any_getInstance_result1_upvr.LayoutOrder = -99998
+				end
+			end))
+			if arg1.alignment == "Right" then
+				any_getInstance_result1_upvr_2.LayoutOrder = 99999
+				any_getInstance_result1_upvr.LayoutOrder = 99998
+			else
+				any_getInstance_result1_upvr_2.LayoutOrder = -99999
+				any_getInstance_result1_upvr.LayoutOrder = -99998
+			end
+			ScrollingFrame_upvr:GetAttributeChangedSignal("MenuCanvasWidth"):Connect(function() -- Line 120
+				--[[ Upvalues[1]:
+					[1]: ScrollingFrame_upvr (copied, readonly)
+				]]
+				local Y = ScrollingFrame_upvr.CanvasSize.Y
+				ScrollingFrame_upvr.CanvasSize = UDim2.new(0, ScrollingFrame_upvr:GetAttribute("MenuCanvasWidth"), Y.Scale, Y.Offset)
+			end)
+			menuJanitor_upvr:add(arg1.updateMenu:Connect(function() -- Line 125
+				--[[ Upvalues[2]:
+					[1]: ScrollingFrame_upvr (copied, readonly)
+					[2]: clone_upvr (copied, readonly)
+				]]
+				local MaxIcons = ScrollingFrame_upvr:GetAttribute("MaxIcons")
+				local var37
+				if not MaxIcons then
+				else
+					local tbl = {}
+					var37 = pairs(ScrollingFrame_upvr:GetChildren())
+					local pairs_result1_2, pairs_result2, pairs_result3 = pairs(ScrollingFrame_upvr:GetChildren())
+					for _, v_3 in pairs_result1_2, pairs_result2, pairs_result3 do
+						if v_3:GetAttribute("WidgetUID") and v_3.Visible then
+							table.insert(tbl, {v_3, v_3.AbsolutePosition.X})
+						end
+					end
+					pairs_result1_2 = table.sort
+					pairs_result1_2(tbl, function(arg1_2, arg2) -- Line 137
+						local var44
+						if arg1_2[2] >= arg2[2] then
+							var44 = false
+						else
+							var44 = true
+						end
+						return var44
+					end)
+					pairs_result1_2 = 0
+					for i_4 = 1, MaxIcons do
+						if not tbl[i_4] then break end
+						-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+						pairs_result1_2 += tbl[i_4][1].AbsoluteSize.X + clone_upvr.Padding.Offset
+					end
+					ScrollingFrame_upvr:SetAttribute("MenuWidth", pairs_result1_2)
+				end
+			end))
+			local function startMenuUpdate() -- Line 152
+				--[[ Upvalues[1]:
+					[1]: arg1 (copied, readonly)
+				]]
+				task.delay(0.1, function() -- Line 153
+					--[[ Upvalues[1]:
+						[1]: arg1 (copied, readonly)
+					]]
+					arg1.startMenuUpdate:Fire()
+				end)
+			end
+			menuJanitor_upvr:add(ScrollingFrame_upvr.ChildAdded:Connect(startMenuUpdate))
+			menuJanitor_upvr:add(ScrollingFrame_upvr.ChildRemoved:Connect(startMenuUpdate))
+			menuJanitor_upvr:add(ScrollingFrame_upvr:GetAttributeChangedSignal("MaxIcons"):Connect(startMenuUpdate))
+			menuJanitor_upvr:add(ScrollingFrame_upvr:GetAttributeChangedSignal("MaxWidth"):Connect(startMenuUpdate))
+			task.delay(0.1, function() -- Line 153
+				--[[ Upvalues[1]:
+					[1]: arg1 (copied, readonly)
+				]]
+				arg1.startMenuUpdate:Fire()
+			end)
+		end
+	end)
+	arg1.menuSet:Connect(function(arg1_3) -- Line 167
+		--[[ Upvalues[2]:
+			[1]: arg1 (readonly)
+			[2]: iconModule_upvr (readonly)
+		]]
+		for _, v in pairs(arg1.menuIcons) do
+			iconModule_upvr.getIconByUID(v):destroy()
+		end
+		if type(arg1_3) == "table" then
+			for _, v_2 in pairs(arg1_3) do
+				v_2:joinMenu(arg1)
+			end
+		end
+	end)
+	return ScrollingFrame_upvr
+end

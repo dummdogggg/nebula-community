@@ -1,52 +1,64 @@
 --[[
     Script: ReplicatedStorage.Shared.PlayerClassData
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = {};
-v0.__index = v0;
-v0.new = function(v1, v2) --[[ Line: 52 ]] --[[ Name: new ]]
-    -- upvalues: v0 (copy)
-    local v3 = {
-        _classId = v1, 
-        _classData = v2, 
-        _destroyed = false, 
-        _connections = {}
-    };
-    setmetatable(v3, v0);
-    return v3;
-end;
-v0.getStartingToolsData = function(v4) --[[ Line: 64 ]] --[[ Name: getStartingToolsData ]]
-    return v4._classData.startingTools;
-end;
-v0.getStartingEquippables = function(v5) --[[ Line: 68 ]] --[[ Name: getStartingEquippables ]]
-    return v5._classData.startingEquippables;
-end;
-v0.getStartingObjects = function(v6) --[[ Line: 72 ]] --[[ Name: getStartingObjects ]]
-    return v6._classData.startingObjects;
-end;
-v0.getStartingEntities = function(v7) --[[ Line: 76 ]] --[[ Name: getStartingEntities ]]
-    return v7._classData.startingEntities;
-end;
-v0.hasTag = function(v8, v9) --[[ Line: 80 ]] --[[ Name: hasTag ]]
-    if not v8._classData.tags then
-        return false;
-    else
-        return table.find(v8._classData.tags, v9) ~= nil;
-    end;
-end;
-v0.getValueForModifier = function(v10, v11) --[[ Line: 88 ]] --[[ Name: getValueForModifier ]]
-    if not v10._classData.modifiers then
-        return 1;
-    else
-        return v10._classData.modifiers[v11] or 1;
-    end;
-end;
-v0.destroy = function(v12) --[[ Line: 97 ]] --[[ Name: destroy ]]
-    v12._destroyed = true;
-    for _, v14 in pairs(v12._connections) do
-        v14:Disconnect();
-    end;
-end;
-return v0;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:36:09
+-- Luau version 6, Types version 3
+-- Time taken: 0.001359 seconds
+
+local module_2_upvr = {}
+module_2_upvr.__index = module_2_upvr
+function module_2_upvr.new(arg1, arg2) -- Line 52
+	--[[ Upvalues[1]:
+		[1]: module_2_upvr (readonly)
+	]]
+	local module = {}
+	module._classId = arg1
+	module._classData = arg2
+	module._destroyed = false
+	module._connections = {}
+	setmetatable(module, module_2_upvr)
+	return module
+end
+function module_2_upvr.getStartingToolsData(arg1) -- Line 64
+	return arg1._classData.startingTools
+end
+function module_2_upvr.getStartingEquippables(arg1) -- Line 68
+	return arg1._classData.startingEquippables
+end
+function module_2_upvr.getStartingObjects(arg1) -- Line 72
+	return arg1._classData.startingObjects
+end
+function module_2_upvr.getStartingEntities(arg1) -- Line 76
+	return arg1._classData.startingEntities
+end
+function module_2_upvr.hasTag(arg1, arg2) -- Line 80
+	local var3
+	if not var3 then
+		var3 = false
+		return var3
+	end
+	if table.find(arg1._classData.tags, arg2) == nil then
+		var3 = false
+	else
+		var3 = true
+	end
+	return var3
+end
+function module_2_upvr.getValueForModifier(arg1, arg2) -- Line 88
+	if not arg1._classData.modifiers then
+		return 1
+	end
+	return arg1._classData.modifiers[arg2] or 1
+end
+function module_2_upvr.destroy(arg1) -- Line 97
+	arg1._destroyed = true
+	for _, v in pairs(arg1._connections) do
+		v:Disconnect()
+	end
+end
+return module_2_upvr

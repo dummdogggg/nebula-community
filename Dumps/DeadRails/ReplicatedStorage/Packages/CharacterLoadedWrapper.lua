@@ -1,177 +1,219 @@
 --[[
     Script: ReplicatedStorage.Packages.CharacterLoadedWrapper
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_Workspace_0 = game:GetService("Workspace");
-local v1 = require("./Signal");
-local function _(v2) --[[ Line: 29 ]] --[[ Name: isPrimaryPartSet ]]
-    if v2.PrimaryPart then
-        return true;
-    else
-        return false;
-    end;
-end;
-local function _(v4) --[[ Line: 33 ]] --[[ Name: isHumanoidRootPartSet ]]
-    if v4.RootPart then
-        return true;
-    else
-        return false;
-    end;
-end;
-local function _(v6) --[[ Line: 37 ]] --[[ Name: getHumanoid ]]
-    return v6:FindFirstChildOfClass("Humanoid");
-end;
-local function _(v8) --[[ Line: 41 ]] --[[ Name: isHumanoidAlive ]]
-    local l_Humanoid_0 = v8:FindFirstChildOfClass("Humanoid");
-    if not l_Humanoid_0 then
-        return false;
-    else
-        return (l_Humanoid_0.RootPart and true or false) and l_Humanoid_0.Health > 0;
-    end;
-end;
-local v11 = {};
-v11.__index = v11;
-v11.new = function(v12) --[[ Line: 65 ]] --[[ Name: new ]]
-    -- upvalues: v1 (copy), v11 (copy)
-    local v13 = {
-        loaded = v1.new(), 
-        died = v1.new(), 
-        _player = v12, 
-        _destroyed = false, 
-        _connections = {}
-    };
-    setmetatable(v13, v11);
-    v13:_listenForCharacterAdded();
-    return v13;
-end;
-v11.isLoaded = function(v14, v15) --[[ Line: 80 ]] --[[ Name: isLoaded ]]
-    -- upvalues: l_Workspace_0 (copy)
-    local v16 = v15 or v14._player.Character;
-    if not v16 then
-        return false;
-    else
-        local v17 = v16.PrimaryPart and true or false;
-        if v17 then
-            local l_Humanoid_1 = v16:FindFirstChildOfClass("Humanoid");
-            v17 = not not l_Humanoid_1 and (l_Humanoid_1.RootPart and true or false) and l_Humanoid_1.Health > 0 and v16:IsDescendantOf(l_Workspace_0);
-        end;
-        return v17;
-    end;
-end;
-v11._listenForCharacterAdded = function(v19) --[[ Line: 95 ]] --[[ Name: _listenForCharacterAdded ]]
-    task.spawn(function() --[[ Line: 96 ]]
-        -- upvalues: v19 (copy)
-        local l_Character_0 = v19._player.Character;
-        if l_Character_0 then
-            if v19:isLoaded() then
-                v19:_listenForDeath(l_Character_0);
-            else
-                v19:_waitForLoadedAsync(l_Character_0);
-            end;
-        end;
-        local v22 = v19._player.CharacterAdded:Connect(function(v21) --[[ Line: 108 ]]
-            -- upvalues: v19 (ref)
-            v19:_waitForLoadedAsync(v21);
-        end);
-        table.insert(v19._connections, v22);
-    end);
-end;
-v11._waitForLoadedAsync = function(v23, v24) --[[ Line: 118 ]] --[[ Name: _waitForLoadedAsync ]]
-    -- upvalues: l_Workspace_0 (copy)
-    if not v23:isLoaded() then
-        if not v24:IsDescendantOf(l_Workspace_0) then
-            v24.AncestryChanged:Wait();
-        end;
-        if v24.Parent then
-            if not (v24.PrimaryPart and true or false) then
-                v24:GetPropertyChangedSignal("PrimaryPart"):Wait();
-            end;
-            local l_Humanoid_2 = v24:FindFirstChildOfClass("Humanoid");
-            if not l_Humanoid_2 then
-                l_Humanoid_2 = v24:FindFirstChildOfClass("Humanoid");
-                while not l_Humanoid_2 do
-                    v24.ChildAdded:Wait();
-                    l_Humanoid_2 = v24:FindFirstChildOfClass("Humanoid");
-                end;
-            end;
-            local l_l_Humanoid_2_0 = l_Humanoid_2;
-            while not (l_l_Humanoid_2_0.RootPart and true or false) do
-                l_l_Humanoid_2_0.Changed:Wait();
-            end;
-        end;
-        if not v23:isLoaded(v24) then
-            return;
-        end;
-    end;
-    if v23._destroyed then
-        return;
-    else
-        v23:_listenForDeath(v24);
-        v23.loaded:Fire(v24);
-        return;
-    end;
-end;
-v11._listenForDeath = function(v27, v28) --[[ Line: 169 ]] --[[ Name: _listenForDeath ]]
-    -- upvalues: l_Workspace_0 (copy)
-    local l_Humanoid_3 = v28:FindFirstChildOfClass("Humanoid");
-    local v30 = false;
-    local v31 = nil;
-    local v32 = nil;
-    local v33 = nil;
-    local function v34() --[[ Line: 179 ]] --[[ Name: onDied ]]
-        -- upvalues: v30 (ref), v31 (ref), v32 (ref), v33 (ref), v27 (copy), v28 (copy)
-        if v30 then
-            return;
-        else
-            v30 = true;
-            v31:Disconnect();
-            v32:Disconnect();
-            v33:Disconnect();
-            v27.died:Fire(v28);
-            return;
-        end;
-    end;
-    v31 = l_Humanoid_3.Died:Connect(v34);
-    v33 = l_Humanoid_3.HealthChanged:Connect(function(v35) --[[ Line: 193 ]]
-        -- upvalues: v30 (ref), v31 (ref), v32 (ref), v33 (ref), v27 (copy), v28 (copy)
-        if v35 <= 0 then
-            if v30 then
-                return;
-            else
-                v30 = true;
-                v31:Disconnect();
-                v32:Disconnect();
-                v33:Disconnect();
-                v27.died:Fire(v28);
-            end;
-        end;
-    end);
-    v32 = v28.AncestryChanged:Connect(function() --[[ Line: 202 ]]
-        -- upvalues: v28 (copy), l_Workspace_0 (ref), v30 (ref), v31 (ref), v32 (ref), v33 (ref), v27 (copy)
-        if not v28:IsDescendantOf(l_Workspace_0) then
-            if v30 then
-                return;
-            else
-                v30 = true;
-                v31:Disconnect();
-                v32:Disconnect();
-                v33:Disconnect();
-                v27.died:Fire(v28);
-            end;
-        end;
-    end);
-    table.insert(v27._connections, v31);
-    table.insert(v27._connections, v32);
-    table.insert(v27._connections, v33);
-end;
-v11.destroy = function(v36) --[[ Line: 213 ]] --[[ Name: destroy ]]
-    v36.loaded:DisconnectAll();
-    v36.died:DisconnectAll();
-    v36._destroyed = true;
-    for _, v38 in pairs(v36._connections) do
-        v38:Disconnect();
-    end;
-end;
-return v11;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:36:51
+-- Luau version 6, Types version 3
+-- Time taken: 0.004539 seconds
+
+local Workspace_upvr = game:GetService("Workspace")
+local function _(arg1) -- Line 29, Named "isPrimaryPartSet"
+	if arg1.PrimaryPart then
+		return true
+	end
+	return false
+end
+local function _(arg1) -- Line 33, Named "isHumanoidRootPartSet"
+	if arg1.RootPart then
+		return true
+	end
+	return false
+end
+local function _(arg1) -- Line 37, Named "getHumanoid"
+	return arg1:FindFirstChildOfClass("Humanoid")
+end
+local function _(arg1) -- Line 41, Named "isHumanoidAlive"
+	local class_Humanoid = arg1:FindFirstChildOfClass("Humanoid")
+	local var3
+	if not class_Humanoid then
+		var3 = false
+		return var3
+	end
+	if class_Humanoid.RootPart then
+		var3 = true
+	else
+		var3 = false
+	end
+	if var3 then
+		if 0 >= class_Humanoid.Health then
+			var3 = false
+		else
+			var3 = true
+		end
+	end
+	return var3
+end
+local module_upvr = {}
+module_upvr.__index = module_upvr
+local ._Signal_upvr = require("./Signal")
+function module_upvr.new(arg1) -- Line 65
+	--[[ Upvalues[2]:
+		[1]: ._Signal_upvr (readonly)
+		[2]: module_upvr (readonly)
+	]]
+	local module = {
+		loaded = ._Signal_upvr.new();
+		died = ._Signal_upvr.new();
+	}
+	module._player = arg1
+	module._destroyed = false
+	module._connections = {}
+	setmetatable(module, module_upvr)
+	module:_listenForCharacterAdded()
+	return module
+end
+function module_upvr.isLoaded(arg1, arg2) -- Line 80
+	--[[ Upvalues[1]:
+		[1]: Workspace_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local var7 = arg2
+	if not var7 then
+		var7 = arg1._player.Character
+	end
+	if not var7 then
+		return false
+	end
+	if var7.PrimaryPart then
+	else
+	end
+	if false then
+		local class_Humanoid_3 = var7:FindFirstChildOfClass("Humanoid")
+		if not class_Humanoid_3 then
+			local _ = false
+		else
+			if class_Humanoid_3.RootPart then
+			else
+			end
+			if false then
+				if 0 >= class_Humanoid_3.Health then
+				else
+				end
+			end
+		end
+		if true then
+		end
+	end
+	return var7:IsDescendantOf(Workspace_upvr)
+end
+function module_upvr._listenForCharacterAdded(arg1) -- Line 95
+	task.spawn(function() -- Line 96
+		--[[ Upvalues[1]:
+			[1]: arg1 (readonly)
+		]]
+		local Character = arg1._player.Character
+		if Character then
+			if arg1:isLoaded() then
+				arg1:_listenForDeath(Character)
+			else
+				arg1:_waitForLoadedAsync(Character)
+			end
+		end
+		table.insert(arg1._connections, arg1._player.CharacterAdded:Connect(function(arg1_2) -- Line 108
+			--[[ Upvalues[1]:
+				[1]: arg1 (copied, readonly)
+			]]
+			arg1:_waitForLoadedAsync(arg1_2)
+		end))
+	end)
+end
+function module_upvr._waitForLoadedAsync(arg1, arg2) -- Line 118
+	--[[ Upvalues[1]:
+		[1]: Workspace_upvr (readonly)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [67] 52. Error Block 30 start (CF ANALYSIS FAILED)
+	if not arg1:isLoaded(arg2) then
+	else
+		-- KONSTANTERROR: [67] 52. Error Block 30 end (CF ANALYSIS FAILED)
+		-- KONSTANTERROR: [73] 57. Error Block 29 start (CF ANALYSIS FAILED)
+		if arg1._destroyed then return end
+		arg1:_listenForDeath(arg2)
+		arg1.loaded:Fire(arg2)
+		-- KONSTANTERROR: [73] 57. Error Block 29 end (CF ANALYSIS FAILED)
+	end
+end
+function module_upvr._listenForDeath(arg1, arg2) -- Line 169
+	--[[ Upvalues[1]:
+		[1]: Workspace_upvr (readonly)
+	]]
+	local class_Humanoid_2 = arg2:FindFirstChildOfClass("Humanoid")
+	local var14_upvw = false
+	local var15_upvw
+	local var16_upvw
+	local var17_upvw
+	var17_upvw = class_Humanoid_2.Died:Connect(function() -- Line 179, Named "onDied"
+		--[[ Upvalues[6]:
+			[1]: var14_upvw (read and write)
+			[2]: var17_upvw (read and write)
+			[3]: var15_upvw (read and write)
+			[4]: var16_upvw (read and write)
+			[5]: arg1 (readonly)
+			[6]: arg2 (readonly)
+		]]
+		if var14_upvw then
+		else
+			var14_upvw = true
+			var17_upvw:Disconnect()
+			var15_upvw:Disconnect()
+			var16_upvw:Disconnect()
+			arg1.died:Fire(arg2)
+		end
+	end)
+	local var18_upvw = var17_upvw
+	var16_upvw = class_Humanoid_2.HealthChanged:Connect(function(arg1_3) -- Line 193
+		--[[ Upvalues[6]:
+			[1]: var14_upvw (read and write)
+			[2]: var18_upvw (read and write)
+			[3]: var15_upvw (read and write)
+			[4]: var16_upvw (read and write)
+			[5]: arg1 (readonly)
+			[6]: arg2 (readonly)
+		]]
+		if arg1_3 <= 0 then
+			if var14_upvw then return end
+			var14_upvw = true
+			var18_upvw:Disconnect()
+			var15_upvw:Disconnect()
+			var16_upvw:Disconnect()
+			arg1.died:Fire(arg2)
+		end
+	end)
+	local var20_upvw = var16_upvw
+	var15_upvw = arg2.AncestryChanged:Connect(function() -- Line 202
+		--[[ Upvalues[7]:
+			[1]: arg2 (readonly)
+			[2]: Workspace_upvr (copied, readonly)
+			[3]: var14_upvw (read and write)
+			[4]: var18_upvw (read and write)
+			[5]: var15_upvw (read and write)
+			[6]: var20_upvw (read and write)
+			[7]: arg1 (readonly)
+		]]
+		if not arg2:IsDescendantOf(Workspace_upvr) then
+			if var14_upvw then return end
+			var14_upvw = true
+			var18_upvw:Disconnect()
+			var15_upvw:Disconnect()
+			var20_upvw:Disconnect()
+			arg1.died:Fire(arg2)
+		end
+	end)
+	table.insert(arg1._connections, var18_upvw)
+	table.insert(arg1._connections, var15_upvw)
+	table.insert(arg1._connections, var20_upvw)
+end
+function module_upvr.destroy(arg1) -- Line 213
+	arg1.loaded:DisconnectAll()
+	arg1.died:DisconnectAll()
+	arg1._destroyed = true
+	for _, v in pairs(arg1._connections) do
+		v:Disconnect()
+	end
+end
+return module_upvr

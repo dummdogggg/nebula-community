@@ -1,11 +1,19 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.List.every
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.Parent.utils.every);
-return function(v1, v2) --[[ Line: 15 ]] --[[ Name: every ]]
-    -- upvalues: v0 (copy)
-    return v0(v1, v2);
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:35:28
+-- Luau version 6, Types version 3
+-- Time taken: 0.000315 seconds
+
+local every_upvr = require(script.Parent.Parent.utils.every)
+return function(arg1, arg2) -- Line 15, Named "every"
+	--[[ Upvalues[1]:
+		[1]: every_upvr (readonly)
+	]]
+	return every_upvr(arg1, arg2)
+end

@@ -1,237 +1,298 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.roblox_testez@0.4.1.testez.TestPlan
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.TestEnum);
-local v1 = require(script.Parent.Expectation);
-local function v37(v2, v3) --[[ Line: 11 ]] --[[ Name: newEnvironment ]]
-    -- upvalues: v0 (copy), v1 (copy)
-    local v4 = {};
-    if v3 then
-        if type(v3) ~= "table" then
-            error(("Bad argument #2 to newEnvironment. Expected table, got %s"):format((typeof(v3))), 2);
-        end;
-        for v5, v6 in pairs(v3) do
-            v4[v5] = v6;
-        end;
-    end;
-    local function v12(v7, v8, v9, v10) --[[ Line: 25 ]] --[[ Name: addChild ]]
-        -- upvalues: v2 (copy), v0 (ref)
-        local v11 = v2:addChild(v7, v9, v10);
-        v11.callback = v8;
-        if v9 == v0.NodeType.Describe then
-            v11:expand();
-        end;
-        return v11;
-    end;
-    v4.describeFOCUS = function(v13, v14) --[[ Line: 34 ]] --[[ Name: describeFOCUS ]]
-        -- upvalues: v12 (copy), v0 (ref)
-        v12(v13, v14, v0.NodeType.Describe, v0.NodeModifier.Focus);
-    end;
-    v4.describeSKIP = function(v15, v16) --[[ Line: 38 ]] --[[ Name: describeSKIP ]]
-        -- upvalues: v12 (copy), v0 (ref)
-        v12(v15, v16, v0.NodeType.Describe, v0.NodeModifier.Skip);
-    end;
-    v4.describe = function(v17, v18, _) --[[ Line: 42 ]] --[[ Name: describe ]]
-        -- upvalues: v12 (copy), v0 (ref)
-        v12(v17, v18, v0.NodeType.Describe, v0.NodeModifier.None);
-    end;
-    v4.itFOCUS = function(v20, v21) --[[ Line: 46 ]] --[[ Name: itFOCUS ]]
-        -- upvalues: v12 (copy), v0 (ref)
-        v12(v20, v21, v0.NodeType.It, v0.NodeModifier.Focus);
-    end;
-    v4.itSKIP = function(v22, v23) --[[ Line: 50 ]] --[[ Name: itSKIP ]]
-        -- upvalues: v12 (copy), v0 (ref)
-        v12(v22, v23, v0.NodeType.It, v0.NodeModifier.Skip);
-    end;
-    v4.itFIXME = function(v24, v25) --[[ Line: 54 ]] --[[ Name: itFIXME ]]
-        -- upvalues: v12 (copy), v0 (ref)
-        local v26 = v12(v24, v25, v0.NodeType.It, v0.NodeModifier.Skip);
-        warn("FIXME: broken test", v26:getFullName());
-    end;
-    v4.it = function(v27, v28, _) --[[ Line: 59 ]] --[[ Name: it ]]
-        -- upvalues: v12 (copy), v0 (ref)
-        v12(v27, v28, v0.NodeType.It, v0.NodeModifier.None);
-    end;
-    local v30 = 0;
-    local v31 = {
-        [v0.NodeType.BeforeAll] = "beforeAll", 
-        [v0.NodeType.AfterAll] = "afterAll", 
-        [v0.NodeType.BeforeEach] = "beforeEach", 
-        [v0.NodeType.AfterEach] = "afterEach"
-    };
-    for v32, v33 in pairs(v31) do
-        v4[v33] = function(v34) --[[ Line: 74 ]]
-            -- upvalues: v12 (copy), v33 (copy), v30 (ref), v32 (copy), v0 (ref)
-            v12(v33 .. "_" .. tostring(v30), v34, v32, v0.NodeModifier.None);
-            v30 = v30 + 1;
-        end;
-    end;
-    v4.FIXME = function(v35) --[[ Line: 80 ]] --[[ Name: FIXME ]]
-        -- upvalues: v2 (copy), v0 (ref)
-        warn("FIXME: broken test", v2:getFullName(), v35 or "");
-        v2.modifier = v0.NodeModifier.Skip;
-    end;
-    v4.FOCUS = function() --[[ Line: 86 ]] --[[ Name: FOCUS ]]
-        -- upvalues: v2 (copy), v0 (ref)
-        v2.modifier = v0.NodeModifier.Focus;
-    end;
-    v4.SKIP = function() --[[ Line: 90 ]] --[[ Name: SKIP ]]
-        -- upvalues: v2 (copy), v0 (ref)
-        v2.modifier = v0.NodeModifier.Skip;
-    end;
-    v4.HACK_NO_XPCALL = function() --[[ Line: 98 ]] --[[ Name: HACK_NO_XPCALL ]]
-        warn("HACK_NO_XPCALL is deprecated. It is now safe to yield in an " .. "xpcall, so this is no longer necessary. It can be safely deleted.");
-    end;
-    v4.fit = v4.itFOCUS;
-    v4.xit = v4.itSKIP;
-    v4.fdescribe = v4.describeFOCUS;
-    v4.xdescribe = v4.describeSKIP;
-    v4.expect = setmetatable({
-        extend = function(...) --[[ Line: 109 ]] --[[ Name: extend ]]
-            error("Cannot call \"expect.extend\" from within a \"describe\" node.");
-        end
-    }, {
-        __call = function(_, ...) --[[ Line: 113 ]] --[[ Name: __call ]]
-            -- upvalues: v1 (ref)
-            return v1.new(...);
-        end
-    });
-    return v4;
-end;
-local v38 = {};
-v38.__index = v38;
-v38.new = function(v39, v40, v41, v42) --[[ Line: 129 ]] --[[ Name: new ]]
-    -- upvalues: v0 (copy), v37 (copy), v38 (copy)
-    local v43 = v42 or v0.NodeModifier.None;
-    v43 = {
-        plan = v39, 
-        phrase = v40, 
-        type = v41, 
-        modifier = v43, 
-        children = {}, 
-        callback = nil, 
-        parent = nil
-    };
-    v43.environment = v37(v43, v39.extraEnvironment);
-    return (setmetatable(v43, v38));
-end;
-local function v47(v44, v45, v46) --[[ Line: 146 ]] --[[ Name: getModifier ]]
-    -- upvalues: v0 (copy)
-    if v45 and (v46 == nil or v46 == v0.NodeModifier.None) then
-        if v44:match(v45) then
-            return v0.NodeModifier.Focus;
-        else
-            return v0.NodeModifier.Skip;
-        end;
-    else
-        return v46;
-    end;
-end;
-v38.addChild = function(v48, v49, v50, v51) --[[ Line: 157 ]] --[[ Name: addChild ]]
-    -- upvalues: v0 (copy), v47 (copy), v38 (copy)
-    if v50 == v0.NodeType.It then
-        for _, v53 in pairs(v48.children) do
-            if v53.phrase == v49 then
-                error("Duplicate it block found: " .. v53:getFullName());
-            end;
-        end;
-    end;
-    local v54 = v48:getFullName() .. " " .. v49;
-    v51 = v47(v54, v48.plan.testNamePattern, v51);
-    local v55 = v38.new(v48.plan, v49, v50, v51);
-    v55.parent = v48;
-    table.insert(v48.children, v55);
-    return v55;
-end;
-v38.getFullName = function(v56) --[[ Line: 177 ]] --[[ Name: getFullName ]]
-    if v56.parent then
-        local v57 = v56.parent:getFullName();
-        if v57 then
-            return v57 .. " " .. v56.phrase;
-        end;
-    end;
-    return v56.phrase;
-end;
-v38.expand = function(v58) --[[ Line: 191 ]] --[[ Name: expand ]]
-    local v59 = getfenv(v58.callback);
-    local v60 = setmetatable({}, {
-        __index = v59
-    });
-    for v61, v62 in pairs(v58.environment) do
-        v60[v61] = v62;
-    end;
-    v60.script = v59.script;
-    setfenv(v58.callback, v60);
-    local v64, v65 = xpcall(v58.callback, function(v63) --[[ Line: 202 ]]
-        return debug.traceback(tostring(v63), 2);
-    end);
-    if not v64 then
-        v58.loadError = v65;
-    end;
-end;
-local v66 = {};
-v66.__index = v66;
-v66.new = function(v67, v68) --[[ Line: 217 ]] --[[ Name: new ]]
-    -- upvalues: v66 (copy)
-    return (setmetatable({
-        children = {}, 
-        testNamePattern = v67, 
-        extraEnvironment = v68
-    }, v66));
-end;
-v66.addChild = function(v69, v70, v71, v72) --[[ Line: 230 ]] --[[ Name: addChild ]]
-    -- upvalues: v47 (copy), v38 (copy)
-    v72 = v47(v70, v69.testNamePattern, v72);
-    local v73 = v38.new(v69, v70, v71, v72);
-    table.insert(v69.children, v73);
-    return v73;
-end;
-v66.addRoot = function(v74, v75, v76) --[[ Line: 241 ]] --[[ Name: addRoot ]]
-    -- upvalues: v0 (copy)
-    local l_v74_0 = v74;
-    for v78 = #v75, 1, -1 do
-        local v79 = nil;
-        for _, v81 in ipairs(l_v74_0.children) do
-            if v81.phrase == v75[v78] then
-                v79 = v81;
-                break;
-            end;
-        end;
-        if v79 == nil then
-            v79 = l_v74_0:addChild(v75[v78], v0.NodeType.Describe);
-        end;
-        l_v74_0 = v79;
-    end;
-    l_v74_0.callback = v76;
-    l_v74_0:expand();
-end;
-v66.visitAllNodes = function(v82, v83, v84, v85) --[[ Line: 267 ]] --[[ Name: visitAllNodes ]]
-    v84 = v84 or v82;
-    v85 = v85 or 0;
-    for _, v87 in ipairs(v84.children) do
-        v83(v87, v85);
-        v82:visitAllNodes(v83, v87, v85 + 1);
-    end;
-end;
-v66.visualize = function(v88) --[[ Line: 282 ]] --[[ Name: visualize ]]
-    local v89 = {};
-    v88:visitAllNodes(function(v90, v91) --[[ Line: 284 ]]
-        -- upvalues: v89 (copy)
-        table.insert(v89, (" "):rep(3 * v91) .. v90.phrase);
-    end);
-    return table.concat(v89, "\n");
-end;
-v66.findNodes = function(v92, v93) --[[ Line: 294 ]] --[[ Name: findNodes ]]
-    local v94 = {};
-    v92:visitAllNodes(function(v95) --[[ Line: 296 ]]
-        -- upvalues: v93 (copy), v94 (copy)
-        if v93(v95) then
-            table.insert(v94, v95);
-        end;
-    end);
-    return v94;
-end;
-return v66;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:36:23
+-- Luau version 6, Types version 3
+-- Time taken: 0.006611 seconds
+
+local TestEnum_upvr = require(script.Parent.TestEnum)
+local Expectation_upvr = require(script.Parent.Expectation)
+local function newEnvironment_upvr(arg1, arg2) -- Line 11, Named "newEnvironment"
+	--[[ Upvalues[2]:
+		[1]: TestEnum_upvr (readonly)
+		[2]: Expectation_upvr (readonly)
+	]]
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local module_3 = {}
+	if arg2 then
+		if type(arg2) ~= "table" then
+			error("Bad argument #2 to newEnvironment. Expected table, got %s":format(typeof(arg2)), 2)
+		end
+		for i, v in pairs(arg2) do
+			module_3[i] = v
+		end
+	end
+	local function addChild(arg1_2, arg2_2, arg3, arg4) -- Line 25
+		--[[ Upvalues[2]:
+			[1]: arg1 (readonly)
+			[2]: TestEnum_upvr (copied, readonly)
+		]]
+		local any_addChild_result1 = arg1:addChild(arg1_2, arg3, arg4)
+		any_addChild_result1.callback = arg2_2
+		if arg3 == TestEnum_upvr.NodeType.Describe then
+			any_addChild_result1:expand()
+		end
+		return any_addChild_result1
+	end
+	function module_3.describeFOCUS(arg1_3, arg2_3) -- Line 34
+		--[[ Upvalues[2]:
+			[1]: addChild (readonly)
+			[2]: TestEnum_upvr (copied, readonly)
+		]]
+		addChild(arg1_3, arg2_3, TestEnum_upvr.NodeType.Describe, TestEnum_upvr.NodeModifier.Focus)
+	end
+	function module_3.describeSKIP(arg1_4, arg2_4) -- Line 38
+		--[[ Upvalues[2]:
+			[1]: addChild (readonly)
+			[2]: TestEnum_upvr (copied, readonly)
+		]]
+		addChild(arg1_4, arg2_4, TestEnum_upvr.NodeType.Describe, TestEnum_upvr.NodeModifier.Skip)
+	end
+	function module_3.describe(arg1_5, arg2_5, arg3) -- Line 42
+		--[[ Upvalues[2]:
+			[1]: addChild (readonly)
+			[2]: TestEnum_upvr (copied, readonly)
+		]]
+		addChild(arg1_5, arg2_5, TestEnum_upvr.NodeType.Describe, TestEnum_upvr.NodeModifier.None)
+	end
+	function module_3.itFOCUS(arg1_6, arg2_6) -- Line 46
+		--[[ Upvalues[2]:
+			[1]: addChild (readonly)
+			[2]: TestEnum_upvr (copied, readonly)
+		]]
+		addChild(arg1_6, arg2_6, TestEnum_upvr.NodeType.It, TestEnum_upvr.NodeModifier.Focus)
+	end
+	function module_3.itSKIP(arg1_7, arg2_7) -- Line 50
+		--[[ Upvalues[2]:
+			[1]: addChild (readonly)
+			[2]: TestEnum_upvr (copied, readonly)
+		]]
+		addChild(arg1_7, arg2_7, TestEnum_upvr.NodeType.It, TestEnum_upvr.NodeModifier.Skip)
+	end
+	function module_3.itFIXME(arg1_8, arg2_8) -- Line 54
+		--[[ Upvalues[2]:
+			[1]: addChild (readonly)
+			[2]: TestEnum_upvr (copied, readonly)
+		]]
+		warn("FIXME: broken test", addChild(arg1_8, arg2_8, TestEnum_upvr.NodeType.It, TestEnum_upvr.NodeModifier.Skip):getFullName())
+	end
+	function module_3.it(arg1_9, arg2_9, arg3) -- Line 59
+		--[[ Upvalues[2]:
+			[1]: addChild (readonly)
+			[2]: TestEnum_upvr (copied, readonly)
+		]]
+		addChild(arg1_9, arg2_9, TestEnum_upvr.NodeType.It, TestEnum_upvr.NodeModifier.None)
+	end
+	for i_2_upvr, v_2_upvr in pairs({
+		[TestEnum_upvr.NodeType.BeforeAll] = "beforeAll";
+		[TestEnum_upvr.NodeType.AfterAll] = "afterAll";
+		[TestEnum_upvr.NodeType.BeforeEach] = "beforeEach";
+		[TestEnum_upvr.NodeType.AfterEach] = "afterEach";
+	}) do
+		local var29_upvw = 0
+		module_3[v_2_upvr] = function(arg1_10) -- Line 74
+			--[[ Upvalues[5]:
+				[1]: addChild (readonly)
+				[2]: v_2_upvr (readonly)
+				[3]: var29_upvw (read and write)
+				[4]: i_2_upvr (readonly)
+				[5]: TestEnum_upvr (copied, readonly)
+			]]
+			addChild(v_2_upvr..'_'..tostring(var29_upvw), arg1_10, i_2_upvr, TestEnum_upvr.NodeModifier.None)
+			var29_upvw += 1
+		end
+		local _
+	end
+	function module_3.FIXME(arg1_11) -- Line 80
+		--[[ Upvalues[2]:
+			[1]: arg1 (readonly)
+			[2]: TestEnum_upvr (copied, readonly)
+		]]
+		warn("FIXME: broken test", arg1:getFullName(), arg1_11 or "")
+		arg1.modifier = TestEnum_upvr.NodeModifier.Skip
+	end
+	function module_3.FOCUS() -- Line 86
+		--[[ Upvalues[2]:
+			[1]: arg1 (readonly)
+			[2]: TestEnum_upvr (copied, readonly)
+		]]
+		arg1.modifier = TestEnum_upvr.NodeModifier.Focus
+	end
+	function module_3.SKIP() -- Line 90
+		--[[ Upvalues[2]:
+			[1]: arg1 (readonly)
+			[2]: TestEnum_upvr (copied, readonly)
+		]]
+		arg1.modifier = TestEnum_upvr.NodeModifier.Skip
+	end
+	function module_3.HACK_NO_XPCALL() -- Line 98
+		warn("HACK_NO_XPCALL is deprecated. It is now safe to yield in an ".."xpcall, so this is no longer necessary. It can be safely deleted.")
+	end
+	module_3.fit = module_3.itFOCUS
+	module_3.xit = module_3.itSKIP
+	module_3.fdescribe = module_3.describeFOCUS
+	module_3.xdescribe = module_3.describeSKIP
+	module_3.expect = setmetatable({
+		extend = function(...) -- Line 109, Named "extend"
+			error("Cannot call \"expect.extend\" from within a \"describe\" node.")
+		end;
+	}, {
+		__call = function(arg1_12, ...) -- Line 113, Named "__call"
+			--[[ Upvalues[1]:
+				[1]: Expectation_upvr (copied, readonly)
+			]]
+			return Expectation_upvr.new(...)
+		end;
+	})
+	return module_3
+end
+local tbl_upvr = {}
+tbl_upvr.__index = tbl_upvr
+local function new(arg1, arg2, arg3, arg4) -- Line 129
+	--[[ Upvalues[3]:
+		[1]: TestEnum_upvr (readonly)
+		[2]: newEnvironment_upvr (readonly)
+		[3]: tbl_upvr (readonly)
+	]]
+	local var34 = arg4
+	if not var34 then
+		var34 = TestEnum_upvr.NodeModifier.None
+	end
+	local module_2 = {}
+	module_2.plan = arg1
+	module_2.phrase = arg2
+	module_2.type = arg3
+	module_2.modifier = var34
+	module_2.children = {}
+	module_2.callback = nil
+	module_2.parent = nil
+	module_2.environment = newEnvironment_upvr(module_2, arg1.extraEnvironment)
+	return setmetatable(module_2, tbl_upvr)
+end
+tbl_upvr.new = new
+local function getModifier_upvr(arg1, arg2, arg3) -- Line 146, Named "getModifier"
+	--[[ Upvalues[1]:
+		[1]: TestEnum_upvr (readonly)
+	]]
+	if arg2 and (arg3 == nil or arg3 == TestEnum_upvr.NodeModifier.None) then
+		if arg1:match(arg2) then
+			return TestEnum_upvr.NodeModifier.Focus
+		end
+		return TestEnum_upvr.NodeModifier.Skip
+	end
+	return arg3
+end
+local function addChild(arg1, arg2, arg3, arg4) -- Line 157
+	--[[ Upvalues[3]:
+		[1]: TestEnum_upvr (readonly)
+		[2]: getModifier_upvr (readonly)
+		[3]: tbl_upvr (readonly)
+	]]
+	if arg3 == TestEnum_upvr.NodeType.It then
+		for _, v_3 in pairs(arg1.children) do
+			if v_3.phrase == arg2 then
+				error("Duplicate it block found: "..v_3:getFullName())
+			end
+		end
+	end
+	local any_new_result1_2 = tbl_upvr.new(arg1.plan, arg2, arg3, getModifier_upvr(arg1:getFullName()..' '..arg2, arg1.plan.testNamePattern, arg4))
+	any_new_result1_2.parent = arg1
+	table.insert(arg1.children, any_new_result1_2)
+	return any_new_result1_2
+end
+tbl_upvr.addChild = addChild
+function tbl_upvr.getFullName(arg1) -- Line 177
+	if arg1.parent then
+		local any_getFullName_result1_2 = arg1.parent:getFullName()
+		if any_getFullName_result1_2 then
+			return any_getFullName_result1_2..' '..arg1.phrase
+		end
+	end
+	return arg1.phrase
+end
+function tbl_upvr.expand(arg1) -- Line 191
+	local getfenv_result1 = getfenv(arg1.callback)
+	local setmetatable_result1 = setmetatable({}, {
+		__index = getfenv_result1;
+	})
+	for i_4, v_4 in pairs(arg1.environment) do
+		setmetatable_result1[i_4] = v_4
+	end
+	setmetatable_result1.script = getfenv_result1.script
+	setfenv(arg1.callback, setmetatable_result1)
+	local xpcall_result1, xpcall_result2 = xpcall(arg1.callback, function(arg1_13) -- Line 202
+		return debug.traceback(tostring(arg1_13), 2)
+	end)
+	if not xpcall_result1 then
+		arg1.loadError = xpcall_result2
+	end
+end
+local module_6_upvr = {}
+module_6_upvr.__index = module_6_upvr
+function module_6_upvr.new(arg1, arg2) -- Line 217
+	--[[ Upvalues[1]:
+		[1]: module_6_upvr (readonly)
+	]]
+	local module = {
+		children = {};
+	}
+	module.testNamePattern = arg1
+	module.extraEnvironment = arg2
+	return setmetatable(module, module_6_upvr)
+end
+function module_6_upvr.addChild(arg1, arg2, arg3, arg4) -- Line 230
+	--[[ Upvalues[2]:
+		[1]: getModifier_upvr (readonly)
+		[2]: tbl_upvr (readonly)
+	]]
+	local any_new_result1 = tbl_upvr.new(arg1, arg2, arg3, getModifier_upvr(arg2, arg1.testNamePattern, arg4))
+	table.insert(arg1.children, any_new_result1)
+	return any_new_result1
+end
+function module_6_upvr.addRoot(arg1, arg2, arg3) -- Line 241
+	--[[ Upvalues[1]:
+		[1]: TestEnum_upvr (readonly)
+	]]
+	-- KONSTANTERROR: [0] 1. Error Block 1 start (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [0] 1. Error Block 1 end (CF ANALYSIS FAILED)
+	-- KONSTANTERROR: [5] 6. Error Block 2 start (CF ANALYSIS FAILED)
+	local _, _, _ = ipairs(arg1.children)
+	-- KONSTANTERROR: [5] 6. Error Block 2 end (CF ANALYSIS FAILED)
+end
+function module_6_upvr.visitAllNodes(arg1, arg2, arg3, arg4) -- Line 267
+	arg4 = arg4 or 0
+	local var67 = arg4
+	for _, v_5 in ipairs((arg3 or arg1).children) do
+		arg2(v_5, var67)
+		arg1:visitAllNodes(arg2, v_5, var67 + 1)
+	end
+end
+function module_6_upvr.visualize(arg1) -- Line 282
+	local module_5_upvr = {}
+	arg1:visitAllNodes(function(arg1_14, arg2) -- Line 284
+		--[[ Upvalues[1]:
+			[1]: module_5_upvr (readonly)
+		]]
+		table.insert(module_5_upvr, ' ':rep(3 * arg2)..arg1_14.phrase)
+	end)
+	return table.concat(module_5_upvr, '\n')
+end
+function module_6_upvr.findNodes(arg1, arg2) -- Line 294
+	local module_4_upvr = {}
+	arg1:visitAllNodes(function(arg1_15) -- Line 296
+		--[[ Upvalues[2]:
+			[1]: arg2 (readonly)
+			[2]: module_4_upvr (readonly)
+		]]
+		if arg2(arg1_15) then
+			table.insert(module_4_upvr, arg1_15)
+		end
+	end)
+	return module_4_upvr
+end
+return module_6_upvr

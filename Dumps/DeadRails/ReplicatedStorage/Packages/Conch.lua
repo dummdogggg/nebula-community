@@ -1,7 +1,10 @@
 --[[
+    STUB SCRIPT (Original could not be decompiled)
     Script: ReplicatedStorage.Packages.Conch
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Error: API Error - Falha na decompilação
 --]]
 
-return require(script.lib);
+return {
+    -- Module content not available
+}

@@ -1,166 +1,250 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.1foreverhd_topbarplus@3.0.2.topbarplus.Features.Gamepad
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_GamepadService_0 = game:GetService("GamepadService");
-local l_UserInputService_0 = game:GetService("UserInputService");
-local l_GuiService_0 = game:GetService("GuiService");
-local v3 = {};
-local v4 = nil;
-v3.start = function(v5) --[[ Line: 24 ]] --[[ Name: start ]]
-    -- upvalues: v4 (ref), l_GuiService_0 (copy), l_UserInputService_0 (copy), v3 (copy), l_GamepadService_0 (copy)
-    v4 = v5;
-    v4.highlightKey = Enum.KeyCode.DPadUp;
-    v4.highlightIcon = false;
-    task.delay(1, function() --[[ Line: 33 ]]
-        -- upvalues: v4 (ref), l_GuiService_0 (ref), l_UserInputService_0 (ref), v3 (ref), l_GamepadService_0 (ref)
-        local l_iconsDictionary_0 = v4.iconsDictionary;
-        local function _() --[[ Line: 36 ]] --[[ Name: getIconFromSelectedObject ]]
-            -- upvalues: l_GuiService_0 (ref), l_iconsDictionary_0 (copy)
-            local l_SelectedObject_0 = l_GuiService_0.SelectedObject;
-            local v8 = l_SelectedObject_0 and l_SelectedObject_0:GetAttribute("CorrespondingIconUID");
-            return v8 and l_iconsDictionary_0[v8];
-        end;
-        local v10 = nil;
-        local v11 = false;
-        local v12 = false;
-        local _ = require(script.Parent.Parent.Utility);
-        local v14 = require(script.Parent.Parent.Elements.Selection);
-        local function v19() --[[ Line: 50 ]] --[[ Name: updateSelectedObject ]]
-            -- upvalues: l_GuiService_0 (ref), l_iconsDictionary_0 (copy), l_UserInputService_0 (ref), v14 (copy), v4 (ref), v10 (ref), v12 (ref), v11 (ref), v3 (ref)
-            local l_SelectedObject_1 = l_GuiService_0.SelectedObject;
-            local v16 = l_SelectedObject_1 and l_SelectedObject_1:GetAttribute("CorrespondingIconUID");
-            local v17 = v16 and l_iconsDictionary_0[v16];
-            l_SelectedObject_1 = l_UserInputService_0.GamepadEnabled;
-            if v17 then
-                if l_SelectedObject_1 then
-                    v16 = v17:getInstance("ClickRegion");
-                    local l_selection_0 = v17.selection;
-                    if not l_selection_0 then
-                        l_selection_0 = v17.janitor:add(v14(v4));
-                        l_selection_0:SetAttribute("IgnoreVisibilityUpdater", true);
-                        l_selection_0.Parent = v17.widget;
-                        v17.selection = l_selection_0;
-                        v17:refreshAppearance(l_selection_0);
-                    end;
-                    v16.SelectionImageObject = l_selection_0.Selection;
-                end;
-                if v10 and v10 ~= v17 then
-                    v10:setIndicator();
-                end;
-                v16 = if not l_SelectedObject_1 or v12 or v17.parentIconUID then nil else Enum.KeyCode.ButtonB;
-                v10 = v17;
-                v4.lastHighlightedIcon = v17;
-                v17:setIndicator(v16);
-                return;
-            else
-                v16 = if not l_SelectedObject_1 or v11 then nil else v4.highlightKey;
-                if not v10 then
-                    v10 = v3.getIconToHighlight();
-                end;
-                if v16 == v4.highlightKey then
-                    v11 = true;
-                end;
-                if v10 then
-                    v10:setIndicator(v16);
-                end;
-                return;
-            end;
-        end;
-        l_GuiService_0:GetPropertyChangedSignal("SelectedObject"):Connect(v19);
-        local function v20() --[[ Line: 93 ]] --[[ Name: checkGamepadEnabled ]]
-            -- upvalues: l_UserInputService_0 (ref), v11 (ref), v12 (ref), v19 (copy)
-            if not l_UserInputService_0.GamepadEnabled then
-                v11 = false;
-                v12 = false;
-            end;
-            v19();
-        end;
-        l_UserInputService_0:GetPropertyChangedSignal("GamepadEnabled"):Connect(v20);
-        if not l_UserInputService_0.GamepadEnabled then
-            v11 = false;
-            v12 = false;
-        end;
-        v19();
-        l_UserInputService_0.InputBegan:Connect(function(v21, _) --[[ Line: 107 ]]
-            -- upvalues: l_GuiService_0 (ref), l_iconsDictionary_0 (copy), v4 (ref), v3 (ref), l_GamepadService_0 (ref)
-            if v21.UserInputType == Enum.UserInputType.MouseButton1 then
-                local l_SelectedObject_2 = l_GuiService_0.SelectedObject;
-                local v24 = l_SelectedObject_2 and l_SelectedObject_2:GetAttribute("CorrespondingIconUID");
-                if v24 and l_iconsDictionary_0[v24] then
-                    l_GuiService_0.SelectedObject = nil;
-                end;
-                return;
-            elseif v21.KeyCode ~= v4.highlightKey then
-                return;
-            else
-                local v25 = v3.getIconToHighlight();
-                if v25 then
-                    if l_GamepadService_0.GamepadCursorEnabled then
-                        task.wait(0.2);
-                        l_GamepadService_0:DisableGamepadCursor();
-                    end;
-                    l_GuiService_0.SelectedObject = v25:getInstance("ClickRegion");
-                end;
-                return;
-            end;
-        end);
-    end);
-end;
-v3.getIconToHighlight = function() --[[ Line: 134 ]] --[[ Name: getIconToHighlight ]]
-    -- upvalues: v4 (ref)
-    local l_iconsDictionary_1 = v4.iconsDictionary;
-    local v27 = v4.highlightIcon or v4.lastHighlightedIcon;
-    if not v27 then
-        local v28 = nil;
-        for _, v30 in pairs(l_iconsDictionary_1) do
-            if not v30.parentIconUID then
-                local l_X_0 = v30.widget.AbsolutePosition.X;
-                if not v28 or l_X_0 < v28 then
-                    v27 = v30;
-                    v28 = v27.widget.AbsolutePosition.X;
-                end;
-            end;
-        end;
-    end;
-    return v27;
-end;
-v3.registerButton = function(v32) --[[ Line: 156 ]] --[[ Name: registerButton ]]
-    -- upvalues: l_UserInputService_0 (copy), l_GamepadService_0 (copy), l_GuiService_0 (copy)
-    local v33 = false;
-    v32.InputBegan:Connect(function(_) --[[ Line: 162 ]]
-        -- upvalues: v33 (ref)
-        v33 = true;
-        task.wait();
-        task.wait();
-        v33 = false;
-    end);
-    local v39 = l_UserInputService_0.InputBegan:Connect(function(v35) --[[ Line: 171 ]]
-        -- upvalues: v33 (ref), l_GamepadService_0 (ref), l_GuiService_0 (ref), v32 (copy)
-        task.wait();
-        if v35.KeyCode == Enum.KeyCode.ButtonA and v33 then
-            task.wait(0.2);
-            l_GamepadService_0:DisableGamepadCursor();
-            l_GuiService_0.SelectedObject = v32;
-            return;
-        else
-            local v36 = l_GuiService_0.SelectedObject == v32;
-            local v37 = {
-                "ButtonB", 
-                "ButtonSelect"
-            };
-            local l_Name_0 = v35.KeyCode.Name;
-            if table.find(v37, l_Name_0) and v36 and (l_Name_0 ~= "ButtonSelect" or l_GamepadService_0.GamepadCursorEnabled) then
-                l_GuiService_0.SelectedObject = nil;
-            end;
-            return;
-        end;
-    end);
-    v32.Destroying:Once(function() --[[ Line: 192 ]]
-        -- upvalues: v39 (copy)
-        v39:Disconnect();
-    end);
-end;
-return v3;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:35:31
+-- Luau version 6, Types version 3
+-- Time taken: 0.005454 seconds
+
+local GamepadService_upvr = game:GetService("GamepadService")
+local UserInputService_upvr = game:GetService("UserInputService")
+local GuiService_upvr = game:GetService("GuiService")
+local module_upvr = {}
+local var5_upvw
+function module_upvr.start(arg1) -- Line 24
+	--[[ Upvalues[5]:
+		[1]: var5_upvw (read and write)
+		[2]: GuiService_upvr (readonly)
+		[3]: UserInputService_upvr (readonly)
+		[4]: module_upvr (readonly)
+		[5]: GamepadService_upvr (readonly)
+	]]
+	var5_upvw = arg1
+	var5_upvw.highlightKey = Enum.KeyCode.DPadUp
+	var5_upvw.highlightIcon = false
+	task.delay(1, function() -- Line 33
+		--[[ Upvalues[5]:
+			[1]: var5_upvw (copied, read and write)
+			[2]: GuiService_upvr (copied, readonly)
+			[3]: UserInputService_upvr (copied, readonly)
+			[4]: module_upvr (copied, readonly)
+			[5]: GamepadService_upvr (copied, readonly)
+		]]
+		local iconsDictionary_upvr = var5_upvw.iconsDictionary
+		local function _() -- Line 36, Named "getIconFromSelectedObject"
+			--[[ Upvalues[2]:
+				[1]: GuiService_upvr (copied, readonly)
+				[2]: iconsDictionary_upvr (readonly)
+			]]
+			local var9 = GuiService_upvr.SelectedObject
+			if var9 then
+				var9 = GuiService_upvr.SelectedObject:GetAttribute("CorrespondingIconUID")
+			end
+			local var10 = var9
+			if var10 then
+				var10 = iconsDictionary_upvr[var9]
+			end
+			return var10
+		end
+		local var11_upvw = false
+		local var12_upvw = false
+		local Selection_upvr = require(script.Parent.Parent.Elements.Selection)
+		local var14_upvw
+		local function updateSelectedObject_upvr() -- Line 50, Named "updateSelectedObject"
+			--[[ Upvalues[9]:
+				[1]: GuiService_upvr (copied, readonly)
+				[2]: iconsDictionary_upvr (readonly)
+				[3]: UserInputService_upvr (copied, readonly)
+				[4]: Selection_upvr (readonly)
+				[5]: var5_upvw (copied, read and write)
+				[6]: var14_upvw (read and write)
+				[7]: var12_upvw (read and write)
+				[8]: var11_upvw (read and write)
+				[9]: module_upvr (copied, readonly)
+			]]
+			-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+			local var16 = GuiService_upvr.SelectedObject
+			if var16 then
+				var16 = GuiService_upvr.SelectedObject:GetAttribute("CorrespondingIconUID")
+			end
+			local var17 = var16
+			if var17 then
+				var17 = iconsDictionary_upvr[var16]
+			end
+			local var18 = var17
+			local GamepadEnabled = UserInputService_upvr.GamepadEnabled
+			if var18 then
+				if GamepadEnabled then
+					if not var18.selection then
+						local any_add_result1 = var18.janitor:add(Selection_upvr(var5_upvw))
+						any_add_result1:SetAttribute("IgnoreVisibilityUpdater", true)
+						any_add_result1.Parent = var18.widget
+						var18.selection = any_add_result1
+						var18:refreshAppearance(any_add_result1)
+					end
+					var18:getInstance("ClickRegion").SelectionImageObject = any_add_result1.Selection
+				end
+				if var14_upvw and var14_upvw ~= var18 then
+					var14_upvw:setIndicator()
+					local var21
+				end
+				if GamepadEnabled and not var12_upvw and not var18.parentIconUID then
+					var21 = Enum.KeyCode.ButtonB
+				else
+					var21 = nil
+				end
+				var14_upvw = var18
+				var5_upvw.lastHighlightedIcon = var18
+				var18:setIndicator(var21)
+				do
+					return
+				end
+				local var22
+			end
+			if GamepadEnabled and not var11_upvw then
+				var22 = var5_upvw.highlightKey
+			else
+				var22 = nil
+			end
+			if not var14_upvw then
+				var14_upvw = module_upvr.getIconToHighlight()
+			end
+			if var22 == var5_upvw.highlightKey then
+				var11_upvw = true
+			end
+			if var14_upvw then
+				var14_upvw:setIndicator(var22)
+			end
+		end
+		GuiService_upvr:GetPropertyChangedSignal("SelectedObject"):Connect(updateSelectedObject_upvr)
+		UserInputService_upvr:GetPropertyChangedSignal("GamepadEnabled"):Connect(function() -- Line 93, Named "checkGamepadEnabled"
+			--[[ Upvalues[4]:
+				[1]: UserInputService_upvr (copied, readonly)
+				[2]: var11_upvw (read and write)
+				[3]: var12_upvw (read and write)
+				[4]: updateSelectedObject_upvr (readonly)
+			]]
+			if not UserInputService_upvr.GamepadEnabled then
+				var11_upvw = false
+				var12_upvw = false
+			end
+			updateSelectedObject_upvr()
+		end)
+		if not UserInputService_upvr.GamepadEnabled then
+			var11_upvw = false
+			var12_upvw = false
+		end
+		updateSelectedObject_upvr()
+		UserInputService_upvr.InputBegan:Connect(function(arg1_2, arg2) -- Line 107
+			--[[ Upvalues[5]:
+				[1]: GuiService_upvr (copied, readonly)
+				[2]: iconsDictionary_upvr (readonly)
+				[3]: var5_upvw (copied, read and write)
+				[4]: module_upvr (copied, readonly)
+				[5]: GamepadService_upvr (copied, readonly)
+			]]
+			local var24
+			if arg1_2.UserInputType == Enum.UserInputType.MouseButton1 then
+				var24 = GuiService_upvr
+				var24 = var24.SelectedObject
+				if var24 then
+					var24 = var24.SelectedObject:GetAttribute("CorrespondingIconUID")
+				end
+				local var26 = var24
+				if var26 then
+					var26 = iconsDictionary_upvr[var24]
+				end
+				if var26 then
+					GuiService_upvr.SelectedObject = nil
+				end
+			else
+				if arg1_2.KeyCode ~= var5_upvw.highlightKey then return end
+				local any_getIconToHighlight_result1 = module_upvr.getIconToHighlight()
+				if any_getIconToHighlight_result1 then
+					if GamepadService_upvr.GamepadCursorEnabled then
+						task.wait(0.2)
+						GamepadService_upvr:DisableGamepadCursor()
+					end
+					GuiService_upvr.SelectedObject = any_getIconToHighlight_result1:getInstance("ClickRegion")
+				end
+			end
+		end)
+	end)
+end
+function module_upvr.getIconToHighlight() -- Line 134
+	--[[ Upvalues[1]:
+		[1]: var5_upvw (read and write)
+	]]
+	local var34
+	if not var34 then
+		var34 = var5_upvw.lastHighlightedIcon
+	end
+	if not var34 then
+		local var35
+		for _, v in pairs(var5_upvw.iconsDictionary) do
+			if not v.parentIconUID and (not var35 or v.widget.AbsolutePosition.X < var35) then
+				var34 = v
+			end
+		end
+	end
+	return var34
+end
+function module_upvr.registerButton(arg1) -- Line 156
+	--[[ Upvalues[3]:
+		[1]: UserInputService_upvr (readonly)
+		[2]: GamepadService_upvr (readonly)
+		[3]: GuiService_upvr (readonly)
+	]]
+	local var39_upvw = false
+	arg1.InputBegan:Connect(function(arg1_3) -- Line 162
+		--[[ Upvalues[1]:
+			[1]: var39_upvw (read and write)
+		]]
+		var39_upvw = true
+		task.wait()
+		task.wait()
+		var39_upvw = false
+	end)
+	local any_Connect_result1_upvr = UserInputService_upvr.InputBegan:Connect(function(arg1_4) -- Line 171
+		--[[ Upvalues[4]:
+			[1]: var39_upvw (read and write)
+			[2]: GamepadService_upvr (copied, readonly)
+			[3]: GuiService_upvr (copied, readonly)
+			[4]: arg1 (readonly)
+		]]
+		task.wait()
+		local var45
+		if var45 == Enum.KeyCode.ButtonA then
+			var45 = var39_upvw
+			if var45 then
+				var45 = task.wait
+				var45(0.2)
+				var45 = GamepadService_upvr:DisableGamepadCursor
+				var45()
+				var45 = GuiService_upvr
+				var45.SelectedObject = arg1
+				return
+			end
+		end
+		if GuiService_upvr.SelectedObject ~= arg1 then
+			var45 = false
+		else
+			var45 = true
+		end
+		local Name = arg1_4.KeyCode.Name
+		if table.find({"ButtonB", "ButtonSelect"}, Name) and var45 and (Name ~= "ButtonSelect" or GamepadService_upvr.GamepadCursorEnabled) then
+			GuiService_upvr.SelectedObject = nil
+		end
+	end)
+	arg1.Destroying:Once(function() -- Line 192
+		--[[ Upvalues[1]:
+			[1]: any_Connect_result1_upvr (readonly)
+		]]
+		any_Connect_result1_upvr:Disconnect()
+	end)
+end
+return module_upvr

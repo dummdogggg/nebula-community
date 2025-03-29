@@ -1,385 +1,573 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.1foreverhd_topbarplus@3.0.2.topbarplus.Elements.Widget
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-return function(v0, v1) --[[ Line: 6 ]]
-    local l_Frame_0 = Instance.new("Frame");
-    l_Frame_0:SetAttribute("WidgetUID", v0.UID);
-    l_Frame_0.Name = "Widget";
-    l_Frame_0.BackgroundTransparency = 1;
-    l_Frame_0.Visible = true;
-    l_Frame_0.ZIndex = 20;
-    l_Frame_0.Active = false;
-    l_Frame_0.ClipsDescendants = true;
-    local l_Frame_1 = Instance.new("Frame");
-    l_Frame_1.Name = "IconButton";
-    l_Frame_1.Visible = true;
-    l_Frame_1.ZIndex = 2;
-    l_Frame_1.BorderSizePixel = 0;
-    l_Frame_1.Parent = l_Frame_0;
-    l_Frame_1.ClipsDescendants = true;
-    l_Frame_1.Active = false;
-    v0.deselected:Connect(function() --[[ Line: 25 ]]
-        -- upvalues: l_Frame_1 (copy)
-        l_Frame_1.ClipsDescendants = true;
-    end);
-    v0.selected:Connect(function() --[[ Line: 28 ]]
-        -- upvalues: v0 (copy), l_Frame_1 (copy)
-        task.defer(function() --[[ Line: 29 ]]
-            -- upvalues: v0 (ref), l_Frame_1 (ref)
-            v0.resizingComplete:Once(function() --[[ Line: 30 ]]
-                -- upvalues: v0 (ref), l_Frame_1 (ref)
-                if v0.isSelected then
-                    l_Frame_1.ClipsDescendants = false;
-                end;
-            end);
-        end);
-    end);
-    local l_UICorner_0 = Instance.new("UICorner");
-    l_UICorner_0:SetAttribute("Collective", "IconCorners");
-    l_UICorner_0.Parent = l_Frame_1;
-    local v5 = require(script.Parent.Menu)(v0);
-    local l_MenuUIListLayout_0 = v5.MenuUIListLayout;
-    local l_MenuGap_0 = v5.MenuGap;
-    v5.Parent = l_Frame_1;
-    local l_Frame_2 = Instance.new("Frame");
-    l_Frame_2.Name = "IconSpot";
-    l_Frame_2.BackgroundColor3 = Color3.fromRGB(225, 225, 225);
-    l_Frame_2.BackgroundTransparency = 0.9;
-    l_Frame_2.Visible = true;
-    l_Frame_2.AnchorPoint = Vector2.new(0, 0.5);
-    l_Frame_2.ZIndex = 5;
-    l_Frame_2.Parent = v5;
-    l_UICorner_0:Clone().Parent = l_Frame_2;
-    local v9 = l_Frame_2:Clone();
-    v9.Name = "IconOverlay";
-    v9.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
-    v9.ZIndex = l_Frame_2.ZIndex + 1;
-    v9.Size = UDim2.new(1, 0, 1, 0);
-    v9.Position = UDim2.new(0, 0, 0, 0);
-    v9.AnchorPoint = Vector2.new(0, 0);
-    v9.Visible = false;
-    v9.Parent = l_Frame_2;
-    local l_TextButton_0 = Instance.new("TextButton");
-    l_TextButton_0:SetAttribute("CorrespondingIconUID", v0.UID);
-    l_TextButton_0.Name = "ClickRegion";
-    l_TextButton_0.BackgroundTransparency = 1;
-    l_TextButton_0.Visible = true;
-    l_TextButton_0.Text = "";
-    l_TextButton_0.ZIndex = 20;
-    l_TextButton_0.Selectable = true;
-    l_TextButton_0.SelectionGroup = true;
-    l_TextButton_0.Parent = l_Frame_2;
-    require(script.Parent.Parent.Features.Gamepad).registerButton(l_TextButton_0);
-    l_UICorner_0:Clone().Parent = l_TextButton_0;
-    local l_Frame_3 = Instance.new("Frame");
-    l_Frame_3.Name = "Contents";
-    l_Frame_3.BackgroundTransparency = 1;
-    l_Frame_3.Size = UDim2.fromScale(1, 1);
-    l_Frame_3.Parent = l_Frame_2;
-    local l_UIListLayout_0 = Instance.new("UIListLayout");
-    l_UIListLayout_0.Name = "ContentsList";
-    l_UIListLayout_0.FillDirection = Enum.FillDirection.Horizontal;
-    l_UIListLayout_0.VerticalAlignment = Enum.VerticalAlignment.Center;
-    l_UIListLayout_0.SortOrder = Enum.SortOrder.LayoutOrder;
-    l_UIListLayout_0.VerticalFlex = Enum.UIFlexAlignment.SpaceEvenly;
-    l_UIListLayout_0.Padding = UDim.new(0, 3);
-    l_UIListLayout_0.Parent = l_Frame_3;
-    local l_Frame_4 = Instance.new("Frame");
-    l_Frame_4.Name = "PaddingLeft";
-    l_Frame_4.LayoutOrder = 1;
-    l_Frame_4.ZIndex = 5;
-    l_Frame_4.BorderColor3 = Color3.fromRGB(0, 0, 0);
-    l_Frame_4.BackgroundTransparency = 1;
-    l_Frame_4.BorderSizePixel = 0;
-    l_Frame_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
-    l_Frame_4.Parent = l_Frame_3;
-    local l_Frame_5 = Instance.new("Frame");
-    l_Frame_5.Name = "PaddingCenter";
-    l_Frame_5.LayoutOrder = 3;
-    l_Frame_5.ZIndex = 5;
-    l_Frame_5.Size = UDim2.new(0, 0, 1, 0);
-    l_Frame_5.BorderColor3 = Color3.fromRGB(0, 0, 0);
-    l_Frame_5.BackgroundTransparency = 1;
-    l_Frame_5.BorderSizePixel = 0;
-    l_Frame_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
-    l_Frame_5.Parent = l_Frame_3;
-    local l_Frame_6 = Instance.new("Frame");
-    l_Frame_6.Name = "PaddingRight";
-    l_Frame_6.LayoutOrder = 5;
-    l_Frame_6.ZIndex = 5;
-    l_Frame_6.BorderColor3 = Color3.fromRGB(0, 0, 0);
-    l_Frame_6.BackgroundTransparency = 1;
-    l_Frame_6.BorderSizePixel = 0;
-    l_Frame_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
-    l_Frame_6.Parent = l_Frame_3;
-    local l_Frame_7 = Instance.new("Frame");
-    l_Frame_7.Name = "IconLabelContainer";
-    l_Frame_7.LayoutOrder = 4;
-    l_Frame_7.ZIndex = 3;
-    l_Frame_7.AnchorPoint = Vector2.new(0, 0.5);
-    l_Frame_7.Size = UDim2.new(0, 0, 0.5, 0);
-    l_Frame_7.BackgroundTransparency = 1;
-    l_Frame_7.Position = UDim2.new(0.5, 0, 0.5, 0);
-    l_Frame_7.Parent = l_Frame_3;
-    local l_TextLabel_0 = Instance.new("TextLabel");
-    local v18 = workspace.CurrentCamera.ViewportSize.X + 200;
-    l_TextLabel_0.Name = "IconLabel";
-    l_TextLabel_0.LayoutOrder = 4;
-    l_TextLabel_0.ZIndex = 15;
-    l_TextLabel_0.AnchorPoint = Vector2.new(0, 0);
-    l_TextLabel_0.Size = UDim2.new(0, v18, 1, 0);
-    l_TextLabel_0.ClipsDescendants = false;
-    l_TextLabel_0.BackgroundTransparency = 1;
-    l_TextLabel_0.Position = UDim2.fromScale(0, 0);
-    l_TextLabel_0.RichText = true;
-    l_TextLabel_0.TextColor3 = Color3.fromRGB(255, 255, 255);
-    l_TextLabel_0.TextXAlignment = Enum.TextXAlignment.Left;
-    l_TextLabel_0.Text = "";
-    l_TextLabel_0.TextWrapped = true;
-    l_TextLabel_0.TextWrap = true;
-    l_TextLabel_0.TextScaled = false;
-    l_TextLabel_0.Active = false;
-    l_TextLabel_0.AutoLocalize = true;
-    l_TextLabel_0.Parent = l_Frame_7;
-    local l_ImageLabel_0 = Instance.new("ImageLabel");
-    l_ImageLabel_0.Name = "IconImage";
-    l_ImageLabel_0.LayoutOrder = 2;
-    l_ImageLabel_0.ZIndex = 15;
-    l_ImageLabel_0.AnchorPoint = Vector2.new(0, 0.5);
-    l_ImageLabel_0.Size = UDim2.new(0, 0, 0.5, 0);
-    l_ImageLabel_0.BackgroundTransparency = 1;
-    l_ImageLabel_0.Position = UDim2.new(0, 11, 0.5, 0);
-    l_ImageLabel_0.ScaleType = Enum.ScaleType.Stretch;
-    l_ImageLabel_0.Active = false;
-    l_ImageLabel_0.Parent = l_Frame_3;
-    local v20 = l_UICorner_0:Clone();
-    v20:SetAttribute("Collective", nil);
-    v20.CornerRadius = UDim.new(0, 0);
-    v20.Name = "IconImageCorner";
-    v20.Parent = l_ImageLabel_0;
-    local l_TweenService_0 = game:GetService("TweenService");
-    local v22 = 0;
-    local function v60(_) --[[ Line: 184 ]] --[[ Name: handleLabelAndImageChangesUnstaggered ]]
-        -- upvalues: v0 (copy), l_TextLabel_0 (copy), l_ImageLabel_0 (copy), l_Frame_7 (copy), l_Frame_4 (copy), l_Frame_5 (copy), l_Frame_6 (copy), l_Frame_1 (copy), l_UIListLayout_0 (copy), l_Frame_3 (copy), l_Frame_0 (copy), v18 (copy), v5 (copy), l_Frame_2 (copy), l_MenuUIListLayout_0 (copy), l_MenuGap_0 (copy), l_TweenService_0 (copy), l_TextButton_0 (copy), v22 (ref), v1 (copy)
-        task.defer(function() --[[ Line: 191 ]]
-            -- upvalues: v0 (ref), l_TextLabel_0 (ref), l_ImageLabel_0 (ref), l_Frame_7 (ref), l_Frame_4 (ref), l_Frame_5 (ref), l_Frame_6 (ref), l_Frame_1 (ref), l_UIListLayout_0 (ref), l_Frame_3 (ref), l_Frame_0 (ref), v18 (ref), v5 (ref), l_Frame_2 (ref), l_MenuUIListLayout_0 (ref), l_MenuGap_0 (ref), l_TweenService_0 (ref), l_TextButton_0 (ref), v22 (ref), v1 (ref)
-            local l_indicator_0 = v0.indicator;
-            local v25 = l_indicator_0 and l_indicator_0.Visible;
-            local v26 = v25 or l_TextLabel_0.Text ~= "";
-            local v27 = false;
-            if l_ImageLabel_0.Image ~= "" then
-                v27 = l_ImageLabel_0.Image ~= nil;
-            end;
-            local l_Center_0 = Enum.HorizontalAlignment.Center;
-            local v29 = UDim2.fromScale(1, 1);
-            if v27 and not v26 then
-                l_Frame_7.Visible = false;
-                l_ImageLabel_0.Visible = true;
-                l_Frame_4.Visible = false;
-                l_Frame_5.Visible = false;
-                l_Frame_6.Visible = false;
-            elseif not v27 and v26 then
-                l_Frame_7.Visible = true;
-                l_ImageLabel_0.Visible = false;
-                l_Frame_4.Visible = true;
-                l_Frame_5.Visible = false;
-                l_Frame_6.Visible = true;
-            elseif v27 and v26 then
-                l_Frame_7.Visible = true;
-                l_ImageLabel_0.Visible = true;
-                l_Frame_4.Visible = true;
-                l_Frame_5.Visible = not v25;
-                l_Frame_6.Visible = not v25;
-                l_Center_0 = Enum.HorizontalAlignment.Left;
-            end;
-            l_Frame_1.Size = v29;
-            local function _(v30) --[[ Line: 221 ]] --[[ Name: getItemWidth ]]
-                return v30:GetAttribute("TargetWidth") or v30.AbsoluteSize.X;
-            end;
-            local l_Offset_0 = l_UIListLayout_0.Padding.Offset;
-            local l_l_Offset_0_0 = l_Offset_0;
-            local l_X_0 = l_TextLabel_0.TextBounds.X;
-            l_Frame_7.Size = UDim2.new(0, l_X_0, l_TextLabel_0.Size.Y.Scale, 0);
-            for _, v36 in pairs(l_Frame_3:GetChildren()) do
-                if v36:IsA("GuiObject") and v36.Visible == true then
-                    l_l_Offset_0_0 = l_l_Offset_0_0 + ((v36:GetAttribute("TargetWidth") or v36.AbsoluteSize.X) + l_Offset_0);
-                end;
-            end;
-            local l_l_Frame_0_Attribute_0 = l_Frame_0:GetAttribute("MinimumWidth");
-            local l_l_Frame_0_Attribute_1 = l_Frame_0:GetAttribute("MinimumHeight");
-            local l_l_Frame_0_Attribute_2 = l_Frame_0:GetAttribute("BorderSize");
-            local v40 = math.clamp(l_l_Offset_0_0, l_l_Frame_0_Attribute_0, v18);
-            local l_menuIcons_0 = v0.menuIcons;
-            local v42 = 0;
-            local v43 = #l_menuIcons_0 > 0 and v0.isSelected;
-            if v43 then
-                for _, v45 in pairs(v5:GetChildren()) do
-                    if v45 ~= l_Frame_2 and v45:IsA("GuiObject") and v45.Visible then
-                        v42 = v42 + ((v45:GetAttribute("TargetWidth") or v45.AbsoluteSize.X) + l_MenuUIListLayout_0.Padding.Offset);
-                    end;
-                end;
-                if not l_Frame_2.Visible then
-                    local l_l_Frame_2_0 = l_Frame_2;
-                    v40 = v40 - ((l_l_Frame_2_0:GetAttribute("TargetWidth") or l_l_Frame_2_0.AbsoluteSize.X) + l_MenuUIListLayout_0.Padding.Offset * 2 + l_l_Frame_0_Attribute_2);
-                end;
-                v42 = v42 - l_l_Frame_0_Attribute_2 * 0.5;
-                v40 = v40 + (v42 - l_l_Frame_0_Attribute_2 * 0.75);
-            end;
-            l_MenuGap_0.Visible = v43 and l_Frame_2.Visible;
-            local l_l_Frame_0_Attribute_3 = l_Frame_0:GetAttribute("DesiredWidth");
-            if l_l_Frame_0_Attribute_3 and v40 < l_l_Frame_0_Attribute_3 then
-                v40 = l_l_Frame_0_Attribute_3;
-            end;
-            v0.updateMenu:Fire();
-            local v48 = math.max(v40 - v42, l_l_Frame_0_Attribute_0) - l_l_Frame_0_Attribute_2 * 2;
-            local l_v5_Attribute_0 = v5:GetAttribute("MenuWidth");
-            local v50 = l_v5_Attribute_0 and l_v5_Attribute_0 + v48 + l_MenuUIListLayout_0.Padding.Offset + 10;
-            if v50 then
-                local l_v5_Attribute_1 = v5:GetAttribute("MaxWidth");
-                if l_v5_Attribute_1 then
-                    v50 = math.max(l_v5_Attribute_1, l_l_Frame_0_Attribute_0);
-                end;
-                v5:SetAttribute("MenuCanvasWidth", v40);
-                if v50 < v40 then
-                    v40 = v50;
-                end;
-            end;
-            local l_Quint_0 = Enum.EasingStyle.Quint;
-            local l_Out_0 = Enum.EasingDirection.Out;
-            local l_l_Frame_2_1 = l_Frame_2;
-            local v55 = math.max(v48, l_l_Frame_2_1:GetAttribute("TargetWidth") or l_l_Frame_2_1.AbsoluteSize.X, l_Frame_2.AbsoluteSize.X);
-            local l_l_Frame_0_0 = l_Frame_0;
-            local v57 = math.max(v40, l_l_Frame_0_0:GetAttribute("TargetWidth") or l_l_Frame_0_0.AbsoluteSize.X, l_Frame_0.AbsoluteSize.X);
-            local v58 = TweenInfo.new(v55 / 750, l_Quint_0, l_Out_0);
-            l_l_Frame_2_1 = TweenInfo.new(v57 / 750, l_Quint_0, l_Out_0);
-            l_TweenService_0:Create(l_Frame_2, v58, {
-                Position = UDim2.new(0, l_l_Frame_0_Attribute_2, 0.5, 0), 
-                Size = UDim2.new(0, v48, 1, -l_l_Frame_0_Attribute_2 * 2)
-            }):Play();
-            l_TweenService_0:Create(l_TextButton_0, v58, {
-                Size = UDim2.new(0, v48, 1, 0)
-            }):Play();
-            l_l_Frame_0_0 = UDim2.fromOffset(v40, l_l_Frame_0_Attribute_1);
-            if l_Frame_0.Size.Y.Offset ~= l_l_Frame_0_Attribute_1 then
-                l_Frame_0.Size = l_l_Frame_0_0;
-            end;
-            l_Frame_0:SetAttribute("TargetWidth", l_l_Frame_0_0.X.Offset);
-            l_TweenService_0:Create(l_Frame_0, l_l_Frame_2_1, {
-                Size = l_l_Frame_0_0
-            }):Play();
-            v22 = v22 + 1;
-            for v59 = 1, l_l_Frame_2_1.Time * 100 do
-                task.delay(v59 / 100, function() --[[ Line: 303 ]]
-                    -- upvalues: v1 (ref), v0 (ref)
-                    v1.iconChanged:Fire(v0);
-                end);
-            end;
-            task.delay(l_l_Frame_2_1.Time - 0.2, function() --[[ Line: 307 ]]
-                -- upvalues: v22 (ref), v0 (ref)
-                v22 = v22 - 1;
-                task.defer(function() --[[ Line: 309 ]]
-                    -- upvalues: v22 (ref), v0 (ref)
-                    if v22 == 0 then
-                        v0.resizingComplete:Fire();
-                    end;
-                end);
-            end);
-            v0:updateParent();
-        end);
-    end;
-    local v61 = require(script.Parent.Parent.Utility).createStagger(0.01, v60);
-    local v62 = true;
-    v0:setBehaviour("IconLabel", "Text", v61);
-    v0:setBehaviour("IconLabel", "FontFace", function(v63) --[[ Line: 322 ]]
-        -- upvalues: l_TextLabel_0 (copy), v61 (copy), v62 (ref)
-        if l_TextLabel_0.FontFace == v63 then
-            return;
-        else
-            task.spawn(function() --[[ Line: 327 ]]
-                -- upvalues: v61 (ref), v62 (ref)
-                v61();
-                if v62 then
-                    v62 = false;
-                    for _ = 1, 10 do
-                        task.wait(1);
-                        v61();
-                    end;
-                end;
-            end);
-            return;
-        end;
-    end);
-    local function v68() --[[ Line: 350 ]] --[[ Name: updateBorderSize ]]
-        -- upvalues: l_Frame_0 (copy), v0 (copy), l_Frame_2 (copy), v5 (copy), l_MenuGap_0 (copy), l_MenuUIListLayout_0 (copy), v61 (copy)
-        task.defer(function() --[[ Line: 351 ]]
-            -- upvalues: l_Frame_0 (ref), v0 (ref), l_Frame_2 (ref), v5 (ref), l_MenuGap_0 (ref), l_MenuUIListLayout_0 (ref), v61 (ref)
-            local l_l_Frame_0_Attribute_4 = l_Frame_0:GetAttribute("BorderSize");
-            local l_alignment_0 = v0.alignment;
-            local v67 = l_Frame_2.Visible == false and 0 or l_alignment_0 == "Right" and -l_l_Frame_0_Attribute_4 or l_l_Frame_0_Attribute_4;
-            v5.Position = UDim2.new(0, v67, 0, 0);
-            l_MenuGap_0.Size = UDim2.fromOffset(l_l_Frame_0_Attribute_4, 0);
-            l_MenuUIListLayout_0.Padding = UDim.new(0, 0);
-            v61();
-        end);
-    end;
-    v0:setBehaviour("Widget", "BorderSize", v68);
-    v0:setBehaviour("IconSpot", "Visible", v68);
-    v0.startMenuUpdate:Connect(v61);
-    v0.updateSize:Connect(v61);
-    v0:setBehaviour("ContentsList", "HorizontalAlignment", v61);
-    v0:setBehaviour("Widget", "Visible", v61);
-    v0:setBehaviour("Widget", "DesiredWidth", v61);
-    v0:setBehaviour("Widget", "MinimumWidth", v61);
-    v0:setBehaviour("Widget", "MinimumHeight", v61);
-    v0:setBehaviour("Indicator", "Visible", v61);
-    v0:setBehaviour("IconImageRatio", "AspectRatio", v61);
-    v0:setBehaviour("IconImage", "Image", function(v69) --[[ Line: 372 ]]
-        -- upvalues: l_ImageLabel_0 (copy), v61 (copy)
-        local v70 = tonumber(v69) and "http://www.roblox.com/asset/?id=" .. v69 or v69 or "";
-        if l_ImageLabel_0.Image ~= v70 then
-            v61();
-        end;
-        return v70;
-    end);
-    v0.alignmentChanged:Connect(function(v71) --[[ Line: 379 ]]
-        -- upvalues: l_MenuUIListLayout_0 (copy), l_Frame_0 (copy), v0 (copy), l_Frame_2 (copy), v5 (copy), l_MenuGap_0 (copy), v61 (copy)
-        if v71 == "Center" then
-            v71 = "Left";
-        end;
-        l_MenuUIListLayout_0.HorizontalAlignment = Enum.HorizontalAlignment[v71];
-        task.defer(function() --[[ Line: 351 ]]
-            -- upvalues: l_Frame_0 (ref), v0 (ref), l_Frame_2 (ref), v5 (ref), l_MenuGap_0 (ref), l_MenuUIListLayout_0 (ref), v61 (ref)
-            local l_l_Frame_0_Attribute_5 = l_Frame_0:GetAttribute("BorderSize");
-            local l_alignment_1 = v0.alignment;
-            local v74 = l_Frame_2.Visible == false and 0 or l_alignment_1 == "Right" and -l_l_Frame_0_Attribute_5 or l_l_Frame_0_Attribute_5;
-            v5.Position = UDim2.new(0, v74, 0, 0);
-            l_MenuGap_0.Size = UDim2.fromOffset(l_l_Frame_0_Attribute_5, 0);
-            l_MenuUIListLayout_0.Padding = UDim.new(0, 0);
-            v61();
-        end);
-    end);
-    local l_NumberValue_0 = Instance.new("NumberValue");
-    l_NumberValue_0.Name = "IconImageScale";
-    l_NumberValue_0.Parent = l_ImageLabel_0;
-    l_NumberValue_0:GetPropertyChangedSignal("Value"):Connect(function() --[[ Line: 390 ]]
-        -- upvalues: l_ImageLabel_0 (copy), l_NumberValue_0 (copy)
-        l_ImageLabel_0.Size = UDim2.new(l_NumberValue_0.Value, 0, l_NumberValue_0.Value, 0);
-    end);
-    local l_UIAspectRatioConstraint_0 = Instance.new("UIAspectRatioConstraint");
-    l_UIAspectRatioConstraint_0.Name = "IconImageRatio";
-    l_UIAspectRatioConstraint_0.AspectType = Enum.AspectType.FitWithinMaxSize;
-    l_UIAspectRatioConstraint_0.DominantAxis = Enum.DominantAxis.Height;
-    l_UIAspectRatioConstraint_0.Parent = l_ImageLabel_0;
-    local l_UIGradient_0 = Instance.new("UIGradient");
-    l_UIGradient_0.Name = "IconGradient";
-    l_UIGradient_0.Enabled = true;
-    l_UIGradient_0.Parent = l_Frame_1;
-    local l_UIGradient_1 = Instance.new("UIGradient");
-    l_UIGradient_1.Name = "IconSpotGradient";
-    l_UIGradient_1.Enabled = true;
-    l_UIGradient_1.Parent = l_Frame_2;
-    return l_Frame_0;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:35:22
+-- Luau version 6, Types version 3
+-- Time taken: 0.013212 seconds
+
+return function(arg1, arg2) -- Line 6
+	local Frame_upvr_7 = Instance.new("Frame")
+	Frame_upvr_7:SetAttribute("WidgetUID", arg1.UID)
+	Frame_upvr_7.Name = "Widget"
+	Frame_upvr_7.BackgroundTransparency = 1
+	Frame_upvr_7.Visible = true
+	Frame_upvr_7.ZIndex = 20
+	Frame_upvr_7.Active = false
+	Frame_upvr_7.ClipsDescendants = true
+	local Frame_upvr = Instance.new("Frame")
+	Frame_upvr.Name = "IconButton"
+	Frame_upvr.Visible = true
+	Frame_upvr.ZIndex = 2
+	Frame_upvr.BorderSizePixel = 0
+	Frame_upvr.Parent = Frame_upvr_7
+	Frame_upvr.ClipsDescendants = true
+	Frame_upvr.Active = false
+	arg1.deselected:Connect(function() -- Line 25
+		--[[ Upvalues[1]:
+			[1]: Frame_upvr (readonly)
+		]]
+		Frame_upvr.ClipsDescendants = true
+	end)
+	arg1.selected:Connect(function() -- Line 28
+		--[[ Upvalues[2]:
+			[1]: arg1 (readonly)
+			[2]: Frame_upvr (readonly)
+		]]
+		task.defer(function() -- Line 29
+			--[[ Upvalues[2]:
+				[1]: arg1 (copied, readonly)
+				[2]: Frame_upvr (copied, readonly)
+			]]
+			arg1.resizingComplete:Once(function() -- Line 30
+				--[[ Upvalues[2]:
+					[1]: arg1 (copied, readonly)
+					[2]: Frame_upvr (copied, readonly)
+				]]
+				if arg1.isSelected then
+					Frame_upvr.ClipsDescendants = false
+				end
+			end)
+		end)
+	end)
+	local UICorner = Instance.new("UICorner")
+	UICorner:SetAttribute("Collective", "IconCorners")
+	UICorner.Parent = Frame_upvr
+	local var9_upvr = require(script.Parent.Menu)(arg1)
+	local MenuUIListLayout_upvr = var9_upvr.MenuUIListLayout
+	local MenuGap_upvr = var9_upvr.MenuGap
+	var9_upvr.Parent = Frame_upvr
+	local Frame_upvr_5 = Instance.new("Frame")
+	Frame_upvr_5.Name = "IconSpot"
+	Frame_upvr_5.BackgroundColor3 = Color3.fromRGB(225, 225, 225)
+	Frame_upvr_5.BackgroundTransparency = 0.9
+	Frame_upvr_5.Visible = true
+	Frame_upvr_5.AnchorPoint = Vector2.new(0, 0.5)
+	Frame_upvr_5.ZIndex = 5
+	Frame_upvr_5.Parent = var9_upvr
+	UICorner:Clone().Parent = Frame_upvr_5
+	local clone = Frame_upvr_5:Clone()
+	clone.Name = "IconOverlay"
+	clone.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	clone.ZIndex = Frame_upvr_5.ZIndex + 1
+	clone.Size = UDim2.new(1, 0, 1, 0)
+	clone.Position = UDim2.new(0, 0, 0, 0)
+	clone.AnchorPoint = Vector2.new(0, 0)
+	clone.Visible = false
+	clone.Parent = Frame_upvr_5
+	local TextButton_upvr = Instance.new("TextButton")
+	TextButton_upvr:SetAttribute("CorrespondingIconUID", arg1.UID)
+	TextButton_upvr.Name = "ClickRegion"
+	TextButton_upvr.BackgroundTransparency = 1
+	TextButton_upvr.Visible = true
+	TextButton_upvr.Text = ""
+	TextButton_upvr.ZIndex = 20
+	TextButton_upvr.Selectable = true
+	TextButton_upvr.SelectionGroup = true
+	TextButton_upvr.Parent = Frame_upvr_5
+	require(script.Parent.Parent.Features.Gamepad).registerButton(TextButton_upvr)
+	UICorner:Clone().Parent = TextButton_upvr
+	local Frame_upvr_6 = Instance.new("Frame")
+	Frame_upvr_6.Name = "Contents"
+	Frame_upvr_6.BackgroundTransparency = 1
+	Frame_upvr_6.Size = UDim2.fromScale(1, 1)
+	Frame_upvr_6.Parent = Frame_upvr_5
+	local UIListLayout_upvr = Instance.new("UIListLayout")
+	UIListLayout_upvr.Name = "ContentsList"
+	UIListLayout_upvr.FillDirection = Enum.FillDirection.Horizontal
+	UIListLayout_upvr.VerticalAlignment = Enum.VerticalAlignment.Center
+	UIListLayout_upvr.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout_upvr.VerticalFlex = Enum.UIFlexAlignment.SpaceEvenly
+	UIListLayout_upvr.Padding = UDim.new(0, 3)
+	UIListLayout_upvr.Parent = Frame_upvr_6
+	local Frame_upvr_4 = Instance.new("Frame")
+	Frame_upvr_4.Name = "PaddingLeft"
+	Frame_upvr_4.LayoutOrder = 1
+	Frame_upvr_4.ZIndex = 5
+	Frame_upvr_4.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Frame_upvr_4.BackgroundTransparency = 1
+	Frame_upvr_4.BorderSizePixel = 0
+	Frame_upvr_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Frame_upvr_4.Parent = Frame_upvr_6
+	local Frame_upvr_2 = Instance.new("Frame")
+	Frame_upvr_2.Name = "PaddingCenter"
+	Frame_upvr_2.LayoutOrder = 3
+	Frame_upvr_2.ZIndex = 5
+	Frame_upvr_2.Size = UDim2.new(0, 0, 1, 0)
+	Frame_upvr_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Frame_upvr_2.BackgroundTransparency = 1
+	Frame_upvr_2.BorderSizePixel = 0
+	Frame_upvr_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Frame_upvr_2.Parent = Frame_upvr_6
+	local Frame_upvr_3 = Instance.new("Frame")
+	Frame_upvr_3.Name = "PaddingRight"
+	Frame_upvr_3.LayoutOrder = 5
+	Frame_upvr_3.ZIndex = 5
+	Frame_upvr_3.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Frame_upvr_3.BackgroundTransparency = 1
+	Frame_upvr_3.BorderSizePixel = 0
+	Frame_upvr_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Frame_upvr_3.Parent = Frame_upvr_6
+	local Frame_upvr_8 = Instance.new("Frame")
+	Frame_upvr_8.Name = "IconLabelContainer"
+	Frame_upvr_8.LayoutOrder = 4
+	Frame_upvr_8.ZIndex = 3
+	Frame_upvr_8.AnchorPoint = Vector2.new(0, 0.5)
+	Frame_upvr_8.Size = UDim2.new(0, 0, 0.5, 0)
+	Frame_upvr_8.BackgroundTransparency = 1
+	Frame_upvr_8.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Frame_upvr_8.Parent = Frame_upvr_6
+	local TextLabel_upvr = Instance.new("TextLabel")
+	local var22_upvr = workspace.CurrentCamera.ViewportSize.X + 200
+	TextLabel_upvr.Name = "IconLabel"
+	TextLabel_upvr.LayoutOrder = 4
+	TextLabel_upvr.ZIndex = 15
+	TextLabel_upvr.AnchorPoint = Vector2.new(0, 0)
+	TextLabel_upvr.Size = UDim2.new(0, var22_upvr, 1, 0)
+	TextLabel_upvr.ClipsDescendants = false
+	TextLabel_upvr.BackgroundTransparency = 1
+	TextLabel_upvr.Position = UDim2.fromScale(0, 0)
+	TextLabel_upvr.RichText = true
+	TextLabel_upvr.TextColor3 = Color3.fromRGB(255, 255, 255)
+	TextLabel_upvr.TextXAlignment = Enum.TextXAlignment.Left
+	TextLabel_upvr.Text = ""
+	TextLabel_upvr.TextWrapped = true
+	TextLabel_upvr.TextWrap = true
+	TextLabel_upvr.TextScaled = false
+	TextLabel_upvr.Active = false
+	TextLabel_upvr.AutoLocalize = true
+	TextLabel_upvr.Parent = Frame_upvr_8
+	local ImageLabel_upvr = Instance.new("ImageLabel")
+	ImageLabel_upvr.Name = "IconImage"
+	ImageLabel_upvr.LayoutOrder = 2
+	ImageLabel_upvr.ZIndex = 15
+	ImageLabel_upvr.AnchorPoint = Vector2.new(0, 0.5)
+	ImageLabel_upvr.Size = UDim2.new(0, 0, 0.5, 0)
+	ImageLabel_upvr.BackgroundTransparency = 1
+	ImageLabel_upvr.Position = UDim2.new(0, 11, 0.5, 0)
+	ImageLabel_upvr.ScaleType = Enum.ScaleType.Stretch
+	ImageLabel_upvr.Active = false
+	ImageLabel_upvr.Parent = Frame_upvr_6
+	local clone_2 = UICorner:Clone()
+	clone_2:SetAttribute("Collective", nil)
+	clone_2.CornerRadius = UDim.new(0, 0)
+	clone_2.Name = "IconImageCorner"
+	clone_2.Parent = ImageLabel_upvr
+	local TweenService_upvr = game:GetService("TweenService")
+	local var26_upvw = 0
+	local any_createStagger_result1_upvr = require(script.Parent.Parent.Utility).createStagger(0.01, function(arg1_2) -- Line 184, Named "handleLabelAndImageChangesUnstaggered"
+		--[[ Upvalues[20]:
+			[1]: arg1 (readonly)
+			[2]: TextLabel_upvr (readonly)
+			[3]: ImageLabel_upvr (readonly)
+			[4]: Frame_upvr_8 (readonly)
+			[5]: Frame_upvr_4 (readonly)
+			[6]: Frame_upvr_2 (readonly)
+			[7]: Frame_upvr_3 (readonly)
+			[8]: Frame_upvr (readonly)
+			[9]: UIListLayout_upvr (readonly)
+			[10]: Frame_upvr_6 (readonly)
+			[11]: Frame_upvr_7 (readonly)
+			[12]: var22_upvr (readonly)
+			[13]: var9_upvr (readonly)
+			[14]: Frame_upvr_5 (readonly)
+			[15]: MenuUIListLayout_upvr (readonly)
+			[16]: MenuGap_upvr (readonly)
+			[17]: TweenService_upvr (readonly)
+			[18]: TextButton_upvr (readonly)
+			[19]: var26_upvw (read and write)
+			[20]: arg2 (readonly)
+		]]
+		task.defer(function() -- Line 191
+			--[[ Upvalues[20]:
+				[1]: arg1 (copied, readonly)
+				[2]: TextLabel_upvr (copied, readonly)
+				[3]: ImageLabel_upvr (copied, readonly)
+				[4]: Frame_upvr_8 (copied, readonly)
+				[5]: Frame_upvr_4 (copied, readonly)
+				[6]: Frame_upvr_2 (copied, readonly)
+				[7]: Frame_upvr_3 (copied, readonly)
+				[8]: Frame_upvr (copied, readonly)
+				[9]: UIListLayout_upvr (copied, readonly)
+				[10]: Frame_upvr_6 (copied, readonly)
+				[11]: Frame_upvr_7 (copied, readonly)
+				[12]: var22_upvr (copied, readonly)
+				[13]: var9_upvr (copied, readonly)
+				[14]: Frame_upvr_5 (copied, readonly)
+				[15]: MenuUIListLayout_upvr (copied, readonly)
+				[16]: MenuGap_upvr (copied, readonly)
+				[17]: TweenService_upvr (copied, readonly)
+				[18]: TextButton_upvr (copied, readonly)
+				[19]: var26_upvw (copied, read and write)
+				[20]: arg2 (copied, readonly)
+			]]
+			-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+			local indicator = arg1.indicator
+			local var49 = indicator
+			if var49 then
+				var49 = indicator.Visible
+			end
+			local var50 = var49
+			if not var50 then
+				if TextLabel_upvr.Text == "" then
+					var50 = false
+				else
+					var50 = true
+				end
+			end
+			local var51 = false
+			if ImageLabel_upvr.Image ~= "" then
+				if ImageLabel_upvr.Image == nil then
+					var51 = false
+				else
+					var51 = true
+				end
+			end
+			if var51 and not var50 then
+				Frame_upvr_8.Visible = false
+				ImageLabel_upvr.Visible = true
+				Frame_upvr_4.Visible = false
+				Frame_upvr_2.Visible = false
+				Frame_upvr_3.Visible = false
+				local var52
+				-- KONSTANTWARNING: GOTO [106] #81
+			end
+			if not var51 and var50 then
+				Frame_upvr_8.Visible = true
+				ImageLabel_upvr.Visible = false
+				Frame_upvr_4.Visible = true
+				Frame_upvr_2.Visible = false
+				Frame_upvr_3.Visible = true
+			elseif var51 and var50 then
+				Frame_upvr_8.Visible = true
+				ImageLabel_upvr.Visible = true
+				Frame_upvr_4.Visible = true
+				Frame_upvr_2.Visible = not var49
+				Frame_upvr_3.Visible = not var49
+			end
+			Frame_upvr.Size = UDim2.fromScale(1, 1)
+			local function _(arg1_3) -- Line 221, Named "getItemWidth"
+				local TargetWidth_2 = arg1_3:GetAttribute("TargetWidth")
+				if not TargetWidth_2 then
+					TargetWidth_2 = arg1_3.AbsoluteSize.X
+				end
+				return TargetWidth_2
+			end
+			var52 = UIListLayout_upvr.Padding
+			local Offset = var52.Offset
+			var52 = Offset
+			Frame_upvr_8.Size = UDim2.new(0, TextLabel_upvr.TextBounds.X, TextLabel_upvr.Size.Y.Scale, 0)
+			for _, v in pairs(Frame_upvr_6:GetChildren()) do
+				if v:IsA("GuiObject") and v.Visible == true then
+					if not v:GetAttribute("TargetWidth") then
+					end
+					var52 += v.AbsoluteSize.X + Offset
+				end
+			end
+			local MinimumWidth = Frame_upvr_7:GetAttribute("MinimumWidth")
+			local MinimumHeight = Frame_upvr_7:GetAttribute("MinimumHeight")
+			local BorderSize = Frame_upvr_7:GetAttribute("BorderSize")
+			if 0 >= #arg1.menuIcons then
+			else
+			end
+			if true then
+				local isSelected = arg1.isSelected
+				local var62
+			end
+			if isSelected then
+				for i_2, v_2 in pairs(var9_upvr:GetChildren()) do
+					if v_2 ~= Frame_upvr_5 and v_2:IsA("GuiObject") and v_2.Visible then
+						local TargetWidth_3 = v_2:GetAttribute("TargetWidth")
+						if not TargetWidth_3 then
+							TargetWidth_3 = v_2.AbsoluteSize.X
+						end
+						var62 += TargetWidth_3 + MenuUIListLayout_upvr.Padding.Offset
+					end
+				end
+				if not Frame_upvr_5.Visible then
+					i_2 = Frame_upvr_5
+					v_2 = i_2:GetAttribute("TargetWidth")
+					if not v_2 then
+						v_2 = i_2.AbsoluteSize.X
+					end
+					v_2 = MenuUIListLayout_upvr.Padding.Offset
+					i_2 = v_2 * 2
+				end
+				var62 -= BorderSize * 0.5
+			end
+			if isSelected then
+			end
+			MenuGap_upvr.Visible = Frame_upvr_5.Visible
+			local DesiredWidth = Frame_upvr_7:GetAttribute("DesiredWidth")
+			if DesiredWidth and ((math.clamp(var52, MinimumWidth, var22_upvr)) - (v_2 + i_2 + BorderSize)) + (var62 - BorderSize * 0.75) < DesiredWidth then
+				local var68 = DesiredWidth
+			end
+			arg1.updateMenu:Fire()
+			local var69 = math.max(var68 - var62, MinimumWidth) - BorderSize * 2
+			local MenuWidth = var9_upvr:GetAttribute("MenuWidth")
+			local var71 = MenuWidth
+			if var71 then
+				var71 = MenuWidth + var69 + MenuUIListLayout_upvr.Padding.Offset + 10
+			end
+			if var71 then
+				local MaxWidth = var9_upvr:GetAttribute("MaxWidth")
+				if MaxWidth then
+					var71 = math.max(MaxWidth, MinimumWidth)
+				end
+				var9_upvr:SetAttribute("MenuCanvasWidth", var68)
+				if var71 < var68 then
+					local var73 = var71
+				end
+			end
+			local Quint = Enum.EasingStyle.Quint
+			local Out = Enum.EasingDirection.Out
+			local var76 = Frame_upvr_5
+			local TargetWidth = var76:GetAttribute("TargetWidth")
+			if not TargetWidth then
+				TargetWidth = var76.AbsoluteSize.X
+			end
+			local var78 = Frame_upvr_7
+			local TargetWidth_4 = var78:GetAttribute("TargetWidth")
+			if not TargetWidth_4 then
+				TargetWidth_4 = var78.AbsoluteSize.X
+			end
+			local TweenInfo_new_result1 = TweenInfo.new(math.max(var69, TargetWidth, Frame_upvr_5.AbsoluteSize.X) / 750, Quint, Out)
+			local TweenInfo_new_result1_2 = TweenInfo.new(math.max(var73, TargetWidth_4, Frame_upvr_7.AbsoluteSize.X) / 750, Quint, Out)
+			TweenService_upvr:Create(Frame_upvr_5, TweenInfo_new_result1, {
+				Position = UDim2.new(0, BorderSize, 0.5, 0);
+				Size = UDim2.new(0, var69, 1, -BorderSize * 2);
+			}):Play()
+			TweenService_upvr:Create(TextButton_upvr, TweenInfo_new_result1, {
+				Size = UDim2.new(0, var69, 1, 0);
+			}):Play()
+			local var84 = var73
+			local udim2 = UDim2.fromOffset(var84, MinimumHeight)
+			if Frame_upvr_7.Size.Y.Offset == MinimumHeight then
+				var84 = false
+			else
+				var84 = true
+			end
+			if var84 then
+				Frame_upvr_7.Size = udim2
+			end
+			Frame_upvr_7:SetAttribute("TargetWidth", udim2.X.Offset)
+			TweenService_upvr:Create(Frame_upvr_7, TweenInfo_new_result1_2, {
+				Size = udim2;
+			}):Play()
+			var26_upvw += 1
+			for i_3 = 1, TweenInfo_new_result1_2.Time * 100 do
+				task.delay(i_3 / 100, function() -- Line 303
+					--[[ Upvalues[2]:
+						[1]: arg2 (copied, readonly)
+						[2]: arg1 (copied, readonly)
+					]]
+					arg2.iconChanged:Fire(arg1)
+				end)
+			end
+			task.delay(TweenInfo_new_result1_2.Time - 0.2, function() -- Line 307
+				--[[ Upvalues[2]:
+					[1]: var26_upvw (copied, read and write)
+					[2]: arg1 (copied, readonly)
+				]]
+				var26_upvw -= 1
+				task.defer(function() -- Line 309
+					--[[ Upvalues[2]:
+						[1]: var26_upvw (copied, read and write)
+						[2]: arg1 (copied, readonly)
+					]]
+					if var26_upvw == 0 then
+						arg1.resizingComplete:Fire()
+					end
+				end)
+			end)
+			arg1:updateParent()
+		end)
+	end)
+	arg1:setBehaviour("IconLabel", "Text", any_createStagger_result1_upvr)
+	local var92_upvw = true
+	arg1:setBehaviour("IconLabel", "FontFace", function(arg1_4) -- Line 322
+		--[[ Upvalues[3]:
+			[1]: TextLabel_upvr (readonly)
+			[2]: any_createStagger_result1_upvr (readonly)
+			[3]: var92_upvw (read and write)
+		]]
+		if TextLabel_upvr.FontFace == arg1_4 then
+		else
+			task.spawn(function() -- Line 327
+				--[[ Upvalues[2]:
+					[1]: any_createStagger_result1_upvr (copied, readonly)
+					[2]: var92_upvw (copied, read and write)
+				]]
+				any_createStagger_result1_upvr()
+				if var92_upvw then
+					var92_upvw = false
+					for _ = 1, 10 do
+						task.wait(1)
+						any_createStagger_result1_upvr()
+					end
+				end
+			end)
+		end
+	end)
+	local function updateBorderSize() -- Line 350
+		--[[ Upvalues[7]:
+			[1]: Frame_upvr_7 (readonly)
+			[2]: arg1 (readonly)
+			[3]: Frame_upvr_5 (readonly)
+			[4]: var9_upvr (readonly)
+			[5]: MenuGap_upvr (readonly)
+			[6]: MenuUIListLayout_upvr (readonly)
+			[7]: any_createStagger_result1_upvr (readonly)
+		]]
+		task.defer(function() -- Line 351
+			--[[ Upvalues[7]:
+				[1]: Frame_upvr_7 (copied, readonly)
+				[2]: arg1 (copied, readonly)
+				[3]: Frame_upvr_5 (copied, readonly)
+				[4]: var9_upvr (copied, readonly)
+				[5]: MenuGap_upvr (copied, readonly)
+				[6]: MenuUIListLayout_upvr (copied, readonly)
+				[7]: any_createStagger_result1_upvr (copied, readonly)
+			]]
+			local BorderSize_3 = Frame_upvr_7:GetAttribute("BorderSize")
+			local var97 = arg1
+			if Frame_upvr_5.Visible == false then
+				var97 = 0
+			else
+				local function INLINED() -- Internal function, doesn't exist in bytecode
+					var97 = -BorderSize_3
+					return var97
+				end
+				if var97.alignment ~= "Right" or not INLINED() then
+					var97 = BorderSize_3
+				end
+			end
+			var9_upvr.Position = UDim2.new(0, var97, 0, 0)
+			MenuGap_upvr.Size = UDim2.fromOffset(BorderSize_3, 0)
+			MenuUIListLayout_upvr.Padding = UDim.new(0, 0)
+			any_createStagger_result1_upvr()
+		end)
+	end
+	arg1:setBehaviour("Widget", "BorderSize", updateBorderSize)
+	arg1:setBehaviour("IconSpot", "Visible", updateBorderSize)
+	arg1.startMenuUpdate:Connect(any_createStagger_result1_upvr)
+	arg1.updateSize:Connect(any_createStagger_result1_upvr)
+	arg1:setBehaviour("ContentsList", "HorizontalAlignment", any_createStagger_result1_upvr)
+	arg1:setBehaviour("Widget", "Visible", any_createStagger_result1_upvr)
+	arg1:setBehaviour("Widget", "DesiredWidth", any_createStagger_result1_upvr)
+	arg1:setBehaviour("Widget", "MinimumWidth", any_createStagger_result1_upvr)
+	arg1:setBehaviour("Widget", "MinimumHeight", any_createStagger_result1_upvr)
+	arg1:setBehaviour("Indicator", "Visible", any_createStagger_result1_upvr)
+	arg1:setBehaviour("IconImageRatio", "AspectRatio", any_createStagger_result1_upvr)
+	arg1:setBehaviour("IconImage", "Image", function(arg1_5) -- Line 372
+		--[[ Upvalues[2]:
+			[1]: ImageLabel_upvr (readonly)
+			[2]: any_createStagger_result1_upvr (readonly)
+		]]
+		local var99
+		local function INLINED_2() -- Internal function, doesn't exist in bytecode
+			var99 = "http://www.roblox.com/asset/?id="..arg1_5
+			return var99
+		end
+		if not tonumber(arg1_5) or not INLINED_2() then
+			var99 = arg1_5
+			if not var99 then
+				var99 = ""
+			end
+		end
+		if ImageLabel_upvr.Image ~= var99 then
+			any_createStagger_result1_upvr()
+		end
+		return var99
+	end)
+	arg1.alignmentChanged:Connect(function(arg1_6) -- Line 379
+		--[[ Upvalues[7]:
+			[1]: MenuUIListLayout_upvr (readonly)
+			[2]: Frame_upvr_7 (readonly)
+			[3]: arg1 (readonly)
+			[4]: Frame_upvr_5 (readonly)
+			[5]: var9_upvr (readonly)
+			[6]: MenuGap_upvr (readonly)
+			[7]: any_createStagger_result1_upvr (readonly)
+		]]
+		if arg1_6 == "Center" then
+		end
+		MenuUIListLayout_upvr.HorizontalAlignment = Enum.HorizontalAlignment.Left
+		task.defer(function() -- Line 351
+			--[[ Upvalues[7]:
+				[1]: Frame_upvr_7 (copied, readonly)
+				[2]: arg1 (copied, readonly)
+				[3]: Frame_upvr_5 (copied, readonly)
+				[4]: var9_upvr (copied, readonly)
+				[5]: MenuGap_upvr (copied, readonly)
+				[6]: MenuUIListLayout_upvr (copied, readonly)
+				[7]: any_createStagger_result1_upvr (copied, readonly)
+			]]
+			local BorderSize_2 = Frame_upvr_7:GetAttribute("BorderSize")
+			local var103 = arg1
+			if Frame_upvr_5.Visible == false then
+				var103 = 0
+			else
+				local function INLINED_3() -- Internal function, doesn't exist in bytecode
+					var103 = -BorderSize_2
+					return var103
+				end
+				if var103.alignment ~= "Right" or not INLINED_3() then
+					var103 = BorderSize_2
+				end
+			end
+			var9_upvr.Position = UDim2.new(0, var103, 0, 0)
+			MenuGap_upvr.Size = UDim2.fromOffset(BorderSize_2, 0)
+			MenuUIListLayout_upvr.Padding = UDim.new(0, 0)
+			any_createStagger_result1_upvr()
+		end)
+	end)
+	local NumberValue_upvr = Instance.new("NumberValue")
+	NumberValue_upvr.Name = "IconImageScale"
+	NumberValue_upvr.Parent = ImageLabel_upvr
+	NumberValue_upvr:GetPropertyChangedSignal("Value"):Connect(function() -- Line 390
+		--[[ Upvalues[2]:
+			[1]: ImageLabel_upvr (readonly)
+			[2]: NumberValue_upvr (readonly)
+		]]
+		ImageLabel_upvr.Size = UDim2.new(NumberValue_upvr.Value, 0, NumberValue_upvr.Value, 0)
+	end)
+	local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+	UIAspectRatioConstraint.Name = "IconImageRatio"
+	UIAspectRatioConstraint.AspectType = Enum.AspectType.FitWithinMaxSize
+	UIAspectRatioConstraint.DominantAxis = Enum.DominantAxis.Height
+	UIAspectRatioConstraint.Parent = ImageLabel_upvr
+	local UIGradient = Instance.new("UIGradient")
+	UIGradient.Name = "IconGradient"
+	UIGradient.Enabled = true
+	UIGradient.Parent = Frame_upvr
+	local UIGradient_2 = Instance.new("UIGradient")
+	UIGradient_2.Name = "IconSpotGradient"
+	UIGradient_2.Enabled = true
+	UIGradient_2.Parent = Frame_upvr_5
+	return Frame_upvr_7
+end

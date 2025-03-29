@@ -1,20 +1,30 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.centau_vide@0.3.1.vide.show
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:34:24
+-- Luau version 6, Types version 3
+-- Time taken: 0.000707 seconds
+
 if not game then
-    script = require("test/relative-string");
-end;
-local v0 = require(script.Parent.switch);
-return function(v1, v2, v3) --[[ Line: 5 ]] --[[ Name: show ]]
-    -- upvalues: v0 (copy)
-    return v0(function() --[[ Line: 6 ]] --[[ Name: truthy ]]
-        -- upvalues: v1 (copy)
-        return not not v1();
-    end)({
-        [true] = v2, 
-        [false] = v3
-    });
-end;
+	script = require("test/relative-string") -- Setting global
+end
+local switch_upvr = require(script.Parent.switch)
+return function(arg1, arg2, arg3) -- Line 5, Named "show"
+	--[[ Upvalues[1]:
+		[1]: switch_upvr (readonly)
+	]]
+	local module = {}
+	module[true] = arg2
+	module[false] = arg3
+	return switch_upvr(function() -- Line 6, Named "truthy"
+		--[[ Upvalues[1]:
+			[1]: arg1 (readonly)
+		]]
+		return not not arg1()
+	end)(module)
+end

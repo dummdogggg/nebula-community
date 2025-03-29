@@ -1,286 +1,333 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.alicesaidhi+conch.0.2.3.conch.src.lib
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_Players_0 = game:GetService("Players");
-local l_RunService_0 = game:GetService("RunService");
-local v2 = require("./arguments");
-local v3 = require("../roblox_packages/ast");
-local v4 = require("./bootstrap");
-local v5 = require("./client");
-local v6 = require("./console");
-local v7 = require("./context");
-local v8 = require("./net");
-local v9 = require("./state");
-local _ = require("./types");
-local v11 = require("./user");
-local v12 = l_RunService_0:IsServer();
-local v13 = l_RunService_0:IsClient();
-local l_create_user_0 = v11.create_user;
-local l_disconnect_user_0 = v11.disconnect_user;
-local l_has_permissions_0 = v11.has_permissions;
-local l_create_command_context_0 = v7.create_command_context;
-local l_get_command_context_0 = v7.get_command_context;
-local function _(v19, v20) --[[ Line: 27 ]] --[[ Name: FOREACH ]]
-    for v21, v22 in v19 do
-        v20(v22, v21);
-    end;
-end;
-local function v25(v24, ...) --[[ Line: 33 ]] --[[ Name: set_role ]]
-    -- upvalues: v9 (copy), v12 (copy), v8 (copy)
-    v9.roles[v24] = {
-        ...
-    };
-    if v12 then
-        v8.server.fire_update_role_perms(v24, {
-            ...
-        });
-    end;
-end;
-local function v29(v26) --[[ Line: 39 ]] --[[ Name: initiate_user_replication ]]
-    -- upvalues: v6 (copy), l_has_permissions_0 (copy), v8 (copy)
-    for _, v28 in v6.console.commands do
-        if l_has_permissions_0(v26, unpack(v28.permissions)) then
-            v8.server.fire_register_command(v26.player, {
-                name = v28.name, 
-                permissions = v28.permissions
-            });
-        end;
-    end;
-end;
-local function v36(v30) --[[ Line: 52 ]] --[[ Name: get_user ]]
-    -- upvalues: v11 (copy), v9 (copy), l_create_user_0 (copy), v29 (copy)
-    if typeof(v30) == "string" then
-        local v31 = v11.obtain_user_key(false, v30);
-        local v32 = v9.users[v31];
-        if not v32 then
-            return (l_create_user_0({
-                name = v31, 
-                player = false
-            }));
-        else
-            return v32;
-        end;
-    else
-        local v33 = v11.obtain_user_key(v30, v30.DisplayName);
-        local v34 = v9.users[v33];
-        if not v34 then
-            local v35 = l_create_user_0({
-                name = v30.DisplayName, 
-                player = v30
-            });
-            v29(v35);
-            return v35;
-        else
-            return v34;
-        end;
-    end;
-end;
-local function v40(v37) --[[ Line: 74 ]] --[[ Name: disconnect_user_for_player ]]
-    -- upvalues: v11 (copy), v9 (copy), l_disconnect_user_0 (copy)
-    local v38 = v11.obtain_user_key(v37, v37.DisplayName);
-    local v39 = v9.users[v38];
-    if not v39 then
-        return;
-    else
-        l_disconnect_user_0(v39);
-        return;
-    end;
-end;
-local function v48(v41, v42) --[[ Line: 83 ]] --[[ Name: invoke_server_command ]]
-    -- upvalues: v36 (copy), v6 (copy), v8 (copy), l_has_permissions_0 (copy), l_create_command_context_0 (copy)
-    local v43 = v36(v41);
-    local v44 = v6.console.commands[v42.name];
-    local function v45() --[[ Line: 90 ]] --[[ Name: fail ]]
-        -- upvalues: v8 (ref), v41 (copy), v42 (copy)
-        v8.server.fire_failed_invoke_reply(v41, v42.invoke_id);
-    end;
-    if not v44 or not v43 then
-        return v45();
-    elseif not l_has_permissions_0(v43, unpack(v44.permissions)) then
-        return v45();
-    else
-        local v46 = l_create_command_context_0(v43, v42.invoke_id);
-        return (function(v47, ...) --[[ Line: 101 ]] --[[ Name: handle ]]
-            -- upvalues: v6 (ref), v42 (copy), v46 (copy), v45 (copy), v8 (ref), v41 (copy)
-            v6.after_command_run:fire({
-                ok = v47, 
-                command = v42.name, 
-                arguments = v42.args, 
-                result = {
-                    ...
-                }
-            });
-            v46();
-            if not v47 then
-                warn(...);
-                return v45();
-            else
-                return v8.server.fire_successful_invoke_reply(v41, v42.invoke_id, {
-                    ...
-                });
-            end;
-        end)(pcall(v44.callback, unpack(v42.args)));
-    end;
-end;
-local _ = function(v49) --[[ Line: 124 ]] --[[ Name: resend_new_commands ]]
-    -- upvalues: v6 (copy)
-    if not v49.dirty then
-        return;
-    else
-        for _, v51 in v6.console.commands do
-            v6.replicate_to_player(v49.player, v51);
-        end;
-        v49.dirty = false;
-        return;
-    end;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:35:24
+-- Luau version 6, Types version 3
+-- Time taken: 0.006096 seconds
+
+local RunService_upvr = game:GetService("RunService")
+local ._console_upvr = require("./console")
+local ._context = require("./context")
+local ._net_upvr = require("./net")
+local ._state_upvr = require("./state")
+local ._user_upvr = require("./user")
+local any_IsServer_result1_upvr = RunService_upvr:IsServer()
+local any_IsClient_result1_upvr = RunService_upvr:IsClient()
+local has_permissions_upvr = ._user_upvr.has_permissions
+local create_command_context_upvr = ._context.create_command_context
+local function _(arg1, arg2) -- Line 27, Named "FOREACH"
+	for i, v in arg1 do
+		arg2(v, i)
+	end
+end
+local function initiate_user_replication_upvr(arg1) -- Line 39, Named "initiate_user_replication"
+	--[[ Upvalues[3]:
+		[1]: ._console_upvr (readonly)
+		[2]: has_permissions_upvr (readonly)
+		[3]: ._net_upvr (readonly)
+	]]
+	for _, v_2 in ._console_upvr.console.commands do
+		if has_permissions_upvr(arg1, unpack(v_2.permissions)) then
+			._net_upvr.server.fire_register_command(arg1.player, {
+				name = v_2.name;
+				permissions = v_2.permissions;
+			})
+		end
+	end
+end
+local create_user_upvr = ._user_upvr.create_user
+local function get_user_upvr(arg1) -- Line 52, Named "get_user"
+	--[[ Upvalues[4]:
+		[1]: ._user_upvr (readonly)
+		[2]: ._state_upvr (readonly)
+		[3]: create_user_upvr (readonly)
+		[4]: initiate_user_replication_upvr (readonly)
+	]]
+	if typeof(arg1) == "string" then
+		local any_obtain_user_key_result1 = ._user_upvr.obtain_user_key(false, arg1)
+		local var20 = ._state_upvr.users[any_obtain_user_key_result1]
+		if not var20 then
+			return create_user_upvr({
+				name = any_obtain_user_key_result1;
+				player = false;
+			})
+		end
+		return var20
+	end
+	local var22 = ._state_upvr.users[._user_upvr.obtain_user_key(arg1, arg1.DisplayName)]
+	if not var22 then
+		local tbl = {
+			name = arg1.DisplayName;
+		}
+		tbl.player = arg1
+		local create_user_upvr_result1 = create_user_upvr(tbl)
+		initiate_user_replication_upvr(create_user_upvr_result1)
+		return create_user_upvr_result1
+	end
+	return var22
+end
+local disconnect_user_upvr = ._user_upvr.disconnect_user
+local function disconnect_user_for_player_upvr(arg1) -- Line 74, Named "disconnect_user_for_player"
+	--[[ Upvalues[3]:
+		[1]: ._user_upvr (readonly)
+		[2]: ._state_upvr (readonly)
+		[3]: disconnect_user_upvr (readonly)
+	]]
+	local var26 = ._state_upvr.users[._user_upvr.obtain_user_key(arg1, arg1.DisplayName)]
+	if not var26 then
+	else
+		disconnect_user_upvr(var26)
+	end
+end
+local function invoke_server_command_upvr(arg1, arg2) -- Line 83, Named "invoke_server_command"
+	--[[ Upvalues[5]:
+		[1]: get_user_upvr (readonly)
+		[2]: ._console_upvr (readonly)
+		[3]: ._net_upvr (readonly)
+		[4]: has_permissions_upvr (readonly)
+		[5]: create_command_context_upvr (readonly)
+	]]
+	local get_user_upvr_result1 = get_user_upvr(arg1)
+	local var28 = ._console_upvr.console.commands[arg2.name]
+	local function fail_upvr() -- Line 90, Named "fail"
+		--[[ Upvalues[3]:
+			[1]: ._net_upvr (copied, readonly)
+			[2]: arg1 (readonly)
+			[3]: arg2 (readonly)
+		]]
+		._net_upvr.server.fire_failed_invoke_reply(arg1, arg2.invoke_id)
+	end
+	if not var28 or not get_user_upvr_result1 then
+		return fail_upvr()
+	end
+	if not has_permissions_upvr(get_user_upvr_result1, unpack(var28.permissions)) then
+		return fail_upvr()
+	end
+	local create_command_context_upvr_result1_upvr = create_command_context_upvr(get_user_upvr_result1, arg2.invoke_id)
+	return (function(arg1_2, ...) -- Line 101, Named "handle"
+		--[[ Upvalues[6]:
+			[1]: ._console_upvr (copied, readonly)
+			[2]: arg2 (readonly)
+			[3]: create_command_context_upvr_result1_upvr (readonly)
+			[4]: fail_upvr (readonly)
+			[5]: ._net_upvr (copied, readonly)
+			[6]: arg1 (readonly)
+		]]
+		local tbl_3 = {}
+		tbl_3.ok = arg1_2
+		tbl_3.command = arg2.name
+		tbl_3.arguments = arg2.args
+		tbl_3.result = {...}
+		._console_upvr.after_command_run:fire(tbl_3)
+		create_command_context_upvr_result1_upvr()
+		if not arg1_2 then
+			warn(...)
+			return fail_upvr()
+		end
+		return ._net_upvr.server.fire_successful_invoke_reply(arg1, arg2.invoke_id, {...})
+	end)(pcall(var28.callback, unpack(arg2.args)))
+end
+local function _(arg1) -- Line 124, Named "resend_new_commands"
+	--[[ Upvalues[1]:
+		[1]: ._console_upvr (readonly)
+	]]
+	if not arg1.dirty then
+	else
+		for _, v_3 in ._console_upvr.console.commands do
+			._console_upvr.replicate_to_player(arg1.player, v_3)
+		end
+		arg1.dirty = false
+	end
+end
+local ._client_upvr = require("./client")
+local Players_upvr = game:GetService("Players")
 return {
-    args = v2, 
-    parse = v3, 
-    execute = function(v53) --[[ Line: 175 ]] --[[ Name: execute ]]
-        -- upvalues: v9 (copy), v13 (copy), v8 (copy), l_create_command_context_0 (copy), v6 (copy)
-        local l_local_user_0 = v9.local_user;
-        assert(v13, "cannot run commands outside of the client");
-        assert(l_local_user_0, "unable to run commands without a local user");
-        if v13 then
-            v8.client.fire_log_command(v53);
-        end;
-        local v55 = l_create_command_context_0(l_local_user_0, false);
-        local l_status_0, l_result_0 = pcall(v6.execute, v53);
-        if not l_status_0 then
-            v6.console.output({
-                kind = "error", 
-                text = l_result_0
-            });
-        end;
-        v55();
-    end, 
-    register_quick = v6.register_quick, 
-    register = v6.register_command, 
-    on_execution = function(v58) --[[ Line: 191 ]] --[[ Name: on_execution ]]
-        -- upvalues: v8 (copy)
-        local v61 = v8.server.on_log_command(function(v59, v60) --[[ Line: 192 ]]
-            -- upvalues: v58 (copy)
-            if typeof(v60) ~= "string" then
-                v59:Kick();
-            end;
-            v58(v59, v60);
-        end);
-        return function() --[[ Line: 197 ]]
-            -- upvalues: v61 (copy)
-            v61:Disconnect();
-        end;
-    end, 
-    on_command_run = function(v62) --[[ Line: 199 ]] --[[ Name: on_command_run ]]
-        -- upvalues: v6 (copy)
-        local v63 = v6.after_command_run:connect(v62);
-        return function() --[[ Line: 202 ]]
-            -- upvalues: v63 (copy)
-            v63:disconnect();
-        end;
-    end, 
-    initiate_default_lifecycle = function() --[[ Line: 134 ]] --[[ Name: initiate_default_lifecycle ]]
-        -- upvalues: v13 (copy), v8 (copy), v5 (copy), v12 (copy), l_Players_0 (copy), v36 (copy), v40 (copy), v6 (copy), v48 (copy), l_RunService_0 (copy), v9 (copy)
-        if v13 then
-            v8.client.init();
-            v8.client.on_command_registered(v5.register_command);
-            v8.client.on_invoke_reply(v5.receive_server_results);
-            v8.client.on_log_received(v5.log);
-            v8.client.on_user_info_received(v5.create_local_user);
-            v8.client.on_role_info_received(v5.update_role_permissions);
-            v8.client.on_user_roles_update(v5.update_user_roles);
-            return;
-        else
-            if v12 then
-                v8.server.init();
-                l_Players_0.PlayerAdded:Connect(v36);
-                l_Players_0.PlayerRemoving:Connect(v40);
-                local l_l_Players_0_Players_0 = l_Players_0:GetPlayers();
-                local l_v36_0 = v36;
-                for v66, v67 in l_l_Players_0_Players_0 do
-                    l_v36_0(v67, v66);
-                end;
-                l_l_Players_0_Players_0 = l_Players_0:GetPlayers();
-                l_v36_0 = function(v68) --[[ Line: 156 ]]
-                    -- upvalues: v36 (ref), v6 (ref)
-                    local v69 = v36(v68);
-                    if not v69.dirty then
-                        return;
-                    else
-                        for _, v71 in v6.console.commands do
-                            v6.replicate_to_player(v69.player, v71);
-                        end;
-                        v69.dirty = false;
-                        return;
-                    end;
-                end;
-                for v72, v73 in l_l_Players_0_Players_0 do
-                    l_v36_0(v73, v72);
-                end;
-                v8.server.on_command_invoke(v48);
-                l_RunService_0.Heartbeat:Connect(function() --[[ Line: 162 ]]
-                    -- upvalues: v9 (ref), v6 (ref)
-                    for _, v75 in v9.users do
-                        if v75.dirty then
-                            for _, v77 in v6.console.commands do
-                                v6.replicate_to_player(v75.player, v77);
-                            end;
-                            v75.dirty = false;
-                        end;
-                    end;
-                end);
-            end;
-            return;
-        end;
-    end, 
-    has_permissions = v11.has_permissions, 
-    set_role_permissions = v25, 
-    give_roles = v11.give_roles, 
-    remove_roles = v11.remove_roles, 
-    get_user = v36, 
-    set_var = v6.write_global, 
-    get_command_context = l_get_command_context_0, 
-    register_type = v6.register_type, 
-    log = function(v78, v79) --[[ Line: 219 ]] --[[ Name: log ]]
-        -- upvalues: v12 (copy), v9 (copy), v8 (copy), v6 (copy)
-        if v12 then
-            local v80 = v9.command_context[coroutine.running()];
-            if not v80 then
-                return;
-            else
-                local l_player_0 = v80.executor.player;
-                if not l_player_0 then
-                    return;
-                else
-                    v8.server.fire_log(l_player_0, {
-                        kind = v78, 
-                        text = v79
-                    });
-                    return;
-                end;
-            end;
-        else
-            v6.console.output({
-                kind = v78, 
-                text = v79
-            });
-            return;
-        end;
-    end, 
-    register_default_commands = v4, 
-    console = v6.console, 
-    analyze = v6.analyze, 
-    _ = {
-        create_user = v11.create_user, 
-        disconnect_user = v11.disconnect_user, 
-        create_local_user = function() --[[ Line: 240 ]] --[[ Name: create_local_user ]]
-            -- upvalues: v36 (copy), v9 (copy)
-            local v82 = v36("local");
-            v9.local_user = v82;
-            return v82;
-        end
-    }
-};
+	args = require("./arguments");
+	parse = require("../roblox_packages/ast");
+	execute = function(arg1) -- Line 175, Named "execute"
+		--[[ Upvalues[5]:
+			[1]: ._state_upvr (readonly)
+			[2]: any_IsClient_result1_upvr (readonly)
+			[3]: ._net_upvr (readonly)
+			[4]: create_command_context_upvr (readonly)
+			[5]: ._console_upvr (readonly)
+		]]
+		local local_user = ._state_upvr.local_user
+		assert(any_IsClient_result1_upvr, "cannot run commands outside of the client")
+		assert(local_user, "unable to run commands without a local user")
+		if any_IsClient_result1_upvr then
+			._net_upvr.client.fire_log_command(arg1)
+		end
+		local pcall_result1, pcall_result2 = pcall(._console_upvr.execute, arg1)
+		if not pcall_result1 then
+			._console_upvr.console.output({
+				kind = "error";
+				text = pcall_result2;
+			})
+		end
+		create_command_context_upvr(local_user, false)()
+	end;
+	register_quick = ._console_upvr.register_quick;
+	register = ._console_upvr.register_command;
+	on_execution = function(arg1) -- Line 191, Named "on_execution"
+		--[[ Upvalues[1]:
+			[1]: ._net_upvr (readonly)
+		]]
+		local any_on_log_command_result1_upvr = ._net_upvr.server.on_log_command(function(arg1_3, arg2) -- Line 192
+			--[[ Upvalues[1]:
+				[1]: arg1 (readonly)
+			]]
+			if typeof(arg2) ~= "string" then
+				arg1_3:Kick()
+			end
+			arg1(arg1_3, arg2)
+		end)
+		return function() -- Line 197
+			--[[ Upvalues[1]:
+				[1]: any_on_log_command_result1_upvr (readonly)
+			]]
+			any_on_log_command_result1_upvr:Disconnect()
+		end
+	end;
+	on_command_run = function(arg1) -- Line 199, Named "on_command_run"
+		--[[ Upvalues[1]:
+			[1]: ._console_upvr (readonly)
+		]]
+		local any_connect_result1_upvr = ._console_upvr.after_command_run:connect(arg1)
+		return function() -- Line 202
+			--[[ Upvalues[1]:
+				[1]: any_connect_result1_upvr (readonly)
+			]]
+			any_connect_result1_upvr:disconnect()
+		end
+	end;
+	initiate_default_lifecycle = function() -- Line 134, Named "initiate_default_lifecycle"
+		--[[ Upvalues[11]:
+			[1]: any_IsClient_result1_upvr (readonly)
+			[2]: ._net_upvr (readonly)
+			[3]: ._client_upvr (readonly)
+			[4]: any_IsServer_result1_upvr (readonly)
+			[5]: Players_upvr (readonly)
+			[6]: get_user_upvr (readonly)
+			[7]: disconnect_user_for_player_upvr (readonly)
+			[8]: ._console_upvr (readonly)
+			[9]: invoke_server_command_upvr (readonly)
+			[10]: RunService_upvr (readonly)
+			[11]: ._state_upvr (readonly)
+		]]
+		-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+		if any_IsClient_result1_upvr then
+			._net_upvr.client.init()
+			._net_upvr.client.on_command_registered(._client_upvr.register_command)
+			._net_upvr.client.on_invoke_reply(._client_upvr.receive_server_results)
+			._net_upvr.client.on_log_received(._client_upvr.log)
+			._net_upvr.client.on_user_info_received(._client_upvr.create_local_user)
+			._net_upvr.client.on_role_info_received(._client_upvr.update_role_permissions)
+			._net_upvr.client.on_user_roles_update(._client_upvr.update_user_roles)
+		elseif any_IsServer_result1_upvr then
+			._net_upvr.server.init()
+			Players_upvr.PlayerAdded:Connect(get_user_upvr)
+			Players_upvr.PlayerRemoving:Connect(disconnect_user_for_player_upvr)
+			for i_4, v_4 in Players_upvr:GetPlayers(), nil do
+				get_user_upvr(v_4, i_4)
+				local _
+			end
+			for i_5, v_5 in Players_upvr:GetPlayers(), nil do
+				(function(arg1) -- Line 156
+					--[[ Upvalues[2]:
+						[1]: get_user_upvr (copied, readonly)
+						[2]: ._console_upvr (copied, readonly)
+					]]
+					local get_user_result1 = get_user_upvr(arg1)
+					if not get_user_result1.dirty then
+					else
+						for _, v_8 in ._console_upvr.console.commands do
+							._console_upvr.replicate_to_player(get_user_result1.player, v_8)
+						end
+						get_user_result1.dirty = false
+					end
+				end)(v_5, i_5)
+				local _
+			end
+			._net_upvr.server.on_command_invoke(invoke_server_command_upvr)
+			RunService_upvr.Heartbeat:Connect(function() -- Line 162
+				--[[ Upvalues[2]:
+					[1]: ._state_upvr (copied, readonly)
+					[2]: ._console_upvr (copied, readonly)
+				]]
+				for _, v_6 in ._state_upvr.users do
+					if not v_6.dirty then
+					else
+						for _, v_7 in ._console_upvr.console.commands do
+							._console_upvr.replicate_to_player(v_6.player, v_7)
+						end
+						v_6.dirty = false
+					end
+				end
+			end)
+		end
+	end;
+	has_permissions = ._user_upvr.has_permissions;
+	set_role_permissions = function(arg1, ...) -- Line 33, Named "set_role"
+		--[[ Upvalues[3]:
+			[1]: ._state_upvr (readonly)
+			[2]: any_IsServer_result1_upvr (readonly)
+			[3]: ._net_upvr (readonly)
+		]]
+		._state_upvr.roles[arg1] = {...}
+		if any_IsServer_result1_upvr then
+			._net_upvr.server.fire_update_role_perms(arg1, {...})
+		end
+	end;
+	give_roles = ._user_upvr.give_roles;
+	remove_roles = ._user_upvr.remove_roles;
+	get_user = get_user_upvr;
+	set_var = ._console_upvr.write_global;
+	get_command_context = ._context.get_command_context;
+	register_type = ._console_upvr.register_type;
+	log = function(arg1, arg2) -- Line 219, Named "log"
+		--[[ Upvalues[4]:
+			[1]: any_IsServer_result1_upvr (readonly)
+			[2]: ._state_upvr (readonly)
+			[3]: ._net_upvr (readonly)
+			[4]: ._console_upvr (readonly)
+		]]
+		if any_IsServer_result1_upvr then
+			local var76 = ._state_upvr.command_context[coroutine.running()]
+			if not var76 then
+			else
+				local player = var76.executor.player
+				if not player then return end
+				local tbl_4 = {}
+				tbl_4.kind = arg1
+				tbl_4.text = arg2
+				._net_upvr.server.fire_log(player, tbl_4)
+			end
+		end
+		local tbl_2 = {}
+		tbl_2.kind = arg1
+		tbl_2.text = arg2
+		._console_upvr.console.output(tbl_2)
+	end;
+	register_default_commands = require("./bootstrap");
+	console = ._console_upvr.console;
+	analyze = ._console_upvr.analyze;
+	_ = {
+		create_user = ._user_upvr.create_user;
+		disconnect_user = ._user_upvr.disconnect_user;
+		create_local_user = function() -- Line 240, Named "create_local_user"
+			--[[ Upvalues[2]:
+				[1]: get_user_upvr (readonly)
+				[2]: ._state_upvr (readonly)
+			]]
+			local get_user_result1_2 = get_user_upvr("local")
+			._state_upvr.local_user = get_user_result1_2
+			return get_user_result1_2
+		end;
+	};
+}

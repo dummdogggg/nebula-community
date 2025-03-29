@@ -1,54 +1,71 @@
 --[[
     Script: ReplicatedFirst.LoadingScreen
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedFirst_0 = game:GetService("ReplicatedFirst");
-local l_Players_0 = game:GetService("Players");
-local l_RunService_0 = game:GetService("RunService");
-local l_TweenService_0 = game:GetService("TweenService");
-local l_LoadingScreenPrefab_0 = script.Parent:FindFirstChild("LoadingScreenPrefab");
-local l_LocalPlayer_0 = l_Players_0.LocalPlayer;
-local v6 = {
-    _instance = l_LoadingScreenPrefab_0:Clone(), 
-    _startTime = 0, 
-    _spinnerConnection = nil
-};
-v6.enableAsync = function() --[[ Line: 29 ]] --[[ Name: enableAsync ]]
-    -- upvalues: l_LocalPlayer_0 (copy), v6 (copy), l_ReplicatedFirst_0 (copy), l_RunService_0 (copy)
-    local l_PlayerGui_0 = l_LocalPlayer_0:WaitForChild("PlayerGui");
-    v6._instance.Parent = l_PlayerGui_0;
-    l_ReplicatedFirst_0:RemoveDefaultLoadingScreen();
-    v6._startTime = os.clock();
-    local l_SpinnerImageLabel_0 = v6._instance:FindFirstChild("SizingFrame"):FindFirstChild("ContentFrame"):FindFirstChild("SpinnerImageLabel");
-    v6._spinnerConnection = l_RunService_0.Heartbeat:Connect(function(v9) --[[ Line: 44 ]]
-        -- upvalues: l_SpinnerImageLabel_0 (copy)
-        local l_l_SpinnerImageLabel_0_0 = l_SpinnerImageLabel_0;
-        l_l_SpinnerImageLabel_0_0.Rotation = l_l_SpinnerImageLabel_0_0.Rotation + v9 * 360;
-    end);
-    v6._startTime = os.clock();
-end;
-v6.updateDetailText = function(v11) --[[ Line: 50 ]] --[[ Name: updateDetailText ]]
-    -- upvalues: v6 (copy)
-    v6._instance:FindFirstChild("SizingFrame"):FindFirstChild("ContentFrame"):FindFirstChild("TextContentFrame"):FindFirstChild("DetailTextLabel").Text = v11;
-end;
-v6.disableAsync = function() --[[ Line: 60 ]] --[[ Name: disableAsync ]]
-    -- upvalues: v6 (copy), l_TweenService_0 (copy)
-    local v12 = os.clock() - v6._startTime;
-    task.wait((math.max(0, 2 - v12)));
-    if v6._spinnerConnection then
-        v6._spinnerConnection:Disconnect();
-    end;
-    v6._instance:FindFirstChild("SizingFrame"):FindFirstChild("ContentFrame").Visible = false;
-    local v13 = l_TweenService_0:Create(v6._instance:FindFirstChild("Background"), TweenInfo.new(1), {
-        BackgroundTransparency = 1
-    });
-    task.spawn(function() --[[ Line: 80 ]]
-        -- upvalues: v13 (copy), v6 (ref)
-        v13:Play();
-        v13.Completed:Wait();
-        v6._instance:Destroy();
-    end);
-end;
-return v6;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:34:12
+-- Luau version 6, Types version 3
+-- Time taken: 0.001728 seconds
+
+local module_upvr = {
+	_instance = script.Parent:FindFirstChild("LoadingScreenPrefab"):Clone();
+	_startTime = 0;
+	_spinnerConnection = nil;
+}
+local LocalPlayer_upvr = game:GetService("Players").LocalPlayer
+local ReplicatedFirst_upvr = game:GetService("ReplicatedFirst")
+local RunService_upvr = game:GetService("RunService")
+function module_upvr.enableAsync() -- Line 29
+	--[[ Upvalues[4]:
+		[1]: LocalPlayer_upvr (readonly)
+		[2]: module_upvr (readonly)
+		[3]: ReplicatedFirst_upvr (readonly)
+		[4]: RunService_upvr (readonly)
+	]]
+	module_upvr._instance.Parent = LocalPlayer_upvr:WaitForChild("PlayerGui")
+	ReplicatedFirst_upvr:RemoveDefaultLoadingScreen()
+	module_upvr._startTime = os.clock()
+	local SpinnerImageLabel_upvr = module_upvr._instance:FindFirstChild("SizingFrame"):FindFirstChild("ContentFrame"):FindFirstChild("SpinnerImageLabel")
+	module_upvr._spinnerConnection = RunService_upvr.Heartbeat:Connect(function(arg1) -- Line 44
+		--[[ Upvalues[1]:
+			[1]: SpinnerImageLabel_upvr (readonly)
+		]]
+		local var7 = SpinnerImageLabel_upvr
+		var7.Rotation += arg1 * 360
+	end)
+	module_upvr._startTime = os.clock()
+end
+function module_upvr.updateDetailText(arg1) -- Line 50
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	module_upvr._instance:FindFirstChild("SizingFrame"):FindFirstChild("ContentFrame"):FindFirstChild("TextContentFrame"):FindFirstChild("DetailTextLabel").Text = arg1
+end
+local TweenService_upvr = game:GetService("TweenService")
+function module_upvr.disableAsync() -- Line 60
+	--[[ Upvalues[2]:
+		[1]: module_upvr (readonly)
+		[2]: TweenService_upvr (readonly)
+	]]
+	task.wait(math.max(0, (2) - (os.clock() - module_upvr._startTime)))
+	if module_upvr._spinnerConnection then
+		module_upvr._spinnerConnection:Disconnect()
+	end
+	module_upvr._instance:FindFirstChild("SizingFrame"):FindFirstChild("ContentFrame").Visible = false
+	local any_Create_result1_upvr = TweenService_upvr:Create(module_upvr._instance:FindFirstChild("Background"), TweenInfo.new(1), {
+		BackgroundTransparency = 1;
+	})
+	task.spawn(function() -- Line 80
+		--[[ Upvalues[2]:
+			[1]: any_Create_result1_upvr (readonly)
+			[2]: module_upvr (copied, readonly)
+		]]
+		any_Create_result1_upvr:Play()
+		any_Create_result1_upvr.Completed:Wait()
+		module_upvr._instance:Destroy()
+	end)
+end
+return module_upvr

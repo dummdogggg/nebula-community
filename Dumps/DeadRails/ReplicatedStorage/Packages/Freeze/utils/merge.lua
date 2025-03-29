@@ -1,25 +1,41 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.utils.merge
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.Parent.None);
-return function(...) --[[ Line: 4 ]]
-    -- upvalues: v0 (copy)
-    local v1 = {};
-    for v2 = 1, select("#", ...) do
-        local v3 = select(v2, ...);
-        if v3 ~= nil then
-            assert(type(v3) == "table", "Expected table");
-            for v4, v5 in v3 do
-                if v5 == v0 then
-                    v1[v4] = nil;
-                else
-                    v1[v4] = v5;
-                end;
-            end;
-        end;
-    end;
-    return v1;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:37:01
+-- Luau version 6, Types version 3
+-- Time taken: 0.000878 seconds
+
+local None_upvr = require(script.Parent.Parent.None)
+return function(...) -- Line 4
+	--[[ Upvalues[1]:
+		[1]: None_upvr (readonly)
+	]]
+	for i = 1, select('#', ...) do
+		local var9 = ...
+		local selected = select(i, var9)
+		if selected ~= nil then
+			if type(selected) ~= "table" then
+				var9 = false
+			else
+				var9 = true
+			end
+			assert(var9, "Expected table")
+			var9 = nil
+			for i_2, v in selected, var9 do
+				if v == None_upvr then
+					({})[i_2] = nil
+				else
+					-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+					;({})[i_2] = v
+				end
+			end
+		end
+	end
+	-- KONSTANTERROR: Expression was reused, decompilation is incorrect
+	return {}
+end

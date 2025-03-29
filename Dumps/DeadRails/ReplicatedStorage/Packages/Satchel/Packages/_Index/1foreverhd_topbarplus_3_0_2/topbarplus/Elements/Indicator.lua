@@ -1,102 +1,111 @@
 --[[
     Script: ReplicatedStorage.Packages.Satchel.Packages._Index.1foreverhd_topbarplus@3.0.2.topbarplus.Elements.Indicator
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-return function(v0, _) --[[ Line: 1 ]]
-    local l_widget_0 = v0.widget;
-    local v3 = v0:getInstance("Contents");
-    local l_Frame_0 = Instance.new("Frame");
-    l_Frame_0.Name = "Indicator";
-    l_Frame_0.LayoutOrder = 9999999;
-    l_Frame_0.ZIndex = 6;
-    l_Frame_0.Size = UDim2.new(0, 42, 0, 42);
-    l_Frame_0.BorderColor3 = Color3.fromRGB(0, 0, 0);
-    l_Frame_0.BackgroundTransparency = 1;
-    l_Frame_0.Position = UDim2.new(1, 0, 0.5, 0);
-    l_Frame_0.BorderSizePixel = 0;
-    l_Frame_0.BackgroundColor3 = Color3.fromRGB(0, 0, 0);
-    l_Frame_0.Parent = v3;
-    local l_Frame_1 = Instance.new("Frame");
-    l_Frame_1.Name = "IndicatorButton";
-    l_Frame_1.BorderColor3 = Color3.fromRGB(0, 0, 0);
-    l_Frame_1.AnchorPoint = Vector2.new(0.5, 0.5);
-    l_Frame_1.BorderSizePixel = 0;
-    l_Frame_1.BackgroundColor3 = Color3.fromRGB(0, 0, 0);
-    l_Frame_1.Parent = l_Frame_0;
-    local l_GuiService_0 = game:GetService("GuiService");
-    local l_GamepadService_0 = game:GetService("GamepadService");
-    local v8 = v0:getInstance("ClickRegion");
-    local function v9() --[[ Line: 28 ]] --[[ Name: selectionChanged ]]
-        -- upvalues: l_GuiService_0 (copy), v8 (copy), l_Frame_1 (copy)
-        if l_GuiService_0.SelectedObject == v8 then
-            l_Frame_1.BackgroundTransparency = 1;
-            l_Frame_1.Position = UDim2.new(0.5, -2, 0.5, 0);
-            l_Frame_1.Size = UDim2.fromScale(1.2, 1.2);
-            return;
-        else
-            l_Frame_1.BackgroundTransparency = 0.75;
-            l_Frame_1.Position = UDim2.new(0.5, 2, 0.5, 0);
-            l_Frame_1.Size = UDim2.fromScale(1, 1);
-            return;
-        end;
-    end;
-    v0.janitor:add(l_GuiService_0:GetPropertyChangedSignal("SelectedObject"):Connect(v9));
-    v9();
-    local l_ImageLabel_0 = Instance.new("ImageLabel");
-    l_ImageLabel_0.LayoutOrder = 2;
-    l_ImageLabel_0.ZIndex = 15;
-    l_ImageLabel_0.AnchorPoint = Vector2.new(0.5, 0.5);
-    l_ImageLabel_0.Size = UDim2.new(0.5, 0, 0.5, 0);
-    l_ImageLabel_0.BackgroundTransparency = 1;
-    l_ImageLabel_0.Position = UDim2.new(0.5, 0, 0.5, 0);
-    l_ImageLabel_0.Image = "rbxasset://textures/ui/Controls/XboxController/DPadUp@2x.png";
-    l_ImageLabel_0.Parent = l_Frame_1;
-    local l_UICorner_0 = Instance.new("UICorner");
-    l_UICorner_0.CornerRadius = UDim.new(1, 0);
-    l_UICorner_0.Parent = l_Frame_1;
-    local l_UserInputService_0 = game:GetService("UserInputService");
-    local function v14(v13) --[[ Line: 58 ]] --[[ Name: setIndicatorVisible ]]
-        -- upvalues: l_Frame_0 (copy), l_GamepadService_0 (copy), v0 (copy)
-        if v13 == nil then
-            v13 = l_Frame_0.Visible;
-        end;
-        if l_GamepadService_0.GamepadCursorEnabled then
-            v13 = false;
-        end;
-        if v13 then
-            v0:modifyTheme({
-                "PaddingRight", 
-                "Size", 
-                UDim2.new(0, 0, 1, 0)
-            }, "IndicatorPadding");
-        elseif l_Frame_0.Visible then
-            v0:removeModification("IndicatorPadding");
-        end;
-        v0:modifyTheme({
-            "Indicator", 
-            "Visible", 
-            v13
-        });
-        v0.updateSize:Fire();
-    end;
-    v0.janitor:add(l_GamepadService_0:GetPropertyChangedSignal("GamepadCursorEnabled"):Connect(v14));
-    v0.indicatorSet:Connect(function(v15) --[[ Line: 74 ]]
-        -- upvalues: l_ImageLabel_0 (copy), l_UserInputService_0 (copy), v14 (copy)
-        local v16 = false;
-        if v15 then
-            l_ImageLabel_0.Image = l_UserInputService_0:GetImageForKeyCode(v15);
-            v16 = true;
-        end;
-        v14(v16);
-    end);
-    l_widget_0:GetPropertyChangedSignal("AbsoluteSize"):Connect(function() --[[ Line: 83 ]] --[[ Name: updateSize ]]
-        -- upvalues: l_widget_0 (copy), l_Frame_0 (copy)
-        local v17 = l_widget_0.AbsoluteSize.Y * 0.96;
-        l_Frame_0.Size = UDim2.new(0, v17, 0, v17);
-    end);
-    local v18 = l_widget_0.AbsoluteSize.Y * 0.96;
-    l_Frame_0.Size = UDim2.new(0, v18, 0, v18);
-    return l_Frame_0;
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:35:17
+-- Luau version 6, Types version 3
+-- Time taken: 0.002336 seconds
+
+return function(arg1, arg2) -- Line 1
+	local widget_upvr = arg1.widget
+	local Frame_upvr_2 = Instance.new("Frame")
+	Frame_upvr_2.Name = "Indicator"
+	Frame_upvr_2.LayoutOrder = 9999999
+	Frame_upvr_2.ZIndex = 6
+	Frame_upvr_2.Size = UDim2.new(0, 42, 0, 42)
+	Frame_upvr_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Frame_upvr_2.BackgroundTransparency = 1
+	Frame_upvr_2.Position = UDim2.new(1, 0, 0.5, 0)
+	Frame_upvr_2.BorderSizePixel = 0
+	Frame_upvr_2.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	Frame_upvr_2.Parent = arg1:getInstance("Contents")
+	local Frame_upvr = Instance.new("Frame")
+	Frame_upvr.Name = "IndicatorButton"
+	Frame_upvr.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Frame_upvr.AnchorPoint = Vector2.new(0.5, 0.5)
+	Frame_upvr.BorderSizePixel = 0
+	Frame_upvr.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	Frame_upvr.Parent = Frame_upvr_2
+	local GuiService_upvr = game:GetService("GuiService")
+	local GamepadService_upvr = game:GetService("GamepadService")
+	local any_getInstance_result1_upvr = arg1:getInstance("ClickRegion")
+	local function selectionChanged() -- Line 28
+		--[[ Upvalues[3]:
+			[1]: GuiService_upvr (readonly)
+			[2]: any_getInstance_result1_upvr (readonly)
+			[3]: Frame_upvr (readonly)
+		]]
+		if GuiService_upvr.SelectedObject == any_getInstance_result1_upvr then
+			Frame_upvr.BackgroundTransparency = 1
+			Frame_upvr.Position = UDim2.new(0.5, -2, 0.5, 0)
+			Frame_upvr.Size = UDim2.fromScale(1.2, 1.2)
+		else
+			Frame_upvr.BackgroundTransparency = 0.75
+			Frame_upvr.Position = UDim2.new(0.5, 2, 0.5, 0)
+			Frame_upvr.Size = UDim2.fromScale(1, 1)
+		end
+	end
+	arg1.janitor:add(GuiService_upvr:GetPropertyChangedSignal("SelectedObject"):Connect(selectionChanged))
+	selectionChanged()
+	local ImageLabel_upvr = Instance.new("ImageLabel")
+	ImageLabel_upvr.LayoutOrder = 2
+	ImageLabel_upvr.ZIndex = 15
+	ImageLabel_upvr.AnchorPoint = Vector2.new(0.5, 0.5)
+	ImageLabel_upvr.Size = UDim2.new(0.5, 0, 0.5, 0)
+	ImageLabel_upvr.BackgroundTransparency = 1
+	ImageLabel_upvr.Position = UDim2.new(0.5, 0, 0.5, 0)
+	ImageLabel_upvr.Image = "rbxasset://textures/ui/Controls/XboxController/DPadUp@2x.png"
+	ImageLabel_upvr.Parent = Frame_upvr
+	local UICorner = Instance.new("UICorner")
+	UICorner.CornerRadius = UDim.new(1, 0)
+	UICorner.Parent = Frame_upvr
+	local function setIndicatorVisible_upvr(arg1_2) -- Line 58, Named "setIndicatorVisible"
+		--[[ Upvalues[3]:
+			[1]: Frame_upvr_2 (readonly)
+			[2]: GamepadService_upvr (readonly)
+			[3]: arg1 (readonly)
+		]]
+		if arg1_2 == nil then
+		end
+		if GamepadService_upvr.GamepadCursorEnabled then
+			local var10 = false
+		end
+		if var10 then
+			arg1:modifyTheme({"PaddingRight", "Size", UDim2.new(0, 0, 1, 0)}, "IndicatorPadding")
+		elseif Frame_upvr_2.Visible then
+			arg1:removeModification("IndicatorPadding")
+		end
+		arg1:modifyTheme({"Indicator", "Visible", var10})
+		arg1.updateSize:Fire()
+	end
+	arg1.janitor:add(GamepadService_upvr:GetPropertyChangedSignal("GamepadCursorEnabled"):Connect(setIndicatorVisible_upvr))
+	local UserInputService_upvr = game:GetService("UserInputService")
+	arg1.indicatorSet:Connect(function(arg1_3) -- Line 74
+		--[[ Upvalues[3]:
+			[1]: ImageLabel_upvr (readonly)
+			[2]: UserInputService_upvr (readonly)
+			[3]: setIndicatorVisible_upvr (readonly)
+		]]
+		local var15 = false
+		if arg1_3 then
+			ImageLabel_upvr.Image = UserInputService_upvr:GetImageForKeyCode(arg1_3)
+			var15 = true
+		end
+		setIndicatorVisible_upvr(var15)
+	end)
+	widget_upvr:GetPropertyChangedSignal("AbsoluteSize"):Connect(function() -- Line 83, Named "updateSize"
+		--[[ Upvalues[2]:
+			[1]: widget_upvr (readonly)
+			[2]: Frame_upvr_2 (readonly)
+		]]
+		local var16 = widget_upvr.AbsoluteSize.Y * 0.96
+		Frame_upvr_2.Size = UDim2.new(0, var16, 0, var16)
+	end)
+	local var17 = widget_upvr.AbsoluteSize.Y * 0.96
+	Frame_upvr_2.Size = UDim2.new(0, var17, 0, var17)
+	return Frame_upvr_2
+end

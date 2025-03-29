@@ -1,13 +1,22 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.List.compat.removeIndices
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_remove_0 = require(script.Parent.Parent:FindFirstChild("remove"));
-local v1 = require(script.Parent.Parent.Parent.utils.deprecationWarning);
-return function(v2, ...) --[[ Line: 10 ]] --[[ Name: removeIndices ]]
-    -- upvalues: v1 (copy), l_remove_0 (copy)
-    v1("List." .. script.Name, "List.remove");
-    return l_remove_0(v2, ...);
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:35:23
+-- Luau version 6, Types version 3
+-- Time taken: 0.000517 seconds
+
+local deprecationWarning_upvr = require(script.Parent.Parent.Parent.utils.deprecationWarning)
+local module_upvr = require(script.Parent.Parent:FindFirstChild("remove"))
+return function(arg1, ...) -- Line 10, Named "removeIndices"
+	--[[ Upvalues[2]:
+		[1]: deprecationWarning_upvr (readonly)
+		[2]: module_upvr (readonly)
+	]]
+	deprecationWarning_upvr("List."..script.Name, "List.remove")
+	return module_upvr(arg1, ...)
+end

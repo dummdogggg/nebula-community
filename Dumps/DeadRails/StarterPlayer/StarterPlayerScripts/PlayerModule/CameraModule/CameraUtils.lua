@@ -1,246 +1,305 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.PlayerModule.CameraModule.CameraUtils
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_Players_0 = game:GetService("Players");
-local l_UserInputService_0 = game:GetService("UserInputService");
-local l_UserGameSettings_0 = UserSettings():GetService("UserGameSettings");
-local v3 = {};
-local function _(v4) --[[ Line: 12 ]] --[[ Name: round ]]
-    return (math.floor(v4 + 0.5));
-end;
-local v6 = {};
-v6.__index = v6;
-v6.new = function(v7, v8) --[[ Line: 21 ]] --[[ Name: new ]]
-    -- upvalues: v6 (copy)
-    return (setmetatable({
-        freq = v7, 
-        goal = v8, 
-        pos = v8, 
-        vel = 0
-    }, v6));
-end;
-v6.step = function(v9, v10) --[[ Line: 31 ]] --[[ Name: step ]]
-    local v11 = v9.freq * 2 * 3.141592653589793;
-    local l_goal_0 = v9.goal;
-    local l_pos_0 = v9.pos;
-    local l_vel_0 = v9.vel;
-    local v15 = l_pos_0 - l_goal_0;
-    local v16 = math.exp(-v11 * v10);
-    local v17 = (v15 * (v11 * v10 + 1) + l_vel_0 * v10) * v16 + l_goal_0;
-    local v18 = (l_vel_0 * (1 - v11 * v10) - v15 * (v11 * v11 * v10)) * v16;
-    v9.pos = v17;
-    v9.vel = v18;
-    return v17;
-end;
-v3.Spring = v6;
-v3.map = function(v19, v20, v21, v22, v23) --[[ Line: 53 ]] --[[ Name: map ]]
-    return (v19 - v20) * (v23 - v22) / (v21 - v20) + v22;
-end;
-v3.mapClamp = function(v24, v25, v26, v27, v28) --[[ Line: 58 ]] --[[ Name: mapClamp ]]
-    return (math.clamp((v24 - v25) * (v28 - v27) / (v26 - v25) + v27, math.min(v27, v28), (math.max(v27, v28))));
-end;
-v3.getLooseBoundingSphere = function(v29) --[[ Line: 67 ]] --[[ Name: getLooseBoundingSphere ]]
-    local v30 = table.create(#v29);
-    for v31, v32 in pairs(v29) do
-        v30[v31] = v32.Position;
-    end;
-    local v33 = v30[1];
-    local l_v33_0 = v33;
-    local v35 = 0;
-    for _, v37 in ipairs(v30) do
-        local l_Magnitude_0 = (v37 - v33).Magnitude;
-        if v35 < l_Magnitude_0 then
-            l_v33_0 = v37;
-            v35 = l_Magnitude_0;
-        end;
-    end;
-    local l_l_v33_0_0 = l_v33_0;
-    local v40 = 0;
-    for _, v42 in ipairs(v30) do
-        local l_Magnitude_1 = (v42 - l_v33_0).Magnitude;
-        if v40 < l_Magnitude_1 then
-            l_l_v33_0_0 = v42;
-            v40 = l_Magnitude_1;
-        end;
-    end;
-    local v44 = (l_v33_0 + l_l_v33_0_0) * 0.5;
-    local v45 = (l_v33_0 - l_l_v33_0_0).Magnitude * 0.5;
-    for _, v47 in ipairs(v30) do
-        local l_Magnitude_2 = (v47 - v44).Magnitude;
-        if v45 < l_Magnitude_2 then
-            v44 = v44 + (l_Magnitude_2 - v45) * 0.5 * (v47 - v44).Unit;
-            v45 = (l_Magnitude_2 + v45) * 0.5;
-        end;
-    end;
-    return v44, v45;
-end;
-v3.sanitizeAngle = function(v49) --[[ Line: 123 ]] --[[ Name: sanitizeAngle ]]
-    return (v49 + 3.141592653589793) % 6.283185307179586 - 3.141592653589793;
-end;
-v3.Round = function(v50, v51) --[[ Line: 128 ]] --[[ Name: Round ]]
-    local v52 = 10 ^ v51;
-    return math.floor(v50 * v52 + 0.5) / v52;
-end;
-v3.IsFinite = function(v53) --[[ Line: 133 ]] --[[ Name: IsFinite ]]
-    local v54 = false;
-    if v53 == v53 then
-        v54 = false;
-        if v53 ~= 1e999 then
-            v54 = v53 ~= -1e999;
-        end;
-    end;
-    return v54;
-end;
-v3.IsFiniteVector3 = function(v55) --[[ Line: 137 ]] --[[ Name: IsFiniteVector3 ]]
-    -- upvalues: v3 (copy)
-    return v3.IsFinite(v55.X) and v3.IsFinite(v55.Y) and v3.IsFinite(v55.Z);
-end;
-v3.GetAngleBetweenXZVectors = function(v56, v57) --[[ Line: 142 ]] --[[ Name: GetAngleBetweenXZVectors ]]
-    return (math.atan2(v57.X * v56.Z - v57.Z * v56.X, v57.X * v56.X + v57.Z * v56.Z));
-end;
-v3.RotateVectorByAngleAndRound = function(v58, v59, v60) --[[ Line: 146 ]] --[[ Name: RotateVectorByAngleAndRound ]]
-    if v58.Magnitude > 0 then
-        v58 = v58.Unit;
-        local v61 = math.atan2(v58.Z, v58.X);
-        return math.floor((math.atan2(v58.Z, v58.X) + v59) / v60 + 0.5) * v60 - v61;
-    else
-        return 0;
-    end;
-end;
-local function _(v62) --[[ Line: 160 ]] --[[ Name: SCurveTranform ]]
-    v62 = math.clamp(v62, -1, 1);
-    if v62 >= 0 then
-        return v62 * 0.35 / (0.35 - v62 + 1);
-    else
-        return -(-v62 * 0.8 / (v62 + 0.8 + 1));
-    end;
-end;
-local function _(v64) --[[ Line: 169 ]] --[[ Name: toSCurveSpace ]]
-    return (math.abs(v64) * 2 - 1) * 1.1 - 0.1;
-end;
-local function _(v66) --[[ Line: 173 ]] --[[ Name: fromSCurveSpace ]]
-    return v66 / 2 + 0.5;
-end;
-v3.GamepadLinearToCurve = function(v68) --[[ Line: 177 ]] --[[ Name: GamepadLinearToCurve ]]
-    local function _(v69) --[[ Line: 178 ]] --[[ Name: onAxis ]]
-        local v70 = 1;
-        if v69 < 0 then
-            v70 = -1;
-        end;
-        local v71 = math.clamp((math.abs((math.abs(v69))) * 2 - 1) * 1.1 - 0.1, -1, 1);
-        return (math.clamp(((if v71 >= 0 then v71 * 0.35 / (0.35 - v71 + 1) else -(-v71 * 0.8 / (v71 + 0.8 + 1))) / 2 + 0.5) * v70, -1, 1));
-    end;
-    local l_new_0 = Vector2.new;
-    local l_X_0 = v68.X;
-    local v75 = 1;
-    if l_X_0 < 0 then
-        v75 = -1;
-    end;
-    local v76 = math.clamp((math.abs((math.abs(l_X_0))) * 2 - 1) * 1.1 - 0.1, -1, 1);
-    local v77 = math.clamp(((if v76 >= 0 then v76 * 0.35 / (0.35 - v76 + 1) else -(-v76 * 0.8 / (v76 + 0.8 + 1))) / 2 + 0.5) * v75, -1, 1);
-    v75 = v68.Y;
-    local v78 = 1;
-    if v75 < 0 then
-        v78 = -1;
-    end;
-    local v79 = math.clamp((math.abs((math.abs(v75))) * 2 - 1) * 1.1 - 0.1, -1, 1);
-    return l_new_0(v77, (math.clamp(((if v79 >= 0 then v79 * 0.35 / (0.35 - v79 + 1) else -(-v79 * 0.8 / (v79 + 0.8 + 1))) / 2 + 0.5) * v78, -1, 1)));
-end;
-v3.ConvertCameraModeEnumToStandard = function(v80) --[[ Line: 191 ]] --[[ Name: ConvertCameraModeEnumToStandard ]]
-    if v80 == Enum.TouchCameraMovementMode.Default then
-        return Enum.ComputerCameraMovementMode.Follow;
-    elseif v80 == Enum.ComputerCameraMovementMode.Default then
-        return Enum.ComputerCameraMovementMode.Classic;
-    elseif v80 == Enum.TouchCameraMovementMode.Classic or v80 == Enum.DevTouchCameraMovementMode.Classic or v80 == Enum.DevComputerCameraMovementMode.Classic or v80 == Enum.ComputerCameraMovementMode.Classic then
-        return Enum.ComputerCameraMovementMode.Classic;
-    elseif v80 == Enum.TouchCameraMovementMode.Follow or v80 == Enum.DevTouchCameraMovementMode.Follow or v80 == Enum.DevComputerCameraMovementMode.Follow or v80 == Enum.ComputerCameraMovementMode.Follow then
-        return Enum.ComputerCameraMovementMode.Follow;
-    elseif v80 == Enum.TouchCameraMovementMode.Orbital or v80 == Enum.DevTouchCameraMovementMode.Orbital or v80 == Enum.DevComputerCameraMovementMode.Orbital or v80 == Enum.ComputerCameraMovementMode.Orbital then
-        return Enum.ComputerCameraMovementMode.Orbital;
-    elseif v80 == Enum.ComputerCameraMovementMode.CameraToggle or v80 == Enum.DevComputerCameraMovementMode.CameraToggle then
-        return Enum.ComputerCameraMovementMode.CameraToggle;
-    elseif v80 == Enum.DevTouchCameraMovementMode.UserChoice or v80 == Enum.DevComputerCameraMovementMode.UserChoice then
-        return Enum.DevComputerCameraMovementMode.UserChoice;
-    else
-        return Enum.ComputerCameraMovementMode.Classic;
-    end;
-end;
-local function _() --[[ Line: 240 ]] --[[ Name: getMouse ]]
-    -- upvalues: l_Players_0 (copy)
-    local l_LocalPlayer_0 = l_Players_0.LocalPlayer;
-    if not l_LocalPlayer_0 then
-        l_Players_0:GetPropertyChangedSignal("LocalPlayer"):Wait();
-        l_LocalPlayer_0 = l_Players_0.LocalPlayer;
-    end;
-    assert(l_LocalPlayer_0);
-    return l_LocalPlayer_0:GetMouse();
-end;
-local v83 = "";
-local v84 = nil;
-v3.setMouseIconOverride = function(v85) --[[ Line: 252 ]] --[[ Name: setMouseIconOverride ]]
-    -- upvalues: l_Players_0 (copy), v84 (ref), v83 (ref)
-    local l_LocalPlayer_1 = l_Players_0.LocalPlayer;
-    if not l_LocalPlayer_1 then
-        l_Players_0:GetPropertyChangedSignal("LocalPlayer"):Wait();
-        l_LocalPlayer_1 = l_Players_0.LocalPlayer;
-    end;
-    assert(l_LocalPlayer_1);
-    local l_l_LocalPlayer_1_Mouse_0 = l_LocalPlayer_1:GetMouse();
-    if l_l_LocalPlayer_1_Mouse_0.Icon ~= v84 then
-        v83 = l_l_LocalPlayer_1_Mouse_0.Icon;
-    end;
-    l_l_LocalPlayer_1_Mouse_0.Icon = v85;
-    v84 = v85;
-end;
-v3.restoreMouseIcon = function() --[[ Line: 263 ]] --[[ Name: restoreMouseIcon ]]
-    -- upvalues: l_Players_0 (copy), v84 (ref), v83 (ref)
-    local l_LocalPlayer_2 = l_Players_0.LocalPlayer;
-    if not l_LocalPlayer_2 then
-        l_Players_0:GetPropertyChangedSignal("LocalPlayer"):Wait();
-        l_LocalPlayer_2 = l_Players_0.LocalPlayer;
-    end;
-    assert(l_LocalPlayer_2);
-    local l_l_LocalPlayer_2_Mouse_0 = l_LocalPlayer_2:GetMouse();
-    if l_l_LocalPlayer_2_Mouse_0.Icon == v84 then
-        l_l_LocalPlayer_2_Mouse_0.Icon = v83;
-    end;
-    v84 = nil;
-end;
-local l_Default_0 = Enum.MouseBehavior.Default;
-local v91 = nil;
-v3.setMouseBehaviorOverride = function(v92) --[[ Line: 274 ]] --[[ Name: setMouseBehaviorOverride ]]
-    -- upvalues: l_UserInputService_0 (copy), v91 (ref), l_Default_0 (ref)
-    if l_UserInputService_0.MouseBehavior ~= v91 then
-        l_Default_0 = l_UserInputService_0.MouseBehavior;
-    end;
-    l_UserInputService_0.MouseBehavior = v92;
-    v91 = v92;
-end;
-v3.restoreMouseBehavior = function() --[[ Line: 283 ]] --[[ Name: restoreMouseBehavior ]]
-    -- upvalues: l_UserInputService_0 (copy), v91 (ref), l_Default_0 (ref)
-    if l_UserInputService_0.MouseBehavior == v91 then
-        l_UserInputService_0.MouseBehavior = l_Default_0;
-    end;
-    v91 = nil;
-end;
-local l_MovementRelative_0 = Enum.RotationType.MovementRelative;
-local v94 = nil;
-v3.setRotationTypeOverride = function(v95) --[[ Line: 292 ]] --[[ Name: setRotationTypeOverride ]]
-    -- upvalues: l_UserGameSettings_0 (copy), v94 (ref), l_MovementRelative_0 (ref)
-    if l_UserGameSettings_0.RotationType ~= v94 then
-        l_MovementRelative_0 = l_UserGameSettings_0.RotationType;
-    end;
-    l_UserGameSettings_0.RotationType = v95;
-    v94 = v95;
-end;
-v3.restoreRotationType = function() --[[ Line: 301 ]] --[[ Name: restoreRotationType ]]
-    -- upvalues: l_UserGameSettings_0 (copy), v94 (ref), l_MovementRelative_0 (ref)
-    if l_UserGameSettings_0.RotationType == v94 then
-        l_UserGameSettings_0.RotationType = l_MovementRelative_0;
-    end;
-    v94 = nil;
-end;
-return v3;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:34:44
+-- Luau version 6, Types version 3
+-- Time taken: 0.007969 seconds
+
+local Players_upvr = game:GetService("Players")
+local UserInputService_upvr = game:GetService("UserInputService")
+local UserGameSettings_upvr = UserSettings():GetService("UserGameSettings")
+local module_upvr = {}
+local function _(arg1) -- Line 12, Named "round"
+	return math.floor(arg1 + 0.5)
+end
+local tbl_upvr = {}
+tbl_upvr.__index = tbl_upvr
+function tbl_upvr.new(arg1, arg2) -- Line 21
+	--[[ Upvalues[1]:
+		[1]: tbl_upvr (readonly)
+	]]
+	local module = {}
+	module.freq = arg1
+	module.goal = arg2
+	module.pos = arg2
+	module.vel = 0
+	return setmetatable(module, tbl_upvr)
+end
+function tbl_upvr.step(arg1, arg2) -- Line 31
+	local var7 = arg1.freq * 2 * math.pi
+	local goal = arg1.goal
+	local vel = arg1.vel
+	local var10 = arg1.pos - goal
+	local exponentiated = math.exp(-var7 * arg2)
+	local var12 = (var10 * (var7 * arg2 + 1) + vel * arg2) * exponentiated + goal
+	arg1.pos = var12
+	arg1.vel = (vel * (1 - var7 * arg2) - (var10) * (var7 * var7 * arg2)) * exponentiated
+	return var12
+end
+module_upvr.Spring = tbl_upvr
+function module_upvr.map(arg1, arg2, arg3, arg4, arg5) -- Line 53
+	return (arg1 - arg2) * (arg5 - arg4) / (arg3 - arg2) + arg4
+end
+function module_upvr.mapClamp(arg1, arg2, arg3, arg4, arg5) -- Line 58
+	return math.clamp((arg1 - arg2) * (arg5 - arg4) / (arg3 - arg2) + arg4, math.min(arg4, arg5), math.max(arg4, arg5))
+end
+function module_upvr.getLooseBoundingSphere(arg1) -- Line 67
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local table_create_result1 = table.create(#arg1)
+	local pairs_result1, _, pairs_result3 = pairs(arg1)
+	local var49
+	for i, v in pairs_result1, var49, pairs_result3 do
+		table_create_result1[i] = v.Position
+	end
+	local _1 = table_create_result1[1]
+	var49 = _1
+	for _, v_2 in ipairs(table_create_result1) do
+		if 0 < (v_2 - _1).Magnitude then
+			var49 = v_2
+		end
+	end
+	for _, v_3 in ipairs(table_create_result1) do
+		if 0 < (v_3 - var49).Magnitude then
+			local var59 = v_3
+		end
+	end
+	local var60 = (var49 + var59) * 0.5
+	local var61 = (var49 - var59).Magnitude * 0.5
+	for _, v_4 in ipairs(table_create_result1) do
+		local Magnitude = (v_4 - var60).Magnitude
+		if var61 < Magnitude then
+		end
+	end
+	return var60 + (Magnitude - var61) * 0.5 * (v_4 - var60).Unit, (Magnitude + var61) * 0.5
+end
+function module_upvr.sanitizeAngle(arg1) -- Line 123
+	return (arg1 + math.pi) % (-math.pi*2) - math.pi
+end
+function module_upvr.Round(arg1, arg2) -- Line 128
+	local var66 = 10 ^ arg2
+	return math.floor(arg1 * var66 + 0.5) / var66
+end
+function module_upvr.IsFinite(arg1) -- Line 133
+	local var68 = false
+	if arg1 == arg1 then
+		var68 = false
+		if arg1 ~= math.huge then
+			if arg1 == (-math.huge) then
+				var68 = false
+			else
+				var68 = true
+			end
+		end
+	end
+	return var68
+end
+function module_upvr.IsFiniteVector3(arg1) -- Line 137
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	local any_IsFinite_result1 = module_upvr.IsFinite(arg1.X)
+	if any_IsFinite_result1 then
+		any_IsFinite_result1 = module_upvr.IsFinite(arg1.Y)
+		if any_IsFinite_result1 then
+			any_IsFinite_result1 = module_upvr.IsFinite(arg1.Z)
+		end
+	end
+	return any_IsFinite_result1
+end
+function module_upvr.GetAngleBetweenXZVectors(arg1, arg2) -- Line 142
+	return math.atan2(arg2.X * arg1.Z - arg2.Z * arg1.X, arg2.X * arg1.X + arg2.Z * arg1.Z)
+end
+function module_upvr.RotateVectorByAngleAndRound(arg1, arg2, arg3) -- Line 146
+	if 0 < arg1.Magnitude then
+		local Unit = arg1.Unit
+		return math.floor((math.atan2(Unit.Z, Unit.X) + arg2) / arg3 + 0.5) * arg3 - math.atan2(Unit.Z, Unit.X)
+	end
+	return 0
+end
+local function _(arg1) -- Line 160, Named "SCurveTranform"
+	local clamped_2 = math.clamp(arg1, -1, 1)
+	if 0 <= clamped_2 then
+		return clamped_2 * 0.35 / (0.35 - clamped_2 + 1)
+	end
+	return -(-clamped_2 * 0.8 / (clamped_2 + 0.8 + 1))
+end
+local function _(arg1) -- Line 169, Named "toSCurveSpace"
+	return (math.abs(arg1) * 2 - 1) * 1.1 - 0.1
+end
+local function _(arg1) -- Line 173, Named "fromSCurveSpace"
+	return arg1 / 2 + 0.5
+end
+function module_upvr.GamepadLinearToCurve(arg1) -- Line 177
+	-- KONSTANTWARNING: Variable analysis failed. Output will have some incorrect variable assignments
+	local function _(arg1_2) -- Line 178, Named "onAxis"
+		local var73 = 1
+		local var74
+		if arg1_2 < 0 then
+			var73 = -1
+		end
+		local clamped_3 = math.clamp((math.abs(math.abs(arg1_2)) * 2 - 1) * 1.1 - 0.1, -1, 1)
+		if 0 <= clamped_3 then
+			var74 = clamped_3 * 0.35 / (0.35 - clamped_3 + 1)
+		else
+			var74 = -(-clamped_3 * 0.8 / (clamped_3 + 0.8 + 1))
+		end
+		var74 = math.clamp((var74 / 2 + 0.5) * var73, -1, 1)
+		return var74
+	end
+	local X = arg1.X
+	local var77 = 1
+	local var78
+	if X < 0 then
+		var77 = -1
+	end
+	local clamped = math.clamp((math.abs(math.abs(X)) * 2 - 1) * 1.1 - 0.1, -1, 1)
+	if 0 <= clamped then
+		var78 = clamped * 0.35 / (0.35 - clamped + 1)
+	else
+		var78 = -(-clamped * 0.8 / (clamped + 0.8 + 1))
+	end
+	var78 = math.clamp((var78 / 2 + 0.5) * var77, -1, 1)
+	local Y = arg1.Y
+	local var81 = 1
+	var78 = 0
+	if Y < var78 then
+		var81 = -1
+	end
+	if 0 <= math.clamp((math.abs(math.abs(Y)) * 2 - 1) * 1.1 - 0.1, -1, 1) then
+	else
+	end
+	var78 = -(-math.clamp((math.abs(math.abs(Y)) * 2 - 1) * 1.1 - 0.1, -1, 1) * 0.8 / (math.clamp((math.abs(math.abs(Y)) * 2 - 1) * 1.1 - 0.1, -1, 1) + 0.8 + 1)) / 2 + 0.5
+	var78 *= var81
+	return Vector2.new(var78, math.clamp(var78, -1, 1))
+end
+function module_upvr.ConvertCameraModeEnumToStandard(arg1) -- Line 191
+	if arg1 == Enum.TouchCameraMovementMode.Default then
+		return Enum.ComputerCameraMovementMode.Follow
+	end
+	if arg1 == Enum.ComputerCameraMovementMode.Default then
+		return Enum.ComputerCameraMovementMode.Classic
+	end
+	if arg1 == Enum.TouchCameraMovementMode.Classic or arg1 == Enum.DevTouchCameraMovementMode.Classic or arg1 == Enum.DevComputerCameraMovementMode.Classic or arg1 == Enum.ComputerCameraMovementMode.Classic then
+		return Enum.ComputerCameraMovementMode.Classic
+	end
+	if arg1 == Enum.TouchCameraMovementMode.Follow or arg1 == Enum.DevTouchCameraMovementMode.Follow or arg1 == Enum.DevComputerCameraMovementMode.Follow or arg1 == Enum.ComputerCameraMovementMode.Follow then
+		return Enum.ComputerCameraMovementMode.Follow
+	end
+	if arg1 == Enum.TouchCameraMovementMode.Orbital or arg1 == Enum.DevTouchCameraMovementMode.Orbital or arg1 == Enum.DevComputerCameraMovementMode.Orbital or arg1 == Enum.ComputerCameraMovementMode.Orbital then
+		return Enum.ComputerCameraMovementMode.Orbital
+	end
+	if arg1 == Enum.ComputerCameraMovementMode.CameraToggle or arg1 == Enum.DevComputerCameraMovementMode.CameraToggle then
+		return Enum.ComputerCameraMovementMode.CameraToggle
+	end
+	if arg1 == Enum.DevTouchCameraMovementMode.UserChoice or arg1 == Enum.DevComputerCameraMovementMode.UserChoice then
+		return Enum.DevComputerCameraMovementMode.UserChoice
+	end
+	return Enum.ComputerCameraMovementMode.Classic
+end
+local function _() -- Line 240, Named "getMouse"
+	--[[ Upvalues[1]:
+		[1]: Players_upvr (readonly)
+	]]
+	local LocalPlayer_3 = Players_upvr.LocalPlayer
+	if not LocalPlayer_3 then
+		Players_upvr:GetPropertyChangedSignal("LocalPlayer"):Wait()
+		LocalPlayer_3 = Players_upvr.LocalPlayer
+	end
+	assert(LocalPlayer_3)
+	return LocalPlayer_3:GetMouse()
+end
+local var84_upvw = ""
+local var85_upvw
+function module_upvr.setMouseIconOverride(arg1) -- Line 252
+	--[[ Upvalues[3]:
+		[1]: Players_upvr (readonly)
+		[2]: var85_upvw (read and write)
+		[3]: var84_upvw (read and write)
+	]]
+	local LocalPlayer = Players_upvr.LocalPlayer
+	if not LocalPlayer then
+		Players_upvr:GetPropertyChangedSignal("LocalPlayer"):Wait()
+		LocalPlayer = Players_upvr.LocalPlayer
+	end
+	assert(LocalPlayer)
+	local mouse_2 = LocalPlayer:GetMouse()
+	if mouse_2.Icon ~= var85_upvw then
+		var84_upvw = mouse_2.Icon
+	end
+	mouse_2.Icon = arg1
+	var85_upvw = arg1
+end
+function module_upvr.restoreMouseIcon() -- Line 263
+	--[[ Upvalues[3]:
+		[1]: Players_upvr (readonly)
+		[2]: var85_upvw (read and write)
+		[3]: var84_upvw (read and write)
+	]]
+	local LocalPlayer_2 = Players_upvr.LocalPlayer
+	if not LocalPlayer_2 then
+		Players_upvr:GetPropertyChangedSignal("LocalPlayer"):Wait()
+		LocalPlayer_2 = Players_upvr.LocalPlayer
+	end
+	assert(LocalPlayer_2)
+	local mouse = LocalPlayer_2:GetMouse()
+	if mouse.Icon == var85_upvw then
+		mouse.Icon = var84_upvw
+	end
+	var85_upvw = nil
+end
+local Default_upvw = Enum.MouseBehavior.Default
+local var91_upvw
+function module_upvr.setMouseBehaviorOverride(arg1) -- Line 274
+	--[[ Upvalues[3]:
+		[1]: UserInputService_upvr (readonly)
+		[2]: var91_upvw (read and write)
+		[3]: Default_upvw (read and write)
+	]]
+	if UserInputService_upvr.MouseBehavior ~= var91_upvw then
+		Default_upvw = UserInputService_upvr.MouseBehavior
+	end
+	UserInputService_upvr.MouseBehavior = arg1
+	var91_upvw = arg1
+end
+function module_upvr.restoreMouseBehavior() -- Line 283
+	--[[ Upvalues[3]:
+		[1]: UserInputService_upvr (readonly)
+		[2]: var91_upvw (read and write)
+		[3]: Default_upvw (read and write)
+	]]
+	if UserInputService_upvr.MouseBehavior == var91_upvw then
+		UserInputService_upvr.MouseBehavior = Default_upvw
+	end
+	var91_upvw = nil
+end
+local MovementRelative_upvw = Enum.RotationType.MovementRelative
+local var93_upvw
+function module_upvr.setRotationTypeOverride(arg1) -- Line 292
+	--[[ Upvalues[3]:
+		[1]: UserGameSettings_upvr (readonly)
+		[2]: var93_upvw (read and write)
+		[3]: MovementRelative_upvw (read and write)
+	]]
+	if UserGameSettings_upvr.RotationType ~= var93_upvw then
+		MovementRelative_upvw = UserGameSettings_upvr.RotationType
+	end
+	UserGameSettings_upvr.RotationType = arg1
+	var93_upvw = arg1
+end
+function module_upvr.restoreRotationType() -- Line 301
+	--[[ Upvalues[3]:
+		[1]: UserGameSettings_upvr (readonly)
+		[2]: var93_upvw (read and write)
+		[3]: MovementRelative_upvw (read and write)
+	]]
+	if UserGameSettings_upvr.RotationType == var93_upvw then
+		UserGameSettings_upvr.RotationType = MovementRelative_upvw
+	end
+	var93_upvw = nil
+end
+return module_upvr

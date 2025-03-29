@@ -1,37 +1,57 @@
 --[[
     Script: ReplicatedStorage.Client.Controllers.PlayerDataController
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_script_FirstAncestor_0 = script:FindFirstAncestor("Client");
-local _ = require(l_script_FirstAncestor_0.ReplicaClient);
-local v2 = {
-    _replica = nil
-};
-v2.isPlayerDataLoaded = function() --[[ Line: 11 ]] --[[ Name: isPlayerDataLoaded ]]
-    -- upvalues: v2 (copy)
-    return v2.hasLoaded();
-end;
-v2.getPlayerDataReplica = function() --[[ Line: 15 ]] --[[ Name: getPlayerDataReplica ]]
-    -- upvalues: v2 (copy)
-    return v2.getReplica();
-end;
-v2.hasLoaded = function() --[[ Line: 20 ]] --[[ Name: hasLoaded ]]
-    -- upvalues: v2 (copy)
-    return v2._replica ~= nil;
-end;
-v2.waitForDataLoadAsync = function() --[[ Line: 24 ]] --[[ Name: waitForDataLoadAsync ]]
-    -- upvalues: v2 (copy)
-    while not v2.isPlayerDataLoaded() do
-        task.wait();
-    end;
-end;
-v2.getReplica = function() --[[ Line: 30 ]] --[[ Name: getReplica ]]
-    -- upvalues: v2 (copy)
-    if not v2.isPlayerDataLoaded() then
-        error("Cannot getPlayerDataReplica; Player data is not loaded!");
-    end;
-    return v2._replica;
-end;
-return v2;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:33:53
+-- Luau version 6, Types version 3
+-- Time taken: 0.001081 seconds
+
+local module_upvr = {
+	_replica = nil;
+}
+function module_upvr.isPlayerDataLoaded() -- Line 11
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	return module_upvr.hasLoaded()
+end
+function module_upvr.getPlayerDataReplica() -- Line 15
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	return module_upvr.getReplica()
+end
+function module_upvr.hasLoaded() -- Line 20
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	local var2
+	if module_upvr._replica == nil then
+		var2 = false
+	else
+		var2 = true
+	end
+	return var2
+end
+function module_upvr.waitForDataLoadAsync() -- Line 24
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	while not module_upvr.isPlayerDataLoaded() do
+		task.wait()
+	end
+end
+function module_upvr.getReplica() -- Line 30
+	--[[ Upvalues[1]:
+		[1]: module_upvr (readonly)
+	]]
+	if not module_upvr.isPlayerDataLoaded() then
+		error("Cannot getPlayerDataReplica; Player data is not loaded!")
+	end
+	return module_upvr._replica
+end
+return module_upvr

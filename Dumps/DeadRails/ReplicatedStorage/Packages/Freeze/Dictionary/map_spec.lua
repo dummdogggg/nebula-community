@@ -1,60 +1,74 @@
 --[[
     Script: ReplicatedStorage.Packages.Freeze.Dictionary.map.spec
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = require(script.Parent.map);
-return function() --[[ Line: 4 ]]
-    -- upvalues: v0 (copy)
-    local v1 = {
-        a = 1, 
-        b = 2, 
-        c = 3
-    };
-    it("map", function() --[[ Line: 6 ]]
-        -- upvalues: v0 (ref), v1 (copy)
-        local v4 = v0(v1, function(v2, v3) --[[ Line: 7 ]]
-            return v2 * 10, v3;
-        end);
-        expect(v4).toEqual({
-            a = 10, 
-            b = 20, 
-            c = 30
-        });
-    end);
-    it("change type", function() --[[ Line: 13 ]]
-        -- upvalues: v0 (ref), v1 (copy)
-        local v7 = v0(v1, function(v5, v6) --[[ Line: 14 ]]
-            return tostring(v5), v6;
-        end);
-        expect(v7).toEqual({
-            a = "1", 
-            b = "2", 
-            c = "3"
-        });
-    end);
-    it("filters with nil", function() --[[ Line: 20 ]]
-        -- upvalues: v0 (ref), v1 (copy)
-        local v10 = v0(v1, function(v8, v9) --[[ Line: 21 ]]
-            return if v8 == 2 then nil else v8, v9;
-        end);
-        expect(v10).toEqual({
-            a = 1, 
-            c = 3
-        });
-    end);
-    it("convert list to dictionary", function() --[[ Line: 27 ]]
-        -- upvalues: v0 (ref)
-        local v12 = v0({
-            "a", 
-            "b", 
-            "c"
-        }, function(_) --[[ Line: 29 ]]
-            return 0, "a";
-        end);
-        expect(v12).toEqual({
-            a = 0
-        });
-    end);
-end;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:36:09
+-- Luau version 6, Types version 3
+-- Time taken: 0.001475 seconds
+
+local map_upvr = require(script.Parent.map)
+return function() -- Line 4
+	--[[ Upvalues[1]:
+		[1]: map_upvr (readonly)
+	]]
+	local tbl_upvr = {
+		a = 1;
+		b = 2;
+		c = 3;
+	}
+	it("map", function() -- Line 6
+		--[[ Upvalues[2]:
+			[1]: map_upvr (copied, readonly)
+			[2]: tbl_upvr (readonly)
+		]]
+		expect(map_upvr(tbl_upvr, function(arg1, arg2) -- Line 7
+			return arg1 * 10, arg2
+		end)).toEqual({
+			a = 10;
+			b = 20;
+			c = 30;
+		})
+	end)
+	it("change type", function() -- Line 13
+		--[[ Upvalues[2]:
+			[1]: map_upvr (copied, readonly)
+			[2]: tbl_upvr (readonly)
+		]]
+		expect(map_upvr(tbl_upvr, function(arg1, arg2) -- Line 14
+			return tostring(arg1), arg2
+		end)).toEqual({
+			a = '1';
+			b = '2';
+			c = '3';
+		})
+	end)
+	it("filters with nil", function() -- Line 20
+		--[[ Upvalues[2]:
+			[1]: map_upvr (copied, readonly)
+			[2]: tbl_upvr (readonly)
+		]]
+		expect(map_upvr(tbl_upvr, function(arg1, arg2) -- Line 21
+			if arg1 == 2 then
+			else
+			end
+			return arg1, arg2
+		end)).toEqual({
+			a = 1;
+			c = 3;
+		})
+	end)
+	it("convert list to dictionary", function() -- Line 27
+		--[[ Upvalues[1]:
+			[1]: map_upvr (copied, readonly)
+		]]
+		expect(map_upvr({'a', 'b', 'c'}, function(arg1) -- Line 29
+			return 0, 'a'
+		end)).toEqual({
+			a = 0;
+		})
+	end)
+end

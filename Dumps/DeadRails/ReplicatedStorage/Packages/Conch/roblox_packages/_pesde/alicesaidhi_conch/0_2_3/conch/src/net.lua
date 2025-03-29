@@ -1,229 +1,426 @@
 --[[
     Script: ReplicatedStorage.Packages.Conch.roblox_packages..pesde.alicesaidhi+conch.0.2.3.conch.src.net
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
-local v1 = game:GetService("RunService"):IsServer() and "server" or "client";
-local function _(v2) --[[ Line: 68 ]] --[[ Name: assert_run_context ]]
-    -- upvalues: v1 (copy)
-    assert(v1 == v2, (("expected run context %* but got %*"):format(v2, v1)));
-end;
-local v4 = nil;
-local v5 = {
-    client = {
-        initialized = false
-    }, 
-    server = {
-        initialized = false
-    }
-};
-local function v12() --[[ Line: 86 ]] --[[ Name: init ]]
-    -- upvalues: v1 (copy), l_ReplicatedStorage_0 (copy), v4 (ref), v5 (copy)
-    assert(v1 == "server", (("expected run context %* but got %*"):format("server", v1)));
-    local l_Folder_0 = Instance.new("Folder");
-    l_Folder_0.Name = "conch_networking";
-    l_Folder_0.Parent = l_ReplicatedStorage_0;
-    local function _(v7) --[[ Line: 93 ]] --[[ Name: remote ]]
-        -- upvalues: l_Folder_0 (copy)
-        local l_RemoteEvent_0 = Instance.new("RemoteEvent");
-        l_RemoteEvent_0.Name = v7;
-        l_RemoteEvent_0.Parent = l_Folder_0;
-        return l_RemoteEvent_0;
-    end;
-    local v10 = {};
-    local l_RemoteEvent_1 = Instance.new("RemoteEvent");
-    l_RemoteEvent_1.Name = "invoke_server_command";
-    l_RemoteEvent_1.Parent = l_Folder_0;
-    v10.invoke_server_command = l_RemoteEvent_1;
-    l_RemoteEvent_1 = Instance.new("RemoteEvent");
-    l_RemoteEvent_1.Name = "create_user";
-    l_RemoteEvent_1.Parent = l_Folder_0;
-    v10.create_user = l_RemoteEvent_1;
-    l_RemoteEvent_1 = Instance.new("RemoteEvent");
-    l_RemoteEvent_1.Name = "update_user_roles";
-    l_RemoteEvent_1.Parent = l_Folder_0;
-    v10.update_user_roles = l_RemoteEvent_1;
-    l_RemoteEvent_1 = Instance.new("RemoteEvent");
-    l_RemoteEvent_1.Name = "update_role_permissions";
-    l_RemoteEvent_1.Parent = l_Folder_0;
-    v10.update_role_permissions = l_RemoteEvent_1;
-    l_RemoteEvent_1 = Instance.new("RemoteEvent");
-    l_RemoteEvent_1.Name = "register_command";
-    l_RemoteEvent_1.Parent = l_Folder_0;
-    v10.register_command = l_RemoteEvent_1;
-    l_RemoteEvent_1 = Instance.new("RemoteEvent");
-    l_RemoteEvent_1.Name = "log";
-    l_RemoteEvent_1.Parent = l_Folder_0;
-    v10.log = l_RemoteEvent_1;
-    l_RemoteEvent_1 = Instance.new("RemoteEvent");
-    l_RemoteEvent_1.Name = "log_command";
-    l_RemoteEvent_1.Parent = l_Folder_0;
-    v10.log_command = l_RemoteEvent_1;
-    v4 = v10;
-    v5.server.initialized = true;
-end;
-v5.server.init = v12;
-v12 = function() --[[ Line: 116 ]] --[[ Name: init ]]
-    -- upvalues: v1 (copy), l_ReplicatedStorage_0 (copy), v4 (ref), v5 (copy)
-    assert(v1 == "client", (("expected run context %* but got %*"):format("client", v1)));
-    local l_conch_networking_0 = l_ReplicatedStorage_0:WaitForChild("conch_networking");
-    local function _(v14) --[[ Line: 121 ]] --[[ Name: remote ]]
-        -- upvalues: l_conch_networking_0 (copy)
-        return (l_conch_networking_0:WaitForChild(v14));
-    end;
-    v4 = {
-        invoke_server_command = l_conch_networking_0:WaitForChild("invoke_server_command"), 
-        create_user = l_conch_networking_0:WaitForChild("create_user"), 
-        update_user_roles = l_conch_networking_0:WaitForChild("update_user_roles"), 
-        update_role_permissions = l_conch_networking_0:WaitForChild("update_role_permissions"), 
-        register_command = l_conch_networking_0:WaitForChild("register_command"), 
-        log = l_conch_networking_0:WaitForChild("log"), 
-        log_command = l_conch_networking_0:WaitForChild("log_command")
-    };
-    v5.client.initialized = true;
-end;
-v5.client.init = v12;
-v12 = function(v16) --[[ Line: 140 ]] --[[ Name: on_user_roles_update ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.client.initialized, "client not initialized");
-    assert(v1 == "client", (("expected run context %* but got %*"):format("client", v1)));
-    v4.update_user_roles.OnClientEvent:Connect(v16);
-end;
-v5.client.on_user_roles_update = v12;
-v12 = function(v17) --[[ Line: 151 ]] --[[ Name: on_command_registered ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.client.initialized, "client not initialized");
-    assert(v1 == "client", (("expected run context %* but got %*"):format("client", v1)));
-    v4.register_command.OnClientEvent:Connect(v17);
-end;
-v5.client.on_command_registered = v12;
-v12 = function(v18) --[[ Line: 162 ]] --[[ Name: on_role_info_received ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.client.initialized, "client not initialized");
-    assert(v1 == "client", (("expected run context %* but got %*"):format("client", v1)));
-    v4.update_role_permissions.OnClientEvent:Connect(v18);
-end;
-v5.client.on_role_info_received = v12;
-v12 = function(v19) --[[ Line: 171 ]] --[[ Name: on_user_info_received ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.client.initialized, "client not initialized");
-    assert(v1 == "client", (("expected run context %* but got %*"):format("client", v1)));
-    v4.create_user.OnClientEvent:Connect(v19);
-end;
-v5.client.on_user_info_received = v12;
-v12 = function(v20) --[[ Line: 178 ]] --[[ Name: on_log_received ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.client.initialized, "client not initialized");
-    assert(v1 == "client", (("expected run context %* but got %*"):format("client", v1)));
-    v4.log.OnClientEvent:Connect(v20);
-end;
-v5.client.on_log_received = v12;
-v12 = function(v21, v22, v23) --[[ Line: 185 ]] --[[ Name: invoke_command ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.client.initialized, "client not initialized");
-    assert(v1 == "client", (("expected run context %* but got %*"):format("client", v1)));
-    local v24 = {
-        invoke_id = v21, 
-        name = v22, 
-        args = v23
-    };
-    v4.invoke_server_command:FireServer(v24);
-end;
-v5.client.invoke_command = v12;
-v12 = function(v25) --[[ Line: 202 ]] --[[ Name: on_invoke_reply ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.client.initialized, "client not initialized");
-    assert(v1 == "client", (("expected run context %* but got %*"):format("client", v1)));
-    v4.invoke_server_command.OnClientEvent:Connect(v25);
-end;
-v5.client.on_invoke_reply = v12;
-v12 = function(v26) --[[ Line: 209 ]] --[[ Name: fire_log_command ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.client.initialized, "client not initialized");
-    assert(v1 == "client", (("expected run context %* but got %*"):format("client", v1)));
-    v4.log_command:FireServer(v26);
-end;
-v5.client.fire_log_command = v12;
-v12 = function(v27) --[[ Line: 216 ]] --[[ Name: on_log_command ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.server.initialized, "server not initialized");
-    assert(v1 == "server", (("expected run context %* but got %*"):format("server", v1)));
-    return v4.log_command.OnServerEvent:Connect(v27);
-end;
-v5.server.on_log_command = v12;
-v12 = function(v28, v29) --[[ Line: 223 ]] --[[ Name: fire_log ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.server.initialized, "server not initialized");
-    assert(v1 == "server", (("expected run context %* but got %*"):format("server", v1)));
-    v4.log:FireClient(v28, v29);
-end;
-v5.server.fire_log = v12;
-v12 = function(v30, v31) --[[ Line: 230 ]] --[[ Name: fire_register_command ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.server.initialized, "server not initialized");
-    assert(v1 == "server", (("expected run context %* but got %*"):format("server", v1)));
-    v4.register_command:FireClient(v30, v31);
-end;
-v5.server.fire_register_command = v12;
-v12 = function(v32) --[[ Line: 240 ]] --[[ Name: on_command_invoke ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.server.initialized, "server not initialized");
-    assert(v1 == "server", (("expected run context %* but got %*"):format("server", v1)));
-    v4.invoke_server_command.OnServerEvent:Connect(v32);
-end;
-v5.server.on_command_invoke = v12;
-v12 = function(v33, v34, v35) --[[ Line: 250 ]] --[[ Name: fire_successful_invoke_reply ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.server.initialized, "server not initialized");
-    assert(v1 == "server", (("expected run context %* but got %*"):format("server", v1)));
-    local v36 = {
-        status = "ok", 
-        invoke_id = v34, 
-        results = v35
-    };
-    v4.invoke_server_command:FireClient(v33, v36);
-end;
-v5.server.fire_successful_invoke_reply = v12;
-v12 = function(v37, v38) --[[ Line: 267 ]] --[[ Name: fire_failed_invoke_reply ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.server.initialized, "server not initialized");
-    assert(v1 == "server", (("expected run context %* but got %*"):format("server", v1)));
-    local v39 = {
-        status = "err", 
-        invoke_id = v38
-    };
-    v4.invoke_server_command:FireClient(v37, v39);
-end;
-v5.server.fire_failed_invoke_reply = v12;
-v12 = function(v40, v41, v42) --[[ Line: 279 ]] --[[ Name: fire_create_user ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.server.initialized, "server not initialized");
-    assert(v1 == "server", (("expected run context %* but got %*"):format("server", v1)));
-    local v43 = {
-        name = v42, 
-        id = v41
-    };
-    v4.create_user:FireClient(v40, v43);
-end;
-v5.server.fire_create_user = v12;
-v12 = function(v44, v45) --[[ Line: 291 ]] --[[ Name: fire_update_user_roles ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.server.initialized, "server not initialized");
-    assert(v1 == "server", (("expected run context %* but got %*"):format("server", v1)));
-    v4.update_user_roles:FireClient(v44, v45);
-end;
-v5.server.fire_update_user_roles = v12;
-v12 = function(v46, v47) --[[ Line: 301 ]] --[[ Name: fire_update_role_perms ]]
-    -- upvalues: v5 (copy), v1 (copy), v4 (ref)
-    assert(v5.server.initialized, "server not initialized");
-    assert(v1 == "server", (("expected run context %* but got %*"):format("server", v1)));
-    local v48 = {
-        name = v46, 
-        permissions = v47
-    };
-    v4.update_role_permissions:FireAllClients(v48);
-end;
-v5.server.fire_update_role_perms = v12;
-return v5;
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:35:25
+-- Luau version 6, Types version 3
+-- Time taken: 0.008193 seconds
+
+local ReplicatedStorage_upvr = game:GetService("ReplicatedStorage")
+local var2_upvr
+if game:GetService("RunService"):IsServer() then
+	var2_upvr = "server"
+else
+	var2_upvr = "client"
+end
+local function _(arg1) -- Line 68, Named "assert_run_context"
+	--[[ Upvalues[1]:
+		[1]: var2_upvr (readonly)
+	]]
+	local var3
+	if var2_upvr ~= arg1 then
+		var3 = false
+	else
+		var3 = true
+	end
+	assert(var3, `expected run context {arg1} but got {var2_upvr}`)
+end
+local var4_upvw
+local module_upvr = {
+	client = {
+		initialized = false;
+	};
+	server = {
+		initialized = false;
+	};
+}
+local function init() -- Line 86
+	--[[ Upvalues[4]:
+		[1]: var2_upvr (readonly)
+		[2]: ReplicatedStorage_upvr (readonly)
+		[3]: var4_upvw (read and write)
+		[4]: module_upvr (readonly)
+	]]
+	local remote
+	if var2_upvr ~= "server" then
+		remote = false
+	else
+		remote = true
+	end
+	assert(remote, `expected run context {"server"} but got {var2_upvr}`)
+	remote = "Folder"
+	local any_upvr = Instance.new(remote)
+	remote = "conch_networking"
+	any_upvr.Name = remote
+	remote = ReplicatedStorage_upvr
+	any_upvr.Parent = remote
+	function remote(arg1) -- Line 93
+		--[[ Upvalues[1]:
+			[1]: any_upvr (readonly)
+		]]
+		local RemoteEvent = Instance.new("RemoteEvent")
+		RemoteEvent.Name = arg1
+		RemoteEvent.Parent = any_upvr
+		return RemoteEvent
+	end
+	local tbl_2 = {}
+	local RemoteEvent_7 = Instance.new("RemoteEvent")
+	RemoteEvent_7.Name = "invoke_server_command"
+	RemoteEvent_7.Parent = any_upvr
+	tbl_2.invoke_server_command = RemoteEvent_7
+	local RemoteEvent_3 = Instance.new("RemoteEvent")
+	RemoteEvent_3.Name = "create_user"
+	RemoteEvent_3.Parent = any_upvr
+	tbl_2.create_user = RemoteEvent_3
+	local RemoteEvent_5 = Instance.new("RemoteEvent")
+	RemoteEvent_5.Name = "update_user_roles"
+	RemoteEvent_5.Parent = any_upvr
+	tbl_2.update_user_roles = RemoteEvent_5
+	local RemoteEvent_8 = Instance.new("RemoteEvent")
+	RemoteEvent_8.Name = "update_role_permissions"
+	RemoteEvent_8.Parent = any_upvr
+	tbl_2.update_role_permissions = RemoteEvent_8
+	local RemoteEvent_4 = Instance.new("RemoteEvent")
+	RemoteEvent_4.Name = "register_command"
+	RemoteEvent_4.Parent = any_upvr
+	tbl_2.register_command = RemoteEvent_4
+	local RemoteEvent_6 = Instance.new("RemoteEvent")
+	RemoteEvent_6.Name = "log"
+	RemoteEvent_6.Parent = any_upvr
+	tbl_2.log = RemoteEvent_6
+	local RemoteEvent_2 = Instance.new("RemoteEvent")
+	RemoteEvent_2.Name = "log_command"
+	RemoteEvent_2.Parent = any_upvr
+	tbl_2.log_command = RemoteEvent_2
+	var4_upvw = tbl_2
+	module_upvr.server.initialized = true
+end
+module_upvr.server.init = init
+module_upvr.client.init = function() -- Line 116, Named "init"
+	--[[ Upvalues[4]:
+		[1]: var2_upvr (readonly)
+		[2]: ReplicatedStorage_upvr (readonly)
+		[3]: var4_upvw (read and write)
+		[4]: module_upvr (readonly)
+	]]
+	local remote
+	if var2_upvr ~= "client" then
+		remote = false
+	else
+		remote = true
+	end
+	assert(remote, `expected run context {"client"} but got {var2_upvr}`)
+	local conch_networking_upvr = ReplicatedStorage_upvr:WaitForChild("conch_networking")
+	function remote(arg1) -- Line 121
+		--[[ Upvalues[1]:
+			[1]: conch_networking_upvr (readonly)
+		]]
+		return conch_networking_upvr:WaitForChild(arg1)
+	end
+	var4_upvw = {
+		invoke_server_command = conch_networking_upvr:WaitForChild("invoke_server_command");
+		create_user = conch_networking_upvr:WaitForChild("create_user");
+		update_user_roles = conch_networking_upvr:WaitForChild("update_user_roles");
+		update_role_permissions = conch_networking_upvr:WaitForChild("update_role_permissions");
+		register_command = conch_networking_upvr:WaitForChild("register_command");
+		log = conch_networking_upvr:WaitForChild("log");
+		log_command = conch_networking_upvr:WaitForChild("log_command");
+	}
+	module_upvr.client.initialized = true
+end
+module_upvr.client.on_user_roles_update = function(arg1) -- Line 140, Named "on_user_roles_update"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_4 = module_upvr.client.initialized
+	assert(initialized_4, "client not initialized")
+	if var2_upvr ~= "client" then
+		initialized_4 = false
+	else
+		initialized_4 = true
+	end
+	assert(initialized_4, `expected run context {"client"} but got {var2_upvr}`)
+	var4_upvw.update_user_roles.OnClientEvent:Connect(arg1)
+end
+module_upvr.client.on_command_registered = function(arg1) -- Line 151, Named "on_command_registered"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_5 = module_upvr.client.initialized
+	assert(initialized_5, "client not initialized")
+	if var2_upvr ~= "client" then
+		initialized_5 = false
+	else
+		initialized_5 = true
+	end
+	assert(initialized_5, `expected run context {"client"} but got {var2_upvr}`)
+	var4_upvw.register_command.OnClientEvent:Connect(arg1)
+end
+module_upvr.client.on_role_info_received = function(arg1) -- Line 162, Named "on_role_info_received"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_16 = module_upvr.client.initialized
+	assert(initialized_16, "client not initialized")
+	if var2_upvr ~= "client" then
+		initialized_16 = false
+	else
+		initialized_16 = true
+	end
+	assert(initialized_16, `expected run context {"client"} but got {var2_upvr}`)
+	var4_upvw.update_role_permissions.OnClientEvent:Connect(arg1)
+end
+module_upvr.client.on_user_info_received = function(arg1) -- Line 171, Named "on_user_info_received"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_10 = module_upvr.client.initialized
+	assert(initialized_10, "client not initialized")
+	if var2_upvr ~= "client" then
+		initialized_10 = false
+	else
+		initialized_10 = true
+	end
+	assert(initialized_10, `expected run context {"client"} but got {var2_upvr}`)
+	var4_upvw.create_user.OnClientEvent:Connect(arg1)
+end
+module_upvr.client.on_log_received = function(arg1) -- Line 178, Named "on_log_received"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_7 = module_upvr.client.initialized
+	assert(initialized_7, "client not initialized")
+	if var2_upvr ~= "client" then
+		initialized_7 = false
+	else
+		initialized_7 = true
+	end
+	assert(initialized_7, `expected run context {"client"} but got {var2_upvr}`)
+	var4_upvw.log.OnClientEvent:Connect(arg1)
+end
+module_upvr.client.invoke_command = function(arg1, arg2, arg3) -- Line 185, Named "invoke_command"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_11 = module_upvr.client.initialized
+	assert(initialized_11, "client not initialized")
+	if var2_upvr ~= "client" then
+		initialized_11 = false
+	else
+		initialized_11 = true
+	end
+	assert(initialized_11, `expected run context {"client"} but got {var2_upvr}`)
+	local tbl = {}
+	tbl.invoke_id = arg1
+	tbl.name = arg2
+	tbl.args = arg3
+	var4_upvw.invoke_server_command:FireServer(tbl)
+end
+module_upvr.client.on_invoke_reply = function(arg1) -- Line 202, Named "on_invoke_reply"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_6 = module_upvr.client.initialized
+	assert(initialized_6, "client not initialized")
+	if var2_upvr ~= "client" then
+		initialized_6 = false
+	else
+		initialized_6 = true
+	end
+	assert(initialized_6, `expected run context {"client"} but got {var2_upvr}`)
+	var4_upvw.invoke_server_command.OnClientEvent:Connect(arg1)
+end
+module_upvr.client.fire_log_command = function(arg1) -- Line 209, Named "fire_log_command"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_14 = module_upvr.client.initialized
+	assert(initialized_14, "client not initialized")
+	if var2_upvr ~= "client" then
+		initialized_14 = false
+	else
+		initialized_14 = true
+	end
+	assert(initialized_14, `expected run context {"client"} but got {var2_upvr}`)
+	var4_upvw.log_command:FireServer(arg1)
+end
+module_upvr.server.on_log_command = function(arg1) -- Line 216, Named "on_log_command"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_3 = module_upvr.server.initialized
+	assert(initialized_3, "server not initialized")
+	if var2_upvr ~= "server" then
+		initialized_3 = false
+	else
+		initialized_3 = true
+	end
+	assert(initialized_3, `expected run context {"server"} but got {var2_upvr}`)
+	return var4_upvw.log_command.OnServerEvent:Connect(arg1)
+end
+module_upvr.server.fire_log = function(arg1, arg2) -- Line 223, Named "fire_log"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_17 = module_upvr.server.initialized
+	assert(initialized_17, "server not initialized")
+	if var2_upvr ~= "server" then
+		initialized_17 = false
+	else
+		initialized_17 = true
+	end
+	assert(initialized_17, `expected run context {"server"} but got {var2_upvr}`)
+	var4_upvw.log:FireClient(arg1, arg2)
+end
+module_upvr.server.fire_register_command = function(arg1, arg2) -- Line 230, Named "fire_register_command"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_8 = module_upvr.server.initialized
+	assert(initialized_8, "server not initialized")
+	if var2_upvr ~= "server" then
+		initialized_8 = false
+	else
+		initialized_8 = true
+	end
+	assert(initialized_8, `expected run context {"server"} but got {var2_upvr}`)
+	var4_upvw.register_command:FireClient(arg1, arg2)
+end
+module_upvr.server.on_command_invoke = function(arg1) -- Line 240, Named "on_command_invoke"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_2 = module_upvr.server.initialized
+	assert(initialized_2, "server not initialized")
+	if var2_upvr ~= "server" then
+		initialized_2 = false
+	else
+		initialized_2 = true
+	end
+	assert(initialized_2, `expected run context {"server"} but got {var2_upvr}`)
+	var4_upvw.invoke_server_command.OnServerEvent:Connect(arg1)
+end
+module_upvr.server.fire_successful_invoke_reply = function(arg1, arg2, arg3) -- Line 250, Named "fire_successful_invoke_reply"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized = module_upvr.server.initialized
+	assert(initialized, "server not initialized")
+	if var2_upvr ~= "server" then
+		initialized = false
+	else
+		initialized = true
+	end
+	assert(initialized, `expected run context {"server"} but got {var2_upvr}`)
+	local tbl_5 = {
+		status = "ok";
+	}
+	tbl_5.invoke_id = arg2
+	tbl_5.results = arg3
+	var4_upvw.invoke_server_command:FireClient(arg1, tbl_5)
+end
+module_upvr.server.fire_failed_invoke_reply = function(arg1, arg2) -- Line 267, Named "fire_failed_invoke_reply"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_12 = module_upvr.server.initialized
+	assert(initialized_12, "server not initialized")
+	if var2_upvr ~= "server" then
+		initialized_12 = false
+	else
+		initialized_12 = true
+	end
+	assert(initialized_12, `expected run context {"server"} but got {var2_upvr}`)
+	local tbl_3 = {
+		status = "err";
+	}
+	tbl_3.invoke_id = arg2
+	var4_upvw.invoke_server_command:FireClient(arg1, tbl_3)
+end
+module_upvr.server.fire_create_user = function(arg1, arg2, arg3) -- Line 279, Named "fire_create_user"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_15 = module_upvr.server.initialized
+	assert(initialized_15, "server not initialized")
+	if var2_upvr ~= "server" then
+		initialized_15 = false
+	else
+		initialized_15 = true
+	end
+	assert(initialized_15, `expected run context {"server"} but got {var2_upvr}`)
+	local tbl_4 = {}
+	tbl_4.name = arg3
+	tbl_4.id = arg2
+	var4_upvw.create_user:FireClient(arg1, tbl_4)
+end
+module_upvr.server.fire_update_user_roles = function(arg1, arg2) -- Line 291, Named "fire_update_user_roles"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_13 = module_upvr.server.initialized
+	assert(initialized_13, "server not initialized")
+	if var2_upvr ~= "server" then
+		initialized_13 = false
+	else
+		initialized_13 = true
+	end
+	assert(initialized_13, `expected run context {"server"} but got {var2_upvr}`)
+	var4_upvw.update_user_roles:FireClient(arg1, arg2)
+end
+module_upvr.server.fire_update_role_perms = function(arg1, arg2) -- Line 301, Named "fire_update_role_perms"
+	--[[ Upvalues[3]:
+		[1]: module_upvr (readonly)
+		[2]: var2_upvr (readonly)
+		[3]: var4_upvw (read and write)
+	]]
+	local initialized_9 = module_upvr.server.initialized
+	assert(initialized_9, "server not initialized")
+	if var2_upvr ~= "server" then
+		initialized_9 = false
+	else
+		initialized_9 = true
+	end
+	assert(initialized_9, `expected run context {"server"} but got {var2_upvr}`)
+	local tbl_6 = {}
+	tbl_6.name = arg1
+	tbl_6.permissions = arg2
+	var4_upvw.update_role_permissions:FireAllClients(tbl_6)
+end
+return module_upvr

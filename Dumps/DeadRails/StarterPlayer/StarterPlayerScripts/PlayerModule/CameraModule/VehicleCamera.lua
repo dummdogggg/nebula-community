@@ -1,146 +1,161 @@
 --[[
     Script: StarterPlayer.StarterPlayerScripts.PlayerModule.CameraModule.VehicleCamera
     Type: ModuleScript
-    Decompiled with Wave using Nebula Decompiler
+    Decompiled with Konstant using Nebula Decompiler
 --]]
 
-local v0 = {
-    0, 
-    15, 
-    30
-};
-local l_Players_0 = game:GetService("Players");
-local l_RunService_0 = game:GetService("RunService");
-local l_BaseCamera_0 = require(script.Parent:WaitForChild("BaseCamera"));
-local l_CameraInput_0 = require(script.Parent:WaitForChild("CameraInput"));
-local l_CameraUtils_0 = require(script.Parent:WaitForChild("CameraUtils"));
-local _ = require(script.Parent:WaitForChild("ZoomController"));
-local l_VehicleCameraCore_0 = require(script:WaitForChild("VehicleCameraCore"));
-local l_VehicleCameraConfig_0 = require(script:WaitForChild("VehicleCameraConfig"));
-local l_LocalPlayer_0 = l_Players_0.LocalPlayer;
-local _ = l_CameraUtils_0.map;
-local l_Spring_0 = l_CameraUtils_0.Spring;
-local l_mapClamp_0 = l_CameraUtils_0.mapClamp;
-local l_sanitizeAngle_0 = l_CameraUtils_0.sanitizeAngle;
-local function _(v14, v15) --[[ Line: 31 ]] --[[ Name: pitchVelocity ]]
-    return (math.abs((v15.XVector:Dot(v14))));
-end;
-local function _(v17, v18) --[[ Line: 36 ]] --[[ Name: yawVelocity ]]
-    return (math.abs((v18.YVector:Dot(v17))));
-end;
-local v20 = 0.016666666666666666;
-l_RunService_0.Stepped:Connect(function(_, v22) --[[ Line: 42 ]]
-    -- upvalues: v20 (ref)
-    v20 = v22;
-end);
-local v23 = setmetatable({}, l_BaseCamera_0);
-v23.__index = v23;
-v23.new = function() --[[ Line: 49 ]] --[[ Name: new ]]
-    -- upvalues: l_BaseCamera_0 (copy), v23 (copy)
-    local v24 = setmetatable(l_BaseCamera_0.new(), v23);
-    v24:Reset();
-    return v24;
-end;
-v23.Reset = function(v25) --[[ Line: 55 ]] --[[ Name: Reset ]]
-    -- upvalues: l_VehicleCameraCore_0 (copy), l_Spring_0 (copy), l_VehicleCameraConfig_0 (copy), l_CameraUtils_0 (copy), v0 (copy)
-    v25.vehicleCameraCore = l_VehicleCameraCore_0.new(v25:GetSubjectCFrame());
-    v25.pitchSpring = l_Spring_0.new(0, -math.rad(l_VehicleCameraConfig_0.pitchBaseAngle));
-    v25.yawSpring = l_Spring_0.new(0, 0);
-    v25.lastPanTick = 0;
-    local l_CurrentCamera_0 = workspace.CurrentCamera;
-    local v27 = l_CurrentCamera_0 and l_CurrentCamera_0.CameraSubject;
-    assert(l_CurrentCamera_0);
-    assert(v27);
-    assert(v27:IsA("VehicleSeat"));
-    local l_v27_ConnectedParts_0 = v27:GetConnectedParts(true);
-    local v29, v30 = l_CameraUtils_0.getLooseBoundingSphere(l_v27_ConnectedParts_0);
-    v25.assemblyRadius = math.max(v30, 5);
-    v25.assemblyOffset = v27.CFrame:Inverse() * v29;
-    v25.gamepadZoomLevels = {};
-    for _, v32 in v0 do
-        table.insert(v25.gamepadZoomLevels, v32 * v25.assemblyRadius / 10);
-    end;
-    v25:SetCameraToSubjectDistance(v25.gamepadZoomLevels[#v25.gamepadZoomLevels]);
-end;
-v23._StepRotation = function(v33, v34, v35) --[[ Line: 85 ]] --[[ Name: _StepRotation ]]
-    -- upvalues: l_CameraInput_0 (copy), l_sanitizeAngle_0 (copy), l_VehicleCameraConfig_0 (copy), l_mapClamp_0 (copy)
-    local l_yawSpring_0 = v33.yawSpring;
-    local l_pitchSpring_0 = v33.pitchSpring;
-    local v38 = l_CameraInput_0.getRotation(v34, true);
-    local v39 = -v38.X;
-    local v40 = -v38.Y;
-    l_yawSpring_0.pos = l_sanitizeAngle_0(l_yawSpring_0.pos + v39);
-    l_pitchSpring_0.pos = l_sanitizeAngle_0((math.clamp(l_pitchSpring_0.pos + v40, -1.3962634015954636, 1.3962634015954636)));
-    if l_CameraInput_0.getRotationActivated() then
-        v33.lastPanTick = os.clock();
-    end;
-    local v41 = -math.rad(l_VehicleCameraConfig_0.pitchBaseAngle);
-    local v42 = math.rad(l_VehicleCameraConfig_0.pitchDeadzoneAngle);
-    if os.clock() - v33.lastPanTick > l_VehicleCameraConfig_0.autocorrectDelay then
-        local v43 = l_mapClamp_0(v35, l_VehicleCameraConfig_0.autocorrectMinCarSpeed, l_VehicleCameraConfig_0.autocorrectMaxCarSpeed, 0, l_VehicleCameraConfig_0.autocorrectResponse);
-        l_yawSpring_0.freq = v43;
-        l_pitchSpring_0.freq = v43;
-        if l_yawSpring_0.freq < 0.001 then
-            l_yawSpring_0.vel = 0;
-        end;
-        if l_pitchSpring_0.freq < 0.001 then
-            l_pitchSpring_0.vel = 0;
-        end;
-        if math.abs((l_sanitizeAngle_0(v41 - l_pitchSpring_0.pos))) <= v42 then
-            l_pitchSpring_0.goal = l_pitchSpring_0.pos;
-        else
-            l_pitchSpring_0.goal = v41;
-        end;
-    else
-        l_yawSpring_0.freq = 0;
-        l_yawSpring_0.vel = 0;
-        l_pitchSpring_0.freq = 0;
-        l_pitchSpring_0.vel = 0;
-        l_pitchSpring_0.goal = v41;
-    end;
-    return CFrame.fromEulerAnglesYXZ(l_pitchSpring_0:step(v34), l_yawSpring_0:step(v34), 0);
-end;
-v23._GetThirdPersonLocalOffset = function(v44) --[[ Line: 148 ]] --[[ Name: _GetThirdPersonLocalOffset ]]
-    -- upvalues: l_VehicleCameraConfig_0 (copy)
-    return v44.assemblyOffset + Vector3.new(0, v44.assemblyRadius * l_VehicleCameraConfig_0.verticalCenterOffset, 0);
-end;
-v23._GetFirstPersonLocalOffset = function(v45, v46) --[[ Line: 152 ]] --[[ Name: _GetFirstPersonLocalOffset ]]
-    -- upvalues: l_LocalPlayer_0 (copy)
-    local l_Character_0 = l_LocalPlayer_0.Character;
-    if l_Character_0 and l_Character_0.Parent then
-        local l_Head_0 = l_Character_0:FindFirstChild("Head");
-        if l_Head_0 and l_Head_0:IsA("BasePart") then
-            return v46:Inverse() * l_Head_0.Position;
-        end;
-    end;
-    return v45:_GetThirdPersonLocalOffset();
-end;
-v23.Update = function(v49) --[[ Line: 166 ]] --[[ Name: Update ]]
-    -- upvalues: v20 (ref), l_mapClamp_0 (copy)
-    local l_CurrentCamera_1 = workspace.CurrentCamera;
-    local v51 = l_CurrentCamera_1 and l_CurrentCamera_1.CameraSubject;
-    local l_vehicleCameraCore_0 = v49.vehicleCameraCore;
-    assert(l_CurrentCamera_1);
-    assert(v51);
-    assert(v51:IsA("VehicleSeat"));
-    local l_v20_0 = v20;
-    v20 = 0;
-    local l_v49_SubjectCFrame_0 = v49:GetSubjectCFrame();
-    local l_v49_SubjectVelocity_0 = v49:GetSubjectVelocity();
-    local l_v49_SubjectRotVelocity_0 = v49:GetSubjectRotVelocity();
-    local v57 = math.abs((l_v49_SubjectVelocity_0:Dot(l_v49_SubjectCFrame_0.ZVector)));
-    local v58 = math.abs((l_v49_SubjectCFrame_0.YVector:Dot(l_v49_SubjectRotVelocity_0)));
-    local v59 = math.abs((l_v49_SubjectCFrame_0.XVector:Dot(l_v49_SubjectRotVelocity_0)));
-    local v60 = v49:StepZoom();
-    local v61 = v49:_StepRotation(l_v20_0, v57);
-    local v62 = l_mapClamp_0(v60, 0.5, v49.assemblyRadius, 1, 0);
-    local v63 = v49:_GetThirdPersonLocalOffset():Lerp(v49:_GetFirstPersonLocalOffset(l_v49_SubjectCFrame_0), v62);
-    l_vehicleCameraCore_0:setTransform(l_v49_SubjectCFrame_0);
-    local v64 = l_vehicleCameraCore_0:step(l_v20_0, v59, v58, v62);
-    local v65 = CFrame.new(l_v49_SubjectCFrame_0 * v63) * v64 * v61;
-    return v65 * CFrame.new(0, 0, v60), v65;
-end;
-v23.ApplyVRTransform = function(_) --[[ Line: 211 ]] --[[ Name: ApplyVRTransform ]]
+-- Decompiler will be improved VERY SOON!
+-- Decompiled with Konstant V2.1, a fast Luau decompiler made in Luau by plusgiant5 (https://discord.gg/wyButjTMhM)
+-- Decompiled on 2025-03-29 09:34:51
+-- Luau version 6, Types version 3
+-- Time taken: 0.003980 seconds
 
-end;
-return v23;
+local tbl_upvr = {0, 15, 30}
+local module_upvr_3 = require(script.Parent:WaitForChild("BaseCamera"))
+local module_upvr_2 = require(script.Parent:WaitForChild("CameraUtils"))
+local module_upvr_4 = require(script:WaitForChild("VehicleCameraConfig"))
+local mapClamp_upvr = module_upvr_2.mapClamp
+local function _(arg1, arg2) -- Line 31, Named "pitchVelocity"
+	return math.abs(arg2.XVector:Dot(arg1))
+end
+local function _(arg1, arg2) -- Line 36, Named "yawVelocity"
+	return math.abs(arg2.YVector:Dot(arg1))
+end
+local var6_upvw = (1/60)
+game:GetService("RunService").Stepped:Connect(function(arg1, arg2) -- Line 42
+	--[[ Upvalues[1]:
+		[1]: var6_upvw (read and write)
+	]]
+	var6_upvw = arg2
+end)
+local setmetatable_result1_2_upvr = setmetatable({}, module_upvr_3)
+setmetatable_result1_2_upvr.__index = setmetatable_result1_2_upvr
+function setmetatable_result1_2_upvr.new() -- Line 49
+	--[[ Upvalues[2]:
+		[1]: module_upvr_3 (readonly)
+		[2]: setmetatable_result1_2_upvr (readonly)
+	]]
+	local setmetatable_result1 = setmetatable(module_upvr_3.new(), setmetatable_result1_2_upvr)
+	setmetatable_result1:Reset()
+	return setmetatable_result1
+end
+local module_upvr = require(script:WaitForChild("VehicleCameraCore"))
+local Spring_upvr = module_upvr_2.Spring
+function setmetatable_result1_2_upvr.Reset(arg1) -- Line 55
+	--[[ Upvalues[5]:
+		[1]: module_upvr (readonly)
+		[2]: Spring_upvr (readonly)
+		[3]: module_upvr_4 (readonly)
+		[4]: module_upvr_2 (readonly)
+		[5]: tbl_upvr (readonly)
+	]]
+	arg1.vehicleCameraCore = module_upvr.new(arg1:GetSubjectCFrame())
+	arg1.pitchSpring = Spring_upvr.new(0, -math.rad(module_upvr_4.pitchBaseAngle))
+	arg1.yawSpring = Spring_upvr.new(0, 0)
+	arg1.lastPanTick = 0
+	local CurrentCamera = workspace.CurrentCamera
+	local var17 = CurrentCamera
+	if var17 then
+		var17 = CurrentCamera.CameraSubject
+	end
+	assert(CurrentCamera)
+	assert(var17)
+	assert(var17:IsA("VehicleSeat"))
+	local any_getLooseBoundingSphere_result1, any_getLooseBoundingSphere_result2 = module_upvr_2.getLooseBoundingSphere(var17:GetConnectedParts(true))
+	arg1.assemblyRadius = math.max(any_getLooseBoundingSphere_result2, 5)
+	arg1.assemblyOffset = var17.CFrame:Inverse() * any_getLooseBoundingSphere_result1
+	arg1.gamepadZoomLevels = {}
+	for _, v in tbl_upvr do
+		table.insert(arg1.gamepadZoomLevels, v * arg1.assemblyRadius / 10)
+	end
+	arg1:SetCameraToSubjectDistance(arg1.gamepadZoomLevels[#arg1.gamepadZoomLevels])
+end
+local module_upvr_5 = require(script.Parent:WaitForChild("CameraInput"))
+local sanitizeAngle_upvr = module_upvr_2.sanitizeAngle
+function setmetatable_result1_2_upvr._StepRotation(arg1, arg2, arg3) -- Line 85
+	--[[ Upvalues[4]:
+		[1]: module_upvr_5 (readonly)
+		[2]: sanitizeAngle_upvr (readonly)
+		[3]: module_upvr_4 (readonly)
+		[4]: mapClamp_upvr (readonly)
+	]]
+	local yawSpring = arg1.yawSpring
+	local pitchSpring = arg1.pitchSpring
+	local any_getRotation_result1 = module_upvr_5.getRotation(arg2, true)
+	yawSpring.pos = sanitizeAngle_upvr(yawSpring.pos + -any_getRotation_result1.X)
+	pitchSpring.pos = sanitizeAngle_upvr(math.clamp(pitchSpring.pos + -any_getRotation_result1.Y, -1.3962634015954636, 1.3962634015954636))
+	if module_upvr_5.getRotationActivated() then
+		arg1.lastPanTick = os.clock()
+	end
+	local var25 = -math.rad(module_upvr_4.pitchBaseAngle)
+	if module_upvr_4.autocorrectDelay < os.clock() - arg1.lastPanTick then
+		local mapClamp_upvr_result1 = mapClamp_upvr(arg3, module_upvr_4.autocorrectMinCarSpeed, module_upvr_4.autocorrectMaxCarSpeed, 0, module_upvr_4.autocorrectResponse)
+		yawSpring.freq = mapClamp_upvr_result1
+		pitchSpring.freq = mapClamp_upvr_result1
+		if yawSpring.freq < 0.001 then
+			yawSpring.vel = 0
+		end
+		if pitchSpring.freq < 0.001 then
+			pitchSpring.vel = 0
+		end
+		if math.abs(sanitizeAngle_upvr(var25 - pitchSpring.pos)) <= math.rad(module_upvr_4.pitchDeadzoneAngle) then
+			pitchSpring.goal = pitchSpring.pos
+		else
+			pitchSpring.goal = var25
+		end
+	else
+		yawSpring.freq = 0
+		yawSpring.vel = 0
+		pitchSpring.freq = 0
+		pitchSpring.vel = 0
+		pitchSpring.goal = var25
+	end
+	return CFrame.fromEulerAnglesYXZ(pitchSpring:step(arg2), yawSpring:step(arg2), 0)
+end
+function setmetatable_result1_2_upvr._GetThirdPersonLocalOffset(arg1) -- Line 148
+	--[[ Upvalues[1]:
+		[1]: module_upvr_4 (readonly)
+	]]
+	return arg1.assemblyOffset + Vector3.new(0, arg1.assemblyRadius * module_upvr_4.verticalCenterOffset, 0)
+end
+local LocalPlayer_upvr = game:GetService("Players").LocalPlayer
+function setmetatable_result1_2_upvr._GetFirstPersonLocalOffset(arg1, arg2) -- Line 152
+	--[[ Upvalues[1]:
+		[1]: LocalPlayer_upvr (readonly)
+	]]
+	local Character_2 = LocalPlayer_upvr.Character
+	if Character_2 and Character_2.Parent then
+		local Head_2 = Character_2:FindFirstChild("Head")
+		if Head_2 and Head_2:IsA("BasePart") then
+			return arg2:Inverse() * Head_2.Position
+		end
+	end
+	return arg1:_GetThirdPersonLocalOffset()
+end
+function setmetatable_result1_2_upvr.Update(arg1) -- Line 166
+	--[[ Upvalues[2]:
+		[1]: var6_upvw (read and write)
+		[2]: mapClamp_upvr (readonly)
+	]]
+	local CurrentCamera_2 = workspace.CurrentCamera
+	local var33 = CurrentCamera_2
+	if var33 then
+		var33 = CurrentCamera_2.CameraSubject
+	end
+	local vehicleCameraCore = arg1.vehicleCameraCore
+	assert(CurrentCamera_2)
+	assert(var33)
+	assert(var33:IsA("VehicleSeat"))
+	local var35 = var6_upvw
+	var6_upvw = 0
+	local any_GetSubjectCFrame_result1 = arg1:GetSubjectCFrame()
+	local any_GetSubjectRotVelocity_result1 = arg1:GetSubjectRotVelocity()
+	local any_StepZoom_result1 = arg1:StepZoom()
+	local var5_result1 = mapClamp_upvr(any_StepZoom_result1, 0.5, arg1.assemblyRadius, 1, 0)
+	vehicleCameraCore:setTransform(any_GetSubjectCFrame_result1)
+	local var40 = CFrame.new(any_GetSubjectCFrame_result1 * arg1:_GetThirdPersonLocalOffset():Lerp(arg1:_GetFirstPersonLocalOffset(any_GetSubjectCFrame_result1), var5_result1)) * vehicleCameraCore:step(var35, math.abs(any_GetSubjectCFrame_result1.XVector:Dot(any_GetSubjectRotVelocity_result1)), math.abs(any_GetSubjectCFrame_result1.YVector:Dot(any_GetSubjectRotVelocity_result1)), var5_result1) * arg1:_StepRotation(var35, math.abs(arg1:GetSubjectVelocity():Dot(any_GetSubjectCFrame_result1.ZVector)))
+	return var40 * CFrame.new(0, 0, any_StepZoom_result1), var40
+end
+function setmetatable_result1_2_upvr.ApplyVRTransform(arg1) -- Line 211
+end
+return setmetatable_result1_2_upvr
