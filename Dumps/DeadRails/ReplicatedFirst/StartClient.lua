@@ -22,7 +22,7 @@ local function _() --[[ Line: 15 ]] --[[ Name: waitForGameLoadAsync ]]
         game.Loaded:Wait();
     end;
 end;
-local function v24() --[[ Line: 22 ]] --[[ Name: postGameLoadTasksAsync ]]
+local function v25() --[[ Line: 22 ]] --[[ Name: postGameLoadTasksAsync ]]
     -- upvalues: l_ReplicatedStorage_0 (copy), v4 (copy), l_LocalPlayer_0 (copy)
     local v8 = require(l_ReplicatedStorage_0.Shared.ComponentCreator);
     local v9 = require(l_ReplicatedStorage_0.Shared.SharedConstants.FeatureFlags);
@@ -34,12 +34,13 @@ local function v24() --[[ Line: 22 ]] --[[ Name: postGameLoadTasksAsync ]]
     local v15 = require(l_ReplicatedStorage_0.Client.Handlers.ClientPlayerFlopHandler);
     local v16 = require(l_ReplicatedStorage_0.Client.Handlers.ClientCommandHandler);
     local v17 = require(l_ReplicatedStorage_0.Client.Handlers.UIHandlers.CorpseEatPromptHandler);
-    local v18 = require(l_ReplicatedStorage_0.Client.Controllers.PlayerDataController);
-    local v19 = require(l_ReplicatedStorage_0.Client.Controllers.WeaponController);
-    local v20 = require(l_ReplicatedStorage_0.Client.Components.LocalDeath);
+    local v18 = require(l_ReplicatedStorage_0.Client.Inventory.ClientBackpackHandler);
+    local v19 = require(l_ReplicatedStorage_0.Client.Controllers.PlayerDataController);
+    local v20 = require(l_ReplicatedStorage_0.Client.Controllers.WeaponController);
+    local v21 = require(l_ReplicatedStorage_0.Client.Components.LocalDeath);
     v4.updateDetailText("Loading player data...");
-    if not v18.isPlayerDataLoaded() then
-        v18.waitForDataLoadAsync();
+    if not v19.isPlayerDataLoaded() then
+        v19.waitForDataLoadAsync();
     end;
     v11.registerLocalPlayer();
     v13.startAsync();
@@ -47,11 +48,12 @@ local function v24() --[[ Line: 22 ]] --[[ Name: postGameLoadTasksAsync ]]
     v15.start();
     v16.start();
     v17.start();
+    v18.startAsync();
     if v9.Experimental.NewDragSystem then
         v12.start();
     end;
-    v19.start();
-    v8.new(v10.Dead, v20):listen();
+    v20.start();
+    v8.new(v10.Dead, v21):listen();
     v4.updateDetailText("Loading map...");
     local l_IsMapGenerating_0 = l_ReplicatedStorage_0:FindFirstChild("IsMapGenerating");
     while l_IsMapGenerating_0.Value do
@@ -71,6 +73,7 @@ local function v24() --[[ Line: 22 ]] --[[ Name: postGameLoadTasksAsync ]]
     l_Character_0:WaitForChild("Humanoid");
     v4.updateDetailText("Done!");
     v4.disableAsync();
+    script:SetAttribute("IsStarted", true);
 end;
 v4.enableAsync();
 v4.updateDetailText("Initializing client...");
@@ -78,4 +81,4 @@ v4.updateDetailText("Loading game...");
 if not game:IsLoaded() then
     game.Loaded:Wait();
 end;
-v24();
+v25();

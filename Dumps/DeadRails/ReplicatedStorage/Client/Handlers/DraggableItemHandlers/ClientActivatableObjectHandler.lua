@@ -13,39 +13,35 @@ local l_Shared_0 = l_ReplicatedStorage_0.Shared;
 local v6 = require(l_Shared_0.Utils.DraggableObjectUtil);
 local l_isValidDraggableObject_0 = v6.isValidDraggableObject;
 local _ = v6.isDraggableObjectWelded;
+local v9 = require(l_ReplicatedStorage_0.Shared.SharedConstants.Tag);
+local _ = require(l_ReplicatedStorage_0.Shared.SharedConstants.Attribute);
+local v11 = require(l_ReplicatedStorage_0.Client.DataBanks.ActionData);
 local l_script_FirstAncestor_0 = script:FindFirstAncestor("Client");
 local l_FirstChild_0 = l_script_FirstAncestor_0.Handlers:FindFirstChild("ClientDraggableObjectHandler", true);
 local l_HoveringObject_0 = l_FirstChild_0.HoveringObject;
 local _ = l_FirstChild_0.DraggingObject;
-local v13 = require(l_script_FirstAncestor_0.Controllers.ActionController);
-local v14 = require(l_script_FirstAncestor_0.DataBanks.ClientActivatableObjectCallbacks);
-local v15 = v3.new("ActivateObject");
-local v16 = {
-    description = "Activate an object", 
-    showAction = true, 
-    buttonText = "Activate", 
-    buttonSize = UDim2.fromOffset(48, 48), 
-    buttonPosition = UDim2.fromScale(0.92, 0.3)
-};
-local v17 = nil;
-local v18 = false;
-local function v24(_, v20) --[[ Line: 43 ]] --[[ Name: activateObjectActionCallback ]]
-    -- upvalues: v17 (ref), v15 (copy), v14 (copy), v3 (copy)
-    if v20 ~= Enum.UserInputState.Begin then
+local v16 = require(l_script_FirstAncestor_0.Controllers.ActionController);
+local v17 = require(l_script_FirstAncestor_0.DataBanks.ClientActivatableObjectCallbacks);
+local v18 = v3.new("ActivateObject");
+local v19 = nil;
+local v20 = false;
+local function v26(_, v22) --[[ Line: 35 ]] --[[ Name: activateObjectActionCallback ]]
+    -- upvalues: v19 (ref), v18 (copy), v17 (copy), v3 (copy)
+    if v22 ~= Enum.UserInputState.Begin then
         return Enum.ContextActionResult.Pass;
     else
-        if v17 then
-            v15:InvokeServer(v17):andThen(function(v21, ...) --[[ Line: 49 ]]
-                -- upvalues: v14 (ref), v17 (ref)
-                if v21 then
-                    local v22 = v14[v17.Name];
-                    if v22 then
-                        v22(v17, ...);
+        if v19 then
+            v18:InvokeServer(v19):andThen(function(v23, ...) --[[ Line: 41 ]]
+                -- upvalues: v17 (ref), v19 (ref)
+                if v23 then
+                    local v24 = v17[v19.Name];
+                    if v24 then
+                        v24(v19, ...);
                     end;
                 end;
-            end):timeout(10):catch(function(v23) --[[ Line: 57 ]]
+            end):timeout(10):catch(function(v25) --[[ Line: 49 ]]
                 -- upvalues: v3 (ref)
-                if v3.Error.isKind(v23, v3.Error.Kind.TimedOut) then
+                if v3.Error.isKind(v25, v3.Error.Kind.TimedOut) then
                     return;
                 else
                     return;
@@ -55,54 +51,54 @@ local function v24(_, v20) --[[ Line: 43 ]] --[[ Name: activateObjectActionCallb
         return Enum.ContextActionResult.Sink;
     end;
 end;
-local function v27(v25) --[[ Line: 69 ]] --[[ Name: updateBind ]]
-    -- upvalues: v18 (ref), v13 (copy), v24 (copy), v16 (copy), v17 (ref)
-    if v25 and not v18 then
-        v13.bindAction("ActivateObjectAction", v24, v16, Enum.KeyCode.E, Enum.KeyCode.DPadLeft, 3);
-        v18 = true;
-    elseif not v25 and v18 then
-        v13.unbindAction("ActivateObjectAction");
-        v18 = false;
+local function v29(v27) --[[ Line: 61 ]] --[[ Name: updateBind ]]
+    -- upvalues: v20 (ref), v16 (copy), v11 (copy), v26 (copy), v19 (ref)
+    if v27 and not v20 then
+        v16.bindAction(v11.Action.ActivateObject, v26, v11.ActionContext[v11.Action.ActivateObject], Enum.KeyCode.E, Enum.KeyCode.DPadLeft, 3);
+        v20 = true;
+    elseif not v27 and v20 then
+        v16.unbindAction(v11.Action.ActivateObject);
+        v20 = false;
     end;
-    if v18 and v17 then
-        local l_v17_Attribute_0 = v17:GetAttribute("ActivateText");
-        v13.setButtonText("ActivateObjectAction", l_v17_Attribute_0 or "Activate");
+    if v20 and v19 then
+        local l_v19_Attribute_0 = v19:GetAttribute("ActivateText");
+        v16.setButtonText(v11.Action.ActivateObject, l_v19_Attribute_0 or "Activate");
     end;
 end;
-local function v29() --[[ Line: 92 ]] --[[ Name: update ]]
-    -- upvalues: l_LocalPlayer_0 (copy), v27 (copy), l_HoveringObject_0 (copy), l_isValidDraggableObject_0 (copy), v17 (ref)
+local function v31() --[[ Line: 84 ]] --[[ Name: update ]]
+    -- upvalues: l_LocalPlayer_0 (copy), v29 (copy), l_HoveringObject_0 (copy), l_isValidDraggableObject_0 (copy), v9 (copy), v19 (ref)
     if not l_LocalPlayer_0.Character then
-        v27(false);
+        v29(false);
         return;
     else
         local l_Value_0 = l_HoveringObject_0.Value;
-        if l_Value_0 and l_isValidDraggableObject_0(l_Value_0) and l_Value_0:HasTag("Activatable") and (not l_Value_0:GetAttribute("OwnerId") or l_Value_0:GetAttribute("OwnerId") == l_LocalPlayer_0.UserId) then
-            v17 = l_Value_0;
+        if l_Value_0 and l_isValidDraggableObject_0(l_Value_0) and l_Value_0:HasTag(v9.Activatable) and (not l_Value_0:GetAttribute("OwnerId") or l_Value_0:GetAttribute("OwnerId") == l_LocalPlayer_0.UserId) then
+            v19 = l_Value_0;
         else
-            v17 = nil;
+            v19 = nil;
         end;
-        v27(v17 ~= nil);
+        v29(v19 ~= nil);
         return;
     end;
 end;
-local function v34(v30) --[[ Line: 116 ]] --[[ Name: onCharacterAdded ]]
-    -- upvalues: v29 (copy), v27 (copy)
-    local function v31() --[[ Line: 117 ]] --[[ Name: handleChildChanged ]]
-        -- upvalues: v29 (ref)
-        v29();
+local function v36(v32) --[[ Line: 108 ]] --[[ Name: onCharacterAdded ]]
+    -- upvalues: v31 (copy), v29 (copy)
+    local function v33() --[[ Line: 109 ]] --[[ Name: handleChildChanged ]]
+        -- upvalues: v31 (ref)
+        v31();
     end;
-    local v32 = v30.ChildAdded:Connect(v31);
-    local v33 = v30.ChildRemoved:Connect(v31);
-    v30.Destroying:Once(function() --[[ Line: 124 ]]
-        -- upvalues: v32 (copy), v33 (copy), v27 (ref)
-        v32:Disconnect();
-        v33:Disconnect();
-        v27(false);
+    local v34 = v32.ChildAdded:Connect(v33);
+    local v35 = v32.ChildRemoved:Connect(v33);
+    v32.Destroying:Once(function() --[[ Line: 116 ]]
+        -- upvalues: v34 (copy), v35 (copy), v29 (ref)
+        v34:Disconnect();
+        v35:Disconnect();
+        v29(false);
     end);
-    v29();
+    v31();
 end;
 if l_LocalPlayer_0.Character then
-    v34(l_LocalPlayer_0.Character);
+    v36(l_LocalPlayer_0.Character);
 end;
-l_HoveringObject_0.Changed:Connect(v29);
-l_LocalPlayer_0.CharacterAdded:Connect(v34);
+l_HoveringObject_0.Changed:Connect(v31);
+l_LocalPlayer_0.CharacterAdded:Connect(v36);

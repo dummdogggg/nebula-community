@@ -1,5 +1,5 @@
 --[[
-    Script: StarterPlayer.StarterCharacterScripts.MusicControl
+    Script: Workspace.meanspyrobot.MusicControl
     Type: LocalScript
     Decompiled with Wave using Nebula Decompiler
 --]]

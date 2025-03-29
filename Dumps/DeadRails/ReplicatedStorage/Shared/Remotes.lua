@@ -7,7 +7,7 @@
 local l_RunService_0 = game:GetService("RunService");
 local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
 local v2 = require(l_ReplicatedStorage_0.Packages.RemotePromise);
-local function v6(v3, v4) --[[ Line: 6 ]] --[[ Name: createOrGetEventAsync ]]
+local function v6(v3, v4) --[[ Line: 6 ]] --[[ Name: getOrCreateEventAsync ]]
     -- upvalues: l_RunService_0 (copy)
     if l_RunService_0:IsServer() then
         local v5 = if v4 then Instance.new("UnreliableRemoteEvent") else Instance.new("RemoteEvent");
@@ -27,7 +27,11 @@ return {
         RequestUnweld = v6("RequestUnweld"), 
         AttachRope = v6("AttachRope"), 
         RagdollFlop = v6("RagdollFlop"), 
-        EatCorpse = v6("EatCorpse")
+        EatCorpse = v6("EatCorpse"), 
+        DropAmmo = v6("DropAmmo"), 
+        DropEquipment = v6("DropEquipment"), 
+        TEMP_PlayMeleeAttack = v6("TEMP_PlayMeleeAttack", true), 
+        DisplayGameMode = v6("DisplayGameMode")
     }, 
     Promises = {
         InteractWithObject = v2.new("InteractWithObject")

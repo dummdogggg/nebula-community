@@ -81,24 +81,44 @@ return function(v16, v17) --[[ Line: 54 ]] --[[ Name: bulletImpact ]]
             v28:Play();
             v26.effect(v18, l_instance_0);
         else
-            if v17.instance.Name == "Head" or v17.instance.Name == "VisualHead" then
+            if (v17.instance.Name == "Head" or v17.instance.Name == "VisualHead") and not v17.instance:GetAttribute("SoundCooldown") then
                 v18.HeadHit:Play();
+                v17.instance:SetAttribute("SoundCooldown", true);
+                task.delay(0.15, function() --[[ Line: 111 ]]
+                    -- upvalues: v17 (copy)
+                    if v17.instance:IsDescendantOf(workspace) then
+                        v17.instance:SetAttribute("SoundCooldown", false);
+                    end;
+                end);
             else
-                v18.BodyHit:Play();
+                local l_Parent_0 = v17.taggedHumanoid.Parent;
+                if not l_Parent_0:GetAttribute("BodyShotCooldown") then
+                    v18.BodyHit:Play();
+                    l_Parent_0:SetAttribute("BodyShotCooldown", true);
+                    task.delay(0.15, function() --[[ Line: 121 ]]
+                        -- upvalues: l_Parent_0 (copy)
+                        if l_Parent_0:IsDescendantOf(workspace) then
+                            l_Parent_0:SetAttribute("BodyShotCooldown", false);
+                        end;
+                    end);
+                else
+                    v18.BodyHit.Volume = 0.1;
+                    v18.BodyHit:Play();
+                end;
             end;
             v18.Blood:Emit(50);
         end;
     elseif v17.instance then
-        local v29 = v11[v17.material] or v15;
-        local l_Children_1 = v29.soundFolder:GetChildren();
-        local v31 = l_Children_1[math.random(1, #l_Children_1)]:Clone();
-        v31.PlaybackSpeed = math.random(80, 120) / 100;
-        v31.Parent = v18;
+        local v30 = v11[v17.material] or v15;
+        local l_Children_1 = v30.soundFolder:GetChildren();
+        local v32 = l_Children_1[math.random(1, #l_Children_1)]:Clone();
+        v32.PlaybackSpeed = math.random(80, 120) / 100;
+        v32.Parent = v18;
         task.wait();
-        v31:Play();
-        v29.effect(v18, v17.instance);
+        v32:Play();
+        v30.effect(v18, v17.instance);
     end;
-    task.delay(1, function() --[[ Line: 133 ]]
+    task.delay(1, function() --[[ Line: 152 ]]
         -- upvalues: v18 (copy)
         v18:Destroy();
     end);

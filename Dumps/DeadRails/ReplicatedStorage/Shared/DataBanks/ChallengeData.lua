@@ -41,6 +41,33 @@ return {
             Stars = 3
         }
     }, 
+    gunslinger = {
+        Title = "Gunslinger", 
+        Description = "Have 20 guns in your inventory at once", 
+        ProgressNeeded = 1, 
+        Rewards = {
+            Bonds = 15, 
+            Stars = 3
+        }
+    }, 
+    recommended_dosage = {
+        Title = "Recommended Dosage", 
+        Description = "Drink 10 snake oils in 10 seconds", 
+        ProgressNeeded = 1, 
+        Rewards = {
+            Bonds = 15, 
+            Stars = 3
+        }
+    }, 
+    tycoon = {
+        Title = "Tycoon", 
+        Description = "Have over $1000 in one game", 
+        ProgressNeeded = 1, 
+        Rewards = {
+            Bonds = 15, 
+            Stars = 3
+        }
+    }, 
     zombie = {
         Title = "Zombie Hunter", 
         Description = "Kill 200 zombies in one game", 

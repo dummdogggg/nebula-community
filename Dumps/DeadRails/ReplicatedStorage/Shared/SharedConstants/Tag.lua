@@ -9,9 +9,12 @@ local v0 = {
     Character = "Character", 
     Corpse = "Corpse", 
     Dead = "Dead", 
+    Armor = "Armor", 
     RopeTool = "RopeTool", 
     DraggableObject = "DraggableObject", 
+    WeldedObject = "WeldedObject", 
     RopedObject = "RopedObject", 
-    Equippable = "Equippable"
+    Equippable = "Equippable", 
+    Activatable = "Activatable"
 };
 return table.freeze(v0);

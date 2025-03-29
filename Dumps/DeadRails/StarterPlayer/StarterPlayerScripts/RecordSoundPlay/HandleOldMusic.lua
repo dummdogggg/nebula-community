@@ -1,5 +1,5 @@
 --[[
-    Script: StarterPlayer.StarterPlayerScripts.LegacySoundHandler
+    Script: StarterPlayer.StarterPlayerScripts.RecordSoundPlay.HandleOldMusic
     Type: LocalScript
     Decompiled with Wave using Nebula Decompiler
 --]]

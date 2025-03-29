@@ -11,156 +11,110 @@ local v3 = require("../../../Shared/Utils/DraggableObjectUtil");
 local l_isValidDraggableObject_0 = v3.isValidDraggableObject;
 local l_isDraggableObjectWelded_0 = v3.isDraggableObjectWelded;
 local v6 = require("../../Controllers/ActionController");
+local v7 = require(l_ReplicatedStorage_0.Client.DataBanks.ActionData);
 local l_PickUpTool_0 = l_ReplicatedStorage_0.Remotes.Tool.PickUpTool;
 local l_DropTool_0 = l_ReplicatedStorage_0.Remotes.Tool.DropTool;
-local v9 = {
-    description = "Pick up object", 
-    showAction = true, 
-    buttonText = "Pick Up", 
-    buttonSize = UDim2.fromOffset(48, 48), 
-    buttonPosition = UDim2.fromScale(0.92, 0.3)
-};
-local v10 = {
-    description = "Drop object", 
-    showAction = true, 
-    buttonText = "Drop", 
-    buttonSize = UDim2.fromOffset(48, 48), 
-    buttonPosition = UDim2.fromScale(0.92, 0.3)
-};
-local v11 = nil;
-local v12 = false;
-local v13 = false;
-local function v17(v14) --[[ Line: 50 ]] --[[ Name: getCurrentlyHeldTool ]]
-    if not v14 then
+local v10 = nil;
+local function v14(v11) --[[ Line: 27 ]] --[[ Name: getCurrentlyHeldTool ]]
+    if not v11 then
         return nil;
     else
-        for _, v16 in v14:GetChildren() do
-            if v16:IsA("Tool") and v16:HasTag("Droppable") then
-                return v16;
+        for _, v13 in v11:GetChildren() do
+            if v13:IsA("Tool") and v13:HasTag("Droppable") then
+                return v13;
             end;
         end;
         return nil;
     end;
 end;
-local function v20(_, v19) --[[ Line: 62 ]] --[[ Name: pickObjectActionCallback ]]
-    -- upvalues: v11 (ref), l_PickUpTool_0 (copy)
+local function v17(_, v16) --[[ Line: 41 ]] --[[ Name: pickObjectActionCallback ]]
+    -- upvalues: v10 (ref), l_PickUpTool_0 (copy)
+    if v16 ~= Enum.UserInputState.Begin then
+        return Enum.ContextActionResult.Pass;
+    else
+        if v10 then
+            l_PickUpTool_0:FireServer(v10);
+        end;
+        return Enum.ContextActionResult.Sink;
+    end;
+end;
+local function v21(_, v19) --[[ Line: 53 ]] --[[ Name: dropObjectActionCallback ]]
+    -- upvalues: v14 (copy), l_LocalPlayer_0 (copy), l_DropTool_0 (copy)
     if v19 ~= Enum.UserInputState.Begin then
         return Enum.ContextActionResult.Pass;
     else
-        if v11 then
-            l_PickUpTool_0:FireServer(v11);
+        local v20 = v14(l_LocalPlayer_0.Character);
+        if v20 then
+            l_DropTool_0:FireServer(v20);
         end;
         return Enum.ContextActionResult.Sink;
     end;
 end;
-local function v24(_, v22) --[[ Line: 72 ]] --[[ Name: dropObjectActionCallback ]]
-    -- upvalues: v17 (copy), l_LocalPlayer_0 (copy), l_DropTool_0 (copy)
-    if v22 ~= Enum.UserInputState.Begin then
-        return Enum.ContextActionResult.Pass;
-    else
-        local v23 = v17(l_LocalPlayer_0.Character);
-        if v23 then
-            l_DropTool_0:FireServer(v23);
-        end;
-        return Enum.ContextActionResult.Sink;
-    end;
-end;
-local function _(v25) --[[ Line: 83 ]] --[[ Name: updatePickBound ]]
-    -- upvalues: v12 (ref), v6 (copy), v20 (copy), v9 (copy)
-    if v25 and not v12 then
-        v6.bindAction("PickObjectAction", v20, v9, Enum.KeyCode.E, Enum.KeyCode.DPadLeft, 3);
-        v12 = true;
+local function v24(v22) --[[ Line: 66 ]] --[[ Name: updatePickBound ]]
+    -- upvalues: v6 (copy), v7 (copy), v17 (copy)
+    local v23 = v6.isBound(v7.Action.PickUpObject);
+    if v22 and not v23 then
+        v6.bindAction(v7.Action.PickUpObject, v17, v7.ActionContext[v7.Action.PickUpObject], Enum.KeyCode.E, Enum.KeyCode.DPadLeft, v7.ActionPriority.Low);
         return;
     else
-        if not v25 and v12 then
-            v6.unbindAction("PickObjectAction");
-            v12 = false;
+        if not v22 and v23 then
+            v6.unbindAction(v7.Action.PickUpObject);
         end;
         return;
     end;
 end;
-local function _(v27) --[[ Line: 100 ]] --[[ Name: updateDropBound ]]
-    -- upvalues: v13 (ref), v6 (copy), v24 (copy), v10 (copy)
-    if v27 and not v13 then
-        v6.bindAction("DropObjectAction", v24, v10, Enum.KeyCode.Backspace, Enum.KeyCode.DPadLeft, 3);
-        v13 = true;
+local function v27(v25) --[[ Line: 83 ]] --[[ Name: updateDropBound ]]
+    -- upvalues: v6 (copy), v7 (copy), v21 (copy)
+    local v26 = v6.isBound(v7.Action.DropObject);
+    if v25 and not v26 then
+        v6.bindAction(v7.Action.DropObject, v21, v7.ActionContext[v7.Action.DropObject], Enum.KeyCode.Backspace, Enum.KeyCode.DPadLeft, v7.ActionPriority.Low);
         return;
     else
-        if not v27 and v13 then
-            v6.unbindAction("DropObjectAction");
-            v13 = false;
+        if not v25 and v26 then
+            v6.unbindAction(v7.Action.DropObject);
         end;
         return;
     end;
 end;
-local function v33() --[[ Line: 117 ]] --[[ Name: update ]]
-    -- upvalues: l_LocalPlayer_0 (copy), v12 (ref), v6 (copy), v13 (ref), l_HoveringObject_0 (copy), v17 (copy), l_isValidDraggableObject_0 (copy), l_isDraggableObjectWelded_0 (copy), v11 (ref), v20 (copy), v9 (copy), v24 (copy), v10 (copy)
+local function v31() --[[ Line: 100 ]] --[[ Name: update ]]
+    -- upvalues: l_LocalPlayer_0 (copy), v24 (copy), v27 (copy), l_HoveringObject_0 (copy), v14 (copy), l_isValidDraggableObject_0 (copy), l_isDraggableObjectWelded_0 (copy), v10 (ref)
     local l_Character_0 = l_LocalPlayer_0.Character;
     if not l_Character_0 then
-        if v12 then
-            v6.unbindAction("PickObjectAction");
-            v12 = false;
-        end;
-        if v13 then
-            v6.unbindAction("DropObjectAction");
-            v13 = false;
-        end;
+        v24(false);
+        v27(false);
         return;
     else
         local l_Value_0 = l_HoveringObject_0.Value;
-        local v31 = v17(l_Character_0);
+        local v30 = v14(l_Character_0);
         if l_Value_0 and l_isValidDraggableObject_0(l_Value_0) and not l_isDraggableObjectWelded_0(l_Value_0) and l_Value_0:HasTag("ToolObject") and (not l_Value_0:GetAttribute("OwnerId") or l_Value_0:GetAttribute("OwnerId") == l_LocalPlayer_0.UserId) then
-            v11 = l_Value_0;
+            v10 = l_Value_0;
         else
-            v11 = nil;
+            v10 = nil;
         end;
-        local v32 = v11 ~= nil;
-        if v32 and not v12 then
-            v6.bindAction("PickObjectAction", v20, v9, Enum.KeyCode.E, Enum.KeyCode.DPadLeft, 3);
-            v12 = true;
-        elseif not v32 and v12 then
-            v6.unbindAction("PickObjectAction");
-            v12 = false;
-        end;
-        v32 = v31 ~= nil;
-        if v32 and not v13 then
-            v6.bindAction("DropObjectAction", v24, v10, Enum.KeyCode.Backspace, Enum.KeyCode.DPadLeft, 3);
-            v13 = true;
-            return;
-        else
-            if not v32 and v13 then
-                v6.unbindAction("DropObjectAction");
-                v13 = false;
-            end;
-            return;
-        end;
+        v24(v10 ~= nil);
+        v27(v30 ~= nil);
+        return;
     end;
 end;
-local function v38(v34) --[[ Line: 143 ]] --[[ Name: onCharacterAdded ]]
-    -- upvalues: v33 (copy), v12 (ref), v6 (copy), v13 (ref)
-    local function v35() --[[ Line: 144 ]] --[[ Name: handleChildChanged ]]
-        -- upvalues: v33 (ref)
-        v33();
+local function v36(v32) --[[ Line: 126 ]] --[[ Name: onCharacterAdded ]]
+    -- upvalues: v31 (copy), v24 (copy), v27 (copy)
+    local function v33() --[[ Line: 127 ]] --[[ Name: handleChildChanged ]]
+        -- upvalues: v31 (ref)
+        v31();
     end;
-    local v36 = v34.ChildAdded:Connect(v35);
-    local v37 = v34.ChildRemoved:Connect(v35);
-    v34.Destroying:Once(function() --[[ Line: 151 ]]
-        -- upvalues: v36 (copy), v37 (copy), v12 (ref), v6 (ref), v13 (ref)
-        v36:Disconnect();
-        v37:Disconnect();
-        if v12 then
-            v6.unbindAction("PickObjectAction");
-            v12 = false;
-        end;
-        if v13 then
-            v6.unbindAction("DropObjectAction");
-            v13 = false;
-        end;
+    local v34 = v32.ChildAdded:Connect(v33);
+    local v35 = v32.ChildRemoved:Connect(v33);
+    v32.Destroying:Once(function() --[[ Line: 134 ]]
+        -- upvalues: v34 (copy), v35 (copy), v24 (ref), v27 (ref)
+        v34:Disconnect();
+        v35:Disconnect();
+        v24(false);
+        v27(false);
     end);
-    v33();
+    v31();
 end;
 if l_LocalPlayer_0.Character then
-    v38(l_LocalPlayer_0.Character);
+    v36(l_LocalPlayer_0.Character);
 end;
-l_HoveringObject_0.Changed:Connect(v33);
-l_LocalPlayer_0.CharacterAdded:Connect(v38);
+l_HoveringObject_0.Changed:Connect(v31);
+l_LocalPlayer_0.CharacterAdded:Connect(v36);

@@ -17,6 +17,7 @@ local v0 = {
     MaxUses = "MaxUses", 
     MaxUseDistance = "MaxUseDistance", 
     CurrentUses = "CurrentUses", 
-    Value = "Value"
+    Value = "Value", 
+    EquipmentSlot = "EquipmentSlot"
 };
 return table.freeze(v0);
