@@ -18,7 +18,8 @@ until game:IsLoaded()
 
 local ScriptData = {
     [7018190066] = "0374691aefd44c855f38a154fb427d27",
-    [6931042565] = "c4db58baa788dfaafe935f3329ea6ff2"
+    [6931042565] = "c4db58baa788dfaafe935f3329ea6ff2",
+    [4777817887] = "5a90e9f345f6b58f4a1be04e72e2a631"
 }
 
 local CurrentGameID = game.GameId
