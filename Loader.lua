@@ -35,7 +35,7 @@ local CurrentGameID = game.GameId
 local CurrentScriptID = ScriptData[CurrentGameID]
 
 makefolder("Nebula")
-script_key = _G['script_key'] or nil
+_G['script_key'] = script_key or nil
 
 local Cloneref = cloneref or _G['clonereference'] or function(instance)
     return instance
@@ -121,7 +121,7 @@ local function checkKey(input_key)
     local status = API.check_key(input_key or script_key)
     
     if status.code == "KEY_VALID" then
-        script_key = input_key or script_key
+        script_key = input_key or _G['script_key']
         Fluent:Notify({
             Title = "Verification Complete",
             Content = "Valid key! Loading script...",
