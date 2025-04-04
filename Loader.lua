@@ -119,7 +119,7 @@ local function checkKey(input_key)
     end
     
     API.script_id = CurrentScriptID
-    local status = API.check_key(input_key or script_key)
+    local status = API.check_key(input_key or _G['script_key'])
     
     if status.code == "KEY_VALID" then
         script_key = input_key or _G['script_key']
