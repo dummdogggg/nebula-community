@@ -35,7 +35,8 @@ local CurrentGameID = game.GameId
 local CurrentScriptID = ScriptData[CurrentGameID]
 
 makefolder("Nebula")
-_G['script_key'] = script_key or nil
+_G['script_key'] = script_key or _G['script_key']
+print(script_key, _G['script_key'])
 
 local Cloneref = cloneref or _G['clonereference'] or function(instance)
     return instance
