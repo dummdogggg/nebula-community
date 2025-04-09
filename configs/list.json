@@ -5,6 +5,13 @@
             "description": "config for the blade-ball game if yuohvae ping around 30 to 40",
             "path": "NebulaHub/BladeBall/settings/lowping-by-dumm_dogg.json",
             "url": "https://raw.githubusercontent.com/getthreadcontext/nebula-community/refs/heads/main/configs/blade-ball/low-ping-by-dumm_dogg.json"
+        },
+        {
+            "name": "Dead-rails simple config (30+-)",
+            "description": "a simple but very good config for nebula dead-rails",
+            "path": "NebulaHubV2/DeadRailsV2/settings/simple-by-dumm_dogg.json",
+            "url": "https://raw.githubusercontent.com/getthreadcontext/nebula-community/refs/heads/main/configs/Dead-rails/simple-by-dumm_dogg.json"
         }
+        
     ]
 }
