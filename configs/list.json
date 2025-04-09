@@ -3,7 +3,7 @@
         {
             "name": "blade-ball low ping (30+-)",
             "description": "config for the blade-ball game if yuohvae ping around 30 to 40",
-            "path": "NebulaHub\BladeBall\settings\lowping-by-dumm_dogg.json",
+            "path": "NebulaHub/BladeBall/settings/lowping-by-dumm_dogg.json",
             "url": "https://raw.githubusercontent.com/getthreadcontext/nebula-community/refs/heads/main/configs/blade-ball/low-ping-by-dumm_dogg.json"
         }
     ]
